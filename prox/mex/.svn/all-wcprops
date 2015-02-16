@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/spams-devel/!svn/ver/195/trunk/prox/mex
+END
+mexSimpleGroupTree.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/170/trunk/prox/mex/mexSimpleGroupTree.cpp
+END
+mexFistaTree.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/192/trunk/prox/mex/mexFistaTree.cpp
+END
+mexEvalPathCoding.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/85/trunk/prox/mex/mexEvalPathCoding.cpp
+END
+mexFistaGraph.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/192/trunk/prox/mex/mexFistaGraph.cpp
+END
+mexProximalPathCoding.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/49/trunk/prox/mex/mexProximalPathCoding.cpp
+END
+mexReadGroupStruct.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/170/trunk/prox/mex/mexReadGroupStruct.cpp
+END
+mexSvmSdca.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/195/trunk/prox/mex/mexSvmSdca.cpp
+END
+mexProximalFlat.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/67/trunk/prox/mex/mexProximalFlat.cpp
+END
+mexTreeOfGroupStruct.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/133/trunk/prox/mex/mexTreeOfGroupStruct.cpp
+END
+mexFistaPathCoding.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/170/trunk/prox/mex/mexFistaPathCoding.cpp
+END
+mexGraphOfGroupStruct.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/133/trunk/prox/mex/mexGraphOfGroupStruct.cpp
+END
+mexIncrementalProx.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/170/trunk/prox/mex/mexIncrementalProx.cpp
+END
+mexProximalTree.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/85/trunk/prox/mex/mexProximalTree.cpp
+END
+mexStochasticProx.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/188/trunk/prox/mex/mexStochasticProx.cpp
+END
+mexProximalGraph.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/2/trunk/prox/mex/mexProximalGraph.cpp
+END
+mexGroupStructOfString.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/spams-devel/!svn/ver/170/trunk/prox/mex/mexGroupStructOfString.cpp
+END
+mexFistaFlat.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/192/trunk/prox/mex/mexFistaFlat.cpp
+END

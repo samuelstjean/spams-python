@@ -1,0 +1,37 @@
+This application has only be tested on linux.
+
+Requirements:
+ - python version 2.6 or 2.7 
+ - package spams-python installed from source distribution
+ - python-qt4 python-opengl libqglviewer pyqglviewer
+   on ubuntu : 
+      	     apt-get install python-qt4 python-qt4-gl libqglviewer-qt4-2 libqglviewer-qt4-dev
+      	     add-apt-repository ppa:christophe-pradal/vplants
+	     apt-get update
+	     apt-get install pyqglviewer
+   If you need to build module pyqglviewer:
+     - download http://ppa.launchpad.net/christophe-pradal/vplants/ubuntu/pool/main/p/pyqglviewer/pyqglviewer_0.8.orig.tar.gz
+     - install python-qt4-dev and python-sip
+     - enter pyqglviewer dir and execute
+         python setup.py install --prefix=<some-dir>
+    - add <some-dir>/lib/python-x.y/site-packages to your PYTHONPATH
+
+To start the application execute:
+python qtext-dict.py
+
+You can load example data from example/test.dmp with menu "File/Load"
+and visusalize dictionary graph (menu "File/View dictionary")
+
+User documentation is available in
+doc/user/doc_dictlearn.pdf and doc/user/html/index.html
+
+
+------------------------------------------------------------
+
+Note : the generation of python files from .ui was done with
+
+python /usr/share/pyshared/PyQt4/uic/pyuic.py app.ui -o app.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py dparams_gui.ui -o dparams_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py dict_gui.ui -o dict_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py viewdict_gui.ui -o viewdict_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py viewdecomp_gui.ui -o viewdecomp_gui.py -x

@@ -1,0 +1,42 @@
+#!/bin/sh
+case $1 in -x) set -x;shift;;esac
+
+die () {
+    echo "$*"
+    exit 1
+
+}
+
+check_rebuild () {
+    ref=$1;shift
+    files="$*"
+    rebuild=0
+    if [ -r $ref ]; then
+	set `ls -Lt $ref $files`
+	case $1 in
+	    $ref) rebuild=1;;
+       esac
+    fi
+    return $rebuild
+}
+
+pyfiles="../dict_conf.py ../dictlib.py ../drawgraph.py  ../mylayout.py  ../qparams.py ../qtdict.py ../qtext-dict.py ../viewer.py"
+
+[ -d ./doc -a -d ./devel-doc ]  || die "Missing ./doc or ./devel-doc"
+if  check_rebuild doc/doc_dictlearn.pdf doc/doc_dictlearn.tex ; then
+    echo "REBUILD"
+    cd doc
+    make hevea
+    make
+    cd ..
+fi
+cd devel-doc
+if check_rebuild build/html/index.html $pyfiles source/*.rst ; then
+    make html
+fi
+if check_rebuild build/latex/text-dict.pdf $pyfiles source/*.rst ; then
+    make latex
+    cd build/latex
+    make all-pdf
+fi
+

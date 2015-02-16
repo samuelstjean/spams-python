@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/spams-devel/!svn/ver/179/trunk/decomp/mex
+END
+mexOMPMask.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/116/trunk/decomp/mex/mexOMPMask.cpp
+END
+mexDecompSimplex.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/179/trunk/decomp/mex/mexDecompSimplex.cpp
+END
+mexOMP.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/116/trunk/decomp/mex/mexOMP.cpp
+END
+mexRidgeRegression.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/120/trunk/decomp/mex/mexRidgeRegression.cpp
+END
+mexLassoMask.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/116/trunk/decomp/mex/mexLassoMask.cpp
+END
+mexSOMP.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/116/trunk/decomp/mex/mexSOMP.cpp
+END
+mexLasso.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/170/trunk/decomp/mex/mexLasso.cpp
+END
+mexLassoWeighted.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/2/trunk/decomp/mex/mexLassoWeighted.cpp
+END
+mexL1L2BCD.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/2/trunk/decomp/mex/mexL1L2BCD.cpp
+END
+mexSparseProject.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/2/trunk/decomp/mex/mexSparseProject.cpp
+END
+mexCD.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/116/trunk/decomp/mex/mexCD.cpp
+END

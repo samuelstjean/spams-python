@@ -1,0 +1,251 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/192/trunk/test_release
+END
+test_SOMP.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_SOMP.m
+END
+test_Lasso.m
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_Lasso.m
+END
+test_image.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/166/trunk/test_release/test_image.m
+END
+test_L1L2BCD.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_L1L2BCD.m
+END
+test_CalcXY.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CalcXY.m
+END
+test_SparseProject.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_SparseProject.m
+END
+test_solverPoisson.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/179/trunk/test_release/test_solverPoisson.m
+END
+test_TrainDL_Memory.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_TrainDL_Memory.m
+END
+test_FistaTree.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_FistaTree.m
+END
+test_Sort.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_Sort.m
+END
+test_CalcAAt.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CalcAAt.m
+END
+test_EvalPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_EvalPathCoding.m
+END
+test_OMP.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/192/trunk/test_release/test_OMP.m
+END
+test_RidgeRegression.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/spams-devel/!svn/ver/131/trunk/test_release/test_RidgeRegression.m
+END
+test_LassoMask.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_LassoMask.m
+END
+test_archetypalAnalysis.m
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/spams-devel/!svn/ver/179/trunk/test_release/test_archetypalAnalysis.m
+END
+test_ProximalFlat.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_ProximalFlat.m
+END
+test_StructTrainDL.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/134/trunk/test_release/test_StructTrainDL.m
+END
+test_LassoWeighted.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/2/trunk/test_release/test_LassoWeighted.m
+END
+test_OMPMask.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_OMPMask.m
+END
+test_CalcXtY.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CalcXtY.m
+END
+test_FistaPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_FistaPathCoding.m
+END
+test_ProximalTree.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/116/trunk/test_release/test_ProximalTree.m
+END
+test_StochasticProx.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/145/trunk/test_release/test_StochasticProx.m
+END
+test_ProximalGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_ProximalGraph.m
+END
+test_CalcXAt.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CalcXAt.m
+END
+test_nmf.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/68/trunk/test_release/test_nmf.m
+END
+test_RemoveCyclesGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_RemoveCyclesGraph.m
+END
+test_InvSym.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_InvSym.m
+END
+test_CD.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CD.m
+END
+test_ConjGrad.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_ConjGrad.m
+END
+test_FistaGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_FistaGraph.m
+END
+test_ProximalPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/spams-devel/!svn/ver/49/trunk/test_release/test_ProximalPathCoding.m
+END
+test_TrainDL.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/131/trunk/test_release/test_TrainDL.m
+END
+test_Normalize.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_Normalize.m
+END
+test_CountPathsDAG.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CountPathsDAG.m
+END
+test_CalcXYt.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CalcXYt.m
+END
+test_all.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/131/trunk/test_release/test_all.m
+END
+test_CountConnexComponents.m
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/spams-devel/!svn/ver/60/trunk/test_release/test_CountConnexComponents.m
+END
+test_IncrementalProx.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/spams-devel/!svn/ver/146/trunk/test_release/test_IncrementalProx.m
+END
+test_FistaFlat.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/179/trunk/test_release/test_FistaFlat.m
+END

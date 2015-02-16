@@ -1,0 +1,13 @@
+begin addlast Inputs
+return_lasso:     
+[R]		      if true the function will return 2 matrices in a list.
+[P]                   if true the function will return a tuple of matrices.
+end
+begin addlast Output
+[P]     U = spams.nnsc(X,return_lasso = False,...)
+[P]	(U,V) = spams.nnsc(X,return_lasso = True,...)
+[R]      U <- spams.nnsc(X,return_lasso = FALSE,...)
+[R]      v <- spams.nnsc(X,return_lasso = TRUE,...)
+[R]      U <- v[[1]]
+[R]      V <- v[[2]]
+end

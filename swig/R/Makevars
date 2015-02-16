@@ -1,0 +1,21 @@
+#PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) $(FLIBS) $(SHLIB_OPENMP_CFLAGS)
+#PKG_CXXFLAGS =  -I. -Ispams/linalg -Ispams/prox -Ispams/decomp $(SHLIB_OPENMP_CFLAGS)
+ifndef SHLIB_OPENMP_CXXFLAGS
+  SHLIB_OPENMP_CXXFLAGS= -fopenmp
+endif
+EXTRA_LIBS=
+EXTRA_OPT=
+STRIP_OPT=-s
+ifeq ($(shell uname),Darwin)
+   EXTRA_LIBS= -lcblas
+   ifeq ($(shell R CMD config CXX),clang++) # test if clang++ is C++ compiler
+      EXTRA_LIBS += -stdlib=libstdc++
+      EXTRA_OPT += -stdlib=libstdc++
+      STRIP_OPT=
+   endif
+endif
+
+
+PKG_CXXFLAGS = -I. -Ispams/linalg -Ispams/prox -Ispams/decomp -Ispams/dictLearn -Ispams/dags $(SHLIB_OPENMP_CXXFLAGS) $(OPT_DBG) $(EXTRA_OPT) -DUSE_BLAS_LIB -DNDEBUG -O3 -mtune=native
+# -s to strip the .so 
+PKG_LIBS = $(STRIP_OPT) $(SHLIB_OPENMP_CXXFLAGS) -lstdc++ $(BLAS_LIBS) $(LAPACK_LIBS) $(EXTRA_LIBS) $(FLIBS)

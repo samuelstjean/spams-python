@@ -1,0 +1,7 @@
+include traindl.inc
+begin repl Output
+D:     double m x p matrix   (dictionary)
+model:  the model as A B iter
+[P]	D = spams.trainDL_Memory(X,...)
+[R]	D <- spams.trainDL_Memory(X,...)
+end

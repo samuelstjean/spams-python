@@ -1,0 +1,84 @@
+#!/bin/sh
+case $1 in -x) set -x;shift;;esac
+
+die () {
+    echo $*
+    exit 1
+}
+usage() {
+    echo "Usage: $0 [-f]"
+    echo " prepare a spams-R/ for distribution in ./dist/"
+    echo "  -f : do not rebuild the doc from scratch"
+    exit 1
+}
+
+mkdoc=1
+case $1 in
+    -f) mkdoc=0;shift;;
+esac
+[ $# -gt 0 ] && usage
+
+[ -x ./mkdist ] || die "You must be in the directory containing mkdist"
+[ -x ../mkRelease ] || die "No prog ../mkRelease"
+
+fullvers=`../mkRelease -f`
+
+ext=src;
+pkg=spams-R
+nom=spams
+/bin/rm -rf dist
+cdir=`/bin/pwd`
+wdir=$cdir/dist
+dir=$wdir/$pkg
+mkdir $wdir
+[ -d $wdir ] || die "No dir $wdir"
+[ -d $dir ] && die "$dir already exists"
+mkdir $dir
+[ -d $dir ] || die "cannot create $dir"
+pkdir=$dir/$nom
+
+./docmatlab2R r_spams
+
+[ $mkdoc -ne 0 ] && /bin/rm -rf tmp-doc
+../mkdoc
+doc=tmp-doc
+swig -c++ -r -o ${nom}.cpp $nom.i
+#/home/bigimbaz/douze/bigimbaz_servers/swig/bin/swig -c++ -r -o ${nom}.cpp $nom.i
+[ $? -ne 0 ] && exit 1
+mkdir -p $pkdir/R $pkdir/src
+cp -p NAMESPACE  $pkdir
+../setRelease DESCRIPTION.in >$pkdir/DESCRIPTION 
+cp -p ../../COPYING $pkdir/LICENSE
+cp -a man $pkdir
+rfiles="zzz.R r_$nom.R ${nom}.R"
+cfiles="$nom.h ${nom}.cpp Makevars Makevars.win"
+cp $rfiles $pkdir/R
+cp $cfiles $pkdir/src
+mkdir -p $pkdir/inst/test $pkdir/inst/doc $pkdir/inst/extdata
+cp -p test_*.R $pkdir/inst/test
+cp -p $doc/doc_spams.pdf $pkdir/inst/doc
+cp -a $doc/html $pkdir/inst/doc
+cp -p ../extdata/*   $pkdir/inst/extdata
+../setRelease INSTALL-package.in >$dir/INSTALL-package
+../setRelease INSTALL-windows.in >$dir/INSTALL-windows
+../setRelease spams-R.iss.in >$dir/spams-R.iss
+cp -p win-build.sh $dir
+pngpkg=png_0.1-4.tar.gz
+if [ -r $pngpkg ]; then
+    cp -p $pngpkg $dir
+fi
+cd $pkdir/src;mkdir spams;cd spams
+for d in decomp  dictLearn  linalg  prox;do
+    mkdir $d
+    cp -p ../../../../../../../$d/*.h $d
+done
+
+cd $wdir
+echo "$fullvers" >$dir/Release-name
+
+tgz=$pkg-$fullvers.tar.gz
+tar zcf $tgz $pkg
+mv $tgz ../../../
+#cp -p $tgz ../${pkg}_svn.tar.gz
+exit 0
+

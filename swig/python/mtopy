@@ -1,0 +1,43 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+while(<STDIN>) {
+    chomp;
+    s/\; *$//;
+    (/^tic/) && next;
+    (/=\s*toc/) && next;
+    s/=/ = /;
+    s/false/False/g;
+    s/true/True/g;
+    if(s/^\s*%/#/) {
+	print "$_\n";
+	next;
+    }
+    
+    if(s/^\s*fprintf\(/print /) {
+	if(! (/%/)) {
+	    s/\)\s*$//;
+	    s/\\n'/'/;
+	    print "$_\n";
+	    next;
+	}
+	s/,mean/,np.mean/g;
+	s/info\(1,:\)/info[0,:]/;
+	s/info\(3,:\)/info[2,:]/;
+	s/info\(4,:\)/info[3,:]/;
+	s/\\n'\s*,/' %(/;
+	s/,t,/,/;
+	s/,\s*time:\s*%f\s*,/,/;
+	print "$_\n";
+	next;
+    }
+    if(s/^\s*\[W.*=\s*mex//) {
+	s/\)\s*$//;
+	print "(W, optim_info) = Xtest1('spams','spams.$_,True)',locals())\n";
+	next;
+    }
+    s/%/#/;
+    s/param\.([^\s=]+)/param['$1']/;
+    print "$_\n";
+}

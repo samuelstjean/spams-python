@@ -1,0 +1,169 @@
+#!/usr/bin/perl -w
+use strict;
+
+$main::first_rev = 29;
+sub usage {
+    print "Usage: $0 [-svn][-t dates-file]\n",
+    " makes changelo\n",
+    "\t-svn : get last raw log from svn and appends it to Changelog.log\n",
+    "\t   if Changelog.log is empty, get log since $main::first_rev\n",
+    "\t-t : Converts Changelog.log to Changelog.txt, with dates as revisions flags\n";
+    exit 1;
+}
+
+my $raw_file = "Changelog.log";
+my $txt_file = "Changelog.txt";
+
+my $log_svn = 0;
+my $log_txt = 0;
+my $dates_file = "";
+
+while($#ARGV >= 0) {
+    $_ = shift(@ARGV);
+    if(/^-svn$/) {$log_svn = 1;next;}
+    if(/^-t$/) {
+	($#ARGV >= 0) || usage();
+	$dates_file = shift(@ARGV);
+	$log_txt = 1;
+	next;
+    }
+    usage();
+}
+
+if($log_svn) { 
+    my $rev = get_last_rev($raw_file);
+    system "svn log  --incremental -r $rev:HEAD >>$raw_file";
+    print "XX $rev\n";
+}
+if($log_txt) {
+    my @changes = ();
+    my @dates = ();my @prefixes = ();
+    read_dates($dates_file,\@dates,\@prefixes);
+    
+#    print "YY ", join(" ",@dates), "\n";
+    my @entries = ();
+    read_log($raw_file,\@entries);
+    my $i = 0;
+    my $pdate = "";
+    open(OUT,">$txt_file") || die "$txt_file create err $!\n";
+    for(my $idt = 0;$idt <= $#dates;$idt++) {
+	my $s = "$prefixes[$idt]$dates[$idt] :";
+	print OUT "$s\n";
+	print OUT "=" x length($s), "\n\n";
+	my $refdate =  0;
+	if($idt < $#dates) {
+	    $refdate = $dates[$idt+1];
+	    $refdate =~ s/-//g;
+	}
+	$pdate = "";
+	while (1) {
+	    ($i >= $#entries) && last;
+	    my $e = $entries[$i];
+	    my $date = $$e[0];
+	    if($date ne $pdate) {
+		$pdate = $date;
+		my $dt = $date;
+		$dt =~ s/-//g;
+#		print "XX $dt, $refdate\n";
+		if($dt <= $refdate) {
+		    print OUT "-" x 40, "\n\n";
+		    last;
+		}
+		print OUT "- $date\n";
+	    } 
+	    $i++;
+	    for(my $j = 2;$j <= $#$e;$j++) {
+		$_ = $$e[$j];
+		(/^\s*$/) && next;
+		print OUT "  $$e[$j]\n";
+	    }
+	}
+    }
+}
+close(OUT);
+exit 0;
+sub get_last_rev {
+    my($f) = @_;
+    my $rev = $main::first_rev;
+    if(! open(IN,"<$f")) {return $rev;}
+    my $line = 0;
+    while(<IN>) {
+	$line++;
+	chomp;
+	if(/^-+$/) {
+	    $_ = <IN>;
+	    $line++;
+	    chomp;
+	    (/^r(\d+)\s\|/) || die "Bad log line ($line)\n";
+	    $rev = $1;
+	    $rev++;
+	}
+    }
+    close(IN);
+    $rev;
+}
+
+sub read_log {
+    my($f,$entries) = @_;
+    my @lines = ();
+    open(IN, "<$f") || die "Logfile $f read error $!\n";
+    while(<IN>) {
+	chomp;
+	push(@lines,$_);
+    }
+    close(IN);
+    my $entry = [()];
+    my $date = "";
+    my $rev = "";
+    my @tmp = ();
+    for(my $i = 0;$i <= $#lines;$i++) {
+	$_ = $lines[$i];
+	if(/^-+$/) {
+	    if($#$entry >= 1) {
+		push(@tmp,$entry);
+	    }
+	    $entry = [()];
+	    next;
+	}
+	if($#$entry < 0) {
+	    (/^r(\d+)\s+\|[^|]+\|\s+(\d\d\d\d-\d\d-\d\d)/) || die "Bad log history line <$_>\n";
+	    $rev = $1;
+	    $date = $2;
+	    push(@$entry,$date,$rev);
+	    next;
+	}
+	(($#$entry == 1) && (/^\s*$/)) && next;
+	push(@$entry,$_);
+    }
+    if($#$entry >= 1) {push(@tmp,$entry);}
+    my @indx0 = ();
+    for (my $i = 0;$i <= $#tmp;$i++) {push(@indx0,$i);}
+    my @indx = sort {${$tmp[$b]}[0] cmp ${$tmp[$a]}[0]} @indx0;
+    foreach my $i (@indx) {
+	push(@$entries,$tmp[$i]);
+    }
+}
+
+sub read_dates {
+    my($f,$dates,$prefixes) = @_;
+    my @tmp = ();
+    open(IN,"<$f") || die "Date file $f open err $!\n";
+    while(<IN>) {
+	chomp;
+	(/^\s*$/) && next;
+	(/^\s*\#/) && next;
+	(/^(.*)(\d\d\d\d-\d\d-\d\d)$/) || die "Bad date <$_>\n";
+	my $date = $2;
+	my $p = $1;
+	push(@tmp,[($date,$p)]);
+    }
+    close(IN);
+    my $today;
+    chomp($today = `date +%Y-%m-%d`);
+    if(${$tmp[$#tmp]}[0] ne "$today") {push(@tmp,[($today,"")]);}
+    my @tmp2 = sort {$$b[0] cmp $$a[0]} @tmp;
+    foreach my $x (@tmp2) {
+	push(@$dates,$$x[0]);
+	push(@$prefixes,$$x[1]);
+    }
+}

@@ -1,0 +1,58 @@
+This directory contains files to build the python interfaces
+to the functions of spams library already interfaced with matlab.
+
+This file describes how to build the interface from sources.
+
+To install the SPAMS puthon package you can also just download the tar.gz archive
+and follow instructions from INSTALL-package.
+
+----------------------------------------
+Building from sources:
+(you need SWIG and perl)
+
+- ./mkdist
+- cd dist/spams-python
+- inst=$HOME/python
+- python setup.py install --prefix=$inst
+
+you will find in $inst
+- doc/ : a copy of the pdf documentation of spams
+- extdata/ : 2 images used by the tests of dictLearn toolbox 
+- test/ : a bunch of test programs where you can find examples of usage
+  of each function of the toolbox
+
+----------------------------------------
+Running test programs :
+
+cd $inst/test
+python test_spams.py -h : to get help
+python test_spams.py  : will run all the tests
+python test_spams.py linalg : test of linalg functions
+python test_spams.py name1 name2 ... : run named tests
+  .....
+
+========================================
+
+This part is for developpers only.
+
+----------------------------------------
+Interface building for test :
+
+./mkpy spams
+input : spams.h, spams.i, spamstools.i, py_typemaps.i, numpy.i
+output : _spams_wrap.so spams_wrap.py
+NB : the scipt mkpy is for linux, it must be modified (see comments) for MacOS
+
+Normal build (with setup)
+mkdir inst
+swig -c++ -python -o spams_wrap.cpp spams.i
+python setup.py install --prefix=inst
+
+--------------------
+Tests:
+
+python test_spams.py -h : to get help
+python test_spams.py  : will run all the tests
+python test_spams.py linalg : test of linalg functions
+python test_spams.py name1 name2 ... : run named tests
+

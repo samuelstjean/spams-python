@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DictLearn</class>
+ <widget class="QMainWindow" name="DictLearn">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>607</width>
+    <height>563</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="0" colspan="2">
+     <widget class="QFrame" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="comboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>choosethe dictionary structure (no default)</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>choose dictionary structure</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>unstructured</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>graph struct</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>tree struct</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>symetric tree</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="Word_box">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <widget class="QLabel" name="wcount">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>30</y>
+            <width>120</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>100</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>nb words to show:</string>
+          </property>
+         </widget>
+         <widget class="QSpinBox" name="word_count">
+          <property name="geometry">
+           <rect>
+            <x>180</x>
+            <y>20</y>
+            <width>55</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="info">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QFrame" name="buttonFrame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="Vocabulary">
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>151</red>
+               <green>150</green>
+               <blue>149</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="toolTip">
+          <string>select file containing the vocabulary</string>
+         </property>
+         <property name="text">
+          <string>Vocabulary</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Texts">
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>151</red>
+               <green>150</green>
+               <blue>149</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="toolTip">
+          <string>data files for dictionary learning</string>
+         </property>
+         <property name="statusTip">
+          <string>choose  files</string>
+         </property>
+         <property name="text">
+          <string>Texts for training</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="Texts2">
+         <property name="toolTip">
+          <string>texts to decompose on the learnt dictionary</string>
+         </property>
+         <property name="text">
+          <string>Texts to decompose</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>607</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLearn"/>
+    <addaction name="actionDecomp"/>
+    <addaction name="actionView_dict"/>
+    <addaction name="actionView_decomp"/>
+    <addaction name="actionHide_console"/>
+    <addaction name="actionDump"/>
+    <addaction name="actionLoad"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuPreferences">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionDict_params"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPreferences"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="dockConsole">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="consLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Console</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Clear">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="console">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionLearn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Learn dictionary</string>
+   </property>
+  </action>
+  <action name="actionDecomp">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Compute decomposition</string>
+   </property>
+  </action>
+  <action name="actionView_dict">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>View dictionary</string>
+   </property>
+  </action>
+  <action name="actionView_decomp">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>View decomposition</string>
+   </property>
+  </action>
+  <action name="actionHide_console">
+   <property name="text">
+    <string>Hide console</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionDict_params">
+   <property name="text">
+    <string>dictionary params</string>
+   </property>
+  </action>
+  <action name="actionView_options">
+   <property name="text">
+    <string>visualisation options</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionDump">
+   <property name="text">
+    <string>Dump</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

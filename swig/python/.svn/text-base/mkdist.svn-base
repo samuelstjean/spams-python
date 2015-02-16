@@ -1,0 +1,77 @@
+#!/bin/sh
+case $1 in -x) set -x;shift;;esac
+# The main version number is in ../Version
+
+die () {
+    echo $*
+    exit 1
+}
+
+usage() {
+    echo "Usage: $0 [-f]"
+    echo " prepare a spams-python/ for distribution in ./dist/"
+    echo "  -f : do not rebuild the doc from scratch"
+    exit 1
+}
+
+rmdoc=1
+case $1 in
+    -f) rmdoc=0;shift;;
+esac
+[ $# -gt 0 ] && usage
+
+[ -x ./mkdist ] || die "You must be in the directory containing mkdist"
+[ -x ../mkRelease ] || die "No prog ../mkRelease"
+[ -x ../setRelease ] || die "No prog ../setRelease"
+fullvers=`../mkRelease -f`
+../setRelease setup.py.in > setup.py
+
+nom=spams
+/bin/rm -rf dist
+SWIG=swig
+$SWIG -c++ -python -DWINDOWS -o ${nom}_wrap-windows.cpp $nom.i
+$SWIG -c++ -python -o ${nom}_wrap.cpp $nom.i
+python setup.py sdist
+[ $? -eq 0 ] || die "setup error; cannot continue"
+cdir=`/bin/pwd`
+cd dist
+tar zxf *.tar.gz
+/bin/rm -f *.tar.gz
+dir=`/bin/ls | head -1`
+tmpd=dist/$dir
+cd $cdir
+cp -p spams.h $tmpd
+./docmatlab2python $tmpd/spams
+mv $tmpd/spams.new.py $tmpd/spams.py
+rm -f $tmpd/boat.png $tmpd/lena.png
+cp -p ../extdata/boat.png ../extdata/lena.png $tmpd
+cp -p spams_wrap-windows.cpp $tmpd
+../setRelease INSTALL-package.in >$tmpd/INSTALL-package
+../setRelease INSTALL-windows.in >$tmpd/INSTALL-windows
+
+cp -p win-build.sh $tmpd
+rm -f $tmpd/README
+# doc
+cd $cdir
+[ $rmdoc -ne 0 ] && /bin/rm -rf tmp-doc
+../mkdoc
+doc=tmp-doc
+mkdir $tmpd/sphinx
+cp -a $doc/build/html/* $tmpd/sphinx
+cp -a $doc/html $tmpd
+cp -p $doc/doc_spams.pdf $tmpd
+cp -p $doc/build/latex/SPAMS.pdf $tmpd/python-interface.pdf
+
+echo "$fullvers" >$tmpd/Release-name
+cd dist
+name=spams-python
+mv $dir $name
+tgz=$name-$fullvers.tar.gz
+tar zcf $tgz $name
+mv $tgz ../../../
+#cp -p $tgz ../${name}_svn.tar.gz
+exit 0
+# zip :
+zname=$name-v2.5-svn`date +%Y-%m-%d`.zip
+find $name | zip -@ $zname
+exit 0

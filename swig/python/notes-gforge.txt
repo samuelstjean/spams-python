@@ -1,0 +1,4 @@
+python interface to SPAMS
+Warning : the API for spams.omp and spams.OMPMask has changed since v2.2
+For a windows binary install, read INSTALL-windows and download the .exe file.
+For an install from source read INSTALL-package in the tar archive.

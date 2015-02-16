@@ -1,0 +1,18 @@
+The SPAMS toolbox for R is ditributed in source mode only.
+It should compile on linux and Mac.
+The installation procedure is described in the file \verb=INSTALL-package=
+\begin{itemize}
+\item Download the tar gzipped file, unpack it.
+\item Set your environment variable R\_LIBS appropriately
+\item Enter directory spams-R
+\item execute \\
+  \verb=R CMD INSTALL --html -l \$R\_LIBS spams=
+\end{itemize}
+
+You have the choice of the BLAS library, but the Intel 
+MKL is recommended for the best performance.
+
+If you want to add or change libraries, you must modify
+the file \verb=spams/src/Makevars=.
+
+The documentation is available in pdf and html format in the doc subdirectory.

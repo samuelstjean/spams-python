@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams
+END
+dictLearn
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams/dictLearn
+END
+linalg
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams/linalg
+END
+decomp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams/decomp
+END
+prox
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams/prox
+END

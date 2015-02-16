@@ -1,0 +1,67 @@
+Exemples de traductions entre Matlab Python et R
+
+P: import numpy as np; import scipy.sparse as ssp
+
+M: randn('seed',0);
+P: np.random.seed(0)
+R: set.seed(0)
+
+M: X=randn(100,200);
+P: X = np.asfortranarray(np.random.normal(size = (100,200)))
+R: X = matrix(rnorm(m * n),nrow = m,ncol = n,byrow = FALSE)
+
+mean(Y)
+np.mean(X,0)
+colMeans(X)
+
+repmat(X,[size(X,1) 1]);
+np.asfortranarray(np.tile(X,(X.shape[0],1)))
+matrix(rep(X,nrow(X)),nrow(X),ncol(X),byrow = T)
+
+W0=zeros(size(X,2),size(Y,2));
+W0 = np.zeros((X.shape[1],Y.shape[1]),dtype=np.float64,order="FORTRAN")
+W0 = matrix(c(0),nrow = ncol(X), ncol = ncol(Y))
+
+int32(randi(5,1,size(X,2)))
+np.array(np.random.random_integers(1,5,X.shape[1]),dtype = np.int32)
+matrix(sample(1:5,ncol(X),replace=TRUE),nrow = 1)
+
+sparse(X)
+ssp.csc_matrix(X)
+as(X,'CsparseMatrix')
+
+sparse(m,n)
+ssp.csc_matrix((m,n))
+as(matrix(c(0),nrow = m,ncol = n),'CsparseMatrix')
+
+int32([0 0 3 5 6 6 8 9]);
+np.array([0,0,3,5,6,6,8,9],dtype=np.int32)
+as.vector(c(0,0,3,5,6,6,8,9),mode= 'integer')
+
+X=X./repmat(sqrt(sum(X.^2)),[size(X,1) 1]);
+X = np.asfortranarray(X / np.tile(np.sqrt((X*X).sum(axis=0)),(X.shape[0],1)))
+X = X / matrix(rep(sqrt(colSums(X*X)),nrow(X)),nrow(X),ncol(X),byrow=T)
+
+mask=(X > 0)
+mask = np.asfortranarray((X > 0))
+mask = (X > 0) 
+
+ceil(X)
+np.asfortranarray(np.ceil(X))
+ceiling(X)
+
+i1:i2:i3
+xrange(i1,i3+1,i2)   (ou xrange(i1-1,i3,i2))
+seq(from = i1,to = i3,by = i2)
+
+Y=double(ceil(5*rand(100,size(Y,2)))-1)
+Y = np.asfortranarray(np.ceil(5 * np.random.random(size = (100,Y.shape[1]))) - 1)
+Y = ceiling(5 * matrix(runif(100 * ncol(Y),0,1),nrow = 100,ncol = ncol(Y),byrow = FALSE)) - 1
+
+D = max(D(:),2.)
+D = np.maximum(D,2.)
+D =  matrix(mapply(function(x,y) min(x,y),D,2),nrow = nrow(D),ncol = ncol(D))
+
+
+P: if ('x' in lst):
+R: if (! is.null(l[['x']])) {

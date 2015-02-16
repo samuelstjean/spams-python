@@ -1,0 +1,235 @@
+Ce fichier décrit les mécanismes utilisés pour la réalisation
+des interfaces python et R de spams.
+Une bonne doc pour les équivalences matlab/python/R :
+http://mathesaurus.sourceforge.net/matlab-python-xref.pdf
+
+Les APIs:
+---------
+
+Les APIs sont définies respectivement dans python/spams.py
+et R/r_spams.R
+Les fonctions définies ici sont les mêmes que celles définies pour matlab
+au nommage et aux mécanismes de passage d'arguments près
+(pour respecter les conventions de chaque langage).
+En R et python les noms de fonction commencent par une minuscule.
+En R les noms sont préfixés par 'spams.'.
+En python on construit un module spams, ce qui introduit le même préfixe 'spams.'
+Par exemple les fonctions matlab mexSort et mexLassoMask deviennent
+spams.sort et spams.lassoMask
+
+Les arguments optionnels, en particulier ceux qui correspondent 
+à la structure param de matlab apparaissent explicitement avec leurs 
+valeurs par défaut dans la définitions des fonctions.
+Lors de l'appel des fonctions, ces paramètres sont optionnels, 
+mais ceux qui sont présents doivent être nommés.
+
+valeurs de retour multiples:
+---------------------------
+- python : on retourne un n-uplet
+   ex: (W, optim_info) = spams.fistaFlat(....)
+- R : on retourne une liste; il faut ensuite extraire les résultats de cette liste
+   ex : res = spams.fistaFlat(....)
+        W = res[[1]]
+  	optim_info = res[[2]]
+
+Concrètement, il n'y a qu'une ou deux valeurs de retour.
+Dans le cas où la 2e valeur n'est pas obligatoire, on a introduit une variable
+booléenne.
+  Ex : (alpha,path) = spams.lasso(X,return_reg_path = True,...)
+Si la variable vaut False, le résultat est rendu directement (sans n-uplet ou liste).
+
+Construction des interfaces avec SWIG
+=====================================
+
+Principe : 
+----------
+Le fichier spams.h encapsule les fonctions (template) SPAMS qui doivent être interfacées :
+   vérification de validité, conversion de paramètres (transformation des références en pointeurs,
+   remplissage des structures param, ...)
+Pour chaque fonction de spams.h SWIG construit une interface python qui est utilisée
+par les fonctions de spams.py ou r_spams.R
+Exemples:
+	 spams.invSym (spams.py) -> spams_wrap.invSym ([SWIG] spams_wrap.py) 
+	 -> _spams_wrap.invSym ([SWIG] spams_wrap.cpp)-> _invSym (spams.h) 
+	 -> Matrix<T>::invSym (linalg.h)
+
+	 spams.fistaFlat (r_spams.R) -> fistaFlat ([SWIG] spams.R) 
+	 -> R_swig_fistaFlat ([SWIG] spams.cpp) -> _fistaFlat (spams.h) 
+	 -> FISTA::solver (fista.h)
+
+Valeurs retournées de type matrice ou vecteur:
+---------------------------------------------
+Dans la majoruté des cas les fonctions de spams.h sont de type void.
+Les retours se font par passage de pointeurs en argument des fonctions.
+Si la taille des matrices retournées est connue a priori, alors la matrice est créée 
+dans la fonction python ou R, de façon à déléguer la gestion mémoire au langage cible.
+Sauf exception, ausi bien en entrée qu'en sortie, il n'y a pas pas de recopie des données entre C++ et python/R,
+mais passage des pointeurs.
+
+Les fichiers:
+-------------
+a) communs:
+----------
+spams.h 
+spams.i, spamstools.i : fichiers de config pour SWIG
+
+b) spécifiques python:
+----------------------
+py_typemaps.i : config pour SWIG
+numpy.i : extrait du package numpy pour quelques macros utiles à SWIG
+spams.py : définitions des APIs "officielles".
+
+b) spécifiques R:
+-----------------
+R_typemaps.i : config pour SWIG
+r_spams.R : définitions des APIs "officielles".
+
+
+
+principe du build:
+------------------
+python:
+  swig -c++ -python -o spams_wrap.cpp spams.i
+  Fabrication  de _spams_wrap.so à partir de spams_wrap.cpp
+  Installation de spams.py et _spams_wrap.so dans un endroit connu de python
+
+R:
+ swig -c++ -r -o spams.cpp spams.i
+ Fabrication  de spams.so à partir de spams.cpp
+ Installation de r_spams.R et spams.so dans un endroit connu de R
+
+Note: l'installation des package ne fait pas appel à swig :
+      les fichiers générés par swig sont intégrés à la distribution.
+
+Configuration SWIG:
+-------------------
+Le fichier de config est spams.i . Il inclut spamstools.i et selon le langage 
+py_typemaps.i ou R_typemaps.i
+
+Les fonctions étant définies sous forme de template, il faut indiquer à swig
+comment les instancier : une directive %template par fonction et par type à instancier.
+En pratique on se limite à <double>
+La macro INSTANTIATE_DATA, définie dans py_typemaps.i et R_typemaps.i,
+est appliquée aux fonctions à interfacer dans spams.i
+
+La façon de transmettre les arguments est régie par des "typemaps"
+Les typemaps sont définis dans py_typemaps.i et R_typemaps.i et appliqués dans spamstools.i.
+
+Les valeurs de retour vecteurs ou matrices, éventuellement multiples 
+des fonctions de l'interface R ou python,
+peuvent être gérées de  plusieurs façons :
+1) retour de la fonction C++, recopié dans un objet python créé dans l'interface swig
+2) objet dont on connait la taille a priori : il est alloué dans la fonction R ou python,
+   swig alloue un objet C++ à partir du pointeur de data et le passe à la fonction C++.
+3) objet dont on ne connait pas la taille a priori.
+   et le pointeur
+ 
+Tous les args multi-dimensionnels de type * doivent être listés
+ dans les macros inplace_*.
+Tous les arguments multi-dimensionnels de type ** doivent l'être dans argout_*
+
+%typemap(argtype) (type-expression) [(initialisations)] { code à insérer}
+argtype = type d'argument : 
+   in (argument d'appel contenant des données
+     ou recevant un résultat de taille connue en sortie),
+   out (argument renvoyé par la fonction C++),
+   argout (argument d'appel de type **, qui contiendra une valeur de retour, alloué
+     au retour de la fonction C++).
+type-expression : la chaine de caractères décrivant les arguments à traiter (par ex Matrix<double> *INPLACE_MATRIX). C'est l'identifiant du typemap.
+
+%apply  type-expression { liste des arguments effectif }
+Par ex 'Matrix<double> *INPLACE_MATRIX' sera appliqué à 'Matrix<double> *A', 'Matrix<double> *B'.
+
+Pour chaque argument détecté, le code indiqué dans %typemap sera inséré, après quelques substitutions
+($1 = nom de l'argument de la fonction, arg$argnum : nom de la variable généré par swig)
+
+Pour une écriture plus compacte on définit un certain nombre de macros.
+
+
+Interface d'un nouvelle fonction:
+=================================
+Pour une fonction matlab de nom mexAaaaBbbb :
+- créer une fonction aaaaBbbb dans python/spams.py et spams.aaaaBbbb dans R/r_spams.R
+et un template C++ dont le nom commence par '_' dans spams.h (par exemple _aaaaBbbb)
+- Ajouter une ligne INSTANTIATE_DATA(aaaaBbbb) à la fin de spams.i
+- Vérifier que tous les arguments de type vecteur ou matrice du template C++
+  sont bien présents dans l'une des macros inplace_matrices, inplace_vectors, etc de spams.i,
+  sinon rajouter les définitions qui manquent.
+- ajouter la correspondance de nom avec matlab à %main::conv_names dans doclib.ph
+- utiliser R pour faire un test valgrind :
+  créer un fichier de test (tst.R)
+  R -d "valgrind --tool=memcheck --log-file=log" --vanilla < tst.R
+- ajouter un fichier refman/aaaaBbbb.in si nécessaire pour la doc
+
+Fabrication des packages:
+==========================
+
+Dans chacun des répertoires python et R, un script mkdist, à exécuter dans ce répertoire permet 
+de générer le package dans le format standard du langage.
+./mkdist produit un fichier spams-<lang>_svn.tar.gz et un fichier dist/spams-<lang>-<version>-svn<aaaa-mm-jj>.tar.gz
+Le contenu du .tar.gz reste dans dist/spams-<lang>
+La doc de type "help" est produite par appel à docmatlab2python ou docmatlab2R,
+et la doc html et pdf par appal à ../mkdoc
+
+mkdist utilise mkRelease pour fabriquer la partie "version" du nom de package,
+et setRelease pour mettre l'indication de version dans quelques fichiers.
+Le fichier Version contient le numéro de release principal (Ex 2.3)
+
+
+Pour des fins de test, il est possible de générer une interface en local (sans le help online):
+python:
+------
+ ./mkpy spams
+  Les 3 fichiers du package (spams.py, spams_wrap.py, _spams_wrap.so) sont alors
+   dans le directory courant.
+
+R:
+--
+./mybuild
+  résultat dans ./lib/spams (export R_LIBS=./lib/spams
+
+Dans le cas de R, avant toute nouvelle distrib, il faut appliquer une procédure de vérification :
+./docmatlab2R r_spams
+./mybuild -nb
+R CMD check pkg/spams
+Ça permet notamment de vérifier que la doc des fonctions est cohérente
+avec leur définition.
+
+Binaires windows:
+----------------
+voir python/INSTALL-package.in et R/INSTALL-package.in
+
+
+Documentation:
+==============
+Elle est fabriquée automatiquement à partir de celle de SPAMS et de l'interface matlab.
+Les scripts python/docmatlab2python et R/docmatlab2R, transforment les commentaires
+ des src_release/*.m dans le format attendu par python ou R.
+Ils utilisent les corrections définies dans les fichiers de refman/
+    (par ex refman/lasso.in)
+A partir de là, le script mkdoc fabrique différents types de doc :
+
+- help online :
+   - docmatlab2python ajoute la documentation à toutes les fonctions de spams.py
+     et écrit le résultat dans spams.new.py (qui remplacera spams.py dans le package final)
+   - docmatlab2R génère un fichier de doc au format Rd poour chaque fonction de r_spams.R
+- doc globale:
+  - python : avec sphinx on fabrique la description des fonctions au format html
+     (elle sera installée dans doc/sphinx)
+  - python et R : on fabrique une version spécifique de la doc contenue dans ../doc en pdf (doc_spams.pdf) et html (installée dans doc/html)
+
+Syntaxe des fichiers de correction:
+-----------------------------------
+Les modifs correspondant à une section donnée sont comprise entre begin et end
+# = commentaire
+Les lignes commençant par [P] ou [R] ne concernent que python ou R
+- include = insérer un fichier
+- end : fin de section
+- begin op section : début des modifs de type <op> pour la <section>
+  section =  Name Description Usage Inputs detail Param Output Author Note Examples
+  op = repl addfirst addlast subst.
+  Les lignes entre begin et end sont insérées dans la section en fonction de <op>
+    - repl : remplacer toute la section
+    - addfirst : insérer au début de la section
+    - addlast : insérer en fin de section
+    - subst : chaque ligne est une expression perl de substitution (s/.../.../)

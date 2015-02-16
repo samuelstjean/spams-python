@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/186/trunk/dictLearn/mex
+END
+mexTrainDL.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/116/trunk/dictLearn/mex/mexTrainDL.cpp
+END
+mexArchetypalAnalysis.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/spams-devel/!svn/ver/186/trunk/dictLearn/mex/mexArchetypalAnalysis.cpp
+END
+mexStructTrainDL.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/182/trunk/dictLearn/mex/mexStructTrainDL.cpp
+END
+mexTrainDL_Memory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/2/trunk/dictLearn/mex/mexTrainDL_Memory.cpp
+END

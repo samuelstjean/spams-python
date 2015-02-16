@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/spams-devel/!svn/ver/186/trunk/swig
+END
+lang-translate.txt
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/114/trunk/swig/lang-translate.txt
+END
+spams.i
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/179/trunk/swig/spams.i
+END
+spamstools.i
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/179/trunk/swig/spamstools.i
+END
+setRelease
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/96/trunk/swig/setRelease
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/114/trunk/swig/README
+END
+mkdoc
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/spams-devel/!svn/ver/74/trunk/swig/mkdoc
+END
+conv-matlab-array
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/79/trunk/swig/conv-matlab-array
+END
+mkchangelog
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/152/trunk/swig/mkchangelog
+END
+doc-devel.txt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/114/trunk/swig/doc-devel.txt
+END
+spams-tst.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/7/trunk/swig/spams-tst.h
+END
+doclib.ph
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/179/trunk/swig/doclib.ph
+END
+Version
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/179/trunk/swig/Version
+END
+mkRelease
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/95/trunk/swig/mkRelease
+END
+spams.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/185/trunk/swig/spams.h
+END

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for f in man/*.Rd; do
+    file=`basename $f .Rd`
+    R CMD Rdconv -t html $f -o html/$file.html
+done

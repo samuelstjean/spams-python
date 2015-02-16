@@ -1,0 +1,42 @@
+#!/bin/sh
+case $1 in -x) set -x;shift;;esac
+# Generate the release string for the current distribution
+
+usage () {
+    echo "Usage: $0 [-r][-f][-d][-V]"
+    echo "  print the release string"
+    echo " -r  : print release string (default)"
+    echo " -f (full version) : print version and release"
+    echo " -d : just print the date part of release"
+    echo " -V : just print version"
+    exit 1
+}
+date=`date +%Y-%m-%d`
+rel=svn$date
+if [ $# -eq 0 ]; then
+    echo "$rel"
+    exit 0
+fi
+while [ $# -gt 0 ];do
+    case "$1" in
+	"-r") echo "$rel";;
+	"-f"| "-V") dir=`dirname $0`
+	    [ -r $dir/Version ] || {
+		echo "No file $dir/Version"
+		exit 1
+	    }
+	    vers=`cat $dir/Version`
+	    if [ "$1" = "-V" ]; then
+		echo "$vers"
+	    else
+		echo "v$vers-$rel"
+	    fi
+	    ;;
+	"-d") echo "$date"
+	    ;;
+	*) usage;;
+    esac
+    shift
+done
+
+exit 0

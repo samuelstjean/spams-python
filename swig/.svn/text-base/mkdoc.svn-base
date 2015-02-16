@@ -1,0 +1,90 @@
+#!/bin/sh
+case $1 in -x) set -x;shift;;esac
+
+die () {
+    echo "$1"
+    exit 1
+}
+R_usage () {
+    echo "Usage: $0 [-s|-t]"
+    echo "   -s : sphinx doc only"
+    echo "   -t : latex doc only"
+    exit 1
+}
+[ -x ../mkdoc ] || die "This script must be in the parent dirtectory"
+export PYTHONPATH=""
+
+flg_doc=0  # 0 = all, 1 = sphinx, 2 = tex
+
+cdir=`/bin/pwd`
+doc=tmp-doc
+
+case $cdir in
+    */R) r_mode=1;lang=R;dprog="./docmatlab2R -tex $doc r_spams";;
+    */python) r_mode=0;lang=python;dprog="./docmatlab2python -tex $doc spams";;
+    *) die "Unexpected current dir";;
+esac
+
+if [ $r_mode -eq 0 ];then
+    while [ $# -gt 0 ];do
+	case $1 in
+	    -s) flg_doc=1;;
+	    -t) flg_doc=2;;
+	    *) R_usage;;
+	esac
+	shift
+    done
+else
+    flg_doc=2
+fi
+
+#/bin/rm -rf $doc
+if [ $flg_doc -ne 1 ]; then
+    if [ -r $doc/html/doc_spams.html -a -r $doc/doc_spams.pdf ]; then
+	echo "tex doc already made :"
+	echo "if you want to remake it : rm -rf $doc"
+	echo ""
+    else
+	mkdir -p $doc/functions $doc/html
+	cat >$doc/functions/missing.in <<EOF
+#
+# The $lang function is not yet implemented.
+#
+EOF
+	
+	cd ../../doc
+	cp -p Makefile macrocss.hva macros.tex main.bib style.css $cdir/$doc
+	cd $cdir
+	$dprog
+	cd $doc
+	make hevea
+	make
+    fi
+fi
+[ $flg_doc -eq 2 ] && exit 0
+cd $cdir
+if [ -r $doc/build/html/index.html -a -r $doc/build/latex/SPAMS.pdf ]; then
+    echo "sphinx doc already made :"
+    echo "if you want to remake it : rm -rf $doc"
+    echo ""
+    exit 0
+fi
+
+mkdir -p $doc/source/_static $doc/source/_templates $doc/build
+[ -d $doc/source ] || die "Cannot create doc directory"
+
+# make html and tex doc with sphinx
+cd doc-src
+cp Makefile make.bat $cdir/$doc
+cp conf.py $cdir/$doc/source
+cd $cdir
+./mkpy spams
+./docmatlab2python -sphinx $doc spams
+cp spams_wrap.py _spams_wrap.so $doc
+cd $doc
+make html
+make latex
+cd build/latex
+make all-pdf
+cd $cdir
+exit 0

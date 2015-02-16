@@ -1,0 +1,22 @@
+include traindl.inc
+begin addlast Inputs
+return_model:     
+		      if true the function will return the model
+		      as a named list ('A' = A, 'B' = B, 'iter' = n)
+[R]model:	      NULL or model (as A,B,iter) to use as initialisation
+[P]model:	      None or model (as A,B,iter) to use as initialisation
+end
+begin repl Output
+D:     double m x p matrix   (dictionary)
+model:  the model as A B iter
+
+[P]	D = spams.structTrainDL(X,return_model = False,...)
+[P]	(D,model) = spams.structTrainDL(X,return_model = True,...)
+[R]	 D <- spams.structTrainDL(X,return_model = FALSE,...)
+[R]      v <- spams.structTrainDL(X,return_model = TRUE,...)
+[R]      D <- v[[1]]
+[R]      model <- v[[2]]
+[R]      A = model[['A']]
+[R]      B = model[['B']]
+[R]      iter = model[['iter']]
+end

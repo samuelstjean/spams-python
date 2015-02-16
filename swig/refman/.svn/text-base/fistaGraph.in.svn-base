@@ -1,0 +1,29 @@
+begin addlast Param
+delta:
+c:
+max_iter_backtracking:
+lin_admm:
+admm:
+resetflow:
+clever:
+log:
+logName:
+is_inner_weights:
+inner_weights:
+sqrt_step:
+size_group:
+transpose:
+end
+include fista.inc
+begin addlast Output
+optim_info:        vector of size 4, containing information of the optimization.
+[P]      W = spams.fistaGraph(Y,X,W0,graph,return_optim_info = False,...)
+[P]      (W,optim_info) = spams.fistaGraph(Y,X,W0,graph,return_optim_info = True,...)
+[R]      W <- spams.fistaGraph(Y,X,W0,graph,return_optim_info = FALSE,...)
+[R]      v <- spams.fistaGraph(Y,X,W0,graph,return_optim_info = TRUE,...)
+[R]      W <- v[[1]]
+[R]      optim_info <- v[[2]]
+end
+begin addlast Note
+include regul.inc
+end

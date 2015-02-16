@@ -1,0 +1,246 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+%\usepackage[frenchb]{babel}
+\usepackage{aeguill}
+\usepackage{textcomp}
+\usepackage[gen]{eurosym}
+%\usepackage{natbib}
+%\usepackage{theorem}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm,algorithmic}
+
+%\usepackage[dvips]{graphicx}
+\usepackage{fullpage}
+\usepackage{graphics}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{floatflt}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{hevea}
+%\usepackage{hyperref}
+
+\definecolor{dkgreen}{rgb}{0.0,0.5,0.0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{1.0,0,0}
+%\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{lightblue}{rgb}{0.9,0.93,1.0}
+
+\input{macros.tex}
+
+%%\addtolength{\oddsidemargin}{-.5in}
+%%\addtolength{\evensidemargin}{-.5in}
+%%\addtolength{\textwidth}{1in}
+
+%%\addtolength{\topmargin}{-.5in}
+%%\addtolength{\textheight}{1in}
+
+
+\ifdefined \lstavoidwhitepre
+\lstavoidwhitepre
+\lstdefinestyle{colors}{keywordstyle={\bf\color{blue}}, commentstyle={\color{dkgreen}}, stringstyle=\color{mauve}}
+\lstset{language=Matlab, style=colors, backgroundcolor=\color{lightblue}}
+\else
+\lstdefinestyle{colors}{keywordstyle={\bf\color{blue}}, commentstyle={\color{dkgreen}}, stringstyle=\color{mauve}}
+\lstset{language=Matlab, style=colors,basicstyle=\footnotesize, backgroundcolor=\color{lightblue}, showspaces=false, showstringspaces=false, showtabs=false, frame=single, breaklines=true, basewidth=5.5pt }
+\fi
+
+\title{SPAMS dictionary learning applied to text documents}
+\date{\today}
+
+\author{Jean-Paul Chièze}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+The goal is to learn a sparse dictionary from a set of text documents and then to compute a sparse decomposition 
+of other documents on this dictionary.
+The user chooses the size of the dictionary and can impose a structure on it.\\
+The program uses the dictionary learning algorithms from SPAMS (SPArse Modeling Software by Julien Mairal).
+It is written in python and offers a graphical user interface and a visual
+represenation of the dictionary and decompositions.\\
+
+Given a vocabulary of $N$ words, 
+a document is represented by a  vector $x$ of $N$  elements, where $x_j$ is the probability
+of occurence of word $j$ in the document ($\sum_{j=1}^N x_j =1$).
+
+$X$ being a set of $M$ documents vectors $x^i$, the dictionary $D$ is a $N$x$K$ matrix, so that
+\begin{equation}
+\label{eq1}
+  \min_{\D \in \C} \lim_{n \to +\infty} \frac{1}{n} \sum_{i=1}^n \min_{\alphab^i} \Big( \frac{1}{2} \|\x^i-\D\alphab^i\|_2^2 + \psi(\alphab^i)\Big).
+\end{equation}
+$\psi$ is a sparsity-inducing regularizer and $\C$ is a constraint set for the dictionary.
+You will find a detailed description in the documentation of SPAMS.
+
+\section{Quickstart}
+You need python (2.6 or 2.7) with packages pyQT4, python-opengl, pyQGLViewer.
+This program has been developped on linux.
+As far as I know, on windows, it is necessary to build the pyQGLViewer module from source code, 
+which  could be painful.
+
+\begin{itemize}
+\item Install package spams-python.
+\item extract contents of text\_dictlearn tar file.
+\item execute {\it python tex\_dictlearn/qtext-dict.py}
+\end{itemize}
+The program comes with some example files in subdirectory {\it example}.
+You can use them for a quick trial.
+\begin{itemize}
+\item {\it example/vocab.txt} a vocabulary made of the 96 french {\it ``departements''}.
+\item {\it example/documents.txt} 100 randomly generated documents
+\item {\it example/mygraph} a example of graph structure that you can use for dictionary learning
+\item {\it example/mytree} a example of tree structure, which has been used for {\it test.dmp}.
+\item {\it example/test.dmp} preprocessed data that can be loaded with menu  entry {\bf File/Load}. It contains a dictionary matrix and a decomposition matrix that can be directly viewed. The data was generated with {\it vocab.txt, documents.txt,
+mytree.txt}.
+\end{itemize}
+
+\subsection{Running examples :}
+\begin{itemize}
+\item {\bf pre-computed data} :
+  \begin{enumerate}
+    \item select menu {\bf File/Load} and open {\it example/test.dmp}.
+    \item select menu {\bf File/View dictionary} and play with the Dictionary
+      display window.
+    \item select menu {\bf File/View decomposition} and play with the Decomposition
+      display window.
+  \end{enumerate}
+\item {\bf vocabulary and documents test files} :
+  \begin{enumerate}
+    \item click on  {\bf Vocabulary} button and select {\it example/vocab.txt}
+    \item click on  {\bf Texts for training} button and select {\it example/documents.txt}
+    \item click on {\bf tree struct} of {\bf choose dictionary structure} option button, 
+      and select file {\it example/mytree}
+    \item select menu {\bf File/Learn dictionary} and wait until ``END'' is written 
+      in the console window.
+    \item select menu {\bf File/Compute decomposition} and wait until ``END DECOMP''
+    \item select menu {\bf File/View dictionary} and play with the Dictionary
+      display window.
+    \item select menu {\bf File/View decomposition} and play with the Decomposition
+      display window.
+  \end{enumerate}
+\end{itemize}
+\section{Data description}
+The vocabulary must be given as a $N$ lines text file (1 word per line).\\
+Each document is a set of $N$ ascii float numbers representing the occurence of words. Their sum must be equal to 1.
+Several documents can be gathered in the same file.\\
+The variables of the decomposition are the columns of the dictionary. Variables can be :
+\begin{itemize}
+\item[-] unstructured : just specify the number $K$ of variables.
+\item[-]  structured as a symetric tree : specify the number of children at each level.
+\item[-] structured as a graph or tree :  see descriptions  of {\bf spams.fistaGraph} and {\bf spams.fistaTree} for the properties of these 
+structures. The programe expects a text file of $p$ lines, where each line describes a node of the graph or tree.
+Each line must be of the form \\
+{\em node-num weight [list-of-variables] -> list-of-children }
+\begin{itemize}
+\item {\em node-num}\,: $0 .. (p-1)$
+\item {\em weight}\,: float value, 1. if omitted
+\item {\em list-of-variables}\,: list  of space separated integers representing the variables (i.e dictionary columns) indices attached to the node. May be empty, but [] are mandatory. 
+\item {\em list-of-children} : list of space separated  node nums. May  be empty ('->' can be omitted in this case)
+\end{itemize}
+In the graph case, the same variable may appear in several nodes.
+\end{itemize}
+\section{User interface}
+\subsection{Main window}
+
+\begin{itemize}
+\item menu {\bf file} : 
+Some menu items are active only if the data they need is available.
+\begin{itemize}
+\item {\bf Learn dictionary} : read data files (vocabulary, training texts, graph or tree file), and run the dictionary learning program.
+\item {\bf Compute decomposition} : run the decomposition program. Is active only if leaning has been successfull.
+\item {\bf View dictionary} : open the dictionary visualization window.
+\item {\bf View decomposition} : open a window to visualize the decomposition of a document.
+\item {\bf Hide console} : hide the console. The item will be renamed {\bf Show~console}.
+\item {\bf dump} : dump available data to a file (dictionary matrix, params, etc.).
+May be partial (for example without decomposition matrix if not yet computed).
+\item {\bf load} : load a file of previously dumped data.
+\end{itemize}
+\item menu {\bf Options} : has only item {\bf dictionary params}.
+Opens the options window (see below).
+\item button {\bf Vocabulary} : select the file containing the vocabulary.
+  This button is displayed in red until a vocabulary is selected, and afterwards in green.
+\item button {\bf Texts for training} : select the files defining texts to use for dictionary learning. It is disabled until a dictionary is selected.
+If it is red, you must select document files to be able to run dictionary learning.
+If it is green you can replace current training set.
+This button will turn red each time you select a new vocabulary.
+\item button {\bf Texts to decompose} : select the files defining the texts to
+  decompose. The list is initialized with the ``Texts~for~training''.
+This button is disabled until you select a vocabulary.
+\item menu {\bf choose dictionary structure} : select kind of dictionnary structure.
+\begin{itemize}
+\item {\bf unstructured} : opens a dialog window to set the number $K$ of variables.
+\item {\bf graph struct} : select a file defining a {\it graph} structure.
+\item {\bf tree struct} : select a file defining a {\it tree} structure.
+\item {\bf symetric tree} : enter a coma separated list of integers representing the number
+of children at each level of the tree (for ex 2,2,2).
+\end{itemize}
+\item {\bf Console} : displays messages from the application.
+  Errors are displayed in red. This window can be detached from the main window.
+\end{itemize}
+\subsection{Options window}
+This is the window where you can set the parameters for 
+{\bf spams.structTrainDL} (see description in documentation of SPAMS).\\
+The current mode, as set in the {\bf choose~dictionary~structure} menu of main window,
+is displayed at the top line. Each mode ("Unstructured", "Graph", "Tree") has its own
+parameters that can be set in a separate tab.
+\begin{itemize}
+\item button {\bf Reset} : reset parameters to default values.
+\item tabs for mode : they define {\it lambda, gamma1} and the {\it regularization~type}.
+Default values and possible choices for regularization depend on the mode.
+\item button {\bf Advanced} : show/hide some {\it advanced} parameters, common to all modes.
+\end{itemize}
+\subsection{Dictionary visualization}
+This window offers a 3D representation of the dictionary structure.
+There are 2 main modes of display :
+\begin{itemize}
+\item by nodes (menu item {\bf Show~nodes}) : 
+Ecah node of the dictionary is represented as a red cube with the list of variables it contains.
+For unstructured dictionaries, nodes are independant and variable $i$ is associated to node $i$.
+Cubes can have 3 sizes depending on the number of associated variables : small for
+no variables, medium for 1 variable, and large for more than 1 variable.
+\item by variables (menu items {\bf Show~variables} and {\bf Dict~columns}) : each variable is represented by a red cube with the variable index.\\
+If menu item {\bf Dict~columns} is selected, at most 100 words of the vocabulary is listed on the left,
+and the values of components of each column are represented by green rectangles.
+The words displayed are sorted in decreasing order of coefficients of the selected column, or, if no column is selected, of the vector sum of all columns.
+\end{itemize}
+In the {\bf Show~nodes} or {\bf Show~variables} mode, you can display the 10 most significant words of variables : 
+\begin{enumerate}
+\item : A click with Shift+left\_mouse\_button on a cube will toggle display of
+most important words for each underlying variable.
+\item : button {\bf Show/Hide all words} will show or hide words for all variables.
+\end{enumerate}
+Selected cubes are displayed in green.
+\subsection{Decomposition visualization}
+This window displays the decomposition of a document on the current dictionary,
+that is the vector ${\alpha}^i$ of equation \eqref{eq1}.
+The document to display can be choosen by its index ({\bf num~of~text~to~view}).
+It is also possible to increment/decrement the document index by hitting right/left arrows in the graphic window.
+Three display modes are available :
+\begin{itemize}
+\item menu item {\bf Decomposition on nodes} : nodes of dictionary are drawn as cubes with
+a size proportional to the sum of values of $\alpha^i_j$ for variables j attached to the node.
+There are 6 possible sizes, in particular 0 if $\alpha^i_j$ is zero.
+Nodes where size is maximum are drawn in green and the 10 most significant words of each 
+of their variables is displayed.
+\item menu item {\bf Decomposition on variables} : variables are drawn as cubes with
+a size proportional to $\alpha^i_j$.
+As above, most significant words are displayed beside variables with maximum coefficient.
+\item menu item {\bf Dict columns} : as above, variables are represented by cubes of size
+proportional to $\alpha^i_j$, but without a list of words.
+As in the dictionary window, the variables vectors (i.e dictionary columns) are drawn as barcharts.
+\end{itemize}
+\end{document}

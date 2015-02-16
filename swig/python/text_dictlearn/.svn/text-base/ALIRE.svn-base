@@ -1,0 +1,54 @@
+python qtext-dict.py
+
+creation interface : designer-qt4
+python /usr/share/pyshared/PyQt4/uic/pyuic.py app.ui -o app.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py dparams_gui.ui -o dparams_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py dict_gui.ui -o dict_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py viewdict_gui.ui -o viewdict_gui.py -x
+python /usr/share/pyshared/PyQt4/uic/pyuic.py viewdecomp_gui.ui -o viewdecomp_gui.py -x
+
+
+------------------
+sr apt-get install libftgl-dev ftgl-dev
+install pyftgl
+##sr apt-get install fonttools fonttools-eexecop
+voir package ttfquery ?
+
+
+import matplotlib.font_manager as fontman
+
+def findFontFile(searchFont):
+    fList = fontman.findSystemFonts(fontpaths=None, fontext='ttf')
+    targetFont = []
+    for row in fList:
+        try:
+            if searchFont in row:
+                targetFont.append(row)
+        except TypeError:
+            pass
+    return targetFont[0]
+
+---------------------------
+tstgl+tulip.py
+python tstgl+tulip.py xx.dmp
+ Shift+Btn1 sur un noeud => affichage des N 1ers mots
+------------------------------
+qtext-dict.py : appli complète
+ - interfaces :
+   dict_gui.ui : fenêtre principale
+   dparams_gui.ui
+   viewdict_gui.ui
+ - modules
+   dict_conf.py : class DictParams, tous les params pour dictlearn et fista
+   dictlib.py : ensemble de fonctions utiles pour l'apprentissage proprement dit
+   drawgraph.py : class DrawGL, affichage opengl des données
+   mylayout.py : class Graph, calcul des positions et tailles des éléments à afficher
+   myoptions.py : utilitaires pour parser les options et construire string de doc
+   qparams.py : traitement des données de la fenêtre de paramètres
+   qtdict.py : class Outlog, redirection stdout stderr vers console
+   	       class MyApp, gestion de l'appli (fenêtre dict_gui)
+   viewer.py : class ViewDict, gestion de la fenêtre Qt d'affichage dico
+   	       class ViewDecomp, gestion de la fenêtre Qt d'affichage decomposition
+   	       class Viewer, gestion affichages opengl
+ - modules externes
+    spams, numpy, PyQt4, PyQGLViewer, OpenGL  #, FTGL

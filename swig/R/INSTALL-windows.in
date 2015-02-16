@@ -1,0 +1,31 @@
+Installation of the binary windows package 
+==========================================
+
+This package is distributed as a .exe file and is suitable for 32 and 64 bits architectures :
+spams-R-%FULLVERSION%.win32+amd64.exe
+
+The installation process will :
+  1. unpack files in "C:\Program Files\spams-R" (win32) or "C:\Program Files (x86)\spams-R" (win64)
+  2. start R to install the real R package (spams_%VERSION%.zip) from the above directory.
+   NB: on a 64bits architecture, only the 64bits version of the module
+   will be installed.
+
+
+If you want to manually install the zip file :
+     a) in the GUI interface of R, select Packages/'Install from zip file'
+  and open the zip file
+ or b) in an R console type :
+    install.packages('spams_%VERSION%.zip',repos=NULL)
+Note : for a global install under windows-7, you must start R with administrator
+privileges (right click on the icon)
+
+--------------------
+To run the given examples, open a "command" window and type :
+a) on a 32bits system :
+cd C:\Program Files\R\R-2.15.1\library\spams\test
+..\..\..\bin\Rscript test_spams.R -h
+..\..\..\bin\Rscript test_spams.R 
+
+b) on a 64 bits system
+..\..\..\bin\x64\Rscript test_spams.R -h
+..\..\..\bin\x64\Rscript test_spams.R 

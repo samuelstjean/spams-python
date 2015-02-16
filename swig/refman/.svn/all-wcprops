@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman
+END
+ompMask.in
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/ompMask.in
+END
+fista.inc
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/59/trunk/swig/refman/fista.inc
+END
+proximalTree.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/proximalTree.in
+END
+proximalGraph.in
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/proximalGraph.in
+END
+groupStructOfString.in
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/groupStructOfString.in
+END
+spams.im2col_sliding.Rd
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/30/trunk/swig/refman/spams.im2col_sliding.Rd
+END
+nmf.in
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/nmf.in
+END
+sparseProject.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/92/trunk/swig/refman/sparseProject.in
+END
+fistaTree.in
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/fistaTree.in
+END
+simpleGroupTree.in
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/simpleGroupTree.in
+END
+trainDL.in
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/trainDL.in
+END
+gstruct.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/gstruct.inc
+END
+proximal.inc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/76/trunk/swig/refman/proximal.inc
+END
+traindl.inc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/58/trunk/swig/refman/traindl.inc
+END
+nnsc.in
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/77/trunk/swig/refman/nnsc.in
+END
+lassoWeighted.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/lassoWeighted.in
+END
+proximalFlat.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/proximalFlat.in
+END
+spams.mult.Rd
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/30/trunk/swig/refman/spams.mult.Rd
+END
+structTrainDL.in
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/structTrainDL.in
+END
+treeOfGroupStruct.in
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/treeOfGroupStruct.in
+END
+graphOfGroupStruct.in
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/graphOfGroupStruct.in
+END
+spams-package.Rd
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/17/trunk/swig/refman/spams-package.Rd
+END
+fistaFlat.in
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/fistaFlat.in
+END
+regul.inc
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/36/trunk/swig/refman/regul.inc
+END
+lasso.in
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/74/trunk/swig/refman/lasso.in
+END
+trainDL_Memory.in
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/trainDL_Memory.in
+END
+sort.in
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/sort.in
+END
+fistaGraph.in
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/fistaGraph.in
+END
+omp.in
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/omp.in
+END
+readGroupStruct.in
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/107/trunk/swig/refman/readGroupStruct.in
+END
+lassoMask.in
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/73/trunk/swig/refman/lassoMask.in
+END

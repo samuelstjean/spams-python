@@ -1,0 +1,259 @@
+#!/usr/bin/perl -w
+use strict;
+
+require "doclib.ph";
+
+# fabrique dans man les docs spams.<nom>.Rd, a partir des mex*,
+# pour les fonctions definies dans un fichier R (r_spams.R par ex)
+my $dir = $main::mlab_dir;
+
+@main::keys = ('Name','Description','Usage','Inputs','Param','detail','Output','Author','Note', 'WARNING', 'Examples');
+
+my $rdformat = {
+    'Name' => {'tag' => 'title'},
+    'Description' => {'tag' => 'description'},
+    'Usage' => {'tag' => 'usage'},
+    'Inputs' => {'tag' => 'arguments','prog' => \&parse_args},
+    'detail' => {'tag' => 'details', 'optional' => 1,'prog' => \&set_verb},
+    'Param' => {'tag' => 'Kwargs', 'optional' => 1,'prog' => \&parse_args},
+    'Output' => {'tag' => 'value','prog' => \&parse_args},
+    'Author' => {'tag' => 'author'},
+    'Note' => {'tag' => 'note', 'optional' => 1},
+    'Examples' => {'tag' => 'examples', 'optional' => 1},
+};
+
+my $indent = "    ";
+sub usage {
+    print "Usage : $0 [-tex doc-dir] R-filename\n",
+    "   Ex: $0 r_spams\n";
+    exit 1;
+}
+
+(-d $dir) || die "No dir $dir!\n";
+##(-d "html") || die "No dir html!\n";
+
+
+my $file = "";
+my $flg_out = 0; # 0 doc std, 1 : latex pour doc_spams
+my $doc_dir = ".";
+
+while($#ARGV >= 0) {
+    $_ = shift(@ARGV);
+    if(/^-tex$/) {
+	($#ARGV >= 0) || usage();
+	$doc_dir = shift(@ARGV);
+	$flg_out = 2;
+	next;
+    }
+    (/^-/) && usage();
+    ("$file") && usage();
+    $file = $_;
+}
+("$file") || usage();
+
+my %iprogs = ();
+my %progdefs = ();
+my @spams = ();
+
+$file =~ s/\.R$//;
+if($flg_out) {
+    (-d $doc_dir) || die "No dir $doc_dir!\n";
+} else {
+    system "rm -rf man"; mkdir "man";
+    (-d "man") || die "No dir man!\n";
+}
+read_spams("$file.R",\&find_Rdef,\%progdefs,\%iprogs,\@spams);
+
+##@iprogs = ("SparseProject");
+my @idx = ();
+while(my ($k,$ix) = each(%progdefs)) {
+    push(@idx,$$ix[1]);
+}
+my @indx = sort {$a <=> $b} @idx;
+if($flg_out > 0) {
+    my $txt = "library(spams)\n";
+    foreach my $f (@main::tests) {
+	my @lines = ();
+	my %testtbl = ();
+	$f = "test_$f.R";
+	read_test($f,1,\&find_test,\&find_Rend,\@lines,\%testtbl);
+	write_tex_examples(1,$doc_dir,\&replace_Xtest,$txt,\%testtbl,\@lines);
+    }
+    make_tex_doc(1,$doc_dir,\@indx,\%iprogs,\@spams,\%progdefs);
+    exit 0;
+}
+
+foreach my $i (@indx) {
+    my $myprog = $iprogs{$i};
+    my $mlab_prog = mlab_name($myprog);
+    my %doc = ();
+    prepare_doc(1,$mlab_prog,$myprog,\%doc,$rdformat,\@spams,\%progdefs);
+    print "++ $myprog\n";
+    write_man("man/spams.$myprog.Rd","spams.$myprog",\%doc,$rdformat);
+    # make html version
+##    system "R CMD Rdconv -t html man/spams.$prog.Rd -o html/spams.$prog.html";
+#    print_man("man/spams.$prog.Rd",$prog,\%doc);
+}
+# copy some specific mans
+system "cp ./refman/*.Rd man";
+
+exit 0;
+
+# $flag : 0 if search for begining of def
+# out : ($prog,$found) 
+#     $prog : progname if 1st line of def, "" else
+# $found : 0 : not a function def, -1 : unfinished def, 1 = end of def
+sub find_Rdef {
+    my ($s,$flag) = @_;
+    my $prog = "";
+    my $found = 0;
+    if(! $flag) {
+	if($s =~ /^spams\.([^\s<]+)\s*<-/) {
+	    $prog = $1;
+	    $found = -1;
+	    if(/\{\s*$/) {$found = 1;}
+	}
+    } else {
+	$found = -1;
+	if(/\{\s*$/) {$found = 1;}
+    }
+    return($prog,$found);
+}
+
+# in : $s = string
+# out : ($prog,$found) 
+#     $prog : progname if test function def, "" else
+# $found = 0 (not a test def) / 1 (test def)
+sub find_test {
+    my ($s) = @_;
+    my $prog = "";
+    my $found = 0;
+    if($s =~ /^test_([^\s<]+)\s*<-.*\{\s*$/) {
+	$prog = $1;
+	$found = 1;
+    }
+    ($prog,$found);
+}
+# detect end of function
+# in: $s = string
+# out: $found = 0 (not found) / 1 (found)
+sub find_Rend {
+    my($s) = @_;
+    my $ret = 0;
+    if(/^\}/) { $ret = 1;}
+    $ret;
+}
+
+# replace Xtest in examples
+sub replace_Xtest {
+    my ($s) = @_;
+    $s =~ s/return\s*\(\s*(.*)\s*\)\s*$/$1/;
+    if($s =~ s/Xtest1\(\"spams\",quote\(//) {
+	$s =~ s/\)\s*,\s*[^\)]+\)\s*$//;
+    } else {
+	$s =~ s/Xtest\s*\(.*quote\s*\(\s*spams\./spams./;
+	$s =~ s/\)\)\s*$//;
+    }
+    $s;
+}
+
+# format value
+sub parse_value {
+    my($lines) = @_;
+    my @res = ();
+    ($#$lines >= 0) || return @res;
+    my $s = $$lines[0];
+    if($s =~ s/^\s*([^\s:])\s*:\s*//) {
+	$s = "\\strong{$1} : $s";
+    }
+    push(@res,$s);
+    for(my $i = 1;$i <= $#$lines;$i++) {
+	push(@res,$$lines[$i]);
+    }
+    return @res;
+}
+sub set_verb {
+    my($lines,$deltas,$key) = @_;
+    my @res = ();
+    ($#$lines >= 0) || return @res;
+    my $s = $$lines[0];
+    push(@res,"\\preformatted{%\n");
+    push(@res,indent_lines($lines,$deltas,$key));
+    push(@res,"}");
+    return @res;
+}
+
+
+# format input args
+sub parse_args {
+    my ($lines,$deltas,$key) = @_;
+    my $in_var = 0;
+    my @res = ();
+    for(my $i = 0;$i <= $#$lines;$i++) {
+	my $s = $$lines[$i];
+	if($s =~ s/^\s*([^\s:]+)\s*:\s+//) {
+	    my $v = $1;
+	    if($in_var) {
+		push(@res,"}}");
+	    }
+	    $in_var = 1;
+	    if($s =~ /^\s*$/) {
+		push(@res,"\\item{$v}{%","\\preformatted{%");
+	    } else {
+		push(@res,"\\item{$v}{%",$s,"\\preformatted{%");
+	    }
+	    next;
+	}
+	push(@res,$s);
+    }
+    if($in_var) {push(@res,"}}");}
+    return @res;
+}
+
+sub write_man {
+    my($f,$prog,$doc,$rdformat) = @_;
+    my($rdf,$i,$key,$tmp,$deltas);
+    open(OUT,">$f") || die "$f create err $!\n";
+    print OUT "\\encoding{latin1}\n";
+    print OUT "\\name{$prog}\n\\alias{$prog}\n";
+    my $l = $$doc{'Inputs'};
+    my ($doci,$dlti) = ($$l{'lines'},$$l{'deltas'});
+    if(defined($$doc{'Param'})) {
+	$l = $$doc{'Param'};
+	my ($docp,$dltp) =  ($$l{'lines'},$$l{'deltas'});
+	push(@$doci,@$docp);
+	push(@$dlti,@$dltp);
+	undef($$doc{'Param'});
+    }
+    foreach $key (@main::keys) {
+	(defined($$rdformat{$key})) || next;
+	$rdf = $$rdformat{$key};
+	if(! defined($$doc{$key})) {
+	    if(! defined($$rdf{'optional'})) {
+		print STDERR "!! $prog : $key MISSING.\n";
+	    }
+	    next;
+	}
+	$l = $$doc{$key};
+	($tmp,$deltas) =  ($$l{'lines'},$$l{'deltas'});
+	if($#$tmp < 0) {
+	    if(! defined($$rdf{'optional'})) {
+		print STDERR "!! $prog : $key EMPTY.\n";
+	    }
+	    next;
+	}
+	print OUT "\\$$rdf{'tag'}\{\n";
+	if(defined($$rdf{'prog'})) {
+	    my $func = $$rdf{'prog'};
+	    my @res = &$func($tmp,$deltas,$key);
+	    print OUT join("\n",@res), "\n}\n";
+	} else {
+	    my @res = indent_lines($tmp,$deltas,$key);
+	    print OUT join("\n",@res), "\n}\n";
+	}
+    }
+	
+    close(OUT);
+#    exit;
+}
+

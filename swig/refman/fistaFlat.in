@@ -1,0 +1,27 @@
+begin addlast Param
+delta:
+c:
+max_iter_backtracking:
+lin_admm:
+admm:
+resetflow:
+clever:
+log:
+logName:
+is_inner_weights:
+inner_weights:
+sqrt_step:
+end
+include fista.inc
+begin addlast Output
+optim_info:        vector of size 4, containing information of the optimization.
+[P]      W = spams.fistaFlat(Y,X,W0,return_optim_info = False,...)
+[P]      (W,optim_info) = spams.fistaFlat(Y,X,W0,return_optim_info = True,...)
+[R]      W <- spams.fistaFlat(Y,X,W0,return_optim_info = FALSE,...)
+[R]      v <- spams.fistaFlat(Y,X,W0,return_optim_info = TRUE,...)
+[R]      W <- v[[1]]
+[R]      optim_info <- v[[2]]
+end
+begin addlast Note
+include regul.inc
+end

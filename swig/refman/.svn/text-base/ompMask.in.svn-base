@@ -1,0 +1,13 @@
+begin addlast Inputs
+return_reg_path:     
+[R]		      if true the function will return 2 matrices in a list.
+[P]                   if true the function will return a tuple of matrices.
+end
+begin addlast Output
+[P]     A = spams.ompMask(X,D,B,L,eps,return_reg_path = False,...)
+[P]	(A,path) = spams.ompMask(X,D,B,L,eps,return_reg_path = True,...)
+[R]      A <- spams.ompMask(X,D,B,L,eps,return_reg_path = FALSE,...)
+[R]      v <- spams.ompMask(X,D,B,L,eps,return_reg_path = TRUE,...)
+[R]      A <- v[[1]]
+[R]      path <- v[[2]]
+end

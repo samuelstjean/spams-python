@@ -1,0 +1,311 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/192/trunk/src_release
+END
+mexProximalPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexProximalPathCoding.m
+END
+mexTrainDL.m
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/192/trunk/src_release/mexTrainDL.m
+END
+mexNormalize.m
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexNormalize.m
+END
+mexArchetypalAnalysis.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/spams-devel/!svn/ver/182/trunk/src_release/mexArchetypalAnalysis.m
+END
+mexBayer.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexBayer.m
+END
+displayPatches.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/131/trunk/src_release/displayPatches.m
+END
+mexConvFistaFlat.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/179/trunk/src_release/mexConvFistaFlat.m
+END
+mexCountPathsDAG.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexCountPathsDAG.m
+END
+nmf.m
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/2/trunk/src_release/nmf.m
+END
+mexCalcXYt.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCalcXYt.m
+END
+mexCountConnexComponents.m
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexCountConnexComponents.m
+END
+mexDecompSimplex.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/182/trunk/src_release/mexDecompSimplex.m
+END
+mexIncrementalProx.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/135/trunk/src_release/mexIncrementalProx.m
+END
+mexFistaFlat.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/183/trunk/src_release/mexFistaFlat.m
+END
+mexSOMP.m
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexSOMP.m
+END
+mexLasso.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/41/trunk/src_release/mexLasso.m
+END
+mexExtractPatches.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/179/trunk/src_release/mexExtractPatches.m
+END
+mexCalcXY.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCalcXY.m
+END
+mexL1L2BCD.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexL1L2BCD.m
+END
+mexSparseProject.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/6/trunk/src_release/mexSparseProject.m
+END
+mexTrainDL_Memory.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/38/trunk/src_release/mexTrainDL_Memory.m
+END
+mexFistaTree.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexFistaTree.m
+END
+mexSimpleGroupTree.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexSimpleGroupTree.m
+END
+mexSort.m
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexSort.m
+END
+mexCalcAAt.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCalcAAt.m
+END
+mexEvalPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexEvalPathCoding.m
+END
+mexOMP.m
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexOMP.m
+END
+mexRidgeRegression.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/120/trunk/src_release/mexRidgeRegression.m
+END
+mexLassoMask.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/38/trunk/src_release/mexLassoMask.m
+END
+mexReadGroupStruct.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexReadGroupStruct.m
+END
+mexLassoWeighted.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexLassoWeighted.m
+END
+mexProximalFlat.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/86/trunk/src_release/mexProximalFlat.m
+END
+mexStructTrainDL.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexStructTrainDL.m
+END
+mexTreeOfGroupStruct.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexTreeOfGroupStruct.m
+END
+mexFistaPathCoding.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexFistaPathCoding.m
+END
+mexOMPMask.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexOMPMask.m
+END
+mexCalcXtY.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCalcXtY.m
+END
+mexGraphOfGroupStruct.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexGraphOfGroupStruct.m
+END
+mexProximalTree.m
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/67/trunk/src_release/mexProximalTree.m
+END
+solverPoisson.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/192/trunk/src_release/solverPoisson.m
+END
+mexGroupStructOfString.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/spams-devel/!svn/ver/105/trunk/src_release/mexGroupStructOfString.m
+END
+mexProximalGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexProximalGraph.m
+END
+mexStochasticProx.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/135/trunk/src_release/mexStochasticProx.m
+END
+mexCalcXAt.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCalcXAt.m
+END
+mexRemoveCyclesGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexRemoveCyclesGraph.m
+END
+mexCombinePatches.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/spams-devel/!svn/ver/192/trunk/src_release/mexCombinePatches.m
+END
+mexInvSym.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexInvSym.m
+END
+mexCD.m
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexCD.m
+END
+mexConjGrad.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/2/trunk/src_release/mexConjGrad.m
+END
+nnsc.m
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/120/trunk/src_release/nnsc.m
+END
+mexFistaGraph.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/49/trunk/src_release/mexFistaGraph.m
+END

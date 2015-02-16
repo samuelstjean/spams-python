@@ -1,0 +1,14 @@
+include proximal.inc
+begin addlast Output
+[R]val_loss:        vector of size ncol(U)
+[P]val_loss:        vector of size U.shape[1]
+[P]	 alpha = spams.proximalTree(U,tree,return_val_loss = False,...)
+[P]	 (alpha,val_loss) = spams.proximalTree(U,tree,return_val_loss = True,...)
+[R]      alpha <- spams.proximalTree(U,tree,return_val_loss = FALSE, ...)
+[R]      v <- spams.proximalTree(U,tree,return_val_loss = TRUE, ...)
+[R]      alpha <- v[[1]]
+[R]      val_loss <- v[[2]]
+end
+begin addlast Note
+include regul.inc
+end

@@ -1,0 +1,10 @@
+windows 64 bits :
+- install spams
+- install PyQt4 from http://www.lfd.uci.edu/~gohlke/pythonlibs/ (PyQt-Py2.7-x64-gpl-4.9.6-1.exe)
+- install PyOpengl from http://www.lfd.uci.edu/~gohlke/pythonlibs/ (PyOpenGL-3.0.2.win-amd64-py2.7.exe)
+- install libpyqglviewer
+- install sip : http://www.riverbankcomputing.com/software/sip/download (sip-4.14.7.zip)
+  /c/Python27/python configure.py --platform win32-mscv2008 ;make;make install
+
+- install pyqglviewer from  http://ppa.launchpad.net/christophe-pradal/vplan-4.14.7-4.14.7ts/ubuntu/pool/main/p/pyqglviewer/pyqglviewer_0.8.orig.tar.gz
+  

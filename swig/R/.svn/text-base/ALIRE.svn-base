@@ -1,0 +1,70 @@
+Test sur place :
+./docmatlab2R r_spams
+./mybuild
+export R_LIBS=`/bin/pwd`/lib
+Rscript test_spams.R
+
+Debug avec valgrind + compil avec -g
+./docmatlab2R r_spams
+./mybuild -g
+export R_LIBS=`/bin/pwd`/lib
+R -d "valgrind --tool=memcheck --log-file=log" --vanilla < test.R
+
+package:
+# fabrication de man/
+./docmatlab2R r_spams
+# cretaion package
+./mybuild -nb
+# check
+R CMD check pkg/spams
+# install (par ex avec R_LIBS=$HOME/R
+
+R CMD INSTALL --html -l $R_LIBS pkg/spams
+
+
+tests : (option -D de mybuild pour avoir spams.{tst,xtst,ztst}
+./mybuild -D
+(pour tester les nouveaux typemaps par exemple)
+
+distrib:
+./mkdist -f /tmp
+  => /tmp/spams-R-<date>.tgz
+==================================================
+
+outils:
+-------
+
+- ./mkdist [-h][-f]
+ fabrique une distribution source dans ./dist
+ -f (fast) : ne pas refaire la doc (dans tmp-doc) si elle existe déjà
+
+- ../mkdoc [-h]
+ Fabrique la doc latex dans ./tmp-doc ,sauf si ce répertoire existe déjà.
+ Cette doc est faite à partir de la doc de Julien (doc_spams.tex et fichiers de doc matlab).
+
+- ./docmatlab2python
+  script utilisé par mkdoc pour extraire la doc des fichiers matlab et la
+  mettre au format latex.
+
+- ./mybuild  [-h] [-ns] [-nb] [-g] [-D]
+  fabrique un package binaire et l'installe dans ./lib
+  (voir ./mybuild -h)
+
+- ./clean
+  supprime tous les fichiers intermédiaires (i.e. créé par les différents scripts).
+
+- ../conv-matlab-array [-r|-p] < data
+  convertit un tableau tel qu'il est affiché par matlab,
+  dans le format lisible par python (-p) ou R (-r)
+
+- ../doc2gforge 
+  installe la doc (à partir de ./tmp-doc) sur gforge.inria.fr, dans /home/groups/spams-devel/htdocs/python
+
+- ./win-build.sh
+  à exécuter dans une fenêtre de commande MinGW sous windows pour
+  fabriquer un package binaire windows.
+  Avec un windows 64 bits on obtiendra un package (.zip) contenant
+  les 2 versions 32 et 64 bits.
+  Un package fait sous windows7 64bits est utilisable en XP 32bits.
+  Le nom du fichier (spams_2.3.zip) ne doit pas être modifié.
+  Les détails de fabrication sont décrits dans INSTALL-package.

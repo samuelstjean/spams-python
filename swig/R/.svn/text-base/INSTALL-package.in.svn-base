@@ -1,0 +1,89 @@
+This directory contains files to build the R interfaces
+to the functions of SPAMS library already interfaced with matlab.
+
+WARNING : the API of spams.OMP and spams.OMPMask has changed since version V2.2
+
+##################################################
+
+tar zxf spams-R-%FULLVERSION%.tar.gz
+cd spams-R
+# rlib=install-directory
+export R_LIBS=$rlib
+R CMD INSTALL --html -l $R_LIBS spams
+
+This should work on linux and MacOS. For windows see below.
+However, if you have undefined symbols, you can add extra libraries
+by modifying, in spams/src/Makevars the line
+EXTRA_LIBS=
+
+# tests
+Note : to run test_TrainDL and test_TrainDL_Memory you need the R package png
+     (a version of this package can be found in the current directory).
+
+We suppose that environment variable R_LIBS is set:
+cd $R_LIB/spams/test
+Rscript test_spams.R -help
+Rscript test_spams.R
+
+Warning : for now the R interface is missing a little subset of the functions
+	described in the documentation of SPAMS.
+
+# Notes:
+As the C++ interface is built by Swig, I must add
+dummy documentations for 3 class S4 methods
+(I could not avoid warnings in R CMD check).
+If you have a version of R lower than 2.13, there will remain
+one warning with R CMD check, because SHLIB_OPENMP_CXXFLAGS must be manually defined.
+
+##################################################
+Installing on macOS:
+====================
+	I have tested it on macosx-10 64bits, kernel 10.8.0 :
+	I have installed R with popt, and added /opt/local/bin to my PATH
+	and "R CMD INSTALL" worked fine,
+	but I had to redefine TMPDIR (export TMPDIR=/var/tmp)
+
+Installing on windows :
+======================
+
+On a 32bits windowssystem:
+-------------------------
+
+you need MinGW (www.mingw.org)
+and GnuWin32 zip (http://gnuwin32.sourceforge.net/packages/zip.htm)
+
+To build a binary package :
+- open a MinGW console and extract files from the tar source package (tar zxf ....)
+  - enter directory spams-R
+  - execute win-build.sh
+  You will obtain spams-R-%FULLVERSION%.win32.exe (and spams_%VERSION%.zip)
+  The .exe contains the .zip will automatically the module in R.
+
+On a 64bits windows system :
+---------------------------
+you will build a package for 32 and 64 bits systems.
+
+You need to install 
+MinGW (www.mingw.org) 
+and mingw64 (http://sourceforge.net/projects/mingw-w64/files)
+and GnuWin32 zip (http://gnuwin32.sourceforge.net/packages/zip.htm)
+and GnuWin32 unzip (http://gnuwin32.sourceforge.net/packages/unzip.htm)
+
+- open a MinGW console as admin
+  (right click on the icon and select "Execute as admin")
+- extract files from tar file
+- cd spams-R
+  ./win-build.sh
+
+You will obtain spams-R-%FULLVERSION%.win32+amd64.exe (and spams_%VERSION%.zip)
+  which contains 32 and 64 bits versions
+  Note : the .exe file will only install the R module corresponding
+  to the architecture of the system.
+
+To manually install the binary package:
+=======================================
+ - in R gui, select "install package from file" in menu "Packages"
+ - or start R and type
+   install.packages('spams-installation-path/spams_%VERSION%.zip',repos=NULL)
+
+NB: on windows7, you must execute R as admin.

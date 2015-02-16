@@ -1,0 +1,12 @@
+include gstruct.inc
+begin subst Output
+[P] s/Empty/None/
+[R] s/Empty/NULL/
+end
+begin addlast Output
+[P] (permutations,tree,nbvars) = spams.treeOfGroupStruct(gstruct)
+[R] res <- spams.treeOfGroupStruct(gstruct)
+[R] permutations = res[[1]]
+[R] tree = res[[2]]
+[R] nbvars = res[[3]]
+end

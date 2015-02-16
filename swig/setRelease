@@ -1,0 +1,32 @@
+#!/usr/bin/perl -w
+use strict;
+
+sub usage {
+    print "Usage: $0 file\n",
+    " substitute VERSION RELEASE DATE and FULLVERSION in file and writes to stdout\n";
+    exit 1;
+}
+
+($#ARGV == 0) || usage();
+my $file = $ARGV[0];
+my $dir = $0;
+$dir =~ s|[^/]*$||;
+if(! "$dir") {$dir = ".";}
+my ($vers,$rel,$fullv,$date);
+( -x "$dir/mkRelease") || die "No prog $dir/mkRelease\n";
+chomp(($vers,$rel,$fullv,$date) = `$dir/mkRelease -V -r -f -d`);
+(defined($date)) || die "Incomplete data from mkRelease\n";
+
+open(IN,"< $file") || die "$file open err $!\n";
+while(<IN>) {
+    chomp;
+    s/%RELEASE%/$rel/g;
+    s/%VERSION%/$vers/g;
+    s/%FULLVERSION%/$fullv/g;
+    s/%DATE%/$date/g;
+    print "$_\n";
+}
+close(IN);
+exit 0;
+
+  

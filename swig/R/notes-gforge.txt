@@ -1,0 +1,3 @@
+R interface to SPAMS 
+For a windows binary install, read INSTALL-windows and download the zip file.
+For an install from source read INSTALL-package in the tar archive.

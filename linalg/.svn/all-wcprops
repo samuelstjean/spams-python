@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/spams-devel/!svn/ver/193/trunk/linalg
+END
+linalg.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/193/trunk/linalg/linalg.h
+END
+mexutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/188/trunk/linalg/mexutils.h
+END
+cblas_defvar.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/2/trunk/linalg/cblas_defvar.h
+END
+list.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/128/trunk/linalg/list.h
+END
+misc.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/184/trunk/linalg/misc.h
+END
+cblas_alt_template.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/188/trunk/linalg/cblas_alt_template.h
+END
+cblas_template.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/116/trunk/linalg/cblas_template.h
+END
+utils.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/191/trunk/linalg/utils.h
+END

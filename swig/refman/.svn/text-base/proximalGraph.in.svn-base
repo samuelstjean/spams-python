@@ -1,0 +1,20 @@
+include proximal.inc
+begin addlast Param
+resetflow:
+clever:
+size_group:
+transpose:
+end
+begin addlast Output
+[R]val_loss:        vector of size ncol(U)
+[P]val_loss:        vector of size U.shape[1]
+[P]	 alpha = spams.proximalGraph(U,graph,return_val_loss = False,...)
+[P]	 (alpha,val_loss) = spams.proximalGraph(U,graph,return_val_loss = True,...)
+[R]      alpha <- spams.proximalGraph(U,graph,return_val_loss = FALSE, ...)
+[R]      v <- spams.proximalGraph(U,graph,return_val_loss = TRUE, ...)
+[R]      alpha <- v[[1]]
+[R]      val_loss <- v[[2]]
+end
+begin addlast Note
+include regul.inc
+end

@@ -1,0 +1,269 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/186/trunk/swig/python
+END
+install.tex
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/39/trunk/swig/python/install.tex
+END
+refman
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/15/trunk/swig/python/refman
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/COPYING
+END
+spams.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams.h
+END
+test_spams.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/179/trunk/swig/python/test_spams.py
+END
+spams.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/179/trunk/swig/python/spams.py
+END
+spams.i
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams.i
+END
+docmatlab2python
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/72/trunk/swig/python/docmatlab2python
+END
+MANIFEST.in
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/8/trunk/swig/python/MANIFEST.in
+END
+notes-gforge.txt
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/96/trunk/swig/python/notes-gforge.txt
+END
+tsttraindl.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/114/trunk/swig/python/tsttraindl.py
+END
+spams_debug.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams_debug.py
+END
+mkpy
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/135/trunk/swig/python/mkpy
+END
+spams-tst.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spams-tst.h
+END
+clean
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/95/trunk/swig/python/clean
+END
+test_utils.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/97/trunk/swig/python/test_utils.py
+END
+myscipy_rand.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/myscipy_rand.py
+END
+tstfista.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/70/trunk/swig/python/tstfista.py
+END
+spamstools.i
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/spamstools.i
+END
+test_dictLearn.py
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/spams-devel/!svn/ver/179/trunk/swig/python/test_dictLearn.py
+END
+tst.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/tst.cpp
+END
+ALIRE
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/94/trunk/swig/python/ALIRE
+END
+test_decomp.py
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/173/trunk/swig/python/test_decomp.py
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/109/trunk/swig/python/README
+END
+numpy.i
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/numpy.i
+END
+win-build.bat
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/87/trunk/swig/python/win-build.bat
+END
+tstlasso.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/114/trunk/swig/python/tstlasso.py
+END
+INSTALL-windows.in
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/109/trunk/swig/python/INSTALL-windows.in
+END
+win-build.sh
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/101/trunk/swig/python/win-build.sh
+END
+INSTALL-package.in
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/114/trunk/swig/python/INSTALL-package.in
+END
+mtopy
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/mtopy
+END
+boat.png
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/boat.png
+END
+tstprox.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/58/trunk/swig/python/tstprox.py
+END
+test_prox.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/152/trunk/swig/python/test_prox.py
+END
+tst.sh
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/tst.sh
+END
+tsttraindl.m
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/87/trunk/swig/python/tsttraindl.m
+END
+tstcalc.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/tstcalc.py
+END
+mkdist
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/186/trunk/swig/python/mkdist
+END
+setup.py.in
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/135/trunk/swig/python/setup.py.in
+END
+test_linalg.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/98/trunk/swig/python/test_linalg.py
+END
+setup.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/14/trunk/swig/python/setup.cfg
+END
+py_typemaps.i
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/179/trunk/swig/python/py_typemaps.i
+END
+doclib.ph
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/14/trunk/swig/python/doclib.ph
+END
+lena.png
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/5/trunk/swig/python/lena.png
+END

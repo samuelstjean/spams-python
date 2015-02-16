@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/106/trunk/swig/python/PIL-win64
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/spams-devel/!svn/ver/106/trunk/swig/python/PIL-win64/README
+END
+mk.sh
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/106/trunk/swig/python/PIL-win64/mk.sh
+END
+setup.py
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/spams-devel/!svn/ver/106/trunk/swig/python/PIL-win64/setup.py
+END

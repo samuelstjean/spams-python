@@ -1,0 +1,84 @@
+Ce package fournit une interface python de certaines fonctions de SPAMS :
+les mêmes que dans l'interface matlab.
+Les objets manipulés sont ceux de numpy et scipy.
+Les matrices doivent être rangées par colonnes, et les matrices sparses
+de type "column compressed".
+
+Le packaqge python est composé des 3 fichiers __spams.so, _spams.py et spams.py,
+qui doivent se trouver dans le "path" de l'interprète python
+(par exemple le répertoire courant).
+
+Les fonctions appelables en python sont dans spams.py
+Elles sont documentées (copie de la doc de Julien extraite des .m)
+
+Les fichiers test_*.py servent aux tests.
+python test_spams.py -h   => doc
+python test_spams.py    => exécute tous les tests
+python test_spams.py Sort CalcAAt
+.....
+
+
+Exemple d'utilisation de CalcAAt :
+(le fichier myscipy.py est là parce que scipy.sparse de la version ubuntu courante
+n'a pas la fonction rand)
+
+import numpy as np
+import scipy
+import scipy.sparse
+import spams
+
+if not ('rand' in scipy.sparse.__dict__):
+    import myscipy as ssp
+else:
+    import scipy.sparse as ssp
+    m=200; n = 200000; d= 0.05
+    A = ssp.rand(m,n,density=d,format='csc',dtype=np.float64)
+    B = spams.CalcAAt(A)
+
+==================================================
+
+outils:
+-------
+
+
+- ./mkdist [-h][-f]
+ fabrique une distribution source dans ./dist
+ -f (fast) : ne pas refaire la doc (dans tmp-doc) si elle existe déjà
+
+- ../mkdoc [-h] [-s] [-t]
+ Fabrique la doc dans ./tmp-doc ,sauf si ce répertoire existe déjà
+ -s : doc sphinx uniquement
+     la doc est d'abord injectée dans spams.py à partir
+     des fichiers de doc matlab, puis mise en forme par sphinx.
+ -t : doc latex uniquement; c'est la version python de la doc de Julien (doc_spams.tex)
+
+- ./docmatlab2python
+  script utilisé par mkdoc pour extraire la doc des fichiers matlab et la
+  mettre au format sphinx ou latex.
+
+- ./mkpy [-h] [-cl] [-ns][-g][-D] spams
+  fabrique le module python sur place.
+ -cl : ne créé rien, mais efface tous les fichiers créés.
+ -ns (noswig) : n'exécute pas swig
+ -g : compiler avec -g 
+ -D : compiler avec -DDEBUG
+
+- ./clean
+  supprime tous les fichiers intermédiaires (i.e. créé par les différents scripts).
+
+- ./mtopy <in > out
+  Aide à la traduction matlab -> python
+   Effectue une traduction très partielle  (commentaires, print ...).
+
+- ../conv-matlab-array [-r|-p] < data
+  convertit un tableau tel qu'il est affiché par matlab,
+  dans le format lisible par python (-p) ou R (-r)
+
+- ../doc2gforge 
+  installe la doc (à partir de ./tmp-doc) sur gforge.inria.fr, dans /home/groups/spams-devel/htdocs/python
+
+- ./win-build.sh
+  à exécuter dans une fenêtre de commande MinGW sous windows pour
+  fabriquer un package binaire windows (en .exe).
+  Le package sera 32 ou 64 bits selon le système utilisé.
+  Les détails de fabrication sont décrits dans INSTALL-package.

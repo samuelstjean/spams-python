@@ -1,0 +1,75 @@
+This directory contains files to build the R interfaces
+to the functions of spams library already interfaced with matlab.
+
+This file describes how to build R interface from sources.
+
+To install the SPAMS R package you can also just download the tar.gz archive
+and follow instructions from INSTALL-package.
+
+----------------------------------
+Building from sources:
+(you need SWIG and perl)
+
+- ./mkdist
+- cd dist/spams-R
+- setup your R_LIBS environment variable
+- R CMD INSTALL --html -l $R_LIBS spams
+
+You will find in $R_LIBS/spams :
+- doc/ : a copy of the pdf documentation of spams
+- extdata/ : 2 images used by the tests of dictLearn toolbox 
+- test/ : a bunch of test programs where you can find examples of usage
+  of each function of the toolbox
+- png_0.1-4.tar.gz : a version a the png R package, needed if you want to run
+  tests for dictLearn toolbox of SPAMS
+
+-------------------------
+Running test programs :
+- cd $R_LIBS/spams/test
+- Rscript test_spams.R -h  : to get help
+- Rscript test_spams.R  : will run all the tests
+- Rscript test_spams.R linalg : test of linalg functions
+- Rscript test_spams.R name1 name2 ... : run named tests
+  .....
+
+----------------------------------------
+Using the interface :
+
+spams functions are prefixed with spams.
+They are only defined for data of type double.
+They accept dense R vectors and "bycolumn" matrices, and sparse matrices of class dsCMatrix.
+
+Examples :
+
+--------
+library("spams",lib.loc = "./lib")
+
+X = matrix(rnorm(64 * 200),nrow = 64,ncol = 200,byrow = FALSE)
+Y = matrix(rnorm(200 * 20000),nrow = 200,ncol = 20000,byrow = FALSE)
+Z = spams.CalcXY(X,Y)
+
+------
+library("spams",lib.loc = "./lib")
+
+m = 200;n = 200000; d= 0.05
+# rSpMatrix is defined in test_spams.R to build a random csc matrix
+A = rSpMatrix(m,n,floor(m * n * d))
+AAt = spams.CalcAAt(A)
+
+========================================
+
+This part is for developpers only.
+
+-------------------------
+Interface building for test :
+./mybuild
+workdir : pkg/spams
+input : spams.h, spams.i, spamstools.i, R_typemaps.i, r_spams.R, zzz.R
+output : spams_1.0_R_x86_64-pc-linux-gnu.tar.gz  
+       The script will also untar the package in ./lib
+
+--------------------
+Testing the interface :
+export R_LIBS=`/bin/pwd`/lib
+Rscript test_spams.R
+

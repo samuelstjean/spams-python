@@ -1,0 +1,8 @@
+Here is what I needed to build Python Imaging Library (PIL).
+Download Imaging-1.1.7.tar.gz from http://www.pythonware.com/products/pil/
+Under a MinGW shell  :
+- untar the Imagin source file
+- make a copy of Imaging-1.1.7/setup.py
+- copy ./mk.sh  ./setup.py to Imaging-1.1.7
+- enter Imaging-1.1.7 and execute mk.sh
+  You should obtain dist/PIL-1.1.7.win-amd64-py2.7.exe

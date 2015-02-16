@@ -1,0 +1,3 @@
+include INSTALL-package spams.py spams_wrap.cpp spams_wrap.py test_*.py
+recursive-include spams *.h
+

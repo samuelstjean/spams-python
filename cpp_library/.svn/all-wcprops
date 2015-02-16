@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/125/trunk/cpp_library
+END
+test_decomp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/125/trunk/cpp_library/test_decomp.cpp
+END
+spams.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/118/trunk/cpp_library/spams.h
+END
+Makefile.old
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/spams-devel/!svn/ver/118/trunk/cpp_library/Makefile.old
+END
+cppspams.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/125/trunk/cpp_library/cppspams.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/118/trunk/cpp_library/Makefile
+END
+cppLasso.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/2/trunk/cpp_library/cppLasso.cpp
+END

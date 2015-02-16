@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/23/trunk/swig/python/doc-src
+END
+conf.py
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/spams-devel/!svn/ver/23/trunk/swig/python/doc-src/conf.py
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/23/trunk/swig/python/doc-src/Makefile
+END
+make.bat
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/spams-devel/!svn/ver/23/trunk/swig/python/doc-src/make.bat
+END

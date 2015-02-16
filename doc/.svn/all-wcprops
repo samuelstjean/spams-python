@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/spams-devel/!svn/ver/180/trunk/doc
+END
+doc_spams.blg
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/179/trunk/doc/doc_spams.blg
+END
+doc_spams.haux
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/180/trunk/doc/doc_spams.haux
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/180/trunk/doc/Makefile
+END
+doc_spams.hbbl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/180/trunk/doc/doc_spams.hbbl
+END
+main.bib
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/179/trunk/doc/main.bib
+END
+doc_spams.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/180/trunk/doc/doc_spams.pdf
+END
+macros.tex
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/2/trunk/doc/macros.tex
+END
+doc_spams.htoc
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/180/trunk/doc/doc_spams.htoc
+END
+make_release.sh
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/2/trunk/doc/make_release.sh
+END
+doc_spams.tex
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/179/trunk/doc/doc_spams.tex
+END
+macrocss.hva
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/2/trunk/doc/macrocss.hva
+END
+style.css
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/180/trunk/doc/style.css
+END

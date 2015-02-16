@@ -1,0 +1,109 @@
+#!/bin/bash
+optx=""
+case $1 in -x) optx=-x;set -x;shift;;esac
+
+debug=0
+macos=0
+flg_clear=0
+flg_swig=1
+if [ -x /cygdrive/c/MinGW/msys/1.0/bin/bash ]; then
+    exec /cygdrive/c/MinGW/msys/1.0/bin/bash $0 $optx $*
+fi
+
+INC="-I. -Ispams/linalg -Ispams/prox -Ispams/decomp -Ispams/dictLearn -I/usr/include/python2.7/"
+INC_PYTHON=-I/usr/include/python2.6
+XCCFLAGS=""
+XLINKFLAGS=""
+# on MacOS, use following definition instead.
+DBLAS=""
+BLAS="-lblas -llapack"
+OPTWIN=""
+# bin module extension
+EXTL=so
+CCFLAGS="-fPIC"
+OMPFLAGS="-fopenmp"
+if [ -d /System/Library/Frameworks ]; then  
+ # MacOs
+    macos=1
+    INC_PYTHON="-I/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/include"
+    XCCFLAGS="-m32"
+    XLINKFLAGS="-m32 -framework Python"
+fi
+case `uname` in
+    CYGWIN*|MINGW*) 
+	OPTWIN=-mwindows
+	EXTL=pyd
+	flg_swig=0
+	#LDIR=''
+#	BLAS='-L"C:/Program Files/R/R-2.15.1/bin/i386" -lRblas -lRlapack'
+	PATH=/c/MinGW/bin:/c/MinGW/msys/1.0/bin
+	DBLAS='-LC:/Program Files/R/R-2.15.1/bin/i386'
+	BLAS='-lRblas -lRlapack'
+	if [ -d C:\Python27 ]; then
+	    CCFLAGS="-DWIN32 -fopenmp"  
+	    INC_PYTHON="-IC:\Python27\include -IC:\Python27\Lib\site-packages\numpy\core\include"
+	    LIBS=" -LC:\Python27\libs -lpython27"
+	fi
+	;;
+esac
+
+die () {
+    echo "$1"
+    exit 1
+}
+usage () {
+    echo "Usage $0 [-cl][-ns][-g][-D] nom+"
+    echo "  -cl : clear"
+    die "   -ns : don't redo swig"
+}
+
+lst=""
+optc="-O -DNDEBUG"
+#CXX=g++-4.2
+CXX=g++
+while [ $# -gt 0 ]; do
+    case $1 in
+	-cl) flg_clear=1;;
+	-ns) flg_swig=0;;
+	-g) optc="-g";OMPFLAGS="";;
+	-D) debug=1;;
+	-*) usage;;
+	*) lst="$lst $1";;
+    esac
+    shift
+done
+
+if [ $flg_clear -gt 0 ]; then
+    for nom in $lst; do
+	/bin/rm -f $nom.o ${nom}_wrap.o ${nom}_wrap.py ${nom}_wrap.pyc $nom.pyc ${nom}_wrap.cpp _${nom}_wrap.so
+    done
+    exit 0
+fi
+if [ $debug -eq 0 ]; then
+    OPT_DBG=""
+else
+    OPT_DBG=-DDEBUG
+fi    
+
+err=0
+for nom in $lst; do
+    [ $flg_swig -ne 0 ] && {
+	swig -c++ -python $OPT_DBG -o ${nom}_wrap.cpp $nom.i
+	[ $? -ne 0 ] && exit
+    }
+    if [ -e $nom.cpp ]; then
+	src="$nom.cpp ${nom}_wrap.cpp"
+	obj="$nom.o ${nom}_wrap.o"
+    else
+	src=${nom}_wrap.cpp
+	obj=${nom}_wrap.o
+    fi
+    $CXX $OPTWIN $CCFLAGS $OMPFLAGS -c $optc -DUSE_BLAS_LIB  $OPT_DBG $INC_PYTHON $INC $src $XCCFLAGS
+    err=$?;[ $err -eq 0 ] || break
+    $CXX $OPTWIN $OMPFLAGS -shared $obj -o _${nom}_wrap.$EXTL -lstdc++ $LIBS $BLAS $XLINKFLAGS
+    err=$?;[ $err -eq 0 ] || break
+ #   /bin/rm -f $nom.o ${nom}_wrap.o
+done
+[ $err -ne 0 ] && die "ERROR"
+    
+exit 0

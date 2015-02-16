@@ -1,0 +1,84 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+# conversion tableau matlab en r ou python
+
+sub usage {
+    print "Usage: $0 {-r|-p} < data\n";
+    exit 1;
+}
+
+($#ARGV == 0) || usage();
+
+my $mode = 0;  # 0 = python, 1 = R
+if($ARGV[0] eq "-p") {
+    $mode = 0;
+} elsif ($ARGV[0] eq "-r") {
+    $mode = 1;
+} else { usage();}
+
+my $start = 0;
+my @tmp = ();
+my $fl_end = 0;
+while(<STDIN>) {
+    chomp;
+    s/^\s*//;
+    s/%.*$//;
+    s/\s+$//;
+    (/^$/) && next;
+    if(! $start) {
+	(s/^.*\[//) || next;
+	$start = 1;
+	$fl_end = 0;
+	$#tmp = -1;
+    }
+    ($start) || next;
+    if(s/\].*$//) {
+	$fl_end = 1;
+    }
+    s/[^\d\s;]//g;
+    s/\s+/ /g;
+    push(@tmp,$_);
+    if ($fl_end) {
+	print_array($mode,\@tmp);
+	$start = 0;
+	$#tmp = -1;
+    }
+}
+
+exit 0;
+sub print_array {
+    my ($mode,$lines) = @_;
+    my $s = join(" ",@$lines);
+    my @tmp = split(/\s*;\s*/,$s);
+    if(! $mode) { # python
+	my @rows = ();
+	foreach $_ (@tmp) {
+	    s/ /, /g;
+	    push(@rows,$_);
+	}
+	my $x = ($#tmp > 0) ? "[[" : "[";
+	print "np.array($x";
+	$x = ($#tmp > 0) ? "]]" : "]";
+	print join("],\n[",@rows), $x, ",dtype=np.float64)\n\n";
+	return;
+    }
+    # R
+    my @rows = ();
+    my $first = 1;
+    my $ncol = 0;
+    foreach $_ (@tmp) {
+	s/ /, /g;
+	if($first) {
+	    $first = 0;
+	    my @x = split(/\s*,\s*/,$_);
+	    $ncol = $#x + 1;
+	}
+	push(@rows,$_);
+    }
+    print "matrix(as.vector(c(";
+    print join(",\n",@rows), "),mode='logical'),ncol = $ncol,byrow = T)\n\n";
+}
+
+

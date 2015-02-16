@@ -1,0 +1,257 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/spams-devel/!svn/ver/186/trunk/swig/R
+END
+docmatlab2R
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/108/trunk/swig/R/docmatlab2R
+END
+mkdist
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/186/trunk/swig/R/mkdist
+END
+mkhtml
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/mkhtml
+END
+tstfista.R
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/tstfista.R
+END
+doclib.ph
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/15/trunk/swig/R/doclib.ph
+END
+install.tex
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/39/trunk/swig/R/install.tex
+END
+Makevars.win
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/87/trunk/swig/R/Makevars.win
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/COPYING
+END
+refman
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/16/trunk/swig/R/refman
+END
+spams.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/spams.h
+END
+R_typemaps.i
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/108/trunk/swig/R/R_typemaps.i
+END
+spams.i
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/spams.i
+END
+notes-gforge.txt
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/spams-devel/!svn/ver/95/trunk/swig/R/notes-gforge.txt
+END
+spams-tst.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/spams-tst.h
+END
+test_spams.R
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/179/trunk/swig/R/test_spams.R
+END
+clean
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/97/trunk/swig/R/clean
+END
+tstprox.R
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/58/trunk/swig/R/tstprox.R
+END
+spams-R.iss.in
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/95/trunk/swig/R/spams-R.iss.in
+END
+test_prox.R
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/76/trunk/swig/R/test_prox.R
+END
+tsttraindl.R
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/70/trunk/swig/R/tsttraindl.R
+END
+DESCRIPTION.in
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/spams-devel/!svn/ver/97/trunk/swig/R/DESCRIPTION.in
+END
+spamstools.i
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/spamstools.i
+END
+NAMESPACE
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/NAMESPACE
+END
+ALIRE
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/spams-devel/!svn/ver/94/trunk/swig/R/ALIRE
+END
+zzz.R
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/zzz.R
+END
+Makevars-g
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/33/trunk/swig/R/Makevars-g
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/spams-devel/!svn/ver/84/trunk/swig/R/README
+END
+win-build.bat
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/87/trunk/swig/R/win-build.bat
+END
+INSTALL-windows.in
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/115/trunk/swig/R/INSTALL-windows.in
+END
+win-build.sh
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/spams-devel/!svn/ver/95/trunk/swig/R/win-build.sh
+END
+r_spams.R
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/179/trunk/swig/R/r_spams.R
+END
+test_dictLearn.R
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/spams-devel/!svn/ver/179/trunk/swig/R/test_dictLearn.R
+END
+INSTALL-package.in
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/spams-devel/!svn/ver/108/trunk/swig/R/INSTALL-package.in
+END
+test_linalg.R
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/58/trunk/swig/R/test_linalg.R
+END
+mybuild
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/140/trunk/swig/R/mybuild
+END
+test_decomp.R
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/spams-devel/!svn/ver/87/trunk/swig/R/test_decomp.R
+END
+r_debug.R
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/r_debug.R
+END
+png_0.1-4.tar.gz
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/png_0.1-4.tar.gz
+END
+Makevars
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/spams-devel/!svn/ver/183/trunk/swig/R/Makevars
+END
+tst-gm.R
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/tst-gm.R
+END
+tstlasso.R
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/spams-devel/!svn/ver/73/trunk/swig/R/tstlasso.R
+END
+tst2.png
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/spams-devel/!svn/ver/5/trunk/swig/R/tst2.png
+END
