@@ -591,10 +591,10 @@ def im2col_sliding(A,m,n,RGB = False):
 def displayPatches(D):
     V = 1
     (n,K) = D.shape
-    sizeEdge = np.sqrt(n)
+    sizeEdge = int(np.sqrt(n))
     if int(sizeEdge) != sizeEdge:
         V = 3
-        sizeEdge=np.sqrt(n/V)
+        sizeEdge=int(np.sqrt(n/V))
 
 
 #    for ii in xrange(0,D.shape[1]):
