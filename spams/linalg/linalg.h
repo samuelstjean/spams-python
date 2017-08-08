@@ -43,7 +43,7 @@
 #include <list>
 #include <vector>
 
-#include <utils.h>
+#include "utils.h"
 #include "list.h"
 typedef List<int> list_int;
 typedef ListIterator<int> const_iterator_int;
@@ -1679,7 +1679,7 @@ template <typename T> inline void Matrix<T>::eigLargestSymApprox(
          up.copy(u);
       }
       lambda+=theta*norm;
-      if isnan(lambda) {
+      if (isnan(lambda)) {
          std::cerr << "eigLargestSymApprox failed" << std::endl;
          exit(1);
       }

@@ -30,7 +30,7 @@
 #ifndef DECOMP_H
 #define DECOMP_H
 
-#include <utils.h>
+#include "utils.h"
       
 static char low='l';
 static char nonUnit='n';

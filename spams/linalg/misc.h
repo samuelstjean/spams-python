@@ -14,7 +14,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <cmath>
 #include "utils.h"
 
 #if defined(_MSC_VER) || defined(_WIN32) || defined(WINDOWS)

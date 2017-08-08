@@ -67,22 +67,22 @@ def test_conjGrad():
     itermax = int(0.5 * len(b))
 
     tic = time.time()
-    for i in xrange(0,20):
+    for i in range(0,20):
         y1 = np.linalg.solve(A,b)
     tac = time.time()
-    print "  Time (numpy): ", tac - tic
+    print("  Time (numpy): ", tac - tic)
     x1 = np.abs(b - np.dot(A,y1))
-    print "Mean error on b : %f" %(x1.sum() / b.shape[0])
+    print("Mean error on b : %f" %(x1.sum() / b.shape[0]))
 
     tic = time.time()
-    for i in xrange(0,20):
+    for i in range(0,20):
         y2 = spams.conjGrad(A,b,x0,tol,itermax)
 #*        y2 = spams.conjGrad(A,b)
     tac = time.time()
-    print "  Time (spams): ", tac - tic
+    print("  Time (spams): ", tac - tic)
     x1 = np.dot(A,y2)
     x2 = np.abs(b - x1)
-    print "Mean error on b : %f" %(x2.sum() / b.shape[0])
+    print("Mean error on b : %f" %(x2.sum() / b.shape[0]))
 
     err = abs(y1 - y2)
     return err.max()
