@@ -14,14 +14,14 @@ def test1(txt,func,*args):
     tic = time.time()
     res  = func(*args)
     tac = time.time()
-    print "  Time (%s) : %.3fs" %(txt,(tac - tic))
+    print("  Time (%s) : %.3fs" %(txt,(tac - tic)))
     return res
 
 def Xtest1(txt,expr,locs):
     tic = time.time()
     res  = eval(expr,globals(),locs)
     tac = time.time()
-    print "  Time (%s) : %.3fs" %(txt,(tac - tic))
+    print("  Time (%s) : %.3fs" %(txt,(tac - tic)))
     return res
 
 def Xtest(s1,s2,locs):

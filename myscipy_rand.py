@@ -38,7 +38,7 @@ greater than %d - this is not supported on this machine
         raise ValueError(msg % np.iinfo(tp).max)
 
     # Number of non zero values
-    k = long(density * m * n)
+    k = int(density * m * n)
 
     # Generate a few more values than k so that we can get unique values
     # afterwards.

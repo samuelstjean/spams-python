@@ -5,7 +5,7 @@ import scipy.sparse as ssp
 try:
     from PIL import Image
 except Exception as e:
-    print "No module PIL.\nYou need to install it if you want to run TrainDL tests\n"
+    print("No module PIL.\nYou need to install it if you want to run TrainDL tests\n")
     raise e
 
 import spams
@@ -27,27 +27,27 @@ def _extract_lasso_param(f_param):
     return l_param
 
 def _objective(X,D,param,imgname = None):
-    print 'Evaluating cost function...'
+    print('Evaluating cost function...')
     lparam = _extract_lasso_param(param)
     alpha = spams.lasso(X,D = D,**lparam)
     # NB : as alpha is sparse, D*alpha is the dot product
     xd = X - D * alpha
     R = np.mean(0.5 * (xd * xd).sum(axis=0) + param['lambda1'] * np.abs(alpha).sum(axis=0))
-    print "objective function: %f" %R
+    print("objective function: %f" %R)
     #* display ?
     if imgname != None:
         img = spams.displayPatches(D)
-        print "IMG %s" %str(img.shape)
+        print("IMG %s" %str(img.shape))
         x = np.uint8(img[:,:,0] * 255.)
         image = Image.fromarray(x,mode = 'L')
         image.save("%s.png" %imgname)
-    
+
 def test_trainDL():
     img_file = 'boat.png'
     try:
         img = Image.open(img_file)
     except:
-        print "Cannot load image %s : skipping test" %img_file
+        print("Cannot load image %s : skipping test" %img_file)
         return None
     I = np.array(img) / 255.
     if I.ndim == 3:
@@ -71,23 +71,23 @@ def test_trainDL():
     D = spams.trainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     ##param['approx'] = 0
     # save dictionnary as dict.png
     _objective(X,D,param,'dict')
 
     #### SECOND EXPERIMENT ####
-    print "*********** SECOND EXPERIMENT ***********"
+    print("*********** SECOND EXPERIMENT ***********")
 
-    X1 = X[:,0:X.shape[1]/2]
-    X2 = X[:,X.shape[1]/2 -1:]
+    X1 = X[:,0:X.shape[1]//2]
+    X2 = X[:,X.shape[1]//2 -1:]
     param['iter'] = 500
     tic = time.time()
     (D,model) = spams.trainDL(X1,return_model = True,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f\n' %t
+    print('time of computation for Dictionary Learning: %f\n' %t)
 
     _objective(X,D,param,'dict1')
 
@@ -98,13 +98,13 @@ def test_trainDL():
     (D,model) = spams.trainDL(X2,return_model = True,model = model,**param2)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
     _objective(X,D,param,'dict2')
 
     #################### THIRD & FOURTH EXPERIMENT ######################
     # let us add sparsity to the dictionary itself
 
-    print '*********** THIRD EXPERIMENT ***********'
+    print('*********** THIRD EXPERIMENT ***********')
     param['modeParam'] = 0
     param['iter'] = 1000
     param['gamma1'] = 0.3
@@ -114,11 +114,11 @@ def test_trainDL():
     D = spams.trainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
     _objective(X,D,param)
 
     #* DISPLAY
-    print '*********** FOURTH EXPERIMENT ***********'
+    print('*********** FOURTH EXPERIMENT ***********')
     param['modeParam'] = 0
     param['iter'] = 1000
     param['gamma1'] = 0.3
@@ -128,9 +128,9 @@ def test_trainDL():
     D = spams.trainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
     _objective(X,D,param)
-    
+
     return None
 
 def test_trainDL_Memory():
@@ -138,7 +138,7 @@ def test_trainDL_Memory():
     try:
         img = Image.open(img_file)
     except:
-        print "Cannot load image %s : skipping test" %img_file
+        print("Cannot load image %s : skipping test" %img_file)
         return None
     I = np.array(img) / 255.
     if I.ndim == 3:
@@ -164,14 +164,14 @@ def test_trainDL_Memory():
     D = spams.trainDL_Memory(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
-    print 'Evaluating cost function...'
+    print('Evaluating cost function...')
     lparam = _extract_lasso_param(param)
     alpha = spams.lasso(X,D = D,**lparam)
     xd = X - D * alpha
     R = np.mean(0.5 * (xd * xd).sum(axis=0) + param['lambda1'] * np.abs(alpha).sum(axis=0))
-    print "objective function: %f" %R
+    print("objective function: %f" %R)
     #* ? DISPLAY
 
     ############# SECOND EXPERIMENT  ##################
@@ -179,12 +179,12 @@ def test_trainDL_Memory():
     D = spams.trainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
-    print 'Evaluating cost function...'
+    print('time of computation for Dictionary Learning: %f' %t)
+    print('Evaluating cost function...')
     alpha = spams.lasso(X,D = D,**lparam)
     xd = X - D * alpha
     R = np.mean(0.5 * (xd * xd).sum(axis=0) + param['lambda1'] * np.abs(alpha).sum(axis=0))
-    print "objective function: %f" %R
+    print("objective function: %f" %R)
 
     #* ? DISPLAY
 
@@ -195,7 +195,7 @@ def test_structTrainDL():
     try:
         img = Image.open(img_file)
     except Exception as e:
-        print "Cannot load image %s (%s) : skipping test" %(img_file,e)
+        print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
     I = np.array(img) / 255.
     if I.ndim == 3:
@@ -217,34 +217,34 @@ def test_structTrainDL():
     paramL = {'lambda1' : 0.05, 'numThreads' : 4}
 
     param['regul'] = 'l1'
-    print "with Fista Regression %s" %param['regul']
+    print("with Fista Regression %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
     _objective(X,D,param)
 
-#    
+#
     param['regul'] = 'l2'
-    print "with Fista Regression %s" %param['regul']
+    print("with Fista Regression %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 
-#    
+#
     param['regul'] = 'elastic-net'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
     param['lambda2'] = 0.1
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 ## if we want a pause :
@@ -277,23 +277,23 @@ def test_structTrainDL():
     param['tree'] = None
 
     param['regul'] = 'graph'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
 
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 
     param['regul'] = 'graph-ridge'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 ## if we want a pause :
@@ -327,12 +327,12 @@ def test_structTrainDL():
     param['tree'] = tree
     param['graph'] = None
     param['regul'] = 'tree-l0'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 
@@ -341,22 +341,22 @@ def test_structTrainDL():
     param['tree'] = tree
 
     param['regul'] = 'tree-l2'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
-    
+
     param['regul'] = 'tree-linf'
-    print "with Fista %s" %param['regul']
+    print("with Fista %s" %param['regul'])
     tic = time.time()
     D = spams.structTrainDL(X,**param)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
     _objective(X,D,param)
 
@@ -366,7 +366,7 @@ def test_nmf():
     try:
         img = Image.open(img_file)
     except:
-        print "Cannot load image %s : skipping test" %img_file
+        print("Cannot load image %s : skipping test" %img_file)
         return None
     I = np.array(img) / 255.
     if I.ndim == 3:
@@ -385,22 +385,22 @@ def test_nmf():
     (U,V) = spams.nmf(X,return_lasso= True,K = 49,numThreads=4,iter = -5)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Dictionary Learning: %f' %t
+    print('time of computation for Dictionary Learning: %f' %t)
 
-    print 'Evaluating cost function...'
+    print('Evaluating cost function...')
     Y = X - U * V
     R = np.mean(0.5 * (Y * Y).sum(axis=0))
-    print 'objective function: %f' %R
+    print('objective function: %f' %R)
     return None
 
 
-# Archetypal Analysis, run first steps with FISTA and run last steps with activeSet, 
+# Archetypal Analysis, run first steps with FISTA and run last steps with activeSet,
 def test_archetypalAnalysis():
     img_file = 'lena.png'
     try:
         img = Image.open(img_file)
     except Exception as e:
-        print "Cannot load image %s (%s) : skipping test" %(img_file,e)
+        print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
     I = np.array(img) / 255.
     if I.ndim == 3:
@@ -424,20 +424,20 @@ def test_archetypalAnalysis():
     # remember that we are not guarantee to descent in FISTA step if 50 is too small
     stepsAS = 10 # 7 alternations by activeSet, default parameter(50)
     randominit = True # random initilazation, default parameter(True)
-    
+
     ############# FIRST EXPERIMENT  ##################
     tic = time.time()
     # learn archetypes using activeSet method for each convex sub-problem
     (Z,A,B) = spams.archetypalAnalysis(np.asfortranarray(X[:, :10000]), returnAB= True, p = K, robust = robust, epsilon = epsilon, computeXtX = computeXtX,  stepsFISTA = stepsFISTA , stepsAS = stepsAS, numThreads = -1)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Archetypal Dictionary Learning: %f' %t
+    print('time of computation for Archetypal Dictionary Learning: %f' %t)
 
-    print 'Evaluating cost function...'
+    print('Evaluating cost function...')
     alpha = spams.decompSimplex(np.asfortranarray(X[:, :10000]),Z = Z, computeXtX = True, numThreads = -1)
     xd = X[:,:10000] - Z * alpha
     R = np.sum(xd*xd)
-    print "objective function: %f" %R
+    print("objective function: %f" %R)
 
     ############# FIRST EXPERIMENT  ##################
     tic = time.time()
@@ -445,19 +445,19 @@ def test_archetypalAnalysis():
     Z2 = spams.archetypalAnalysis(np.asfortranarray(X[:, :10000]), Z0 = Z, robust = robust, epsilon = epsilon, computeXtX = computeXtX , stepsFISTA = stepsFISTA,stepsAS = stepsAS, numThreads = -1)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Archetypal Dictionary Learning (Continue): %f' %t
+    print('time of computation for Archetypal Dictionary Learning (Continue): %f' %t)
 
-    print 'Evaluating cost function...'
+    print('Evaluating cost function...')
     alpha = spams.decompSimplex(np.asfortranarray(X[:, :10000]),Z = np.asfortranarray(Z2), computeXtX = True, numThreads = -1)
     xd = X[:,:10000] - Z2 * alpha
     R = np.sum(xd*xd)
-    print "objective function: %f" %R
+    print("objective function: %f" %R)
 
     # learn archetypes using activeSet method for each convex sub-problem
     (Z3,A3,B3) = spams.archetypalAnalysis(np.asfortranarray(X[:, :10000]), returnAB= True, p = K, robust = True, epsilon = epsilon, computeXtX = computeXtX,  stepsFISTA = stepsFISTA , stepsAS = stepsAS, numThreads = -1)
     tac = time.time()
     t = tac - tic
-    print 'time of computation for Robust Archetypal Dictionary Learning: %f' %t
+    print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
 
 
 

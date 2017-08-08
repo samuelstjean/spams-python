@@ -18,8 +18,8 @@
 #ifndef MATLAB_MEX_FILE
 #define MATLAB_MEX_FILE
 #endif
-#include <utils.h>
-#include <misc.h>
+#include "utils.h"
+#include "misc.h"
 
 
 /// Check the type of an array

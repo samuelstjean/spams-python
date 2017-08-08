@@ -2914,6 +2914,10 @@ namespace FISTA {
          y.copy(x0);
          x.copy(x0);
 
+         D sbb, xbb;
+         const T alphamax=10e30*1/L;
+         const T alphamin=10e-30*1/L;
+
          const bool duality = loss.is_fenchel() && regularizer.is_fenchel();
          T rel_duality_gap=-INFINITY;
          optim_info.set(-1);
@@ -2939,6 +2943,17 @@ namespace FISTA {
 
             /// compute gradient
             loss.grad(y,grad);
+            if (param.linesearch_mode==2) {
+               if (it > 1) {
+                  sbb.sub(grad);
+                  xbb.sub(y);
+                  T alpha=sbb.dot(xbb)/sbb.nrm2sq();
+                  alpha=MIN(MAX(alpha,alphamin),alphamax);
+                  L=1/alpha;
+               }
+               sbb.copy(grad);
+               xbb.copy(y);
+            }
 
             int iter=1;
 
@@ -2946,7 +2961,7 @@ namespace FISTA {
                prox.copy(y);
                prox.add(grad,-T(1.0)/L);
                regularizer.prox(prox,tmp,lambda/L);
-               if (param.fixed_step || loss.test_backtracking(y,grad,tmp,L)) break;
+               if ((param.linesearch_mode==2 && it > 1) || param.fixed_step || loss.test_backtracking(y,grad,tmp,L)) break;
                L *= param.gamma;
                if (param.verbose && ((it % it0) == 0)) 
                   cout << " " << L;
@@ -2962,6 +2977,7 @@ namespace FISTA {
             t=(1.0+sqrt(1+4*t*t))/2;
             y.copy(x);
             y.add(prox,(1-old_t)/t);
+
             if (duality) {
                if ((it % it0) == 0) {
                   time.stop();
