@@ -40,7 +40,11 @@ def get_config():
         if _ not in link_flags:
             link_flags.append(_)
 
-    libs = ['stdc++']
+    if platform.system() == 'Windows':
+        libs = []
+    else:
+        libs = ['stdc++']
+
     is_mkl = False
     for lib in np.__config__.blas_opt_info.get('libraries', []):
         if 'mkl' in lib:
@@ -68,9 +72,14 @@ def get_config():
 
 incs, libs, libdirs, cc_flags, link_flags = get_config()
 
+if platform.system() == 'Windows':
+    source = ['spams_wrap-windows.cpp']
+else:
+    source = ['spams_wrap.cpp']
+
 spams_wrap = Extension(
     '_spams_wrap',
-    sources=['spams_wrap.cpp'],
+    sources=source,
     include_dirs=incs,
     extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
     library_dirs=libdirs,
