@@ -19,7 +19,7 @@ def get_config():
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
 
-    cc_flags = ['-fPIC', '-Wunused-variable', '-Wno-uninitialized']
+    cc_flags = ['-fPIC']
     if sys.maxsize > 2**32:
         cc_flags.append('-m64')
     else:
