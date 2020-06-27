@@ -6,6 +6,9 @@ from setuptools import setup, Extension
 # from setuptools.command.build_ext import build_ext
 from distutils.sysconfig import get_python_inc
 
+# From nuget package
+mklversion = '2020.1.216'
+
 
 def get_config():
     # Import numpy here, only when headers are needed
@@ -42,14 +45,15 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
+        is_mkl = True
     else:
         libs = ['stdc++']
 
-    is_mkl = False
-    for lib in np.__config__.blas_opt_info.get('libraries', []):
-        if 'mkl' in lib:
-            is_mkl = True
-            break
+        is_mkl = False
+        for lib in np.__config__.blas_opt_info.get('libraries', []):
+            if 'mkl' in lib:
+                is_mkl = True
+                break
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -64,8 +68,20 @@ def get_config():
         libs.extend(['blas', 'lapack'])
 
     if platform.system() != 'Darwin':
-        cc_flags.append('-fopenmp')
-        link_flags.append('-fopenmp')
+        if platform.system() == 'Windows':
+            cc_flags.append('-openmp')
+            link_flags.append('-openmp')
+        else:
+            cc_flags.append('-fopenmp')
+            link_flags.append('-fopenmp')
+
+    if platform.system() == 'Windows':
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        # Look for local intel mkl
+        libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
+        # Path from nuget tagged version
+        libpath2 = os.path.join('c:\\cibw\\intelmkl.devel.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
+        libdirs.extend([libpath, libpath2])
 
     return incs, libs, libdirs, cc_flags, link_flags
 

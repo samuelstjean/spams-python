@@ -3613,7 +3613,9 @@ extern "C" {
 #include <complex>
 
 
-#include "stdint.h"		// Use the poor man header for old msvc
+// #include "stdint.h"		// Use the poor man header for old msvc
+typedef unsigned int uint32_t;
+typedef int int32_t;
 
 
 #include <limits.h>

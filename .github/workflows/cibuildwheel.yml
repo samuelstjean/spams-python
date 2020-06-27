@@ -26,12 +26,12 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install vcpython27 -f -y
-          
+
       - name: Build wheels
-        env: 
+        env:
           CIBW_SKIP: "*-win32 *-manylinux_i686"
           CIBW_BEFORE_BUILD_MACOS: pip install numpy
-          CIBW_BEFORE_BUILD_WINDOWS: nuget install OpenBLAS.NET -Version 0.3.7.1 && pip install numpy
+          CIBW_BEFORE_BUILD_WINDOWS: nuget install intelmkl.devel.win-x64 -Version 2020.1.216 -OutputDirectory C:\\cibw && pip install numpy
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y && pip install numpy
         run: |
           python -m cibuildwheel --output-dir wheelhouse
