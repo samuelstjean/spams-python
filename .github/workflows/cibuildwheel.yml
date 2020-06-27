@@ -30,9 +30,9 @@ jobs:
       - name: Build wheels
         env: 
           CIBW_SKIP: "*-win32 *-manylinux_i686"
-          CIBW_BEFORE_BUILD_MACOS: brew install openblas && pip install numpy
-          CIBW_BEFORE_BUILD_WINDOWS: choco install openblas -f -y && pip install numpy
-          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel -y && pip install numpy
+          CIBW_BEFORE_BUILD_MACOS: pip install numpy
+          CIBW_BEFORE_BUILD_WINDOWS: nuget install OpenBLAS.NET -Version 0.3.7.1 && pip install numpy
+          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y && pip install numpy
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
