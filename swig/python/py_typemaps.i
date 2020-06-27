@@ -36,7 +36,7 @@ extern "C" {
     if (!array || !require_dimensions(array,1) || !require_contiguous(array) || !require_native(array)) SWIG_fail;
 	 $1 = new Vector<DATA_TYPE> ((DATA_TYPE *)array_data(array),(int)array_size(array,0));
 }
-%typemap(out) (Vector<DATA_TYPE> *) 
+%typemap(out) (Vector<DATA_TYPE> *)
 {
     npy_intp n = result->n();
     npy_intp dims[1] = {n};
@@ -46,7 +46,7 @@ extern "C" {
     memcpy(data,idata,n * sizeof(DATA_TYPE));
     delete result;
     $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
-    	
+
 }
 %typemap(freearg)
   (Vector<DATA_TYPE> *INPLACE_VECTOR)
@@ -64,13 +64,12 @@ extern "C" {
 %typemap(in,numinputs=0,fragment="NumPy_Fragments") (Vector<DATA_TYPE> **ARGOUT_VECTOR)
 (Vector<DATA_TYPE>  *data_temp)
 {
-	# argout in
-	$1 = &data_temp;	
+	$1 = &data_temp;
 }
 
-%typemap(argout) (Vector<DATA_TYPE> **ARGOUT_VECTOR ) 
+%typemap(argout) (Vector<DATA_TYPE> **ARGOUT_VECTOR )
 {
-	  # test argout
+
 	  if(data_temp$argnum != NULL) {
 	    npy_intp n = data_temp$argnum->n();
 	    npy_intp dims[1] = {n};
@@ -90,7 +89,7 @@ extern "C" {
 	in the string, otherwise swig will not correctly generate
 	final variable names (above name + number)
 	*/
-	/* we cannot use require_fortran, because it convert a numpy C array to a numpy 
+	/* we cannot use require_fortran, because it convert a numpy C array to a numpy
 	fortran array by just modifying the strides */
 	if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
 	SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg $argnum must be a 2d DATA_TYPE Fortran Array"); SWIG_fail;
@@ -111,12 +110,12 @@ extern "C" {
 {
 	map_matrix(DATA_TYPE,DATA_TYPECODE)
 }
-%typemap(out) (Matrix<DATA_TYPE> *) 
+%typemap(out) (Matrix<DATA_TYPE> *)
 {
     npy_intp m = result->m();
     npy_intp n = result->n();
     npy_intp dims[2] = {m,n};
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, DATA_TYPECODE);
     DATA_TYPE *data = (DATA_TYPE *)array->data;
     DATA_TYPE *idata = result->rawX();
@@ -125,7 +124,7 @@ extern "C" {
     if (! require_fortran(array)) {
        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;}
     $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
- 	
+
 }
 %typemap(freearg)
   (Matrix<DATA_TYPE> *INPLACE_MATRIX)
@@ -142,13 +141,12 @@ extern "C" {
 %typemap(in,numinputs=0,fragment="NumPy_Fragments") (Matrix<DATA_TYPE> **ARGOUT_MATRIX)
 (Matrix<DATA_TYPE>  *data_temp)
 {
-	# argout in
-	$1 = &data_temp;	
+	$1 = &data_temp;
 }
 
-%typemap(argout) (Matrix<DATA_TYPE> **ARGOUT_MATRIX ) 
+%typemap(argout) (Matrix<DATA_TYPE> **ARGOUT_MATRIX )
 {
-	  # test argout
+
 	  if(data_temp$argnum != NULL) {
 	    npy_intp m = data_temp$argnum->m();
 	    npy_intp n = data_temp$argnum->n();
@@ -189,7 +187,7 @@ extern "C" {
 	  SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg $argnum : not a column compressed sparse matrix");
 	  return NULL;
 	}
-	
+
         /* fetch sparse attributes */
         PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
         PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
@@ -234,7 +232,7 @@ extern "C" {
         Py_DECREF(data);
         Py_DECREF(shape);
 
- 
+
 	$1 = new SpMatrix<DATA_TYPE> ((DATA_TYPE *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
 %enddef /* map_sparse */
 
@@ -275,7 +273,7 @@ extern "C" {
      map_sparse(DATA_TYPE,DATA_TYPECODE)
 
 }
-%typemap(out) (SpMatrix<DATA_TYPE> *) 
+%typemap(out) (SpMatrix<DATA_TYPE> *)
 {
     npy_intp m = result->m();
     npy_intp n = result->n();
@@ -298,10 +296,10 @@ extern "C" {
        pi = (npy_int *)array_data(indptr);
        memcpy(pi,pB,(n + 1) * sizeof(int));
     } else {
-      for(i = 0;i< nzmax;i++) 
+      for(i = 0;i< nzmax;i++)
     	  *(pi+i) = (npy_int) *(r+i);
       pi = (npy_int *)array_data(indptr);
-      for(i = 0;i< n + 1;i++) 
+      for(i = 0;i< n + 1;i++)
     	  *(pi+i) = (npy_int) *(pB+i);
     }
     PyObject* tuple = PyTuple_New(4);
@@ -321,14 +319,13 @@ extern "C" {
 	delete arg$argnum;
 }
 // ARGOUT
-%typemap(in,numinputs=0) (SpMatrix<DATA_TYPE> **ARGOUT_SPMATRIX ) 
+%typemap(in,numinputs=0) (SpMatrix<DATA_TYPE> **ARGOUT_SPMATRIX )
 (SpMatrix<DATA_TYPE> *data_temp)
 {
 	$1 = &data_temp;
 }
-%typemap(argout) (SpMatrix<DATA_TYPE> **ARGOUT_SPMATRIX ) 
+%typemap(argout) (SpMatrix<DATA_TYPE> **ARGOUT_SPMATRIX )
 {
-# test argout
   if(data_temp$argnum != NULL) {
     npy_intp m = data_temp$argnum->m();
     npy_intp n = data_temp$argnum->n();
@@ -352,10 +349,10 @@ extern "C" {
        pi = (npy_int *)array_data(indptr);
        memcpy(pi,pB,(n + 1) * sizeof(int));
     } else {
-      for(i = 0;i< nzmax;i++) 
+      for(i = 0;i< nzmax;i++)
     	  *(pi+i) = (npy_int) *(r+i);
       pi = (npy_int *)array_data(indptr);
-      for(i = 0;i< n + 1;i++) 
+      for(i = 0;i< n + 1;i++)
     	  *(pi+i) = (npy_int) *(pB+i);
     }
     PyObject* tuple = PyTuple_New(4);
@@ -375,7 +372,7 @@ extern "C" {
 %typecheck(SWIG_TYPECHECK_DOUBLE_ARRAY,
            fragment="NumPy_Macros",fragment="DSp_Check") (AbstractMatrixB<DATA_TYPE> *INPLACE_DSPMATRIX)
 {
-	if( PyObject_HasAttrString($input, "indptr")) 
+	if( PyObject_HasAttrString($input, "indptr"))
 	    $1 = check_sparse($input);
 	else
 	    $1 = check_matrix($input,DATA_TYPECODE);
@@ -428,7 +425,7 @@ extern "C" {
 %typecheck(SWIG_TYPECHECK_DOUBLE_ARRAY,
            fragment="NumPy_Macros",fragment="DSp_Check") (Data<DATA_TYPE> *INPLACE_DATAMATRIX)
 {
-	if( PyObject_HasAttrString($input, "indptr")) 
+	if( PyObject_HasAttrString($input, "indptr"))
 	    $1 = check_sparse($input);
 	else
 	    $1 = check_matrix($input,DATA_TYPECODE);
@@ -460,7 +457,7 @@ extern "C" {
 
 }
 
-%typemap(in) (std::vector<StructNodeElem<DATA_TYPE> *> *TREE) 
+%typemap(in) (std::vector<StructNodeElem<DATA_TYPE> *> *TREE)
 {
   PyObject* pytree = $input;
   if(!PyList_Check(pytree)) {
@@ -485,11 +482,11 @@ extern "C" {
     StructNodeElem<DATA_TYPE> *node = new StructNodeElem<DATA_TYPE>(inode,w,vars,children);
     $1->push_back(node);
   }
-    
+
 }
 
 %typemap(out) (std::vector<StructNodeElem<DATA_TYPE> *> *)
-{	      
+{
   //int n = result->size();
   PyObject* node_list = PyList_New(0);
   for(std::vector<StructNodeElem<DATA_TYPE> *>::iterator it = result->begin();it != result->end();it++) {
@@ -509,7 +506,7 @@ extern "C" {
     PyObject *children = PyList_New(0);
     for(int i = 0;i < k;i++)
       PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
-    
+
     PyTuple_SetItem(tuple,3,(PyObject* )children );
     PyList_Append(node_list,tuple);
   }
