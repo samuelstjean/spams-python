@@ -1,60 +1,92 @@
 import os
-#os.environ['DISTUTILS_DEBUG'] = "1"
+import platform
+import sys
+
 from setuptools import setup, Extension
+# from setuptools.command.build_ext import build_ext
 from distutils.sysconfig import get_python_inc
-import distutils.util
-import numpy
 
-# includes numpy : package numpy.distutils , numpy.get_include()
-# python setup.py build --inplace
-# python setup.py install --prefix=dist,
-incs = ['.'] + [os.path.join('spams',x) for x in [ 'linalg', 'prox', 'decomp', 'dictLearn']] + [numpy.get_include()] + [get_python_inc()]
 
-osname = distutils.util.get_platform()
-cc_flags = ['-fPIC', '-fopenmp']
-link_flags = ['-fopenmp', '-s' ]
-libs = ['stdc++', 'blas', 'lapack' ]
-libdirs = []
+def get_config():
+    # Import numpy here, only when headers are needed
+    import numpy as np
+    from numpy.distutils.system_info import blas_info
 
-if osname.startswith("macosx"):
-    cc_flags = ['-fPIC','-w'] # I deactivated -fopenmp as it does not work on clang by default
-    link_flags = ['']
+    incs = ['spams']
+    for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
+        incs.append(os.path.join('spams', x))
+    incs.append(np.get_include())
+    incs.append(get_python_inc())
+    incs.extend(blas_info().get_include_dirs())
 
-if osname.startswith("win32"):
-    cc_flags = ['-fPIC', '-fopenmp','-DWIN32']
-    link_flags = ['-fopenmp', '-mwindows']
-    path = os.environ['PATH']
-    os.environ['PATH'] = 'C:/MinGW/bin;' + path
-    libs = ['stdc++', 'Rblas', 'Rlapack' ]
-    libdirs = ['C:/Program Files/R/R-2.15.1/bin/i386']
+    cc_flags = ['-fPIC', '-Wunused-variable', '-Wno-uninitialized']
+    if sys.maxsize > 2**32:
+        cc_flags.append('-m64')
+    else:
+        cc_flags.append('-m32')
 
-if osname.startswith("win-amd64"):
-    cc_flags = ['-openmp', '-EHsc', '-DWIN32', '-DCYGWIN', '-DWINDOWS', '-I','C:/Program Files (x86)/Microsoft Visual Studio 9.0/VC/include']
+    for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
+        if _ not in cc_flags:
+            cc_flags.append(_)
+    for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
+        if _ not in cc_flags:
+            cc_flags.append(_)
+
     link_flags = []
-    libs = [ 'Rblas', 'Rlapack' ]
-    libdirs = ['C:/Program Files (x86)/Microsoft Visual Studio 9.0/VC/lib/amd64','C:/Program Files/R/R-2.15.1/bin/x64']
+    for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
+        if _ not in link_flags:
+            link_flags.append(_)
+    for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
+        if _ not in link_flags:
+            link_flags.append(_)
+
+    libs = ['stdc++']
+    is_mkl = False
+    for lib in np.__config__.blas_opt_info.get('libraries', []):
+        if 'mkl' in lib:
+            is_mkl = True
+            break
+
+    libdirs = blas_info().get_lib_dirs()
+    if is_mkl:
+        for _ in np.__config__.blas_opt_info.get('include_dirs', []):
+            if _ not in incs:
+                incs.append(_)
+        for _ in np.__config__.blas_opt_info.get('library_dirs', []):
+            if _ not in libdirs:
+                libdirs.append(_)
+        libs.extend(['mkl_rt'])
+    else:
+        libs.extend(['blas', 'lapack'])
+
+    if platform.system() != 'Darwin':
+        cc_flags.append('-fopenmp')
+        link_flags.append('-fopenmp')
+
+    return incs, libs, libdirs, cc_flags, link_flags
 
 
-##path = os.environ['PATH']; print "XX OS %s, path %s" %(osname,path)
+incs, libs, libdirs, cc_flags, link_flags = get_config()
 
 spams_wrap = Extension(
     '_spams_wrap',
-    sources = ['spams_wrap.cpp'],
-    include_dirs = incs,
-    extra_compile_args = ['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
-    library_dirs = libdirs,
-    libraries = libs,
+    sources=['spams_wrap.cpp'],
+    include_dirs=incs,
+    extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
+    library_dirs=libdirs,
+    libraries=libs,
     # strip the .so
-    extra_link_args = link_flags,
-    language = 'c++',
-    depends = ['spams.h'],
+    extra_link_args=link_flags,
+    language='c++',
+    depends=['spams.h'],
 )
 
-def mkhtml(d = None,base = 'sphinx'):
-    if d == None:
+
+def mkhtml(d=None, base='sphinx'):
+    if d is None:
         d = base
     else:
-        d = os.path.join(base,d)
+        d = os.path.join(base, d)
     if not os.path.isdir(base):
         return []
     hdir = d
@@ -62,20 +94,21 @@ def mkhtml(d = None,base = 'sphinx'):
     l1 = os.listdir(hdir)
     l = []
     for s in l1:
-        s = os.path.join(d,s)
+        s = os.path.join(d, s)
         if not os.path.isdir(s):
             l.append(s)
     return l
 
 
-setup (name = 'spams',
-       version= '2.6',
-       description='Python interface for SPAMS',
-       author = 'Julien Mairal',
-       author_email = 'nomail',
-       url = 'http://',
-       ext_modules = [spams_wrap,],
-       py_modules = ['spams', 'spams_wrap', 'myscipy_rand'],
-#       scripts = ['test_spams.py'],
-       data_files = [('test',['test_spams.py', 'test_decomp.py', 'test_dictLearn.py', 'test_linalg.py', 'test_prox.py', 'test_utils.py'])],
-)
+setup(name='spams',
+      version='2.6',
+      description='Python interface for SPAMS',
+      author='Julien Mairal',
+      # author_email='nomail',
+      # url='http://',
+      ext_modules=[spams_wrap, ],
+      py_modules=['spams', 'spams_wrap', 'myscipy_rand'],
+      #       scripts = ['test_spams.py'],
+      data_files=[('test', ['test_spams.py', 'test_decomp.py', 'test_dictLearn.py',
+                            'test_linalg.py', 'test_prox.py', 'test_utils.py'])],
+      )
