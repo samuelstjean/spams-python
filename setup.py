@@ -136,5 +136,5 @@ setup(name='spams',
       author='Julien Mairal',
       ext_modules=[spams_wrap],
       install_requires=['numpy>=1.12', 'scipy>=0.19', 'Pillow>=6.0'],
-      py_modules=['spams', 'spams_wrap', 'myscipy_rand', 'openmp_helpers'],
+      py_modules=['spams', 'spams_wrap', 'myscipy_rand'],
       )

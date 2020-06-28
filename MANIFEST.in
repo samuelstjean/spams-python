@@ -3,3 +3,4 @@ include spams_wrap.cpp
 include test_*.py
 include boat.png
 include lena.png
+include openmp_helpers.py
