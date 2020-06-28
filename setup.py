@@ -5,6 +5,7 @@ import sys
 from setuptools import setup, Extension
 # from setuptools.command.build_ext import build_ext
 from distutils.sysconfig import get_python_inc
+from openmp_helpers import add_openmp_flags_if_available
 
 # From nuget package
 mklversion = '2020.1.216'
@@ -67,6 +68,7 @@ def get_config():
     else:
         libs.extend(['blas', 'lapack'])
 
+    # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
         if platform.system() == 'Windows':
             cc_flags.append('-openmp')
@@ -106,6 +108,9 @@ spams_wrap = Extension(
     depends=['spams.h'],
 )
 
+if platform.system() == 'Darwin':
+    add_openmp_flags_if_available(spams_wrap)
+
 
 def mkhtml(d=None, base='sphinx'):
     if d is None:
@@ -131,5 +136,5 @@ setup(name='spams',
       author='Julien Mairal',
       ext_modules=[spams_wrap],
       install_requires=['numpy>=1.12', 'scipy>=0.19', 'Pillow>=6.0'],
-      py_modules=['spams', 'spams_wrap', 'myscipy_rand'],
+      py_modules=['spams', 'spams_wrap', 'myscipy_rand', 'openmp_helpers'],
       )
