@@ -10,6 +10,8 @@ from openmp_helpers import add_openmp_flags_if_available
 import numpy as np
 from numpy.distutils.system_info import blas_info
 
+import distro
+
 # From nuget package
 mklversion = '2020.1.216'
 
@@ -66,7 +68,10 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        libs.extend(['openblas'])
+        if 'centos' in distro.linux_distribution(full_distribution_name=False):
+            libs.extend(['openblaso'])  # for openmp support in openblas
+        else:
+            libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
