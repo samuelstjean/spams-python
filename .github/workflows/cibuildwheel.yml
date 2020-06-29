@@ -32,7 +32,7 @@ jobs:
           CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp35-*"
 
           CIBW_BEFORE_BUILD_WINDOWS: nuget install intelmkl.devel.win-x64 -Version 2020.1.216 -OutputDirectory C:\\cibw
-          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel -y
+          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py

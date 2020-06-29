@@ -68,7 +68,7 @@ def get_config():
         libs.extend(['mkl_rt'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
-            libs.extend(['openblaso'])  # for openmp support in openblas
+            libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
         else:
             libs.extend(['openblas'])
 
