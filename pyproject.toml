@@ -1,0 +1,9 @@
+[build-system]
+requires = ["numpy==1.15.4; python_version=='2.7'",
+            "numpy==1.15.4; python_version=='3.5'",
+            "numpy==1.15.4; python_version=='3.6'",
+            "numpy==1.15.4; python_version=='3.7'",
+            "numpy==1.17.3; python_version>='3.8'",
+            "setuptools",
+            "distro",
+            "wheel"]

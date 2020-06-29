@@ -36,7 +36,7 @@ template<typename T> class StructNodeElem {
   std::vector<int> *children;
 };
 
-template<typename T>inline T* 
+template<typename T>inline T*
 newzeros(int nb) {
   T *p = new T[nb];
   for(int i = 0;i < nb;i++)
@@ -44,7 +44,7 @@ newzeros(int nb) {
   return p;
 }
 
-inline int* 
+inline int*
 m_ones(int nb) {
   int *p = new int[nb];
   for(int i = 0;i < nb;i++) p[i] = -1;
@@ -54,20 +54,20 @@ m_ones(int nb) {
 template<typename T>
 inline void del_gstruct(std::vector<StructNodeElem<T> *> *gstruct) {
   if (gstruct == static_cast<std::vector<StructNodeElem<T> *> *>(0)) return;
-  for(int i = 0;i <static_cast<int>(gstruct->size());i++) 
+  for(int i = 0;i <static_cast<int>(gstruct->size());i++)
     delete (*gstruct)[i];
   delete gstruct;
 }
 
-/* 
+/*
    skip spaces in a C string.
    Returns NULL if the string ends with a space
    a pointer to the 1st non-space char otherwise
-   
+
  */
 inline char * skip_space(char * s) {
   char *ps = s;
-  while(std::isspace(*ps))
+  while(isspace(*ps))
     ps++;
   if(*ps == 0)
     return (char *)0;
@@ -92,7 +92,7 @@ static inline int parse_line(char *s,std::vector<std::string> &vresult) {
   // node id
   char *p0 = p;
   int n = 0;
-  while(! std::isspace(*p) && (*p != 0)) {
+  while(! isspace(*p) && (*p != 0)) {
     if(! isdigit(*p)) return -1;
     p++;
     n++;
@@ -103,7 +103,7 @@ static inline int parse_line(char *s,std::vector<std::string> &vresult) {
   if(*p != '[') {
     p0 = p;
     n = 0;
-    while(! std::isspace(*p)) {
+    while(! isspace(*p)) {
       if(!isprint(*p)) return -1;
       p++;
       n++;
@@ -124,7 +124,7 @@ static inline int parse_line(char *s,std::vector<std::string> &vresult) {
   }
   if (n > 0) {
     char *p1 = p - 1;
-    while(std::isspace(*p1)) {
+    while(isspace(*p1)) {
       p1--;
       n--;
     }
@@ -144,7 +144,7 @@ static inline int parse_line(char *s,std::vector<std::string> &vresult) {
     n++;
   }
   p--;
-  while(std::isspace(*p)) {
+  while(isspace(*p)) {
     p--;
     n--;
   }
@@ -188,7 +188,7 @@ intlist(string s) {
         but '[' and '] must be present. Numbers in the range (0 - Nv-1)
     children-list : a space separated list of node-id's
              If the list is empty, '->' may be omitted.
-  The data must obey some rules : 
+  The data must obey some rules :
   A group contains the variables of the corresponding node and of the whole subtree.
   Variables attached to a node are those that are not int the subtree.
  If the data destination is a Graph, there may be several independant trees,
@@ -295,7 +295,7 @@ std::vector<StructNodeElem<T> *> *_simpleGroupTree(int *degr, int n) throw(const
   return gstruct;
 }
 
-/* 
+/*
    verifies the validity of a group structure
    Args: gstruct : the group structure as a StructNodeElem<T> vector
           tree_mode : if true, the data must satisfy Tree constraints
@@ -368,7 +368,7 @@ bool checkGroupTree(std::vector<StructNodeElem<T> *> *gstruct, bool tree_mode, i
     // check variables
     // for graph struct, unicity of subtrees is checked when building groups and group_vars
     int max_var = 0;
-    for(int i = 0;i < static_cast<int>(all_vars.size());i++) 
+    for(int i = 0;i < static_cast<int>(all_vars.size());i++)
       if (all_vars[i] > max_var) max_var = all_vars[i];
     nb_vars = max_var + 1;
     if(nb_vars > static_cast<int>(all_vars.size())) {
@@ -392,7 +392,7 @@ bool checkGroupTree(std::vector<StructNodeElem<T> *> *gstruct, bool tree_mode, i
       used_vars[v] = 1;
     }
     for(int i = 0;i < nb_vars;i++)
-      if (used_vars[i] == 0) 
+      if (used_vars[i] == 0)
 	std::cout << "Missing var " << i << std::endl;
     delete[] used_vars;
   }
@@ -434,7 +434,7 @@ static std::vector<StructNodeElem<T> *> *reorder_group_tree(std::vector<StructNo
   std::vector<int> lst(1,0);
   loop_tree<T>(&lst,&new_i,&nb_vars,gstruct,group_index,nodes_index);
   int *group_inv = newzeros<int>(nb_nodes);
-  for(int i = 0;i < nb_nodes;i++) 
+  for(int i = 0;i < nb_nodes;i++)
     group_inv[group_index[i]] = i;
   int *vars_inv = m_ones(nb_vars);
   *pvar_inv = vars_inv;
@@ -465,8 +465,8 @@ static std::vector<StructNodeElem<T> *> *reorder_group_tree(std::vector<StructNo
   return newgstruct;
 }
 
-/* 
-   Input args : 
+/*
+   Input args :
      gstruct = vector of StructNodeElem<T> representing the groups structure
         as a bunch of trees
         (Each element describes a node of a tree)
@@ -548,14 +548,14 @@ Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatri
   return peta_g;
 }
 
-/* 
-   Input args : 
+/*
+   Input args :
      gstruct = vector of StructNodeElem<T> representing the groups structure
         as a bunch of trees
         (Each element describes a node of a tree)
    Output args:
         pperm : NULL or address of the inverse permutation table of variables
-	pnb_vars : 0 if pperm is NULL, else nb of variables 
+	pnb_vars : 0 if pperm is NULL, else nb of variables
 	eta_g : vector of weights
 	pgroups : matrix of groups inclusions
 	pown_variables, pN_own_variables : tables describing the distribution
@@ -597,7 +597,7 @@ int _treeOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,int **pperm,int
   for(int i = nb_groups - 2;i >= 0;i--)
     if(dN_own_variables[i] == 0)
       down_variables[i] = down_variables[i+1];
-  // 
+  //
   int *perm = static_cast<int *>(0);
   int i = 0;
   for(int k = 0;k < nb_vars;k++,i++) {

@@ -11,6 +11,7 @@ env/
 build/
 develop-eggs/
 dist/
+wheelhouse/
 downloads/
 eggs/
 lib/
@@ -52,3 +53,5 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.png

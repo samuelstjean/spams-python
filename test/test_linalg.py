@@ -61,7 +61,7 @@ def test_conjGrad():
 #*    np.random.seed(0)
 #*    A = np.asfortranarray(np.random.normal(size = (10,5)))
     A = np.asfortranarray(np.dot(A.T,A),dtype=myfloat)
-    b = np.ones((A.shape[1],),dtype=myfloat,order="FORTRAN")
+    b = np.ones((A.shape[1],),dtype=myfloat,order="F")
     x0 = b
     tol = 1e-4
     itermax = int(0.5 * len(b))
