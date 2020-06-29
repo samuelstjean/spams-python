@@ -7,14 +7,14 @@ from setuptools import setup, Extension
 from distutils.sysconfig import get_python_inc
 from openmp_helpers import add_openmp_flags_if_available
 
+import numpy as np
+from numpy.distutils.system_info import blas_info
+
 # From nuget package
 mklversion = '2020.1.216'
 
 
 def get_config():
-    # Import numpy here, only when headers are needed
-    import numpy as np
-    from numpy.distutils.system_info import blas_info
 
     incs = ['spams']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
@@ -66,7 +66,7 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        libs.extend(['blas', 'lapack'])
+        libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
@@ -134,6 +134,8 @@ setup(name='spams',
       version='2.6',
       description='Python interface for SPAMS',
       author='Julien Mairal',
+      author_email='spams.dev@inria.fr',
+      url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
       install_requires=['numpy>=1.12', 'scipy>=0.19', 'Pillow>=6.0'],
       py_modules=['spams', 'spams_wrap', 'myscipy_rand'],
