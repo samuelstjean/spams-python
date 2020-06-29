@@ -70,8 +70,6 @@ def get_config():
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso'])  # for openmp support in openblas
-        elif platform.system() == 'Darwin':
-            libs.extend(['blas', 'lapack'])
         else:
             libs.extend(['openblas'])
 
@@ -83,6 +81,10 @@ def get_config():
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
+
+    if platform.system() == 'Darwin':
+        cc_flags.append('-I/usr/local/opt/openblas/include')
+        link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
         dir_path = os.path.dirname(os.path.realpath(__file__))
