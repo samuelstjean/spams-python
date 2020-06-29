@@ -104,7 +104,7 @@ else:
     source = ['spams_wrap/spams_wrap.cpp']
 
 spams_wrap = Extension(
-    'spams_wrap/_spams_wrap',
+    'spams_wrap._spams_wrap',
     sources=source,
     include_dirs=incs,
     extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
