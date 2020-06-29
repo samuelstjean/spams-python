@@ -70,6 +70,8 @@ def get_config():
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso'])  # for openmp support in openblas
+        elif platform.system() == 'Darwin':
+            libs.extend(['blas', 'lapack'])
         else:
             libs.extend(['openblas'])
 
