@@ -1,6 +1,5 @@
-include spams_wrap-windows.cpp
-include spams_wrap.cpp
-include test_*.py
+recursive-include spams_wrap *.h
+recursive-include spams_wrap *.cpp
 include boat.png
 include lena.png
 include openmp_helpers.py

@@ -2,8 +2,7 @@ import os
 import platform
 import sys
 
-from setuptools import setup, Extension
-# from setuptools.command.build_ext import build_ext
+from setuptools import setup, Extension, find_packages
 from distutils.sysconfig import get_python_inc
 from openmp_helpers import add_openmp_flags_if_available
 
@@ -18,9 +17,9 @@ mklversion = '2020.1.216'
 
 def get_config():
 
-    incs = ['spams']
+    incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
-        incs.append(os.path.join('spams', x))
+        incs.append(os.path.join('spams_wrap', x))
     incs.append(np.get_include())
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
@@ -100,12 +99,12 @@ def get_config():
 incs, libs, libdirs, cc_flags, link_flags = get_config()
 
 if platform.system() == 'Windows':
-    source = ['spams_wrap-windows.cpp']
+    source = ['spams_wrap/spams_wrap-windows.cpp']
 else:
-    source = ['spams_wrap.cpp']
+    source = ['spams_wrap/spams_wrap.cpp']
 
 spams_wrap = Extension(
-    '_spams_wrap',
+    'spams_wrap/_spams_wrap',
     sources=source,
     include_dirs=incs,
     extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
@@ -114,7 +113,7 @@ spams_wrap = Extension(
     # strip the .so
     extra_link_args=link_flags,
     language='c++',
-    depends=['spams.h'],
+    depends=['spams_wrap/spams.h'],
 )
 
 if platform.system() == 'Darwin':
@@ -146,6 +145,6 @@ setup(name='spams',
       author_email='spams.dev@inria.fr',
       url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
+      packages=find_packages(),
       install_requires=['numpy>=1.12', 'scipy>=0.19', 'Pillow>=6.0'],
-      py_modules=['spams', 'spams_wrap', 'myscipy_rand'],
       )
