@@ -3582,7 +3582,7 @@ namespace swig {
 #define SWIG_FILE_WITH_INIT
 
 #include "spams.h"
-#include "spams/prox/groups-graph.h"
+#include "prox/groups-graph.h"
 
 #ifdef DEBUG
 #include "spams-tst.h"
