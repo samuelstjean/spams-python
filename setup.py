@@ -120,24 +120,6 @@ if platform.system() == 'Darwin':
     add_openmp_flags_if_available(spams_wrap)
 
 
-def mkhtml(d=None, base='sphinx'):
-    if d is None:
-        d = base
-    else:
-        d = os.path.join(base, d)
-    if not os.path.isdir(base):
-        return []
-    hdir = d
-
-    l1 = os.listdir(hdir)
-    l = []
-    for s in l1:
-        s = os.path.join(d, s)
-        if not os.path.isdir(s):
-            l.append(s)
-    return l
-
-
 setup(name='spams',
       version='2.6',
       description='Python interface for SPAMS',
