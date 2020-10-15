@@ -6,11 +6,8 @@ import spams
 import time
 from test_utils import *
 
-if not ('rand' in ssp.__dict__):
-    import myscipy_rand
-    ssprand = myscipy_rand.rand
-else:
-    ssprand = ssp.rand
+ssprand = ssp.rand
+
 
 def test_sort():
     n = 2000000

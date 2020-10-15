@@ -12,11 +12,8 @@ import spams
 import time
 from test_utils import *
 
-if not ('rand' in ssp.__dict__):
-    import myscipy_rand
-    ssprand = myscipy_rand.rand
-else:
-    ssprand = ssp.rand
+ssprand = ssp.rand
+
 
 def _extract_lasso_param(f_param):
     lst = [ 'L','lambda1','lambda2','mode','pos','ols','numThreads','length_path','verbose','cholesky']

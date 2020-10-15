@@ -20,16 +20,11 @@ jobs:
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install cibuildwheel==1.5.1
-
-      - name: Install Visual C++ for Python 2.7 on windows
-        if: runner.os == 'Windows'
-        run: |
-          choco install vcpython27 -f -y
+          python -m pip install cibuildwheel==1.6.3
 
       - name: Build wheels
         env:
-          CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp35-*"
+          CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp27-* cp35-* cp39-*"
 
           CIBW_BEFORE_BUILD_WINDOWS: nuget install intelmkl.devel.win-x64 -Version 2020.1.216 -OutputDirectory C:\\cibw
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
@@ -43,3 +38,44 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
+
+
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        name: Install Python
+        with:
+          python-version: '3.7'
+
+      - name: Build sdist
+        run: |
+          python -m pip install numpy distro
+          python setup.py sdist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: dist/*.tar.gz
+
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    # upload to PyPI on every tag starting with 'v'
+    # if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    # alternatively, to publish when a GitHub Release is created, use the following rule:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.4.1
+        with:
+          user: __token__
+          # password: ${{ secrets.pypi_password }}
+          password: ${{ secrets.testpypi_password }}
+          repository_url: https://test.pypi.org/legacy/
