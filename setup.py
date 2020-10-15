@@ -119,10 +119,19 @@ spams_wrap = Extension(
 if platform.system() == 'Darwin':
     add_openmp_flags_if_available(spams_wrap)
 
+long_description = """Python interface for SPArse Modeling Software (SPAMS),
+an optimization toolbox for solving various sparse estimation problems.
+This (unofficial) version includes pre-built wheels for python 3 on windows, mac (with open mp support) and linux.
 
-setup(name='spams',
-      version='2.6',
-      description='Python interface for SPAMS',
+In addition, building from source explicitly requires openblas on mac/linux and intel mkl on windows,
+unlike the official version which can use any blas implementation.
+
+The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
+
+setup(name='spams-bin',
+      version='2.6.2',
+      description='Python interface for SPAMS - binary wheel with openblas (mac, linux) and intel mkl (windows)',
+      long_description=long_description,
       author='Julien Mairal',
       author_email='spams.dev@inria.fr',
       url='http://spams-devel.gforge.inria.fr/',
