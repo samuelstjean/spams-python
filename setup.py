@@ -121,7 +121,7 @@ if platform.system() == 'Darwin':
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
-This (unofficial) version includes pre-built wheels for python 3 on windows, mac (with open mp support) and linux.
+This (unofficial) version includes pre-built wheels for python 3 on windows, mac (with openmp support) and linux.
 
 In addition, building from source explicitly requires openblas on mac/linux and intel mkl on windows,
 unlike the official version which can use any blas implementation.
