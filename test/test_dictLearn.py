@@ -359,7 +359,7 @@ def test_structTrainDL():
 
 
 def test_nmf():
-    img_file = 'boat.ptest/ng'
+    img_file = 'test/boat.png'
     try:
         img = Image.open(img_file)
     except:
