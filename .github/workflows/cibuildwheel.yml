@@ -68,7 +68,7 @@ jobs:
             miniconda-version: "latest"
 
         - name: Install Deps
-          run: conda install numpy mkl mkl-include mkl-devel -y
+          run: conda install mkl mkl-include mkl-devel -y && pip install -U setuptools wheel
         - name: Build Wheel
           run: python setup.py bdist_wheel
         - name: Repair Wheel
