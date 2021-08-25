@@ -70,7 +70,7 @@ jobs:
         - name: Install Deps
           run: conda install mkl mkl-include mkl-devel numpy setuptools wheel pip -y 
         - name: Build Wheel
-          run: python setup.py bdist_wheel
+          run: pip wheel .
         - name: Repair Wheel
           shell: bash
           run: |
@@ -89,7 +89,7 @@ jobs:
             which python
             pip install wheelhouse/*whl
             pip install pytest
-            pytest
+            pytest .
         - uses: actions/upload-artifact@v2
           with:
             path: ./dist/*.whl
