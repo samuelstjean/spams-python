@@ -47,15 +47,15 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-        is_mkl = True
+#         is_mkl = True
     else:
         libs = ['stdc++']
+#         is_mkl = False
 
-        is_mkl = False
-        for lib in np.__config__.blas_opt_info.get('libraries', []):
-            if 'mkl' in lib:
-                is_mkl = True
-                break
+    for lib in np.__config__.blas_opt_info.get('libraries', []):
+        if 'mkl' in lib:
+            is_mkl = True
+            break
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -65,7 +65,7 @@ def get_config():
         for _ in np.__config__.blas_opt_info.get('library_dirs', []):
             if _ not in libdirs:
                 libdirs.append(_)
-#         libs.extend(['mkl_rt'])
+        libs.extend(['mkl_rt'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
