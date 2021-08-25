@@ -141,4 +141,5 @@ setup(name='spams-bin',
                         'scipy>=0.19',
                         'Pillow>=6.0',
                         'mkl==2019.0; platform_system=="Windows"'],
+                        'intel-openmp==2019.0; platform_system=="Windows"'],
       )
