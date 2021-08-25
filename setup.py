@@ -53,6 +53,7 @@ def get_config():
 #         is_mkl = False
 
     for lib in np.__config__.blas_opt_info.get('libraries', []):
+        is_mkl = False
         if 'mkl' in lib:
             is_mkl = True
             break
