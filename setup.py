@@ -47,15 +47,15 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-#         is_mkl = True
+        is_mkl = True
     else:
         libs = ['stdc++']
-#         is_mkl = False
 
-    is_mkl = False
-    for lib in np.__config__.blas_opt_info.get('libraries', []):
-        if 'mkl' in lib:
-            is_mkl = True
+        is_mkl = False
+        for lib in np.__config__.blas_opt_info.get('libraries', []):
+            if 'mkl' in lib:
+                is_mkl = True
+                break
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
