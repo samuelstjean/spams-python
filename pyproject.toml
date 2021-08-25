@@ -2,4 +2,7 @@
 requires = ["oldest-supported-numpy",
             "setuptools",
             "distro",
-            "wheel"]
+            "wheel",
+            "mkl;platform_system=='Windows'",
+            "mkl-devel;platform_system=='Windows'",
+            "mkl-include;platform_system=='Windows'"]
