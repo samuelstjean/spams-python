@@ -65,7 +65,7 @@ def get_config():
         for _ in np.__config__.blas_opt_info.get('library_dirs', []):
             if _ not in libdirs:
                 libdirs.append(_)
-        # libs.extend(['mkl_rt'])
+        libs.extend(['mkl_rt.1'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
