@@ -34,11 +34,11 @@ jobs:
         env:
           CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp27-* cp35-*"
 
-          CIBW_BEFORE_BUILD_WINDOWS: "nuget install intelmkl.devel.win-x64 -Version 2020.1.216 -OutputDirectory C:\\cibw && pip install delvewheel"
+          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
           
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:\\cibw\\runtimes\\win-x64\\native"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
 
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
           CIBW_TEST_COMMAND_WINDOWS: '' # Because it requires the mkl dll, seems like we can't run it since it gets separated when testing from the build env :/
