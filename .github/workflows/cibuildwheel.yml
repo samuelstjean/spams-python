@@ -39,10 +39,6 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
-
-
-delvewheel show
-
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
           # CIBW_TEST_COMMAND_WINDOWS: '' # Because it requires the mkl dll, seems like we can't run it since it gets separated when testing from the build env :/
         run: |
