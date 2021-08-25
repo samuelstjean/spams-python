@@ -12,7 +12,7 @@ from numpy.distutils.system_info import blas_info
 import distro
 
 # From nuget package
-mklversion = '2020.1.216'
+mklversion = '2021.3.0.524 '
 
 
 def get_config():
