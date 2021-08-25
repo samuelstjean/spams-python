@@ -62,13 +62,13 @@ jobs:
         - uses: conda-incubator/setup-miniconda@v2
           if: matrix.arch == 'x64'
           with:
-
             auto-update-conda: true
             python-version: ${{ matrix.python-version }}
             miniconda-version: "latest"
+            channels: conda-forge
 
         - name: Install Deps
-          run: conda install mkl mkl-include mkl-devel numpy setuptools wheel pip -y 
+          run: conda install openblas setuptools wheel pip -y 
         - name: Build Wheel
           run: pip wheel .
         - name: Repair Wheel
