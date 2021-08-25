@@ -140,6 +140,6 @@ setup(name='spams-bin',
       install_requires=['numpy>=1.12',
                         'scipy>=0.19',
                         'Pillow>=6.0',
-                        'mkl==2019.0; platform_system=="Windows"'],
+                        'mkl==2019.0; platform_system=="Windows"',
                         'intel-openmp==2019.0; platform_system=="Windows"'],
       )
