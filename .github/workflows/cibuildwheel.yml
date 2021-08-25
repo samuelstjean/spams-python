@@ -16,14 +16,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-latest, macos-latest]
+        os: [ubuntu-18.04, macos-latest]
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2.1.1
-        with:
-          channels: conda-forge
 
       - uses: actions/setup-python@v2
         name: Install Python
@@ -36,24 +32,68 @@ jobs:
 
       - name: Build wheels
         env:
-          CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp27-* cp35-*"
+          CIBW_SKIP: "*-manylinux_i686 pp* cp27-* cp35-*"
 
-          CIBW_BEFORE_BUILD_WINDOWS: "conda install openblas lapack -y && pip install delvewheel"
+          # CIBW_BEFORE_BUILD_WINDOWS: "conda install openblas lapack -y && pip install delvewheel"
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
           
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          # CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
 
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
-          CIBW_TEST_COMMAND_WINDOWS: '' # Because it requires the mkl dll, seems like we can't run it since it gets separated when testing from the build env :/
+          # CIBW_TEST_COMMAND_WINDOWS: '' # Because it requires the mkl dll, seems like we can't run it since it gets separated when testing from the build env :/
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
+          
+  build_wheels_windows:
+      name: Build wheels on windows Python-${{ matrix.python-version }} ${{ matrix.arch }}
+      runs-on: windows-latest
+      strategy:
+        matrix:
+          arch: [x64] 
+          python-version: [3.7, 3.8, 3.9]
+      steps:
+        - uses: actions/checkout@v2
 
+        - uses: conda-incubator/setup-miniconda@v2
+          if: matrix.arch == 'x64'
+          with:
 
+            auto-update-conda: true
+            python-version: ${{ matrix.python-version }}
+            miniconda-version: "latest"
+
+        - name: Install Deps
+          run: conda install mkl mkl-incldue mkl-devel -y
+        - name: Build Wheel
+          run: python setup.py bdist_wheel
+        - name: Repair Wheel
+          shell: bash
+          run: |
+            set -e
+            pip install delvewheel
+            delvewheel repair dist/*whl
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v2
+          with:
+            python-version: ${{ matrix.python-version }}
+            architecture: ${{ matrix.arch }}
+        - name: Run tests
+          shell: bash
+          run: |
+            set -e
+            which python
+            pip install wheelhouse/*whl
+            pip install pytest
+            pytest
+        - uses: actions/upload-artifact@v2
+          with:
+            path: ./dist/*.whl
+          
   build_sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
