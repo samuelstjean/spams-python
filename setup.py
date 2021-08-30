@@ -65,7 +65,10 @@ def get_config():
         for _ in np.__config__.blas_opt_info.get('library_dirs', []):
             if _ not in libdirs:
                 libdirs.append(_)
-        libs.extend(['mkl_rt'])
+        if platform.system() == 'Windows':
+            libs.extend(['mkl_rt.1']) # the name changed in the newest mkl version 2021 somehow
+        else:
+            libs.extend(['mkl_rt'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
@@ -140,5 +143,4 @@ setup(name='spams-bin',
       install_requires=['numpy>=1.12',
                         'scipy>=0.19',
                         'Pillow>=6.0']
-                        # 'mkl-devel>=2021.3.0; platform_system=="Windows"'],
       )
