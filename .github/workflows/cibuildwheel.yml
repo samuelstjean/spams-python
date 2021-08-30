@@ -33,11 +33,12 @@ jobs:
       - name: Build wheels
         env:
           CIBW_SKIP: "*-win32 *-manylinux_i686 pp* cp27-* cp35-* cp36-*"
+                                            # --no-mangle mkl_core.1.dll
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
                                             delvewheel repair -w {dest_dir} {wheel}
                                             --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             --add-dll libiomp5md.dll;mkl_avx.1.dll;mkl_avx2.1.dll;mkl_avx512.1.dll;mkl_core.1.dll;mkl_def.1.dll;mkl_intel_thread.1.dll;mkl_mc.1.dll;mkl_mc3.1.dll;mkl_rt.1.dll;mkl_sequential.1.dll;mkl_tbb_thread.1.dll;mkl_vml_avx.1.dll;mkl_vml_avx2.1.dll;mkl_vml_avx512.1.dll;mkl_vml_cmpt.1.dll;mkl_vml_def.1.dll;mkl_vml_mc.1.dll;mkl_vml_mc2.1.dll;mkl_vml_mc3.1.dll
-                                            --no-mangle mkl_core.1.dll
+                                            --no-mangle-all
 
           CIBW_BEFORE_BUILD_WINDOWS: >
                                      nuget install intelmkl.redist.win-x64 -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
