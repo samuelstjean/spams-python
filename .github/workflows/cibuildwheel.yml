@@ -40,11 +40,11 @@ jobs:
                                             dir c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native &&
                                             delvewheel show {wheel}
                                             --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
-                                            --add-dll mkl_intel_thread.1.dll;mkl_rt.1.dll;libiomp5md.dll &&
+                                            --add-dll mkl_avx.1.dll;mkl_avx2.1.dll;mkl_avx512.1.dll;mkl_core.1.dll;mkl_def.1.dll;mkl_intel_thread.1.dll;mkl_mc.1.dll;mkl_mc3.1.dll;mkl_rt.1.dll;mkl_sequential.1.dll;mkl_tbb_thread.1.dll;mkl_vml_avx.1.dll;mkl_vml_avx2.1.dll;mkl_vml_avx512.1.dll;mkl_vml_cmpt.1.dll;mkl_vml_def.1.dll;mkl_vml_mc.1.dll;mkl_vml_mc2.1.dll;mkl_vml_mc3.1.dll &&
                                             delvewheel repair -w {dest_dir} {wheel}
                                             --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
-                                            --add-dll mkl_intel_thread.1.dll;mkl_rt.1.dll;libiomp5md.dll
-                                            --extract-dir c:\cibw_out --no-mangle-all &&
+                                            --add-dll mkl_avx.1.dll;mkl_avx2.1.dll;mkl_avx512.1.dll;mkl_core.1.dll;mkl_def.1.dll;mkl_intel_thread.1.dll;mkl_mc.1.dll;mkl_mc3.1.dll;mkl_rt.1.dll;mkl_sequential.1.dll;mkl_tbb_thread.1.dll;mkl_vml_avx.1.dll;mkl_vml_avx2.1.dll;mkl_vml_avx512.1.dll;mkl_vml_cmpt.1.dll;mkl_vml_def.1.dll;mkl_vml_mc.1.dll;mkl_vml_mc2.1.dll;mkl_vml_mc3.1.dll
+                                            --extract-dir c:\cibw_out &&
                                             dir  c:\cibw_out\spams_bin.libs
 
           CIBW_BEFORE_BUILD_WINDOWS: >
