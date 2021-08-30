@@ -44,8 +44,8 @@ jobs:
                                             delvewheel repair -w {dest_dir} {wheel}
                                             --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             --add-dll mkl_intel_thread.1.dll;mkl_rt.1.dll;libiomp5md.dll
-                                            --extract-dir c:\cibw &&
-                                            dir  c:\cibw
+                                            --extract-dir c:\cibw_out &&
+                                            dir  c:\cibw_out
 
           CIBW_BEFORE_BUILD_WINDOWS: >
                                      nuget install intelmkl.redist.win-x64     -Version 2021.3.0.524 -OutputDirectory C:\cibw &&
