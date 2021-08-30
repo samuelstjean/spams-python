@@ -37,6 +37,8 @@ jobs:
           CIBW_BUILD_VERBOSITY_WINDOWS: 3
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
                                             pip install mkl-devel>=2021.3.0 &&
+                                            dir c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native &&
+                                            dir c:\cibw\intelopenmp.redist.win-x64.2021.3.0.524\runtimes\win-x64\native &&
                                             delvewheel show {wheel} &&
                                             delvewheel repair -w {dest_dir} {wheel}
                                             --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win-x64.2021.3.0.524\runtimes\win-x64\native
