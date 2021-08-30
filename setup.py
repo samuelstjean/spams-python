@@ -12,7 +12,7 @@ from numpy.distutils.system_info import blas_info
 import distro
 
 # From nuget package
-mklversion = '2020.1.216'
+mklversion = '2021.3.0.524 '
 
 
 def get_config():
@@ -65,7 +65,7 @@ def get_config():
         for _ in np.__config__.blas_opt_info.get('library_dirs', []):
             if _ not in libdirs:
                 libdirs.append(_)
-        libs.extend(['mkl_rt'])
+        libs.extend(['mkl_rt.1'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
@@ -140,6 +140,5 @@ setup(name='spams-bin',
       install_requires=['numpy>=1.12',
                         'scipy>=0.19',
                         'Pillow>=6.0',
-                        'mkl==2019.0; platform_system=="Windows"',
-                        'intel-openmp==2019.0; platform_system=="Windows"'],
+                        'mkl>=2021.3.0; platform_system=="Windows"'],
       )
