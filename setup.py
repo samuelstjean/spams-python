@@ -139,6 +139,6 @@ setup(name='spams-bin',
       packages=find_packages(),
       install_requires=['numpy>=1.12',
                         'scipy>=0.19',
-                        'Pillow>=6.0',
-                        'mkl-devel>=2021.3.0; platform_system=="Windows"'],
+                        'Pillow>=6.0']
+                        # 'mkl-devel>=2021.3.0; platform_system=="Windows"'],
       )

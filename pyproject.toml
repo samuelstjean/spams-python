@@ -2,5 +2,5 @@
 requires = ["oldest-supported-numpy",
             "setuptools",
             "distro",
-            "wheel",
-            'mkl-devel>=2021.3.0; platform_system=="Windows"']
+            "wheel"]
+            # 'mkl-devel>=2021.3.0; platform_system=="Windows"']
