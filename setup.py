@@ -66,7 +66,7 @@ def get_config():
         # libs.extend(['mkl_rt'])
         # libs.extend(['mkl_intel_ilp64', 'mkl_intel_thread', 'mkl_core', 'libiomp5md'])
     else:
-        if 'centos' in distro.linux_distribution(full_distribution_name=False):
+        if 'centos' in distro.id():
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
         else:
             libs.extend(['openblas'])
@@ -85,7 +85,7 @@ def get_config():
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
-        dir_path = os.path.dirname(os.path.realpath(__file__))
+        # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
@@ -93,6 +93,8 @@ def get_config():
         # libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
         libs.extend(['openblas'])
         # libdirs.extend([libpath, libpath2, libpath3])
+        libpath = os.path.join('C:\\Miniconda','Library', 'lib')
+        libdirs.extend([libpath])
 
     return incs, libs, libdirs, cc_flags, link_flags
 
