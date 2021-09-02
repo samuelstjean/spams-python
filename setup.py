@@ -87,7 +87,7 @@ def get_config():
         # Look for local intel mkl
         libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
-        libpath2 = os.path.join('c:\\cibw\\intelmkl.devel.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
+        libpath2 = os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
         libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
         libdirs.extend([libpath, libpath2, libpath3])
 
