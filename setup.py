@@ -13,8 +13,8 @@ import distro
 
 # From nuget package
 # mklversion = '2021.3.0.524'
-mklversion = '2020.1.216'
-openmpversion = '2021.3.0.3372'
+# mklversion = '2020.1.216'
+# openmpversion = '2021.3.0.3372'
 
 
 def get_config():
@@ -45,7 +45,7 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-        is_mkl = True
+        is_mkl = False
     else:
         libs = ['stdc++']
 
@@ -64,7 +64,7 @@ def get_config():
             if _ not in libdirs:
                 libdirs.append(_)
         # libs.extend(['mkl_rt'])
-        libs.extend(['mkl_intel_ilp64', 'mkl_intel_thread', 'mkl_core', 'libiomp5md'])
+        # libs.extend(['mkl_intel_ilp64', 'mkl_intel_thread', 'mkl_core', 'libiomp5md'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
@@ -87,11 +87,12 @@ def get_config():
     if platform.system() == 'Windows':
         dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
-        libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
+        # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
-        libpath2 = os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
-        libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
-        libdirs.extend([libpath, libpath2, libpath3])
+        # libpath2 = os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
+        # libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
+        libs.extend(['openblas'])
+        # libdirs.extend([libpath, libpath2, libpath3])
 
     return incs, libs, libdirs, cc_flags, link_flags
 
