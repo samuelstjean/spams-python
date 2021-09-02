@@ -24,11 +24,7 @@ def get_config():
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
 
-    cc_flags = ['-fPIC']
-    if sys.maxsize > 2**32:
-        cc_flags.append('-m64')
-    else:
-        cc_flags.append('-m32')
+    cc_flags = ['-fPIC', '-m64']
 
     for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
         if _ not in cc_flags:
@@ -76,7 +72,7 @@ def get_config():
     if platform.system() != 'Darwin':
         if platform.system() == 'Windows':
             cc_flags.append('-openmp')
-            link_flags.append('-openmp')
+            # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
