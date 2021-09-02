@@ -63,7 +63,7 @@ def get_config():
             if _ not in libdirs:
                 libdirs.append(_)
         # libs.extend(['mkl_rt'])
-        libs.append(['mkl_intel_ilp64.lib', 'mkl_intel_thread.lib', 'mkl_core.lib', 'libiomp5md.lib'])
+        libs.extend(['mkl_intel_ilp64.lib', 'mkl_intel_thread.lib', 'mkl_core.lib', 'libiomp5md.lib'])
     else:
         if 'centos' in distro.linux_distribution(full_distribution_name=False):
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
