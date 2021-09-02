@@ -12,7 +12,8 @@ from numpy.distutils.system_info import blas_info
 import distro
 
 # From nuget package
-mklversion = '2021.3.0.524'
+# mklversion = '2021.3.0.524'
+mklversion = '2020.1.216'
 openmpversion = '2021.3.0.3372'
 
 
