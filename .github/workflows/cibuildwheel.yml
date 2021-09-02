@@ -43,9 +43,8 @@ jobs:
                                             --no-mangle mkl_core.1.dll;mkl_intel_thread.1.dll
 
           CIBW_BEFORE_BUILD_WINDOWS: >
-                                     nuget install intelmkl.redist.win-x64 -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
                                      nuget install intelmkl.devel.win-x64  -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
-                                     nuget install intelopenmp.redist.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw &&
+                                     nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw &&
                                      pip install delvewheel
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas

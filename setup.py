@@ -13,6 +13,7 @@ import distro
 
 # From nuget package
 mklversion = '2021.3.0.524'
+openmpversion = '2021.3.0.3372'
 
 
 def get_config():
@@ -87,7 +88,8 @@ def get_config():
         libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
         libpath2 = os.path.join('c:\\cibw\\intelmkl.devel.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
-        libdirs.extend([libpath, libpath2])
+        libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
+        libdirs.extend([libpath, libpath2, libpath3])
 
     return incs, libs, libdirs, cc_flags, link_flags
 
