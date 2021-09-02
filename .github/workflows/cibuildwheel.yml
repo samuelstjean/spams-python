@@ -38,7 +38,9 @@ jobs:
                                             # --add-path c:\cibw\intelmkl.redist.win-x64.2021.3.0.524\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
                                             delvewheel show {wheel}
+                                            --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             && delvewheel repair -w {dest_dir} {wheel}
+                                            --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             --extract-dir C:\cibw\out
                                             && dir C:\cibw\out\spams_bin.libs
 
