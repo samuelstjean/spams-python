@@ -93,10 +93,10 @@ def get_config():
         # libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
         libs.extend(['openblas'])
         # libdirs.extend([libpath, libpath2, libpath3])
-        libpath = os.path.join('C:', 'Miniconda', 'envs', 'openblas', 'Library', 'lib')
+        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
         libdirs.extend([libpath])
-        link_flags.extend([libpath])
-
+        incs.extend(['C:/Miniconda/envs/openblas/Library/include'])
+        incs.extend(['C:/Miniconda/envs/openblas/Library/include/openblas'])
 
     return incs, libs, libdirs, cc_flags, link_flags
 
