@@ -47,7 +47,8 @@ jobs:
                                             # --extract-dir C:\cibw\out
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
                                             delvewheel show {wheel} &&
-                                            delvewheel repair -w {dest_dir} {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native &&
+                                            dir c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native &&
+                                            delvewheel repair -w {dest_dir} {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native --extract-dir C:\cibw\out &&
                                             dir C:\cibw\out\spams_bin.libs
 
                                     #  pip install delvewheel && conda install openblas libopenblas && dir C:\Miniconda\envs\openblas\Library\lib
