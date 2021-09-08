@@ -21,12 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Setup Miniconda
-      #   uses: conda-incubator/setup-miniconda@v2.1.1
-      #   with:
-      #     activate-environment: openblas
-      #     auto-activate-base: false
-      #     channels: conda-forge
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2.1.1
+        with:
+          activate-environment: openblas
+          auto-activate-base: false
+          channels: conda-forge
 
       - uses: actions/setup-python@v2
         name: Install Python
@@ -45,17 +45,18 @@ jobs:
                                             # --add-path c:\cibw\intelmkl.redist.win-x64.2020.1.216\runtimes\win-x64\native;c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             # --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native
                                             # --extract-dir C:\cibw\out
+                                            # delvewheel show {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native &&
+                                            # delvewheel repair -w {dest_dir} {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native --extract-dir C:\cibw\out &&
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
-                                            delvewheel show {wheel} &&
-                                            dir c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native &&
-                                            delvewheel repair -w {dest_dir} {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native --extract-dir C:\cibw\out &&
+                                            delvewheel show {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin &&
+                                            delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin --extract-dir C:\cibw\out &&
                                             dir C:\cibw\out\spams_bin.libs
 
-                                    #  pip install delvewheel && conda install openblas libopenblas && dir C:\Miniconda\envs\openblas\Library\lib
+                                    #  pip install delvewheel &&
+                                    #  nuget install intelmkl.static.win-x64  -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
+                                    #  nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw
           CIBW_BEFORE_BUILD_WINDOWS: >
-                                     pip install delvewheel &&
-                                     nuget install intelmkl.static.win-x64  -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
-                                     nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw
+                                     pip install delvewheel && conda install openblas libopenblas && dir C:\Miniconda\envs\openblas\Library\lib
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
