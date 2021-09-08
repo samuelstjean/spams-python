@@ -12,9 +12,9 @@ from numpy.distutils.system_info import blas_info
 import distro
 
 # From nuget package
-# mklversion = '2021.3.0.524'
+mklversion = '2021.3.0.524'
 # mklversion = '2020.1.216'
-# openmpversion = '2021.3.0.3372'
+openmpversion = '2021.3.0.3372'
 
 
 def get_config():
@@ -45,7 +45,7 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-        is_mkl = False
+        # is_mkl = False
     else:
         libs = ['stdc++']
 
@@ -64,7 +64,7 @@ def get_config():
             if _ not in libdirs:
                 libdirs.append(_)
         # libs.extend(['mkl_rt'])
-        # libs.extend(['mkl_intel_ilp64', 'mkl_intel_thread', 'mkl_core', 'libiomp5md'])
+        libs.extend(['mkl_intel_ilp64', 'mkl_intel_thread', 'mkl_core', 'libiomp5md'])
     else:
         if 'centos' in distro.id():
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
@@ -87,16 +87,18 @@ def get_config():
     if platform.system() == 'Windows':
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
-        # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
+        libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
-        # libpath2 = os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
-        # libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
-        libs.extend(['openblas'])
-        # libdirs.extend([libpath, libpath2, libpath3])
-        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
-        libdirs.extend([libpath])
-        incs.extend(['C:/Miniconda/envs/openblas/Library/include'])
-        incs.extend(['C:/Miniconda/envs/openblas/Library/include/openblas'])
+        libpath2 = os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
+        libpath3 = os.path.join('c:\\cibw\\intelopenmp.devel.win.{}'.format(openmpversion), 'lib', 'native', 'win-x64')
+        # libs.extend(['openblas'])
+        libdirs.extend([libpath, libpath2, libpath3])
+        incs.append(os.path.join('c:\\cibw\\intelmkl.static.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64', 'include'))
+        cc_flags.append('/DMKL_ILP64')
+        # libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
+        # libdirs.extend([libpath])
+        # incs.extend(['C:/Miniconda/envs/openblas/Library/include'])
+        # incs.extend(['C:/Miniconda/envs/openblas/Library/include/openblas'])
 
     return incs, libs, libdirs, cc_flags, link_flags
 
