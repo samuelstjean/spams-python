@@ -85,7 +85,7 @@ def get_config():
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
-        # dir_path = os.path.dirname(os.path.realpath(__file__))
+        dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         # Path from nuget tagged version
