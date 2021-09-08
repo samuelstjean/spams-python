@@ -45,7 +45,7 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-        # is_mkl = False
+        is_mkl = True
     else:
         libs = ['stdc++']
 
