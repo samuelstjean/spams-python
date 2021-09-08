@@ -54,7 +54,7 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: >
                                      pip install delvewheel &&
                                      nuget install intelmkl.static.win-x64  -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
-                                     nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw &&
+                                     nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
