@@ -11,9 +11,6 @@ from numpy.distutils.system_info import blas_info
 
 import distro
 
-# From nuget package
-mklversion = '2020.1.216'
-
 
 def get_config():
 
@@ -24,11 +21,7 @@ def get_config():
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
 
-    cc_flags = ['-fPIC']
-    if sys.maxsize > 2**32:
-        cc_flags.append('-m64')
-    else:
-        cc_flags.append('-m32')
+    cc_flags = ['-fPIC', '-m64']
 
     for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
         if _ not in cc_flags:
@@ -47,7 +40,7 @@ def get_config():
 
     if platform.system() == 'Windows':
         libs = []
-        is_mkl = True
+        is_mkl = False
     else:
         libs = ['stdc++']
 
@@ -67,7 +60,7 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.linux_distribution(full_distribution_name=False):
+        if 'centos' in distro.id():
             libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
         else:
             libs.extend(['openblas'])
@@ -76,7 +69,7 @@ def get_config():
     if platform.system() != 'Darwin':
         if platform.system() == 'Windows':
             cc_flags.append('-openmp')
-            link_flags.append('-openmp')
+            # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
@@ -86,12 +79,14 @@ def get_config():
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
-        dir_path = os.path.dirname(os.path.realpath(__file__))
+        # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
-        libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
-        # Path from nuget tagged version
-        libpath2 = os.path.join('c:\\cibw\\intelmkl.devel.win-x64.{}'.format(mklversion), 'lib', 'native', 'win-x64')
-        libdirs.extend([libpath, libpath2])
+        # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
+        libs.append('openblas')
+        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
+        libdirs.append(libpath)
+        incs.append('C:/Miniconda/envs/openblas/Library/include')
+        incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
 
     return incs, libs, libdirs, cc_flags, link_flags
 
@@ -129,7 +124,7 @@ unlike the official version which can use any blas implementation.
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
-      version='2.6.3',
+      version='2.6.4',
       description='Python interface for SPAMS - binary wheel with openblas (mac, linux) and intel mkl (windows)',
       long_description=long_description,
       author='Julien Mairal',
@@ -137,5 +132,6 @@ setup(name='spams-bin',
       url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
       packages=find_packages(),
-      install_requires=['numpy>=1.12', 'scipy>=0.19', 'Pillow>=6.0'],
-      )
+      install_requires=['numpy>=1.12',
+                        'scipy>=0.19'],
+      extras_require={"test": ['Pillow>=6.0']})
