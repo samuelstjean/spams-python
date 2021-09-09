@@ -145,6 +145,5 @@ setup(name='spams-bin',
       ext_modules=[spams_wrap],
       packages=find_packages(),
       install_requires=['numpy>=1.12',
-                        'scipy>=0.19',
-                        'Pillow>=6.0']
-      )
+                        'scipy>=0.19'],
+      extras_require={"test": ['Pillow>=6.0']})

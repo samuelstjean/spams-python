@@ -49,19 +49,17 @@ jobs:
                                             # delvewheel repair -w {dest_dir} {wheel} --add-path c:\cibw\intelopenmp.redist.win.2021.3.0.3372\runtimes\win-x64\native --extract-dir C:\cibw\out &&
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
                                             delvewheel show {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin &&
-                                            delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin --extract-dir C:\cibw\out &&
-                                            dir C:\cibw\out\spams_bin.libs
+                                            delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
 
                                     #  pip install delvewheel &&
                                     #  nuget install intelmkl.static.win-x64  -Version 2021.3.0.524  -OutputDirectory C:\cibw &&
                                     #  nuget install intelopenmp.devel.win  -Version 2021.3.0.3372 -OutputDirectory C:\cibw
-          CIBW_BEFORE_BUILD_WINDOWS: >
-                                     pip install delvewheel && conda install openblas libopenblas && dir C:\Miniconda\envs\openblas\Library\lib
+          CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
+          CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
-          # CIBW_TEST_COMMAND_WINDOWS: '' # Because it requires the mkl dll, seems like we can't run it since it gets separated when testing from the build env :/
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
