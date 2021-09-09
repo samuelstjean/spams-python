@@ -125,7 +125,7 @@ The source code for this fork is also available at https://github.com/samuelstje
 
 setup(name='spams-bin',
       version='2.6.4',
-      description='Python interface for SPAMS - binary wheel with openblas (mac, linux) and intel mkl (windows)',
+      description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',
       author_email='spams.dev@inria.fr',
