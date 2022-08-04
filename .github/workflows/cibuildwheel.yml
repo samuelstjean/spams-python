@@ -35,7 +35,7 @@ jobs:
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install cibuildwheel==2.3.1
+          python -m pip install cibuildwheel==2.8.1
 
       - name: Build wheels
         env:
@@ -44,8 +44,8 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas
-          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
-          CIBW_BEFORE_BUILD_MACOS: brew install openblas
+          CIBW_BEFORE_BUILD_LINUX: conda install openblas libopenblas
+          CIBW_BEFORE_BUILD_MACOS: conda install openblas libopenblas
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
