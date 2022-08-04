@@ -25,6 +25,7 @@ jobs:
         with:
           activate-environment: openblas
           auto-activate-base: false
+          channels: conda-forge
 
       - uses: actions/setup-python@v2
         name: Install Python
