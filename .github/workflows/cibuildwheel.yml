@@ -50,7 +50,7 @@ jobs:
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
 
-          CIBW_ARCHS_MACOS: universal2
+          CIBW_ARCHS_MACOS: x86_64 arm64
           
         run: |
           python -m cibuildwheel --output-dir wheelhouse
