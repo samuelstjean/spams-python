@@ -17,9 +17,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04, windows-latest, macos-latest]
-    defaults:
-      run:
-        shell: bash -l {0}  
     steps:
       - uses: actions/checkout@v2
 
@@ -45,8 +42,8 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas
-          CIBW_BEFORE_BUILD_LINUX: conda install openblas libopenblas
-          CIBW_BEFORE_BUILD_MACOS: conda install openblas libopenblas
+          CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
+          CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
