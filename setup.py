@@ -10,6 +10,8 @@ from tempfile import gettempdir
 import numpy as np
 from numpy.distutils.system_info import blas_info
 
+is_mac = platform.system() == 'Darwin'
+is_windows = platform.system() == 'Windows'
 
 def get_config():
 
@@ -49,8 +51,14 @@ def get_config():
         # Grab a fresh openblas for the current platform
         cmd = 'python', 'openblas_support.py'
         subprocess.run(cmd)
-        openblasdir = os.path.join(gettempdir(), 'openblas')
-        incs.append(os.path.join(openblasdir, 'include'))
+        if is_windows:
+            includedir = gettempdir()
+            libdir = gettempdir()
+        else:
+            openblasdir = os.path.join(gettempdir(), 'openblas')
+            includedir = os.path.join(openblasdir, 'include')
+            libdir = os.path.join(openblasdir, 'lib')
+        incs.append(includedir)
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -63,11 +71,11 @@ def get_config():
         libs.extend(['mkl_rt'])
     else:
         libs.extend(['openblas'])
-        libdirs.append(os.path.join(openblasdir, 'lib'))
+        libdirs.append(libdir)
 
     # Check for openmp flag, mac is done later
-    if platform.system() != 'Darwin':
-        if platform.system() == 'Windows':
+    if not is_mac:
+        if is_windows:
             cc_flags.append('-openmp')
             # link_flags.append('-openmp')
         else:
@@ -79,7 +87,7 @@ def get_config():
 
 incs, libs, libdirs, cc_flags, link_flags = get_config()
 
-if platform.system() == 'Windows':
+if is_windows:
     source = ['spams_wrap/spams_wrap-windows.cpp']
 else:
     source = ['spams_wrap/spams_wrap.cpp']
@@ -96,7 +104,7 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-if platform.system() == 'Darwin':
+if is_mac:
     add_openmp_flags_if_available(spams_wrap)
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),

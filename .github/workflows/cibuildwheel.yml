@@ -43,7 +43,8 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Users\RUNNER~1\AppData\Local\Temp\openblas\lib\
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel #&& conda install openblas libopenblas
           CIBW_ENVIRONMENT_LINUX: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openblas/lib
-          CIBW_ENVIRONMENT_MACOS: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/openblas/lib
+          CIBW_ENVIRONMENT_MACOS: REPAIR_LIBRARY_PATH=/tmp/openblas/lib
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=$REPAIR_LIBRARY_PATH delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
           # CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel lapack-devel -y
           # CIBW_BEFORE_BUILD_MACOS: brew install openblas
 
