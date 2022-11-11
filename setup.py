@@ -39,7 +39,10 @@ def get_config():
         if _ not in link_flags:
             link_flags.append(_)
 
-    libs = ['stdc++']
+    if is_windows:
+        libs = []
+    else:
+        libs = ['stdc++']
 
     is_mkl = False
     for lib in np.__config__.blas_opt_info.get('libraries', []):
