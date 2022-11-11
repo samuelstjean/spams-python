@@ -1,15 +1,14 @@
 import os
 import platform
-import sys
+import subprocess
 
 from setuptools import setup, Extension, find_packages
-from distutils.sysconfig import get_python_inc
+from sysconfig import get_paths
 from openmp_helpers import add_openmp_flags_if_available
+from tempfile import gettempdir
 
 import numpy as np
 from numpy.distutils.system_info import blas_info
-
-import distro
 
 
 def get_config():
@@ -18,7 +17,7 @@ def get_config():
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', x))
     incs.append(np.get_include())
-    incs.append(get_python_inc())
+    incs.append(get_paths()['include'])
     incs.extend(blas_info().get_include_dirs())
 
     cc_flags = ['-fPIC', '-m64']
@@ -38,17 +37,20 @@ def get_config():
         if _ not in link_flags:
             link_flags.append(_)
 
-    if platform.system() == 'Windows':
-        libs = []
-        is_mkl = False
-    else:
-        libs = ['stdc++']
+    libs = ['stdc++']
 
-        is_mkl = False
-        for lib in np.__config__.blas_opt_info.get('libraries', []):
-            if 'mkl' in lib:
-                is_mkl = True
-                break
+    is_mkl = False
+    for lib in np.__config__.blas_opt_info.get('libraries', []):
+        if 'mkl' in lib:
+            is_mkl = True
+            break
+
+    if not is_mkl:
+        # Grab a fresh openblas for the current platform
+        cmd = 'python', 'openblas_support.py'
+        subprocess.run(cmd)
+        openblasdir = os.path.join(gettempdir(), 'openblas')
+        incs.append(os.path.join(openblasdir, 'include'))
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -60,10 +62,8 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
-            libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
-        else:
-            libs.extend(['openblas'])
+        libs.extend(['openblas'])
+        libdirs.append(os.path.join(openblasdir, 'lib'))
 
     # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
@@ -73,20 +73,6 @@ def get_config():
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
-
-    if platform.system() == 'Darwin':
-        cc_flags.append('-I/usr/local/opt/openblas/include')
-        link_flags.append('-L/usr/local/opt/openblas/lib')
-
-    if platform.system() == 'Windows':
-        # dir_path = os.path.dirname(os.path.realpath(__file__))
-        # Look for local intel mkl
-        # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
-        libs.append('openblas')
-        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
-        libdirs.append(libpath)
-        incs.append('C:/Miniconda/envs/openblas/Library/include')
-        incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
 
     return incs, libs, libdirs, cc_flags, link_flags
 
@@ -105,7 +91,6 @@ spams_wrap = Extension(
     extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
     library_dirs=libdirs,
     libraries=libs,
-    # strip the .so
     extra_link_args=link_flags,
     language='c++',
     depends=['spams_wrap/spams.h'],
