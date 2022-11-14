@@ -18,5 +18,5 @@ which strip
 curl -L https://github.com/scipy/scipy-ci-artifacts/raw/main/openblas_32_if.zip -o openblas_32_if.zip
 unzip openblas_32_if.zip -d /c
 cp /c/opt/openblas/if_32/64/bin/*.dll /c/opt/openblas/openblas_dll
-cp /c/opt/openblas/if_32/64/bin/include /c/opt/openblas/
-cp /c/opt/openblas/if_32/64/bin/lib /c/opt/openblas/
+cp /c/opt/openblas/if_32/64/include /c/opt/openblas/
+cp /c/opt/openblas/if_32/64/lib /c/opt/openblas/
