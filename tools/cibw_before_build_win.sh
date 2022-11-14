@@ -16,7 +16,7 @@ mkdir -p C:/opt/openblas/openblas_dll
 
 # 64-bit openBLAS
 curl -L https://github.com/xianyi/OpenBLAS/releases/download/v0.3.21/OpenBLAS-0.3.21-x64.zip -o openblas_32_if.zip
-unzip openblas_32_if.zip -d C:/opt/openblas
+unzip openblas_32_if.zip -d C:/opt/openblas -f
 cp C:/opt/openblas/bin/*.dll C:/opt/openblas/openblas_dll
 # cp -r C:/opt/openblas/if_32/64/include C:/opt/openblas/
 # cp -r C:/opt/openblas/if_32/64/lib C:/opt/openblas/
