@@ -91,8 +91,8 @@ def get_config():
 
             libdirs.append(libdir)
             incs.append(includedir)
-
-        libs.extend(['openblas'])
+        else:
+            libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if not is_mac:
