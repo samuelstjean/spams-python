@@ -60,7 +60,7 @@ def get_config():
 
     if not is_mkl:
         # Grab a fresh openblas for the current platform
-        cmd = 'python', 'openblas_support.py'
+        cmd = 'python', os.path.join('tools', 'openblas_support.py')
         subprocess.run(cmd)
         if is_windows:
             includedir = os.getcwd()

@@ -3,7 +3,7 @@
 set -xe
 
 # Install Openblas
-PYTHONPATH=tools python -c "import openblas_support; openblas_support.make_init('spams')"
+# PYTHONPATH=tools python -c "import openblas_support; openblas_support.make_init('spams')"
 mkdir -p /c/opt/openblas/if_32/64/lib/pkgconfig
 
 # delvewheel is the equivalent of delocate/auditwheel for windows.
