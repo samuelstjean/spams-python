@@ -180,7 +180,7 @@ def unpack_windows_zip(fname):
     with zipfile.ZipFile(fname, 'r') as zf:
         # Get the openblas.a file, but not openblas.dll.a nor openblas.dev.a
         lib = [x for x in zf.namelist() if OPENBLAS_LONG in x and
-               x.endswith('a') or x.endswith('lib')]
+               x.endswith('a') or x.endswith('lib') or x.endswith('dll')]
         if not lib:
             return 'could not find libopenblas_%s*.a ' \
                     'in downloaded zipfile' % OPENBLAS_LONG

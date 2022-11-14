@@ -63,12 +63,15 @@ def get_config():
         cmd = 'python', os.path.join('tools', 'openblas_support.py')
         subprocess.run(cmd)
         if is_windows:
-            includedir = os.getcwd()
-            libdir = os.getcwd()
+            # local build
+            # includedir = os.getcwd()
+            # libdir = os.getcwd()
+            openblasdir = os.path.join('c', 'openblas')
         else:
             openblasdir = os.path.join(os.getcwd(), 'openblas')
-            includedir = os.path.join(openblasdir, 'include')
-            libdir = os.path.join(openblasdir, 'lib')
+
+        includedir = os.path.join(openblasdir, 'include')
+        libdir = os.path.join(openblasdir, 'lib')
         incs.append(includedir)
 
     libdirs = blas_info().get_lib_dirs()
