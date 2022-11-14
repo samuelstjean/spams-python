@@ -23,7 +23,7 @@ def test_sparseProject():
     t = tac - tic
     print("  Time : ", t)
     if (t != 0):
-        print("%f signals of size %d projected per second" %((X.shape[1] / t),X.shape[0]))
+        print("%f signals of size %d projected per second" %((X.shape[1] / (t+1e-5)),X.shape[0]))
     s = np.abs(X1).sum(axis=0)
     print("Checking constraint: %f, %f" %(min(s),max(s)))
 
@@ -36,7 +36,7 @@ def test_sparseProject():
     t = tac - tic
     print("  Time : ", t)
     if (t != 0):
-        print("%f signals of size %d projected per second" %((X.shape[1] / t),X.shape[0]))
+        print("%f signals of size %d projected per second" %((X.shape[1] / (t+1e-5)),X.shape[0]))
     constraints = (X1*X1).sum(axis=0) + param['lambda1'] * np.abs(X1).sum(axis=0)
     print('Checking constraint: %f, %f (Projection is approximate : stops at a kink)' %(min(constraints),max(constraints)))
 
@@ -54,7 +54,7 @@ def test_sparseProject():
     t = tac - tic
     print("  Time : ", t)
     if (t != 0):
-        print("%f signals of size %d projected per second" %((X.shape[1] / t),X.shape[0]))
+        print("%f signals of size %d projected per second" %((X.shape[1] / (t+1e-5)),X.shape[0]))
     constraints = 0.5 * param['lambda3'] * (X1*X1).sum(axis=0) + param['lambda1'] * np.abs(X1).sum(axis=0) + \
     param['lambda2'] * np.abs(X1[2:,] - X1[1:-1,]).sum(axis=0)
     print('Checking constraint: %f, %f (Projection is approximate : stops at a kink)' %(min(constraints),max(constraints)))
@@ -75,7 +75,7 @@ def test_cd():
     t = tac - tic
     xd = X - D * alpha
     E = np.mean(0.5 * (xd * xd).sum(axis=0) + lambda1 * np.abs(alpha).sum(axis=0))
-    print("%f signals processed per second for LARS" %(X.shape[1] / t))
+    print("%f signals processed per second for LARS" %(X.shape[1] / (t+1e-5)))
     print('Objective function for LARS: %g' %E)
     tol = 0.001
     itermax = 1000
@@ -85,7 +85,7 @@ def test_cd():
     alpha2 = spams.cd(X,D,A0,lambda1 = lambda1,mode = mode,tol = tol, itermax = itermax,numThreads = 4)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second for CD" %(X.shape[1] / t))
+    print("%f signals processed per second for CD" %(X.shape[1] / (t+1e-5)))
     xd = X - D * alpha2
     E = np.mean(0.5 * (xd * xd).sum(axis=0) + lambda1 * np.abs(alpha).sum(axis=0))
     print('Objective function for CD: %g' %E)
@@ -111,7 +111,7 @@ def test_l1L2BCD():
     alpha = spams.l1L2BCD(X,D,alpha0,ind_groups,lambda1 = lambda1,mode = mode,itermax = itermax,tol = tol,numThreads = numThreads)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second" %(X.shape[1] / t))
+    print("%f signals processed per second" %(X.shape[1] / (t+1e-5)))
 
     return None
 
@@ -139,7 +139,7 @@ def test_lasso():
     alpha = spams.lasso(X,D = D,return_reg_path = False,**param)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second\n" %(float(X.shape[1]) / t))
+    print("%f signals processed per second\n" %(float(X.shape[1]) / (t+1e-5)))
 ########################################
 # Regularization path of a single signal
 ########################################
@@ -171,7 +171,7 @@ def test_lassoMask():
     alpha = spams.lassoMask(X,D,mask,**param)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second\n" %(float(X.shape[1]) / t))
+    print("%f signals processed per second\n" %(float(X.shape[1]) / (t+1e-5)))
 
     return None
 
@@ -193,7 +193,7 @@ def test_lassoWeighted():
     alpha = spams.lassoWeighted(X,D,W,**param)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second\n" %(float(X.shape[1]) / t))
+    print("%f signals processed per second\n" %(float(X.shape[1]) / (t+1e-5)))
 
     return None
 
@@ -210,7 +210,7 @@ def test_omp():
     alpha = spams.omp(X,D,L=L,eps= eps,return_reg_path = False,numThreads = numThreads)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second\n" %(float(X.shape[1]) / t))
+    print("%f signals processed per second\n" %(float(X.shape[1]) / (t+1e-5)))
 ########################################
 # Regularization path of a single signal
 ########################################
@@ -240,7 +240,7 @@ def test_ompMask():
     alpha = spams.ompMask(X,D,mask,L = L,eps = eps,return_reg_path = False,numThreads = numThreads)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second\n" %(float(X.shape[1]) / t))
+    print("%f signals processed per second\n" %(float(X.shape[1]) / (t+1e-5)))
 
     return None
 
@@ -254,7 +254,7 @@ def test_somp():
     alpha = spams.somp(X,D,ind_groups,L = 10,eps = 0.1,numThreads=-1)
     tac = time.time()
     t = tac - tic
-    print("%f signals processed per second" %(X.shape[1] / t))
+    print("%f signals processed per second" %(X.shape[1] / (t+1e-5)))
     return None
 
 tests = [
