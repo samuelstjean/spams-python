@@ -85,7 +85,7 @@ def get_config():
         libs.extend(['mkl_rt'])
     else:
         if is_windows:
-            openblasdir = os.path.join('c', 'opt', 'openblas')
+            openblasdir = os.path.join('C:', 'opt', 'openblas')
             includedir = os.path.join(openblasdir, 'include')
             libdir = os.path.join(openblasdir, 'lib')
 
