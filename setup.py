@@ -60,19 +60,19 @@ def get_config():
 
     if not is_mkl:
         # Grab a fresh openblas for the current platform
-        cmd = 'python', os.path.join('tools', 'openblas_support.py')
-        subprocess.run(cmd)
+        # cmd = 'python', os.path.join('tools', 'openblas_support.py')
+        # subprocess.run(cmd)
         if is_windows:
             # local build
             # includedir = os.getcwd()
             # libdir = os.getcwd()
-            openblasdir = os.path.join('c', 'openblas')
-        else:
-            openblasdir = os.path.join(os.getcwd(), 'openblas')
+            openblasdir = os.path.join('c', 'opt', 'openblas')
+            includedir = os.path.join(openblasdir, 'include')
+            libdir = os.path.join(openblasdir, 'lib')
+        # else:
+        #     openblasdir = os.path.join(os.getcwd(), 'openblas')
 
-        includedir = os.path.join(openblasdir, 'include')
-        libdir = os.path.join(openblasdir, 'lib')
-        incs.append(includedir)
+            incs.append(includedir)
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
