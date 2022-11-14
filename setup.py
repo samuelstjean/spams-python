@@ -58,21 +58,21 @@ def get_config():
                 is_mkl = True
                 break
 
-    if not is_mkl:
-        # Grab a fresh openblas for the current platform
-        # cmd = 'python', os.path.join('tools', 'openblas_support.py')
-        # subprocess.run(cmd)
-        if is_windows:
-            # local build
-            # includedir = os.getcwd()
-            # libdir = os.getcwd()
-            openblasdir = os.path.join('c', 'opt', 'openblas')
-            includedir = os.path.join(openblasdir, 'include')
-            libdir = os.path.join(openblasdir, 'lib')
-        # else:
-        #     openblasdir = os.path.join(os.getcwd(), 'openblas')
+    # if not is_mkl:
+    #     # Grab a fresh openblas for the current platform
+    #     # cmd = 'python', os.path.join('tools', 'openblas_support.py')
+    #     # subprocess.run(cmd)
+    #     if is_windows:
+    #         # local build
+    #         # includedir = os.getcwd()
+    #         # libdir = os.getcwd()
+    #         openblasdir = os.path.join('c', 'opt', 'openblas')
+    #         includedir = os.path.join(openblasdir, 'include')
+    #         libdir = os.path.join(openblasdir, 'lib')
+    #     # else:
+    #     #     openblasdir = os.path.join(os.getcwd(), 'openblas')
 
-            incs.append(includedir)
+    #         incs.append(includedir)
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -84,8 +84,15 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
+        if is_windows:
+            openblasdir = os.path.join('c', 'opt', 'openblas')
+            includedir = os.path.join(openblasdir, 'include')
+            libdir = os.path.join(openblasdir, 'lib')
+
+            libdirs.append(libdir)
+            incs.append(includedir)
+
         libs.extend(['openblas'])
-        libdirs.append(libdir)
 
     # Check for openmp flag, mac is done later
     if not is_mac:
