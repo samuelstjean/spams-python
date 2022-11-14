@@ -98,7 +98,7 @@ def get_config():
     # Check for openmp flag, mac is done later
     if not is_mac:
         if is_windows:
-            cc_flags.append('-openmp')
+            cc_flags.append('-openmp:llvm')
             # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
