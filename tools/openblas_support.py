@@ -42,7 +42,7 @@ import textwrap
 import time
 import zipfile
 
-from tempfile import mkstemp, gettempdir
+from tempfile import mkstemp
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
@@ -187,16 +187,16 @@ def unpack_windows_zip(fname):
         for l in lib:
             _, ext = os.path.splitext(l)
             if get_ilp64() is None:
-                target = os.path.join(gettempdir(), f'openblas{ext}')
+                target = os.path.join(os.getcwd(), f'openblas{ext}')
             else:
-                target = os.path.join(gettempdir(), f'openblas64_{ext}')
+                target = os.path.join(os.getcwd(), f'openblas64_{ext}')
             with open(target, 'wb') as fid:
                 fid.write(zf.read(l))
     return target
 
 
 def unpack_targz(fname):
-    target = os.path.join(gettempdir(), 'openblas')
+    target = os.path.join(os.getcwd(), 'openblas')
     if not os.path.exists(target):
         os.mkdir(target)
     with tarfile.open(fname, 'r') as zf:

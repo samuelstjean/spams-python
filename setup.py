@@ -4,8 +4,7 @@ import subprocess
 
 from setuptools import setup, Extension, find_packages
 from sysconfig import get_paths
-from openmp_helpers import add_openmp_flags_if_available
-from tempfile import gettempdir
+from tools.openmp_helpers import add_openmp_flags_if_available
 
 import numpy as np
 from numpy.distutils.system_info import blas_info
@@ -22,22 +21,30 @@ def get_config():
     incs.append(get_paths()['include'])
     incs.extend(blas_info().get_include_dirs())
 
+    try:
+        np.__config__.blas_opt_info
+        numpy_config = True
+    except AttributeError:
+        numpy_config = False
+
     cc_flags = ['-fPIC', '-m64']
 
-    for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
+    if numpy_config:
+        for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
+            if _ not in cc_flags:
+                cc_flags.append(_)
+        for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
+            if _ not in cc_flags:
+                cc_flags.append(_)
 
     link_flags = []
-    for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
+    if numpy_config:
+        for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
+            if _ not in link_flags:
+                link_flags.append(_)
+        for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
+            if _ not in link_flags:
+                link_flags.append(_)
 
     if is_windows:
         libs = []
@@ -45,20 +52,21 @@ def get_config():
         libs = ['stdc++']
 
     is_mkl = False
-    for lib in np.__config__.blas_opt_info.get('libraries', []):
-        if 'mkl' in lib:
-            is_mkl = True
-            break
+    if numpy_config:
+        for lib in np.__config__.blas_opt_info.get('libraries', []):
+            if 'mkl' in lib:
+                is_mkl = True
+                break
 
     if not is_mkl:
         # Grab a fresh openblas for the current platform
         cmd = 'python', 'openblas_support.py'
         subprocess.run(cmd)
         if is_windows:
-            includedir = gettempdir()
-            libdir = gettempdir()
+            includedir = os.getcwd()
+            libdir = os.getcwd()
         else:
-            openblasdir = os.path.join(gettempdir(), 'openblas')
+            openblasdir = os.path.join(os.getcwd(), 'openblas')
             includedir = os.path.join(openblasdir, 'include')
             libdir = os.path.join(openblasdir, 'lib')
         incs.append(includedir)
