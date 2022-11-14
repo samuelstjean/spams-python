@@ -20,3 +20,4 @@ unzip openblas_32_if.zip -d /c
 cp /c/opt/openblas/if_32/64/bin/*.dll /c/opt/openblas/openblas_dll
 cp -r /c/opt/openblas/if_32/64/include /c/opt/openblas/
 cp -r /c/opt/openblas/if_32/64/lib /c/opt/openblas/
+cp /c/opt/openblas/if_32/64/bin/*.dll /c/opt/openblas/lib
