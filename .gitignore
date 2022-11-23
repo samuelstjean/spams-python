@@ -55,3 +55,4 @@ docs/_build/
 target/
 
 *.png
+workspace.code-workspace
