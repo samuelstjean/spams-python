@@ -1,16 +1,16 @@
 import os
 import platform
-import sys
+import subprocess
 
 from setuptools import setup, Extension, find_packages
-from distutils.sysconfig import get_python_inc
-from openmp_helpers import add_openmp_flags_if_available
+from sysconfig import get_paths
+from tools.openmp_helpers import add_openmp_flags_if_available
 
 import numpy as np
 from numpy.distutils.system_info import blas_info
 
-import distro
-
+is_mac = platform.system() == 'Darwin'
+is_windows = platform.system() == 'Windows'
 
 def get_config():
 
@@ -18,37 +18,61 @@ def get_config():
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', x))
     incs.append(np.get_include())
-    incs.append(get_python_inc())
+    incs.append(get_paths()['include'])
     incs.extend(blas_info().get_include_dirs())
+
+    try:
+        np.__config__.blas_opt_info
+        numpy_config = True
+    except AttributeError:
+        numpy_config = False
 
     cc_flags = ['-fPIC', '-m64']
 
-    for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
+    if numpy_config:
+        for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
+            if _ not in cc_flags:
+                cc_flags.append(_)
+        for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
+            if _ not in cc_flags:
+                cc_flags.append(_)
 
     link_flags = []
-    for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
+    if numpy_config:
+        for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
+            if _ not in link_flags:
+                link_flags.append(_)
+        for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
+            if _ not in link_flags:
+                link_flags.append(_)
 
-    if platform.system() == 'Windows':
+    if is_windows:
         libs = []
-        is_mkl = False
     else:
         libs = ['stdc++']
 
-        is_mkl = False
+    is_mkl = False
+    if numpy_config:
         for lib in np.__config__.blas_opt_info.get('libraries', []):
             if 'mkl' in lib:
                 is_mkl = True
                 break
+
+    # if not is_mkl:
+    #     # Grab a fresh openblas for the current platform
+    #     # cmd = 'python', os.path.join('tools', 'openblas_support.py')
+    #     # subprocess.run(cmd)
+    #     if is_windows:
+    #         # local build
+    #         # includedir = os.getcwd()
+    #         # libdir = os.getcwd()
+    #         openblasdir = os.path.join('c', 'opt', 'openblas')
+    #         includedir = os.path.join(openblasdir, 'include')
+    #         libdir = os.path.join(openblasdir, 'lib')
+    #     # else:
+    #     #     openblasdir = os.path.join(os.getcwd(), 'openblas')
+
+    #         incs.append(includedir)
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
@@ -60,40 +84,32 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
-            libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
+        if is_windows:
+            openblasdir = os.path.join('C:', 'opt', 'openblas')
+            includedir = os.path.join(openblasdir, 'include')
+            libdir = os.path.join(openblasdir, 'lib')
+
+            libdirs.append(libdir)
+            incs.append(includedir)
+            libs.extend(['libopenblas'])
         else:
             libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
-    if platform.system() != 'Darwin':
-        if platform.system() == 'Windows':
-            cc_flags.append('-openmp')
+    if not is_mac:
+        if is_windows:
+            cc_flags.append('-openmp:llvm') # Needed for support of newer openmp features
             # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
-
-    if platform.system() == 'Darwin':
-        cc_flags.append('-I/usr/local/opt/openblas/include')
-        link_flags.append('-L/usr/local/opt/openblas/lib')
-
-    if platform.system() == 'Windows':
-        # dir_path = os.path.dirname(os.path.realpath(__file__))
-        # Look for local intel mkl
-        # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
-        libs.append('openblas')
-        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
-        libdirs.append(libpath)
-        incs.append('C:/Miniconda/envs/openblas/Library/include')
-        incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
 
     return incs, libs, libdirs, cc_flags, link_flags
 
 
 incs, libs, libdirs, cc_flags, link_flags = get_config()
 
-if platform.system() == 'Windows':
+if is_windows:
     source = ['spams_wrap/spams_wrap-windows.cpp']
 else:
     source = ['spams_wrap/spams_wrap.cpp']
@@ -105,13 +121,12 @@ spams_wrap = Extension(
     extra_compile_args=['-DNDEBUG', '-DUSE_BLAS_LIB'] + cc_flags,
     library_dirs=libdirs,
     libraries=libs,
-    # strip the .so
     extra_link_args=link_flags,
     language='c++',
     depends=['spams_wrap/spams.h'],
 )
 
-if platform.system() == 'Darwin':
+if is_mac:
     add_openmp_flags_if_available(spams_wrap)
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
