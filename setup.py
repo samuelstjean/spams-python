@@ -92,11 +92,7 @@ def get_config():
 
 
 incs, libs, libdirs, cc_flags, link_flags = get_config()
-
-if platform.system() == 'Windows':
-    source = ['spams_wrap/spams_wrap-windows.cpp']
-else:
-    source = ['spams_wrap/spams_wrap.cpp']
+source = ['spams_wrap/spams_wrap.cpp']
 
 spams_wrap = Extension(
     'spams_wrap._spams_wrap',
