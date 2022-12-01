@@ -16,7 +16,7 @@ def get_config():
 
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
-        incs.append(os.path.join('spams_wrap', x))
+        incs.append(os.path.join('spams_wrap', 'spams', x))
     incs.append(np.get_include())
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
