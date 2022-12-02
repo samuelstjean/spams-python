@@ -1,6 +1,6 @@
 /*!
  * \file
- *                toolbox Linalg 
+ *                toolbox Linalg
  *
  *                by Julien Mairal
  *                julien.mairal@inria.fr
@@ -30,9 +30,9 @@ static inline void stop();
 /// seed for random number generation
 static int seed = 0;
 /// first random number generator from Numerical Recipe
-template <typename T> static inline T ran1(); 
-/// standard random number generator 
-template <typename T> static inline T ran1b(); 
+template <typename T> static inline T ran1();
+/// standard random number generator
+template <typename T> static inline T ran1b();
 /// random sampling from the normal distribution
 template <typename T> static inline T normalDistrib();
 /// reorganize a sparse table between indices beg and end,
@@ -104,7 +104,7 @@ template <typename T> static inline T ran1() {
    else return temp;
 };
 
-/// standard random number generator 
+/// standard random number generator
 template <typename T> T ran1b() {
    return static_cast<T>(rand())/RAND_MAX;
 }
@@ -179,7 +179,7 @@ static void quick_sort(I* irOut, T* prOut,const I beg, const I end, const bool i
             irOut[i]=irOut[pivot];
             prOut[pivot]=val_pivot;
             irOut[pivot]=key_pivot;
-         } 
+         }
       }
    } else {
       const T val_pivot=prOut[pivot];
@@ -192,7 +192,7 @@ static void quick_sort(I* irOut, T* prOut,const I beg, const I end, const bool i
             irOut[i]=irOut[pivot];
             prOut[pivot]=val_pivot;
             irOut[pivot]=key_pivot;
-         } 
+         }
       }
    }
    quick_sort(irOut,prOut,beg,pivot-1,incr);
@@ -210,7 +210,7 @@ static void quick_sort(T* prOut,const I beg, const I end, const bool incr) {
             prOut[pivot]=prOut[i];
             prOut[i]=prOut[++pivot];
             prOut[pivot]=val_pivot;
-         } 
+         }
       }
    } else {
       const T val_pivot=prOut[pivot];
@@ -219,7 +219,7 @@ static void quick_sort(T* prOut,const I beg, const I end, const bool incr) {
             prOut[pivot]=prOut[i];
             prOut[i]=prOut[++pivot];
             prOut[pivot]=val_pivot;
-         } 
+         }
       }
    }
    quick_sort(prOut,beg,pivot-1,incr);
@@ -289,7 +289,7 @@ static inline int init_omp(const int numThreads) {
    int NUM_THREADS;
 #ifdef _OPENMP
    NUM_THREADS = (numThreads == -1) ? MIN(MAX_THREADS,omp_get_num_procs()) : numThreads;
-   omp_set_nested(0);
+   // omp_set_max_active_levels(1);
    omp_set_dynamic(0);
    omp_set_num_threads(NUM_THREADS);
 #else
@@ -298,7 +298,7 @@ static inline int init_omp(const int numThreads) {
    return NUM_THREADS;
 }
 
-template <typename T1, typename T2, typename T3> 
+template <typename T1, typename T2, typename T3>
 struct Triplet {
    T1 x;
    T2 z;

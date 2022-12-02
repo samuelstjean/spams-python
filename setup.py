@@ -16,7 +16,7 @@ def get_config():
 
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
-        incs.append(os.path.join('spams_wrap', x))
+        incs.append(os.path.join('spams_wrap', 'spams', x))
     incs.append(np.get_include())
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
@@ -92,11 +92,7 @@ def get_config():
 
 
 incs, libs, libdirs, cc_flags, link_flags = get_config()
-
-if platform.system() == 'Windows':
-    source = ['spams_wrap/spams_wrap-windows.cpp']
-else:
-    source = ['spams_wrap/spams_wrap.cpp']
+source = ['spams_wrap/spams_wrap.cpp']
 
 spams_wrap = Extension(
     'spams_wrap._spams_wrap',
