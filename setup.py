@@ -21,7 +21,7 @@ def get_config():
     incs.append(get_python_inc())
     incs.extend(blas_info().get_include_dirs())
 
-    cc_flags = ['-fPIC', '-m64']
+    cc_flags = ['--std=c++14', '-fPIC', '-m64']
 
     for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
         if _ not in cc_flags:
