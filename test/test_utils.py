@@ -31,4 +31,4 @@ def Xtest1(txt, expr, locs):
 def Xtest(s1, s2, locs):
     y1 = Xtest1('numpy', s1, locs)
     y2 = Xtest1('spams', s2, locs)
-    return abs(y2 - y1).max()
+    return np.abs(y2 - y1).max()
