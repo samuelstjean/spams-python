@@ -1346,7 +1346,7 @@ Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<
 }
 
 template <typename T>
-  SpMatrix<T> *_decompSimplex(Matrix<T>* X, Matrix<T>* Z, bool computeXtX, int numThreads) throw(const char*){
+  SpMatrix<T> *_decompSimplex(Matrix<T>* X, Matrix<T>* Z, bool computeXtX, int numThreads){
   SpMatrix<T>* alpha = new SpMatrix<T>();
   decompSimplex<T>((Matrix<T>&)(*X), (Matrix<T>&)(*Z), (SpMatrix<T>&) (*alpha), computeXtX,numThreads);
   return alpha;
