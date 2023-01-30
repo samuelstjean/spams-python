@@ -784,7 +784,7 @@ SWIG_UnpackDataName(const char *c, void *ptr, size_t sz, const char *name) {
 #define PyString_FromString(x) PyUnicode_FromString(x)
 #define PyString_Format(fmt, args)  PyUnicode_Format(fmt, args)
 #define PyString_AsString(str) PyBytes_AsString(str)
-#define PyString_Size(str) PyBytes_Size(str)	
+#define PyString_Size(str) PyBytes_Size(str)
 #define PyString_InternFromString(key) PyUnicode_InternFromString(key)
 #define Py_TPFLAGS_HAVE_CLASS Py_TPFLAGS_BASETYPE
 #define _PyLong_FromSsize_t(x) PyLong_FromSsize_t(x)
@@ -823,7 +823,7 @@ SWIGINTERN PyObject*
 SWIG_Python_str_FromChar(const char *c)
 {
 #if PY_VERSION_HEX >= 0x03000000
-  return PyUnicode_FromString(c); 
+  return PyUnicode_FromString(c);
 #else
   return PyString_FromString(c);
 #endif
@@ -1088,7 +1088,7 @@ typedef struct swig_const_info {
 
 #define SWIG_InternalNewPointerObj(ptr, type, flags)	SWIG_Python_NewPointerObj(NULL, ptr, type, flags)
 
-#define SWIG_CheckImplicit(ty)                          SWIG_Python_CheckImplicit(ty) 
+#define SWIG_CheckImplicit(ty)                          SWIG_Python_CheckImplicit(ty)
 #define SWIG_AcquirePtr(ptr, src)                       SWIG_Python_AcquirePtr(ptr, src)
 #define swig_owntype                                    int
 
@@ -1115,26 +1115,26 @@ typedef struct swig_const_info {
 #define SWIG_SetModule(clientdata, pointer)             SWIG_Python_SetModule(pointer)
 #define SWIG_NewClientData(obj)                         SwigPyClientData_New(obj)
 
-#define SWIG_SetErrorObj                                SWIG_Python_SetErrorObj                            
-#define SWIG_SetErrorMsg                        	SWIG_Python_SetErrorMsg				   
-#define SWIG_ErrorType(code)                    	SWIG_Python_ErrorType(code)                        
-#define SWIG_Error(code, msg)            		SWIG_Python_SetErrorMsg(SWIG_ErrorType(code), msg) 
-#define SWIG_fail                        		goto fail					   
+#define SWIG_SetErrorObj                                SWIG_Python_SetErrorObj
+#define SWIG_SetErrorMsg                        	SWIG_Python_SetErrorMsg
+#define SWIG_ErrorType(code)                    	SWIG_Python_ErrorType(code)
+#define SWIG_Error(code, msg)            		SWIG_Python_SetErrorMsg(SWIG_ErrorType(code), msg)
+#define SWIG_fail                        		goto fail
 
 
 /* Runtime API implementation */
 
 /* Error manipulation */
 
-SWIGINTERN void 
+SWIGINTERN void
 SWIG_Python_SetErrorObj(PyObject *errtype, PyObject *obj) {
-  SWIG_PYTHON_THREAD_BEGIN_BLOCK; 
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   PyErr_SetObject(errtype, obj);
   Py_DECREF(obj);
   SWIG_PYTHON_THREAD_END_BLOCK;
 }
 
-SWIGINTERN void 
+SWIGINTERN void
 SWIG_Python_SetErrorMsg(PyObject *errtype, const char *msg) {
   SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   PyErr_SetString(errtype, msg);
@@ -1155,7 +1155,7 @@ SwigPyBuiltin_AddPublicSymbol(PyObject *seq, const char *key) {
 }
 
 SWIGINTERN void
-SWIG_Python_SetConstant(PyObject *d, PyObject *public_interface, const char *name, PyObject *obj) {   
+SWIG_Python_SetConstant(PyObject *d, PyObject *public_interface, const char *name, PyObject *obj) {
   PyDict_SetItemString(d, name, obj);
   Py_DECREF(obj);
   if (public_interface)
@@ -1165,9 +1165,9 @@ SWIG_Python_SetConstant(PyObject *d, PyObject *public_interface, const char *nam
 #else
 
 SWIGINTERN void
-SWIG_Python_SetConstant(PyObject *d, const char *name, PyObject *obj) {   
+SWIG_Python_SetConstant(PyObject *d, const char *name, PyObject *obj) {
   PyDict_SetItemString(d, name, obj);
-  Py_DECREF(obj);                            
+  Py_DECREF(obj);
 }
 
 #endif
@@ -1207,11 +1207,11 @@ SWIG_Python_UnpackTuple(PyObject *args, const char *name, Py_ssize_t min, Py_ssi
     if (!min && !max) {
       return 1;
     } else {
-      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got none", 
+      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got none",
 		   name, (min == max ? "" : "at least "), (int)min);
       return 0;
     }
-  }  
+  }
   if (!PyTuple_Check(args)) {
     if (min <= 1 && max >= 1) {
       Py_ssize_t i;
@@ -1226,11 +1226,11 @@ SWIG_Python_UnpackTuple(PyObject *args, const char *name, Py_ssize_t min, Py_ssi
   } else {
     Py_ssize_t l = PyTuple_GET_SIZE(args);
     if (l < min) {
-      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got %d", 
+      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got %d",
 		   name, (min == max ? "" : "at least "), (int)min, (int)l);
       return 0;
     } else if (l > max) {
-      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got %d", 
+      PyErr_Format(PyExc_TypeError, "%s expected %s%d arguments, got %d",
 		   name, (min == max ? "" : "at most "), (int)max, (int)l);
       return 0;
     } else {
@@ -1242,7 +1242,7 @@ SWIG_Python_UnpackTuple(PyObject *args, const char *name, Py_ssize_t min, Py_ssi
 	objs[l] = 0;
       }
       return i + 1;
-    }    
+    }
   }
 }
 
@@ -1280,12 +1280,12 @@ extern "C" {
 #define SWIG_newvarlink()                             SWIG_Python_newvarlink()
 #define SWIG_addvarlink(p, name, get_attr, set_attr)  SWIG_Python_addvarlink(p, name, get_attr, set_attr)
 #define SWIG_InstallConstants(d, constants)           SWIG_Python_InstallConstants(d, constants)
- 
+
 /* -----------------------------------------------------------------------------
  * global variable support code.
  * ----------------------------------------------------------------------------- */
- 
-typedef struct swig_globalvar {   
+
+typedef struct swig_globalvar {
   char       *name;                  /* Name of global variable */
   PyObject *(*get_attr)(void);       /* Return the current value */
   int       (*set_attr)(PyObject *); /* Set the value */
@@ -1472,7 +1472,7 @@ SWIG_Python_newvarlink(void) {
   return ((PyObject*) result);
 }
 
-SWIGINTERN void 
+SWIGINTERN void
 SWIG_Python_addvarlink(PyObject *p, const char *name, PyObject *(*get_attr)(void), int (*set_attr)(PyObject *p)) {
   swig_varlinkobject *v = (swig_varlinkobject *) p;
   swig_globalvar *gv = (swig_globalvar *) malloc(sizeof(swig_globalvar));
@@ -1491,7 +1491,7 @@ SWIG_Python_addvarlink(PyObject *p, const char *name, PyObject *(*get_attr)(void
 
 
 static PyObject *Swig_Globals_global = NULL;
-  
+
 SWIGINTERN PyObject *
 SWIG_globals(void) {
   if (Swig_Globals_global == NULL) {
@@ -1523,7 +1523,7 @@ extern "C" {
 
 /* The python void return value */
 
-SWIGRUNTIMEINLINE PyObject * 
+SWIGRUNTIMEINLINE PyObject *
 SWIG_Py_Void(void)
 {
   PyObject *none = Py_None;
@@ -1543,7 +1543,7 @@ typedef struct {
   PyTypeObject *pytype;
 } SwigPyClientData;
 
-SWIGRUNTIMEINLINE int 
+SWIGRUNTIMEINLINE int
 SWIG_Python_CheckImplicit(swig_type_info *ty)
 {
   SwigPyClientData *data = (SwigPyClientData *)ty->clientdata;
@@ -1561,7 +1561,7 @@ SWIG_Python_ExceptionType(swig_type_info *desc) {
 }
 
 
-SWIGRUNTIME SwigPyClientData * 
+SWIGRUNTIME SwigPyClientData *
 SwigPyClientData_New(PyObject* obj)
 {
   if (!obj) {
@@ -1611,7 +1611,7 @@ SwigPyClientData_New(PyObject* obj)
   }
 }
 
-SWIGRUNTIME void 
+SWIGRUNTIME void
 SwigPyClientData_Del(SwigPyClientData *data)
 {
   Py_XDECREF(data->klass);
@@ -1744,7 +1744,7 @@ SwigPyObject_richcompare(SwigPyObject *v, SwigPyObject *w, int op)
     return Py_NotImplemented;
   }
   res = PyBool_FromLong( (SwigPyObject_compare(v, w)==0) == (op == Py_EQ) ? 1 : 0);
-  return res;  
+  return res;
 }
 
 
@@ -1806,7 +1806,7 @@ SwigPyObject_dealloc(PyObject *v)
          StopIteration will be active right now, and this needs to
          remain true upon return from SwigPyObject_dealloc.  So save
          and restore. */
-      
+
       PyObject *type = NULL, *value = NULL, *traceback = NULL;
       PyErr_Fetch(&type, &value, &traceback);
 
@@ -1830,7 +1830,7 @@ SwigPyObject_dealloc(PyObject *v)
       PyErr_Restore(type, value, traceback);
 
       Py_XDECREF(res);
-    } 
+    }
 #if !defined(SWIG_PYTHON_SILENT_MEMLEAK)
     else {
       const char *name = SWIG_TypePrettyName(ty);
@@ -1846,7 +1846,7 @@ SwigPyObject_dealloc(PyObject *v)
   PyObject_DEL(v);
 }
 
-SWIGRUNTIME PyObject* 
+SWIGRUNTIME PyObject*
 SwigPyObject_append(PyObject* v, PyObject* next)
 {
   SwigPyObject *sobj = (SwigPyObject *) v;
@@ -1860,11 +1860,11 @@ SwigPyObject_append(PyObject* v, PyObject* next)
   return SWIG_Py_Void();
 }
 
-SWIGRUNTIME PyObject* 
+SWIGRUNTIME PyObject*
 SwigPyObject_next(PyObject* v, PyObject *SWIGUNUSEDPARM(args))
 {
   SwigPyObject *sobj = (SwigPyObject *) v;
-  if (sobj->next) {    
+  if (sobj->next) {
     Py_INCREF(sobj->next);
     return sobj->next;
   } else {
@@ -1903,7 +1903,7 @@ SwigPyObject_own(PyObject *v, PyObject *args)
       } else {
         Py_DECREF(SwigPyObject_disown(v,args));
       }
-    } 
+    }
     return obj;
   }
 }
@@ -1916,7 +1916,7 @@ swigobject_methods[] = {
   {"append",  SwigPyObject_append,  METH_O,       "appends another 'this' object"},
   {"next",    SwigPyObject_next,    METH_NOARGS,  "returns the next 'this' object"},
   {"__repr__",SwigPyObject_repr2,   METH_NOARGS,  "returns object representation"},
-  {0, 0, 0, 0}  
+  {0, 0, 0, 0}
 };
 
 SWIGRUNTIME PyTypeObject*
@@ -2097,7 +2097,7 @@ SwigPyPacked_repr(SwigPyPacked *v)
     return SWIG_Python_str_FromFormat("<Swig Packed at %s%s>", result, v->ty->name);
   } else {
     return SWIG_Python_str_FromFormat("<Swig Packed %s>", v->ty->name);
-  }  
+  }
 }
 
 SWIGRUNTIME PyObject *
@@ -2108,7 +2108,7 @@ SwigPyPacked_str(SwigPyPacked *v)
     return SWIG_Python_str_FromFormat("%s%s", result, v->ty->name);
   } else {
     return SWIG_Python_str_FromChar(v->ty->name);
-  }  
+  }
 }
 
 SWIGRUNTIME int
@@ -2130,7 +2130,7 @@ SwigPyPacked_type(void) {
 
 SWIGRUNTIMEINLINE int
 SwigPyPacked_Check(PyObject *op) {
-  return ((op)->ob_type == SwigPyPacked_TypeOnce()) 
+  return ((op)->ob_type == SwigPyPacked_TypeOnce())
     || (strcmp((op)->ob_type->tp_name,"SwigPyPacked") == 0);
 }
 
@@ -2286,11 +2286,11 @@ SWIG_This(void)
 
 /* TODO: I don't know how to implement the fast getset in Python 3 right now */
 #if PY_VERSION_HEX>=0x03000000
-#define SWIG_PYTHON_SLOW_GETSET_THIS 
+#define SWIG_PYTHON_SLOW_GETSET_THIS
 #endif
 
 SWIGRUNTIME SwigPyObject *
-SWIG_Python_GetSwigThis(PyObject *pyobj) 
+SWIG_Python_GetSwigThis(PyObject *pyobj)
 {
   PyObject *obj;
 
@@ -2313,7 +2313,7 @@ SWIG_Python_GetSwigThis(PyObject *pyobj)
 
 #if !defined(SWIG_PYTHON_SLOW_GETSET_THIS)
   if (PyInstance_Check(pyobj)) {
-    obj = _PyInstance_Lookup(pyobj, SWIG_This());      
+    obj = _PyInstance_Lookup(pyobj, SWIG_This());
   } else {
     PyObject **dictptr = _PyObject_GetDictPtr(pyobj);
     if (dictptr != NULL) {
@@ -2346,7 +2346,7 @@ SWIG_Python_GetSwigThis(PyObject *pyobj)
 #endif
   if (obj && !SwigPyObject_Check(obj)) {
     /* a PyObject is called 'this', try to get the 'real this'
-       SwigPyObject from it */ 
+       SwigPyObject from it */
     return SWIG_Python_GetSwigThis(obj);
   }
   return (SwigPyObject *)obj;
@@ -2460,7 +2460,7 @@ SWIG_Python_ConvertPtrAndOwn(PyObject *obj, void **ptr, swig_type_info *ty, int 
                   res = SWIG_AddCast(res);
                   res = SWIG_AddNewMask(res);
                 } else {
-                  res = SWIG_AddCast(res);		    
+                  res = SWIG_AddCast(res);
                 }
               }
             }
@@ -2523,7 +2523,7 @@ SWIG_Python_ConvertPacked(PyObject *obj, void *ptr, size_t sz, swig_type_info *t
     }
   }
   return SWIG_OK;
-}  
+}
 
 /* -----------------------------------------------------------------------------
  * Create a new pointer object
@@ -2534,7 +2534,7 @@ SWIG_Python_ConvertPacked(PyObject *obj, void *ptr, size_t sz, swig_type_info *t
   'this' attribute.
 */
 
-SWIGRUNTIME PyObject* 
+SWIGRUNTIME PyObject*
 SWIG_Python_NewShadowInstance(SwigPyClientData *data, PyObject *swig_this)
 {
   PyObject *inst = 0;
@@ -2614,7 +2614,7 @@ SWIG_Python_SetSwigThis(PyObject *inst, PyObject *swig_this)
   }
 #endif
   return PyObject_SetAttr(inst, SWIG_This(), swig_this);
-} 
+}
 
 
 SWIGINTERN PyObject *
@@ -2698,7 +2698,7 @@ SWIG_Python_NewPackedObj(void *ptr, size_t sz, swig_type_info *type) {
 }
 
 /* -----------------------------------------------------------------------------*
- *  Get type list 
+ *  Get type list
  * -----------------------------------------------------------------------------*/
 
 #ifdef SWIG_LINK_RUNTIME
@@ -2788,7 +2788,7 @@ SWIGRUNTIME swig_type_info *
 SWIG_Python_TypeQuery(const char *type)
 {
   PyObject *cache = SWIG_Python_TypeCache();
-  PyObject *key = SWIG_Python_str_FromChar(type); 
+  PyObject *key = SWIG_Python_str_FromChar(type);
   PyObject *obj = PyDict_GetItem(cache, key);
   swig_type_info *descriptor;
   if (obj) {
@@ -2808,7 +2808,7 @@ SWIG_Python_TypeQuery(const char *type)
   return descriptor;
 }
 
-/* 
+/*
    For backward compatibility only
 */
 #define SWIG_POINTER_EXCEPTION  0
@@ -2817,7 +2817,7 @@ SWIG_Python_TypeQuery(const char *type)
 
 SWIGRUNTIME int
 SWIG_Python_AddErrMesg(const char* mesg, int infront)
-{  
+{
   if (PyErr_Occurred()) {
     PyObject *type = 0;
     PyObject *value = 0;
@@ -2841,7 +2841,7 @@ SWIG_Python_AddErrMesg(const char* mesg, int infront)
     return 0;
   }
 }
-  
+
 SWIGRUNTIME int
 SWIG_Python_ArgFail(int argnum)
 {
@@ -2875,10 +2875,10 @@ SWIG_Python_TypeError(const char *type, PyObject *obj)
 		     type, otype);
 	return;
       }
-    } else 
-#endif      
+    } else
+#endif
     {
-      const char *otype = (obj ? obj->ob_type->tp_name : 0); 
+      const char *otype = (obj ? obj->ob_type->tp_name : 0);
       if (otype) {
 	PyObject *str = PyObject_Str(obj);
 	const char *cstr = str ? SWIG_Python_str_AsChar(str) : 0;
@@ -2892,7 +2892,7 @@ SWIG_Python_TypeError(const char *type, PyObject *obj)
 	Py_XDECREF(str);
 	return;
       }
-    }   
+    }
     PyErr_Format(PyExc_TypeError, "a '%s' is expected", type);
   } else {
     PyErr_Format(PyExc_TypeError, "unexpected type is received");
@@ -2958,7 +2958,7 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
   } else {
     res = f(descr, obj, value);
   }
-  
+
   done:
   Py_DECREF(name);
   return res;
@@ -3157,7 +3157,7 @@ SwigPyObjectType_setattro(PyObject *typeobject, PyObject *name, PyObject *value)
       return local_set(attribute, (PyObject *)type, value);
 #if PY_VERSION_HEX >= 0x03000000
     PyErr_Format(PyExc_AttributeError, "cannot modify read-only attribute '%.50s.%.400S'", type->tp_name, name);
-#else 
+#else
     PyErr_Format(PyExc_AttributeError, "cannot modify read-only attribute '%.50s.%.400s'", type->tp_name, PyString_AS_STRING(name));
 #endif
   } else {
@@ -3737,13 +3737,13 @@ SwigPyBuiltin_iternextfunc_closure(SwigPyWrapperFunction wrapper, PyObject *a) {
 
 
 
-#define SWIG_exception_fail(code, msg) do { SWIG_Error(code, msg); SWIG_fail; } while(0) 
+#define SWIG_exception_fail(code, msg) do { SWIG_Error(code, msg); SWIG_fail; } while(0)
 
-#define SWIG_contract_assert(expr, msg) do { if (!(expr)) { SWIG_Error(SWIG_RuntimeError, msg); SWIG_fail; } } while (0) 
+#define SWIG_contract_assert(expr, msg) do { if (!(expr)) { SWIG_Error(SWIG_RuntimeError, msg); SWIG_fail; } } while (0)
 
 
 
-  #define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail;; } while(0) 
+  #define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail;; } while(0)
 
 
 /* -------- TYPES TABLE (BEGIN) -------- */
@@ -3811,11 +3811,11 @@ public:
 
 /*
  * SwigValueInit() is a generic initialisation solution as the following approach:
- * 
+ *
  *       T c_result = T();
- * 
+ *
  * doesn't compile for all types for example:
- * 
+ *
  *       unsigned int c_result = unsigned int();
  */
 template <typename T> T SwigValueInit() {
@@ -3831,8 +3831,8 @@ template <typename T> T SwigValueInit() {
 #endif
 
 
-#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a)) 
-#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
+#define SWIG_as_voidptr(a) const_cast< void * >(static_cast< const void * >(a))
+#define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a))
 
 
 #include <stdexcept>
@@ -3851,10 +3851,10 @@ namespace swig {
     SwigPtr_PyObject(const SwigPtr_PyObject& item) : _obj(item._obj)
     {
       SWIG_PYTHON_THREAD_BEGIN_BLOCK;
-      Py_XINCREF(_obj);      
+      Py_XINCREF(_obj);
       SWIG_PYTHON_THREAD_END_BLOCK;
     }
-    
+
     SwigPtr_PyObject(PyObject *obj, bool initial_ref = true) :_obj(obj)
     {
       if (initial_ref) {
@@ -3863,24 +3863,24 @@ namespace swig {
         SWIG_PYTHON_THREAD_END_BLOCK;
       }
     }
-    
-    SwigPtr_PyObject & operator=(const SwigPtr_PyObject& item) 
+
+    SwigPtr_PyObject & operator=(const SwigPtr_PyObject& item)
     {
       SWIG_PYTHON_THREAD_BEGIN_BLOCK;
       Py_XINCREF(item._obj);
       Py_XDECREF(_obj);
       _obj = item._obj;
       SWIG_PYTHON_THREAD_END_BLOCK;
-      return *this;      
+      return *this;
     }
-    
-    ~SwigPtr_PyObject() 
+
+    ~SwigPtr_PyObject()
     {
       SWIG_PYTHON_THREAD_BEGIN_BLOCK;
       Py_XDECREF(_obj);
       SWIG_PYTHON_THREAD_END_BLOCK;
     }
-    
+
     operator PyObject *() const
     {
       return _obj;
@@ -3897,12 +3897,12 @@ namespace swig {
 namespace swig {
   struct SwigVar_PyObject : SwigPtr_PyObject {
     SwigVar_PyObject(PyObject* obj = 0) : SwigPtr_PyObject(obj, false) { }
-    
+
     SwigVar_PyObject & operator = (PyObject* obj)
     {
       Py_XDECREF(_obj);
       _obj = obj;
-      return *this;      
+      return *this;
     }
   };
 }
@@ -3942,7 +3942,7 @@ extern "C" {
 #include <numpy/arrayobject.h>
 
 
-#include <complex> 
+#include <complex>
 
 
 #include <limits.h>
@@ -4091,7 +4091,7 @@ SWIG_AsVal_int (PyObject * obj, int *val)
     } else {
       if (val) *val = static_cast< int >(v);
     }
-  }  
+  }
   return res;
 }
 
@@ -4118,7 +4118,7 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
 #else
   if (PyUnicode_Check(obj))
 #endif
-#else  
+#else
   if (PyString_Check(obj))
 #endif
   {
@@ -4227,7 +4227,7 @@ SWIG_FromCharPtrAndSize(const char* carray, size_t size)
   if (carray) {
     if (size > INT_MAX) {
       swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-      return pchar_descriptor ? 
+      return pchar_descriptor ?
 	SWIG_InternalNewPointerObj(const_cast< char * >(carray), pchar_descriptor, 0) : SWIG_Py_Void();
     } else {
 #if PY_VERSION_HEX >= 0x03000000
@@ -4246,9 +4246,9 @@ SWIG_FromCharPtrAndSize(const char* carray, size_t size)
 }
 
 
-SWIGINTERNINLINE PyObject * 
+SWIGINTERNINLINE PyObject *
 SWIG_FromCharPtr(const char *cptr)
-{ 
+{
   return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
 }
 
@@ -4796,7 +4796,7 @@ SWIG_AsVal_float (PyObject * obj, float *val)
     } else {
       if (val) *val = static_cast< float >(v);
     }
-  }  
+  }
   return res;
 }
 
@@ -4822,14 +4822,14 @@ SWIGINTERN PyObject *_wrap_m_ones(PyObject *self, PyObject *args) {
   int ecode1 = 0 ;
   PyObject *swig_obj[1] ;
   int *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
   ecode1 = SWIG_AsVal_int(swig_obj[0], &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "m_ones" "', argument " "1"" of type '" "int""'");
-  } 
+  }
   arg1 = static_cast< int >(val1);
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
@@ -4851,7 +4851,7 @@ SWIGINTERN PyObject *_wrap_skip_space(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   char *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -4885,7 +4885,7 @@ SWIGINTERN PyObject *_wrap_parse_line(PyObject *self, PyObject *args) {
   int res2 = 0 ;
   PyObject *swig_obj[2] ;
   int result;
-  
+
   (void)self;
   if (!SWIG_Python_UnpackTuple(args, "parse_line", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
@@ -4895,10 +4895,10 @@ SWIGINTERN PyObject *_wrap_parse_line(PyObject *self, PyObject *args) {
   arg1 = reinterpret_cast< char * >(buf1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "parse_line" "', argument " "2"" of type '" "std::vector< std::string > &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "parse_line" "', argument " "2"" of type '" "std::vector< std::string > &""'");
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "parse_line" "', argument " "2"" of type '" "std::vector< std::string > &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "parse_line" "', argument " "2"" of type '" "std::vector< std::string > &""'");
   }
   arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);
   {
@@ -4922,15 +4922,15 @@ SWIGINTERN PyObject *_wrap_intlist(PyObject *self, PyObject *args) {
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< int > *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
   {
     res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_string,  0  | 0);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "intlist" "', argument " "1"" of type '" "string""'"); 
-    }  
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "intlist" "', argument " "1"" of type '" "string""'");
+    }
     if (!argp1) {
       SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "intlist" "', argument " "1"" of type '" "string""'");
     } else {
@@ -4958,7 +4958,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -4969,7 +4969,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sort" "', argument " "2"" of type '" "bool""'");
-  } 
+  }
   arg2 = static_cast< bool >(val2);
   try {
     {
@@ -4980,7 +4980,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5002,7 +5002,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -5013,7 +5013,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sort" "', argument " "2"" of type '" "bool""'");
-  } 
+  }
   arg2 = static_cast< bool >(val2);
   try {
     {
@@ -5024,7 +5024,7 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5044,7 +5044,7 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "sort", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -5053,7 +5053,7 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -5062,13 +5062,13 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 2) {
     PyObject *retobj = _wrap_sort__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'sort'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -5098,7 +5098,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   int ecode6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
@@ -5115,7 +5115,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5132,7 +5132,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5149,28 +5149,28 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "mult" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "mult" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "mult" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "mult" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   try {
     {
@@ -5181,7 +5181,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5228,7 +5228,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   int ecode6 = 0 ;
   float val7 ;
   int ecode7 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
@@ -5245,7 +5245,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5262,7 +5262,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5279,28 +5279,28 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "mult" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "mult" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "mult" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "mult" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   try {
     {
@@ -5311,7 +5311,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5343,7 +5343,7 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
   PyObject *argv[8] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "mult", 0, 7, argv))) SWIG_fail;
   --argc;
@@ -5352,21 +5352,21 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -5387,13 +5387,13 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
     return _wrap_mult__SWIG_1(self, argc, argv);
   }
 check_1:
-  
+
   if (argc == 7) {
     PyObject *retobj = _wrap_mult__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'mult'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -5409,19 +5409,19 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   Matrix< double > *arg2 = (Matrix< double > *) 0 ;
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -5440,43 +5440,43 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_DOUBLE)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -5484,11 +5484,11 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -5504,7 +5504,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   try {
@@ -5516,7 +5516,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5543,19 +5543,19 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   Matrix< float > *arg2 = (Matrix< float > *) 0 ;
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -5574,43 +5574,43 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_FLOAT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -5618,11 +5618,11 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -5638,7 +5638,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   try {
@@ -5650,7 +5650,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5676,7 +5676,7 @@ SWIGINTERN PyObject *_wrap_AAt(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "AAt", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -5685,20 +5685,20 @@ SWIGINTERN PyObject *_wrap_AAt(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     return _wrap_AAt__SWIG_0(self, argc, argv);
   }
 check_1:
-  
+
   if (argc == 2) {
     PyObject *retobj = _wrap_AAt__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'AAt'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -5716,19 +5716,19 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
   PyArrayObject *array3 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -5747,43 +5747,43 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_DOUBLE)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -5791,11 +5791,11 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -5811,7 +5811,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5828,7 +5828,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   try {
@@ -5840,7 +5840,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -5875,19 +5875,19 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
   PyArrayObject *array3 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -5906,43 +5906,43 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_FLOAT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -5950,11 +5950,11 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -5970,7 +5970,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -5987,7 +5987,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   try {
@@ -5999,7 +5999,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6031,7 +6031,7 @@ SWIGINTERN PyObject *_wrap_XAt(PyObject *self, PyObject *args) {
   PyObject *argv[4] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "XAt", 0, 3, argv))) SWIG_fail;
   --argc;
@@ -6040,27 +6040,27 @@ SWIGINTERN PyObject *_wrap_XAt(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     return _wrap_XAt__SWIG_0(self, argc, argv);
   }
 check_1:
-  
+
   if (argc == 3) {
     PyObject *retobj = _wrap_XAt__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'XAt'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -6077,7 +6077,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_0(PyObject *self, Py_ssize_t 
   PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -6088,7 +6088,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_0(PyObject *self, Py_ssize_t 
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "applyBayerPattern" "', argument " "2"" of type '" "int""'");
-  } 
+  }
   arg2 = static_cast< int >(val2);
   try {
     {
@@ -6099,7 +6099,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_0(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6121,7 +6121,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_1(PyObject *self, Py_ssize_t 
   PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -6132,7 +6132,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_1(PyObject *self, Py_ssize_t 
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "applyBayerPattern" "', argument " "2"" of type '" "int""'");
-  } 
+  }
   arg2 = static_cast< int >(val2);
   try {
     {
@@ -6143,7 +6143,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_1(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6163,7 +6163,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "applyBayerPattern", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -6172,7 +6172,7 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -6181,13 +6181,13 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 2) {
     PyObject *retobj = _wrap_applyBayerPattern__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'applyBayerPattern'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -6211,7 +6211,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   int ecode4 = 0 ;
   int val5 ;
   int ecode5 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -6228,7 +6228,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6244,12 +6244,12 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "conjugateGradient" "', argument " "4"" of type '" "double""'");
-  } 
+  }
   arg4 = static_cast< double >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "conjugateGradient" "', argument " "5"" of type '" "int""'");
-  } 
+  }
   arg5 = static_cast< int >(val5);
   try {
     {
@@ -6260,7 +6260,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6301,7 +6301,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   int ecode4 = 0 ;
   int val5 ;
   int ecode5 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -6318,7 +6318,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6334,12 +6334,12 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   ecode4 = SWIG_AsVal_float(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "conjugateGradient" "', argument " "4"" of type '" "float""'");
-  } 
+  }
   arg4 = static_cast< float >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "conjugateGradient" "', argument " "5"" of type '" "int""'");
-  } 
+  }
   arg5 = static_cast< int >(val5);
   try {
     {
@@ -6350,7 +6350,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6382,7 +6382,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
   PyObject *argv[6] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "conjugateGradient", 0, 5, argv))) SWIG_fail;
   --argc;
@@ -6391,21 +6391,21 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 1) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -6421,13 +6421,13 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 5) {
     PyObject *retobj = _wrap_conjugateGradient__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'conjugateGradient'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -6441,7 +6441,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
   PyArrayObject *array1 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6458,7 +6458,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6483,7 +6483,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
   PyArrayObject *array1 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6500,7 +6500,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6526,7 +6526,7 @@ SWIGINTERN PyObject *_wrap_invSym(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "invSym", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -6535,20 +6535,20 @@ SWIGINTERN PyObject *_wrap_invSym(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     return _wrap_invSym__SWIG_0(self, argc, argv);
   }
 check_1:
-  
+
   if (argc == 1) {
     PyObject *retobj = _wrap_invSym__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'invSym'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -6562,7 +6562,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
   PyArrayObject *array1 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6579,7 +6579,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6604,7 +6604,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
   PyArrayObject *array1 = NULL ;
-  
+
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6621,7 +6621,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6647,7 +6647,7 @@ SWIGINTERN PyObject *_wrap_normalize(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "normalize", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -6656,20 +6656,20 @@ SWIGINTERN PyObject *_wrap_normalize(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     return _wrap_normalize__SWIG_0(self, argc, argv);
   }
 check_1:
-  
+
   if (argc == 1) {
     PyObject *retobj = _wrap_normalize__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'normalize'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -6706,7 +6706,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -6723,7 +6723,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6740,43 +6740,43 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "sparseProject" "', argument " "3"" of type '" "double""'");
-  } 
+  }
   arg3 = static_cast< double >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "sparseProject" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "sparseProject" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "sparseProject" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "sparseProject" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "sparseProject" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "sparseProject" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   try {
     {
@@ -6787,7 +6787,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6835,7 +6835,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -6852,7 +6852,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -6869,43 +6869,43 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_float(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "sparseProject" "', argument " "3"" of type '" "float""'");
-  } 
+  }
   arg3 = static_cast< float >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "sparseProject" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "sparseProject" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "sparseProject" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "sparseProject" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "sparseProject" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "sparseProject" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   try {
     {
@@ -6916,7 +6916,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -6942,7 +6942,7 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "sparseProject", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -6951,14 +6951,14 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -6995,13 +6995,13 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 9) {
     PyObject *retobj = _wrap_sparseProject__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'sparseProject'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -7053,7 +7053,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   bool val14 ;
   int ecode14 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -7073,7 +7073,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7090,63 +7090,63 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoD" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoD" "', argument " "5"" of type '" "int""'");
-  } 
+  }
   arg5 = static_cast< int >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoD" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoD" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoD" "', argument " "8"" of type '" "constraint_type""'");
-  } 
+  }
   arg8 = static_cast< constraint_type >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoD" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoD" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoD" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoD" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   ecode13 = SWIG_AsVal_bool(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoD" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoD" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   try {
     {
@@ -7157,7 +7157,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -7213,7 +7213,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -7277,7 +7277,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   bool val14 ;
   int ecode14 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -7297,7 +7297,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7314,63 +7314,63 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoD" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoD" "', argument " "5"" of type '" "int""'");
-  } 
+  }
   arg5 = static_cast< int >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoD" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoD" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoD" "', argument " "8"" of type '" "constraint_type""'");
-  } 
+  }
   arg8 = static_cast< constraint_type >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoD" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoD" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoD" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoD" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   ecode13 = SWIG_AsVal_bool(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoD" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoD" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   try {
     {
@@ -7381,7 +7381,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -7437,7 +7437,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -7464,7 +7464,7 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
   PyObject *argv[14] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoD", 0, 13, argv))) SWIG_fail;
   --argc;
@@ -7473,14 +7473,14 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -7503,13 +7503,13 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 13) {
     PyObject *retobj = _wrap_lassoD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'lassoD'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -7563,7 +7563,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   bool val15 ;
   int ecode15 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   {
     arg4 = &data_temp4;
   }
@@ -7583,7 +7583,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7600,7 +7600,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7617,63 +7617,63 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoQq" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoQq" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoQq" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_double(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoQq" "', argument " "8"" of type '" "double""'");
-  } 
+  }
   arg8 = static_cast< double >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoQq" "', argument " "9"" of type '" "constraint_type""'");
-  } 
+  }
   arg9 = static_cast< constraint_type >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoQq" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoQq" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoQq" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   ecode13 = SWIG_AsVal_int(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoQq" "', argument " "13"" of type '" "int""'");
-  } 
+  }
   arg13 = static_cast< int >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoQq" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[13], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "lassoQq" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   try {
     {
@@ -7684,7 +7684,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -7740,7 +7740,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -7812,7 +7812,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   bool val15 ;
   int ecode15 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   {
     arg4 = &data_temp4;
   }
@@ -7832,7 +7832,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7849,7 +7849,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -7866,63 +7866,63 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoQq" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoQq" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoQq" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_float(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoQq" "', argument " "8"" of type '" "float""'");
-  } 
+  }
   arg8 = static_cast< float >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoQq" "', argument " "9"" of type '" "constraint_type""'");
-  } 
+  }
   arg9 = static_cast< constraint_type >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoQq" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoQq" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoQq" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   ecode13 = SWIG_AsVal_int(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoQq" "', argument " "13"" of type '" "int""'");
-  } 
+  }
   arg13 = static_cast< int >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoQq" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[13], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "lassoQq" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   try {
     {
@@ -7933,7 +7933,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -7989,7 +7989,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -8022,7 +8022,7 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
   PyObject *argv[15] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoQq", 0, 14, argv))) SWIG_fail;
   --argc;
@@ -8031,21 +8031,21 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -8068,13 +8068,13 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 14) {
     PyObject *retobj = _wrap_lassoQq__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'lassoQq'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -8114,7 +8114,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   bool val10 ;
   int ecode10 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
@@ -8131,7 +8131,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8148,7 +8148,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8165,43 +8165,43 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoMask" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoMask" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoMask" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoMask" "', argument " "7"" of type '" "constraint_type""'");
-  } 
+  }
   arg7 = static_cast< constraint_type >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoMask" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoMask" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoMask" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   try {
     {
@@ -8212,7 +8212,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -8309,7 +8309,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   bool val10 ;
   int ecode10 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
@@ -8326,7 +8326,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8343,7 +8343,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8360,43 +8360,43 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoMask" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoMask" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoMask" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoMask" "', argument " "7"" of type '" "constraint_type""'");
-  } 
+  }
   arg7 = static_cast< constraint_type >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoMask" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoMask" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoMask" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   try {
     {
@@ -8407,7 +8407,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -8479,7 +8479,7 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
   PyObject *argv[11] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoMask", 0, 10, argv))) SWIG_fail;
   --argc;
@@ -8488,14 +8488,14 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -8518,13 +8518,13 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 10) {
     PyObject *retobj = _wrap_lassoMask__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'lassoMask'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -8561,7 +8561,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool val9 ;
   int ecode9 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -8578,7 +8578,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8595,7 +8595,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8612,38 +8612,38 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoWeighted" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoWeighted" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoWeighted" "', argument " "6"" of type '" "constraint_type""'");
-  } 
+  }
   arg6 = static_cast< constraint_type >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoWeighted" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoWeighted" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoWeighted" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   try {
     {
@@ -8654,7 +8654,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -8748,7 +8748,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool val9 ;
   int ecode9 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -8765,7 +8765,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8782,7 +8782,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -8799,38 +8799,38 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoWeighted" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoWeighted" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoWeighted" "', argument " "6"" of type '" "constraint_type""'");
-  } 
+  }
   arg6 = static_cast< constraint_type >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoWeighted" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoWeighted" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoWeighted" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   try {
     {
@@ -8841,7 +8841,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -8913,7 +8913,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoWeighted", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -8922,21 +8922,21 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -8952,13 +8952,13 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 9) {
     PyObject *retobj = _wrap_lassoWeighted__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'lassoWeighted'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -8998,7 +8998,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   int val11 ;
   int ecode11 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -9018,7 +9018,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9035,18 +9035,18 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "omp" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "omp" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   {
     array6 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
@@ -9056,7 +9056,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode7 = SWIG_AsVal_bool(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "omp" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   {
     array8 = obj_to_array_no_conversion(swig_obj[6], NPY_DOUBLE);
@@ -9066,7 +9066,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "omp" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   {
     array10 = obj_to_array_no_conversion(swig_obj[8], NPY_DOUBLE);
@@ -9076,7 +9076,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "omp" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   try {
     {
@@ -9087,7 +9087,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -9143,7 +9143,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -9213,7 +9213,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   int val11 ;
   int ecode11 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -9233,7 +9233,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9250,18 +9250,18 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "omp" "', argument " "4"" of type '" "bool""'");
-  } 
+  }
   arg4 = static_cast< bool >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "omp" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   {
     array6 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
@@ -9271,7 +9271,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode7 = SWIG_AsVal_bool(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "omp" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   {
     array8 = obj_to_array_no_conversion(swig_obj[6], NPY_FLOAT);
@@ -9281,7 +9281,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "omp" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   {
     array10 = obj_to_array_no_conversion(swig_obj[8], NPY_FLOAT);
@@ -9291,7 +9291,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "omp" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   try {
     {
@@ -9302,7 +9302,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -9358,7 +9358,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -9403,7 +9403,7 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
   PyObject *argv[11] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "omp", 0, 10, argv))) SWIG_fail;
   --argc;
@@ -9412,28 +9412,28 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[6]) && (array_numdims(argv[6]) == 1) && PyArray_EquivTypenums(array_type(argv[6]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[8]) && (array_numdims(argv[8]) == 1) && PyArray_EquivTypenums(array_type(argv[8]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -9442,13 +9442,13 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 10) {
     PyObject *retobj = _wrap_omp__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'omp'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -9490,7 +9490,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int val12 ;
   int ecode12 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   {
     arg4 = &data_temp4;
   }
@@ -9510,7 +9510,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9527,7 +9527,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9544,18 +9544,18 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ompMask" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ompMask" "', argument " "6"" of type '" "bool""'");
-  } 
+  }
   arg6 = static_cast< bool >(val6);
   {
     array7 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
@@ -9565,7 +9565,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   ecode8 = SWIG_AsVal_bool(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "ompMask" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   {
     array9 = obj_to_array_no_conversion(swig_obj[7], NPY_DOUBLE);
@@ -9575,7 +9575,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "ompMask" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   {
     array11 = obj_to_array_no_conversion(swig_obj[9], NPY_DOUBLE);
@@ -9585,7 +9585,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "ompMask" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   try {
     {
@@ -9596,7 +9596,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -9652,7 +9652,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -9730,7 +9730,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int val12 ;
   int ecode12 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   {
     arg4 = &data_temp4;
   }
@@ -9750,7 +9750,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9767,7 +9767,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -9784,18 +9784,18 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ompMask" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ompMask" "', argument " "6"" of type '" "bool""'");
-  } 
+  }
   arg6 = static_cast< bool >(val6);
   {
     array7 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
@@ -9805,7 +9805,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   ecode8 = SWIG_AsVal_bool(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "ompMask" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   {
     array9 = obj_to_array_no_conversion(swig_obj[7], NPY_FLOAT);
@@ -9815,7 +9815,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "ompMask" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   {
     array11 = obj_to_array_no_conversion(swig_obj[9], NPY_FLOAT);
@@ -9825,7 +9825,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "ompMask" "', argument " "12"" of type '" "int""'");
-  } 
+  }
   arg12 = static_cast< int >(val12);
   try {
     {
@@ -9836,7 +9836,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -9892,7 +9892,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -9943,7 +9943,7 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
   PyObject *argv[12] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "ompMask", 0, 11, argv))) SWIG_fail;
   --argc;
@@ -9952,28 +9952,28 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[7]) && (array_numdims(argv[7]) == 1) && PyArray_EquivTypenums(array_type(argv[7]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[9]) && (array_numdims(argv[9]) == 1) && PyArray_EquivTypenums(array_type(argv[9]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -9982,13 +9982,13 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 11) {
     PyObject *retobj = _wrap_ompMask__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ompMask'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -10016,7 +10016,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   int val6 ;
   int ecode6 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
@@ -10033,7 +10033,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10050,7 +10050,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10061,17 +10061,17 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "somp" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "somp" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "somp" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   try {
     {
@@ -10082,7 +10082,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -10167,7 +10167,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   int val6 ;
   int ecode6 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
@@ -10184,7 +10184,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10201,7 +10201,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10212,17 +10212,17 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "somp" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "somp" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "somp" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   try {
     {
@@ -10233,7 +10233,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -10305,7 +10305,7 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
   PyObject *argv[7] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "somp", 0, 6, argv))) SWIG_fail;
   --argc;
@@ -10314,14 +10314,14 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -10337,13 +10337,13 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 6) {
     PyObject *retobj = _wrap_somp__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'somp'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -10377,7 +10377,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
   int val8 ;
   int ecode8 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
@@ -10394,7 +10394,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10411,19 +10411,19 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -10442,43 +10442,43 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 3 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray3, "data");
     PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_DOUBLE)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -10486,36 +10486,36 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg3 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cd" "', argument " "4"" of type '" "double""'");
-  } 
+  }
   arg4 = static_cast< double >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "cd" "', argument " "5"" of type '" "constraint_type""'");
-  } 
+  }
   arg5 = static_cast< constraint_type >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cd" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "cd" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "cd" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   try {
     {
@@ -10526,7 +10526,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -10617,7 +10617,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
   int val8 ;
   int ecode8 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
@@ -10634,7 +10634,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10651,19 +10651,19 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -10682,43 +10682,43 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 3 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray3, "data");
     PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_FLOAT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -10726,36 +10726,36 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg3 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode4 = SWIG_AsVal_float(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cd" "', argument " "4"" of type '" "float""'");
-  } 
+  }
   arg4 = static_cast< float >(val4);
   ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "cd" "', argument " "5"" of type '" "constraint_type""'");
-  } 
+  }
   arg5 = static_cast< constraint_type >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cd" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "cd" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "cd" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   try {
     {
@@ -10766,7 +10766,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -10838,7 +10838,7 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
   PyObject *argv[9] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "cd", 0, 8, argv))) SWIG_fail;
   --argc;
@@ -10847,14 +10847,14 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -10877,13 +10877,13 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 8) {
     PyObject *retobj = _wrap_cd__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'cd'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -10918,7 +10918,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -10935,7 +10935,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10952,7 +10952,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10969,7 +10969,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -10980,27 +10980,27 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "l1L2BCD" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "l1L2BCD" "', argument " "6"" of type '" "constraint_type""'");
-  } 
+  }
   arg6 = static_cast< constraint_type >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "l1L2BCD" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "l1L2BCD" "', argument " "8"" of type '" "double""'");
-  } 
+  }
   arg8 = static_cast< double >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "l1L2BCD" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   try {
     {
@@ -11011,7 +11011,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -11069,7 +11069,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -11086,7 +11086,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -11103,7 +11103,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -11120,7 +11120,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -11131,27 +11131,27 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "l1L2BCD" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "l1L2BCD" "', argument " "6"" of type '" "constraint_type""'");
-  } 
+  }
   arg6 = static_cast< constraint_type >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "l1L2BCD" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_float(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "l1L2BCD" "', argument " "8"" of type '" "float""'");
-  } 
+  }
   arg8 = static_cast< float >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "l1L2BCD" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   try {
     {
@@ -11162,7 +11162,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -11200,7 +11200,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "l1L2BCD", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -11209,21 +11209,21 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -11246,13 +11246,13 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 9) {
     PyObject *retobj = _wrap_l1L2BCD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'l1L2BCD'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -11386,7 +11386,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   char *buf44 = 0 ;
   int alloc44 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -11410,43 +11410,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_DOUBLE)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -11454,8 +11454,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -11473,19 +11473,19 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
       }
       arg1 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "alltrainDL" "', argument " "2"" of type '" "bool""'");
-  } 
+  }
   arg2 = static_cast< bool >(val2);
   ecode6 = SWIG_AsVal_bool(swig_obj[2], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "alltrainDL" "', argument " "6"" of type '" "bool""'");
-  } 
+  }
   arg6 = static_cast< bool >(val6);
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -11501,7 +11501,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 7 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg7 = new Matrix<double> ((double *)array_data(array7),(int)array_size(array7,0),(int)array_size(array7,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -11518,13 +11518,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 8 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg8 = new Matrix<double> ((double *)array_data(array8),(int)array_size(array8,0),(int)array_size(array8,1));
-    
+
     /*@SWIG@*/
   }
   ecode9 = SWIG_AsVal_int(swig_obj[5], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "alltrainDL" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -11540,7 +11540,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 10 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg10 = new Matrix<double> ((double *)array_data(array10),(int)array_size(array10,0),(int)array_size(array10,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -11551,13 +11551,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -11576,43 +11576,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 12 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray12, "data");
     PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -11620,22 +11620,22 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg12 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -11654,43 +11654,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 13 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray13, "data");
     PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -11698,11 +11698,11 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg13 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array14 = obj_to_array_no_conversion(swig_obj[10], NPY_INT);
@@ -11717,62 +11717,62 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   ecode16 = SWIG_AsVal_int(swig_obj[12], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "alltrainDL" "', argument " "16"" of type '" "int""'");
-  } 
+  }
   arg16 = static_cast< int >(val16);
   ecode17 = SWIG_AsVal_double(swig_obj[13], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "alltrainDL" "', argument " "17"" of type '" "double""'");
-  } 
+  }
   arg17 = static_cast< double >(val17);
   ecode18 = SWIG_AsVal_bool(swig_obj[14], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "alltrainDL" "', argument " "18"" of type '" "bool""'");
-  } 
+  }
   arg18 = static_cast< bool >(val18);
   ecode19 = SWIG_AsVal_bool(swig_obj[15], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "alltrainDL" "', argument " "19"" of type '" "bool""'");
-  } 
+  }
   arg19 = static_cast< bool >(val19);
   ecode20 = SWIG_AsVal_int(swig_obj[16], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "alltrainDL" "', argument " "20"" of type '" "int""'");
-  } 
+  }
   arg20 = static_cast< int >(val20);
   ecode21 = SWIG_AsVal_int(swig_obj[17], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "alltrainDL" "', argument " "21"" of type '" "int""'");
-  } 
+  }
   arg21 = static_cast< int >(val21);
   ecode22 = SWIG_AsVal_double(swig_obj[18], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "alltrainDL" "', argument " "22"" of type '" "double""'");
-  } 
+  }
   arg22 = static_cast< double >(val22);
   ecode23 = SWIG_AsVal_double(swig_obj[19], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "alltrainDL" "', argument " "23"" of type '" "double""'");
-  } 
+  }
   arg23 = static_cast< double >(val23);
   ecode24 = SWIG_AsVal_double(swig_obj[20], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "alltrainDL" "', argument " "24"" of type '" "double""'");
-  } 
+  }
   arg24 = static_cast< double >(val24);
   ecode25 = SWIG_AsVal_int(swig_obj[21], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "alltrainDL" "', argument " "25"" of type '" "int""'");
-  } 
+  }
   arg25 = static_cast< int >(val25);
   ecode26 = SWIG_AsVal_double(swig_obj[22], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "alltrainDL" "', argument " "26"" of type '" "double""'");
-  } 
+  }
   arg26 = static_cast< double >(val26);
   ecode27 = SWIG_AsVal_int(swig_obj[23], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "alltrainDL" "', argument " "27"" of type '" "constraint_type""'");
-  } 
+  }
   arg27 = static_cast< constraint_type >(val27);
   res28 = SWIG_AsCharPtrAndSize(swig_obj[24], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
@@ -11782,77 +11782,77 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   ecode29 = SWIG_AsVal_bool(swig_obj[25], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "alltrainDL" "', argument " "29"" of type '" "bool""'");
-  } 
+  }
   arg29 = static_cast< bool >(val29);
   ecode30 = SWIG_AsVal_bool(swig_obj[26], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "alltrainDL" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[27], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "alltrainDL" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_int(swig_obj[28], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "alltrainDL" "', argument " "32"" of type '" "constraint_type_D""'");
-  } 
+  }
   arg32 = static_cast< constraint_type_D >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[29], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "alltrainDL" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[30], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "alltrainDL" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[31], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "alltrainDL" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   ecode36 = SWIG_AsVal_double(swig_obj[32], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "alltrainDL" "', argument " "36"" of type '" "double""'");
-  } 
+  }
   arg36 = static_cast< double >(val36);
   ecode37 = SWIG_AsVal_double(swig_obj[33], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "alltrainDL" "', argument " "37"" of type '" "double""'");
-  } 
+  }
   arg37 = static_cast< double >(val37);
   ecode38 = SWIG_AsVal_double(swig_obj[34], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "alltrainDL" "', argument " "38"" of type '" "double""'");
-  } 
+  }
   arg38 = static_cast< double >(val38);
   ecode39 = SWIG_AsVal_int(swig_obj[35], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "alltrainDL" "', argument " "39"" of type '" "int""'");
-  } 
+  }
   arg39 = static_cast< int >(val39);
   ecode40 = SWIG_AsVal_bool(swig_obj[36], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "alltrainDL" "', argument " "40"" of type '" "bool""'");
-  } 
+  }
   arg40 = static_cast< bool >(val40);
   ecode41 = SWIG_AsVal_int(swig_obj[37], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "alltrainDL" "', argument " "41"" of type '" "int""'");
-  } 
+  }
   arg41 = static_cast< int >(val41);
   ecode42 = SWIG_AsVal_bool(swig_obj[38], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "alltrainDL" "', argument " "42"" of type '" "bool""'");
-  } 
+  }
   arg42 = static_cast< bool >(val42);
   ecode43 = SWIG_AsVal_bool(swig_obj[39], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "alltrainDL" "', argument " "43"" of type '" "bool""'");
-  } 
+  }
   arg43 = static_cast< bool >(val43);
   res44 = SWIG_AsCharPtrAndSize(swig_obj[40], &buf44, NULL, &alloc44);
   if (!SWIG_IsOK(res44)) {
@@ -11868,7 +11868,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -11876,7 +11876,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -11886,7 +11886,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -11901,7 +11901,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -11918,7 +11918,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -12122,7 +12122,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   char *buf44 = 0 ;
   int alloc44 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -12146,43 +12146,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_FLOAT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -12190,8 +12190,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -12209,19 +12209,19 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
       }
       arg1 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "alltrainDL" "', argument " "2"" of type '" "bool""'");
-  } 
+  }
   arg2 = static_cast< bool >(val2);
   ecode6 = SWIG_AsVal_bool(swig_obj[2], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "alltrainDL" "', argument " "6"" of type '" "bool""'");
-  } 
+  }
   arg6 = static_cast< bool >(val6);
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -12237,7 +12237,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 7 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg7 = new Matrix<float> ((float *)array_data(array7),(int)array_size(array7,0),(int)array_size(array7,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -12254,13 +12254,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 8 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg8 = new Matrix<float> ((float *)array_data(array8),(int)array_size(array8,0),(int)array_size(array8,1));
-    
+
     /*@SWIG@*/
   }
   ecode9 = SWIG_AsVal_int(swig_obj[5], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "alltrainDL" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   {
     /*@SWIG:py_typemaps.i,85,map_matrix@*/
@@ -12276,7 +12276,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 10 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg10 = new Matrix<float> ((float *)array_data(array10),(int)array_size(array10,0),(int)array_size(array10,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -12287,13 +12287,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -12312,43 +12312,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 12 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray12, "data");
     PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -12356,22 +12356,22 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg12 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -12390,43 +12390,43 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 13 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray13, "data");
     PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -12434,11 +12434,11 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg13 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array14 = obj_to_array_no_conversion(swig_obj[10], NPY_INT);
@@ -12453,62 +12453,62 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   ecode16 = SWIG_AsVal_int(swig_obj[12], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "alltrainDL" "', argument " "16"" of type '" "int""'");
-  } 
+  }
   arg16 = static_cast< int >(val16);
   ecode17 = SWIG_AsVal_float(swig_obj[13], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "alltrainDL" "', argument " "17"" of type '" "float""'");
-  } 
+  }
   arg17 = static_cast< float >(val17);
   ecode18 = SWIG_AsVal_bool(swig_obj[14], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "alltrainDL" "', argument " "18"" of type '" "bool""'");
-  } 
+  }
   arg18 = static_cast< bool >(val18);
   ecode19 = SWIG_AsVal_bool(swig_obj[15], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "alltrainDL" "', argument " "19"" of type '" "bool""'");
-  } 
+  }
   arg19 = static_cast< bool >(val19);
   ecode20 = SWIG_AsVal_int(swig_obj[16], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "alltrainDL" "', argument " "20"" of type '" "int""'");
-  } 
+  }
   arg20 = static_cast< int >(val20);
   ecode21 = SWIG_AsVal_int(swig_obj[17], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "alltrainDL" "', argument " "21"" of type '" "int""'");
-  } 
+  }
   arg21 = static_cast< int >(val21);
   ecode22 = SWIG_AsVal_double(swig_obj[18], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "alltrainDL" "', argument " "22"" of type '" "double""'");
-  } 
+  }
   arg22 = static_cast< double >(val22);
   ecode23 = SWIG_AsVal_double(swig_obj[19], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "alltrainDL" "', argument " "23"" of type '" "double""'");
-  } 
+  }
   arg23 = static_cast< double >(val23);
   ecode24 = SWIG_AsVal_double(swig_obj[20], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "alltrainDL" "', argument " "24"" of type '" "double""'");
-  } 
+  }
   arg24 = static_cast< double >(val24);
   ecode25 = SWIG_AsVal_int(swig_obj[21], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "alltrainDL" "', argument " "25"" of type '" "int""'");
-  } 
+  }
   arg25 = static_cast< int >(val25);
   ecode26 = SWIG_AsVal_double(swig_obj[22], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "alltrainDL" "', argument " "26"" of type '" "double""'");
-  } 
+  }
   arg26 = static_cast< double >(val26);
   ecode27 = SWIG_AsVal_int(swig_obj[23], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "alltrainDL" "', argument " "27"" of type '" "constraint_type""'");
-  } 
+  }
   arg27 = static_cast< constraint_type >(val27);
   res28 = SWIG_AsCharPtrAndSize(swig_obj[24], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
@@ -12518,77 +12518,77 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   ecode29 = SWIG_AsVal_bool(swig_obj[25], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "alltrainDL" "', argument " "29"" of type '" "bool""'");
-  } 
+  }
   arg29 = static_cast< bool >(val29);
   ecode30 = SWIG_AsVal_bool(swig_obj[26], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "alltrainDL" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[27], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "alltrainDL" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_int(swig_obj[28], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "alltrainDL" "', argument " "32"" of type '" "constraint_type_D""'");
-  } 
+  }
   arg32 = static_cast< constraint_type_D >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[29], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "alltrainDL" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[30], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "alltrainDL" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[31], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "alltrainDL" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   ecode36 = SWIG_AsVal_double(swig_obj[32], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "alltrainDL" "', argument " "36"" of type '" "double""'");
-  } 
+  }
   arg36 = static_cast< double >(val36);
   ecode37 = SWIG_AsVal_double(swig_obj[33], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "alltrainDL" "', argument " "37"" of type '" "double""'");
-  } 
+  }
   arg37 = static_cast< double >(val37);
   ecode38 = SWIG_AsVal_float(swig_obj[34], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "alltrainDL" "', argument " "38"" of type '" "float""'");
-  } 
+  }
   arg38 = static_cast< float >(val38);
   ecode39 = SWIG_AsVal_int(swig_obj[35], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "alltrainDL" "', argument " "39"" of type '" "int""'");
-  } 
+  }
   arg39 = static_cast< int >(val39);
   ecode40 = SWIG_AsVal_bool(swig_obj[36], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "alltrainDL" "', argument " "40"" of type '" "bool""'");
-  } 
+  }
   arg40 = static_cast< bool >(val40);
   ecode41 = SWIG_AsVal_int(swig_obj[37], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "alltrainDL" "', argument " "41"" of type '" "int""'");
-  } 
+  }
   arg41 = static_cast< int >(val41);
   ecode42 = SWIG_AsVal_bool(swig_obj[38], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "alltrainDL" "', argument " "42"" of type '" "bool""'");
-  } 
+  }
   arg42 = static_cast< bool >(val42);
   ecode43 = SWIG_AsVal_bool(swig_obj[39], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "alltrainDL" "', argument " "43"" of type '" "bool""'");
-  } 
+  }
   arg43 = static_cast< bool >(val43);
   res44 = SWIG_AsCharPtrAndSize(swig_obj[40], &buf44, NULL, &alloc44);
   if (!SWIG_IsOK(res44)) {
@@ -12604,7 +12604,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -12612,7 +12612,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -12622,7 +12622,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -12637,7 +12637,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -12654,7 +12654,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       if (! require_fortran(array)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
       }
-      
+
       resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
     }
   }
@@ -12739,7 +12739,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
   PyObject *argv[42] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "alltrainDL", 0, 41, argv))) SWIG_fail;
   --argc;
@@ -12757,28 +12757,28 @@ SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[4]) && (array_numdims(argv[4]) == 2) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[6]) && (array_numdims(argv[6]) == 2) && PyArray_EquivTypenums(array_type(argv[6]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[7]) && (array_numdims(argv[7]) == 1) && PyArray_EquivTypenums(array_type(argv[7]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -12801,13 +12801,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 41) {
     PyObject *retobj = _wrap_alltrainDL__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'alltrainDL'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -12850,7 +12850,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
   int val11 ;
   int ecode11 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -12873,48 +12873,48 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "archetypalAnalysis" "', argument " "2"" of type '" "int""'");
-  } 
+  }
   arg2 = static_cast< int >(val2);
   ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysis" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysis" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysis" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysis" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysis" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysis" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_int(swig_obj[8], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "archetypalAnalysis" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   try {
     {
@@ -12925,7 +12925,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -12933,7 +12933,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -12943,7 +12943,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -13076,7 +13076,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
   int val11 ;
   int ecode11 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -13099,48 +13099,48 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "archetypalAnalysis" "', argument " "2"" of type '" "int""'");
-  } 
+  }
   arg2 = static_cast< int >(val2);
   ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysis" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysis" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysis" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysis" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysis" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysis" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_int(swig_obj[8], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "archetypalAnalysis" "', argument " "11"" of type '" "int""'");
-  } 
+  }
   arg11 = static_cast< int >(val11);
   try {
     {
@@ -13151,7 +13151,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -13159,7 +13159,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -13169,7 +13169,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -13274,7 +13274,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysis", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -13283,7 +13283,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -13299,13 +13299,13 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 9) {
     PyObject *retobj = _wrap_archetypalAnalysis__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'archetypalAnalysis'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -13344,7 +13344,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
   int val10 ;
   int ecode10 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -13367,7 +13367,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -13384,38 +13384,38 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysisInit" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysisInit" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysisInit" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysisInit" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysisInit" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_int(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysisInit" "', argument " "10"" of type '" "int""'");
-  } 
+  }
   arg10 = static_cast< int >(val10);
   try {
     {
@@ -13426,7 +13426,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -13434,7 +13434,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -13444,7 +13444,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -13579,7 +13579,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
   int val10 ;
   int ecode10 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   {
     arg3 = &data_temp3;
   }
@@ -13602,7 +13602,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -13619,38 +13619,38 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysisInit" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysisInit" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysisInit" "', argument " "7"" of type '" "bool""'");
-  } 
+  }
   arg7 = static_cast< bool >(val7);
   ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysisInit" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysisInit" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_int(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysisInit" "', argument " "10"" of type '" "int""'");
-  } 
+  }
   arg10 = static_cast< int >(val10);
   try {
     {
@@ -13661,7 +13661,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -13669,7 +13669,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -13679,7 +13679,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp3 != NULL) {
@@ -13790,7 +13790,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
   PyObject *argv[9] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysisInit", 0, 8, argv))) SWIG_fail;
   --argc;
@@ -13799,14 +13799,14 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -13822,13 +13822,13 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 8) {
     PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'archetypalAnalysisInit'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -13851,7 +13851,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
   int val4 ;
   int ecode4 = 0 ;
   SpMatrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
@@ -13868,7 +13868,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -13885,18 +13885,18 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "decompSimplex" "', argument " "3"" of type '" "bool""'");
-  } 
+  }
   arg3 = static_cast< bool >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "decompSimplex" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   try {
     {
@@ -13907,7 +13907,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -13981,7 +13981,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
   int val4 ;
   int ecode4 = 0 ;
   SpMatrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
@@ -13998,7 +13998,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -14015,18 +14015,18 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "decompSimplex" "', argument " "3"" of type '" "bool""'");
-  } 
+  }
   arg3 = static_cast< bool >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "decompSimplex" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   try {
     {
@@ -14037,7 +14037,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -14103,7 +14103,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
   PyObject *argv[5] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "decompSimplex", 0, 4, argv))) SWIG_fail;
   --argc;
@@ -14112,14 +14112,14 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -14128,13 +14128,13 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 4) {
     PyObject *retobj = _wrap_decompSimplex__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'decompSimplex'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -14263,7 +14263,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int val40 ;
   int ecode40 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
@@ -14280,19 +14280,19 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -14313,43 +14313,43 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_DOUBLE)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -14357,8 +14357,8 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -14376,7 +14376,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -14394,7 +14394,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -14411,7 +14411,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -14422,102 +14422,102 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "fistaFlat" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "fistaFlat" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaFlat" "', argument " "8"" of type '" "double""'");
-  } 
+  }
   arg8 = static_cast< double >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaFlat" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   ecode10 = SWIG_AsVal_double(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaFlat" "', argument " "10"" of type '" "double""'");
-  } 
+  }
   arg10 = static_cast< double >(val10);
   ecode11 = SWIG_AsVal_double(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaFlat" "', argument " "11"" of type '" "double""'");
-  } 
+  }
   arg11 = static_cast< double >(val11);
   ecode12 = SWIG_AsVal_double(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaFlat" "', argument " "12"" of type '" "double""'");
-  } 
+  }
   arg12 = static_cast< double >(val12);
   ecode13 = SWIG_AsVal_double(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaFlat" "', argument " "13"" of type '" "double""'");
-  } 
+  }
   arg13 = static_cast< double >(val13);
   ecode14 = SWIG_AsVal_double(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaFlat" "', argument " "14"" of type '" "double""'");
-  } 
+  }
   arg14 = static_cast< double >(val14);
   ecode15 = SWIG_AsVal_double(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaFlat" "', argument " "15"" of type '" "double""'");
-  } 
+  }
   arg15 = static_cast< double >(val15);
   ecode16 = SWIG_AsVal_double(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaFlat" "', argument " "16"" of type '" "double""'");
-  } 
+  }
   arg16 = static_cast< double >(val16);
   ecode17 = SWIG_AsVal_double(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaFlat" "', argument " "17"" of type '" "double""'");
-  } 
+  }
   arg17 = static_cast< double >(val17);
   ecode18 = SWIG_AsVal_double(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaFlat" "', argument " "18"" of type '" "double""'");
-  } 
+  }
   arg18 = static_cast< double >(val18);
   ecode19 = SWIG_AsVal_int(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaFlat" "', argument " "19"" of type '" "int""'");
-  } 
+  }
   arg19 = static_cast< int >(val19);
   ecode20 = SWIG_AsVal_int(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaFlat" "', argument " "20"" of type '" "int""'");
-  } 
+  }
   arg20 = static_cast< int >(val20);
   ecode21 = SWIG_AsVal_bool(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaFlat" "', argument " "21"" of type '" "bool""'");
-  } 
+  }
   arg21 = static_cast< bool >(val21);
   ecode22 = SWIG_AsVal_bool(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaFlat" "', argument " "22"" of type '" "bool""'");
-  } 
+  }
   arg22 = static_cast< bool >(val22);
   ecode23 = SWIG_AsVal_bool(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaFlat" "', argument " "23"" of type '" "bool""'");
-  } 
+  }
   arg23 = static_cast< bool >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaFlat" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaFlat" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   res26 = SWIG_AsCharPtrAndSize(swig_obj[25], &buf26, NULL, &alloc26);
   if (!SWIG_IsOK(res26)) {
@@ -14532,32 +14532,32 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode28 = SWIG_AsVal_bool(swig_obj[27], &val28);
   if (!SWIG_IsOK(ecode28)) {
     SWIG_exception_fail(SWIG_ArgError(ecode28), "in method '" "fistaFlat" "', argument " "28"" of type '" "bool""'");
-  } 
+  }
   arg28 = static_cast< bool >(val28);
   ecode29 = SWIG_AsVal_bool(swig_obj[28], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "fistaFlat" "', argument " "29"" of type '" "bool""'");
-  } 
+  }
   arg29 = static_cast< bool >(val29);
   ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "fistaFlat" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaFlat" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaFlat" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaFlat" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   res34 = SWIG_AsCharPtrAndSize(swig_obj[33], &buf34, NULL, &alloc34);
   if (!SWIG_IsOK(res34)) {
@@ -14567,7 +14567,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaFlat" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   {
     array36 = obj_to_array_no_conversion(swig_obj[35], NPY_DOUBLE);
@@ -14577,22 +14577,22 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode37 = SWIG_AsVal_int(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaFlat" "', argument " "37"" of type '" "int""'");
-  } 
+  }
   arg37 = static_cast< int >(val37);
   ecode38 = SWIG_AsVal_bool(swig_obj[37], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaFlat" "', argument " "38"" of type '" "bool""'");
-  } 
+  }
   arg38 = static_cast< bool >(val38);
   ecode39 = SWIG_AsVal_bool(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaFlat" "', argument " "39"" of type '" "bool""'");
-  } 
+  }
   arg39 = static_cast< bool >(val39);
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaFlat" "', argument " "40"" of type '" "int""'");
-  } 
+  }
   arg40 = static_cast< int >(val40);
   try {
     {
@@ -14603,7 +14603,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -14611,7 +14611,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -14621,7 +14621,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -14790,7 +14790,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int val40 ;
   int ecode40 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
@@ -14807,19 +14807,19 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -14840,43 +14840,43 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_FLOAT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -14884,8 +14884,8 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -14903,7 +14903,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -14921,7 +14921,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -14938,7 +14938,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -14949,102 +14949,102 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "fistaFlat" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "fistaFlat" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_float(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaFlat" "', argument " "8"" of type '" "float""'");
-  } 
+  }
   arg8 = static_cast< float >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaFlat" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   ecode10 = SWIG_AsVal_float(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaFlat" "', argument " "10"" of type '" "float""'");
-  } 
+  }
   arg10 = static_cast< float >(val10);
   ecode11 = SWIG_AsVal_float(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaFlat" "', argument " "11"" of type '" "float""'");
-  } 
+  }
   arg11 = static_cast< float >(val11);
   ecode12 = SWIG_AsVal_float(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaFlat" "', argument " "12"" of type '" "float""'");
-  } 
+  }
   arg12 = static_cast< float >(val12);
   ecode13 = SWIG_AsVal_float(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaFlat" "', argument " "13"" of type '" "float""'");
-  } 
+  }
   arg13 = static_cast< float >(val13);
   ecode14 = SWIG_AsVal_float(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaFlat" "', argument " "14"" of type '" "float""'");
-  } 
+  }
   arg14 = static_cast< float >(val14);
   ecode15 = SWIG_AsVal_float(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaFlat" "', argument " "15"" of type '" "float""'");
-  } 
+  }
   arg15 = static_cast< float >(val15);
   ecode16 = SWIG_AsVal_float(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaFlat" "', argument " "16"" of type '" "float""'");
-  } 
+  }
   arg16 = static_cast< float >(val16);
   ecode17 = SWIG_AsVal_float(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaFlat" "', argument " "17"" of type '" "float""'");
-  } 
+  }
   arg17 = static_cast< float >(val17);
   ecode18 = SWIG_AsVal_float(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaFlat" "', argument " "18"" of type '" "float""'");
-  } 
+  }
   arg18 = static_cast< float >(val18);
   ecode19 = SWIG_AsVal_int(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaFlat" "', argument " "19"" of type '" "int""'");
-  } 
+  }
   arg19 = static_cast< int >(val19);
   ecode20 = SWIG_AsVal_int(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaFlat" "', argument " "20"" of type '" "int""'");
-  } 
+  }
   arg20 = static_cast< int >(val20);
   ecode21 = SWIG_AsVal_bool(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaFlat" "', argument " "21"" of type '" "bool""'");
-  } 
+  }
   arg21 = static_cast< bool >(val21);
   ecode22 = SWIG_AsVal_bool(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaFlat" "', argument " "22"" of type '" "bool""'");
-  } 
+  }
   arg22 = static_cast< bool >(val22);
   ecode23 = SWIG_AsVal_bool(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaFlat" "', argument " "23"" of type '" "bool""'");
-  } 
+  }
   arg23 = static_cast< bool >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaFlat" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaFlat" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   res26 = SWIG_AsCharPtrAndSize(swig_obj[25], &buf26, NULL, &alloc26);
   if (!SWIG_IsOK(res26)) {
@@ -15059,32 +15059,32 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode28 = SWIG_AsVal_bool(swig_obj[27], &val28);
   if (!SWIG_IsOK(ecode28)) {
     SWIG_exception_fail(SWIG_ArgError(ecode28), "in method '" "fistaFlat" "', argument " "28"" of type '" "bool""'");
-  } 
+  }
   arg28 = static_cast< bool >(val28);
   ecode29 = SWIG_AsVal_bool(swig_obj[28], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "fistaFlat" "', argument " "29"" of type '" "bool""'");
-  } 
+  }
   arg29 = static_cast< bool >(val29);
   ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "fistaFlat" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaFlat" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaFlat" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaFlat" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   res34 = SWIG_AsCharPtrAndSize(swig_obj[33], &buf34, NULL, &alloc34);
   if (!SWIG_IsOK(res34)) {
@@ -15094,7 +15094,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaFlat" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   {
     array36 = obj_to_array_no_conversion(swig_obj[35], NPY_FLOAT);
@@ -15104,22 +15104,22 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode37 = SWIG_AsVal_int(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaFlat" "', argument " "37"" of type '" "int""'");
-  } 
+  }
   arg37 = static_cast< int >(val37);
   ecode38 = SWIG_AsVal_bool(swig_obj[37], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaFlat" "', argument " "38"" of type '" "bool""'");
-  } 
+  }
   arg38 = static_cast< bool >(val38);
   ecode39 = SWIG_AsVal_bool(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaFlat" "', argument " "39"" of type '" "bool""'");
-  } 
+  }
   arg39 = static_cast< bool >(val39);
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaFlat" "', argument " "40"" of type '" "int""'");
-  } 
+  }
   arg40 = static_cast< int >(val40);
   try {
     {
@@ -15130,7 +15130,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -15138,7 +15138,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -15148,7 +15148,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -15203,7 +15203,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
   PyObject *argv[41] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaFlat", 0, 40, argv))) SWIG_fail;
   --argc;
@@ -15212,7 +15212,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -15222,27 +15222,27 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
         _v = check_sparse(argv[1]);
         else
         _v = check_matrix(argv[1],NPY_FLOAT);
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -15319,7 +15319,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[35]) && (array_numdims(argv[35]) == 1) && PyArray_EquivTypenums(array_type(argv[35]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -15328,13 +15328,13 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 40) {
     PyObject *retobj = _wrap_fistaFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'fistaFlat'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -15469,7 +15469,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int val43 ;
   int ecode43 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
@@ -15486,19 +15486,19 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -15519,43 +15519,43 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_DOUBLE)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -15563,8 +15563,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -15582,7 +15582,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -15600,7 +15600,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -15617,7 +15617,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -15628,13 +15628,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -15653,43 +15653,43 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -15697,11 +15697,11 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array7 = obj_to_array_no_conversion(swig_obj[6], NPY_INT);
@@ -15716,102 +15716,102 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaTree" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_int(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaTree" "', argument " "10"" of type '" "int""'");
-  } 
+  }
   arg10 = static_cast< int >(val10);
   ecode11 = SWIG_AsVal_double(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaTree" "', argument " "11"" of type '" "double""'");
-  } 
+  }
   arg11 = static_cast< double >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaTree" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   ecode13 = SWIG_AsVal_double(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaTree" "', argument " "13"" of type '" "double""'");
-  } 
+  }
   arg13 = static_cast< double >(val13);
   ecode14 = SWIG_AsVal_double(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaTree" "', argument " "14"" of type '" "double""'");
-  } 
+  }
   arg14 = static_cast< double >(val14);
   ecode15 = SWIG_AsVal_double(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaTree" "', argument " "15"" of type '" "double""'");
-  } 
+  }
   arg15 = static_cast< double >(val15);
   ecode16 = SWIG_AsVal_double(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaTree" "', argument " "16"" of type '" "double""'");
-  } 
+  }
   arg16 = static_cast< double >(val16);
   ecode17 = SWIG_AsVal_double(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaTree" "', argument " "17"" of type '" "double""'");
-  } 
+  }
   arg17 = static_cast< double >(val17);
   ecode18 = SWIG_AsVal_double(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaTree" "', argument " "18"" of type '" "double""'");
-  } 
+  }
   arg18 = static_cast< double >(val18);
   ecode19 = SWIG_AsVal_double(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaTree" "', argument " "19"" of type '" "double""'");
-  } 
+  }
   arg19 = static_cast< double >(val19);
   ecode20 = SWIG_AsVal_double(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaTree" "', argument " "20"" of type '" "double""'");
-  } 
+  }
   arg20 = static_cast< double >(val20);
   ecode21 = SWIG_AsVal_double(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaTree" "', argument " "21"" of type '" "double""'");
-  } 
+  }
   arg21 = static_cast< double >(val21);
   ecode22 = SWIG_AsVal_int(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaTree" "', argument " "22"" of type '" "int""'");
-  } 
+  }
   arg22 = static_cast< int >(val22);
   ecode23 = SWIG_AsVal_int(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaTree" "', argument " "23"" of type '" "int""'");
-  } 
+  }
   arg23 = static_cast< int >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaTree" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaTree" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   ecode26 = SWIG_AsVal_bool(swig_obj[25], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "fistaTree" "', argument " "26"" of type '" "bool""'");
-  } 
+  }
   arg26 = static_cast< bool >(val26);
   ecode27 = SWIG_AsVal_bool(swig_obj[26], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "fistaTree" "', argument " "27"" of type '" "bool""'");
-  } 
+  }
   arg27 = static_cast< bool >(val27);
   ecode28 = SWIG_AsVal_bool(swig_obj[27], &val28);
   if (!SWIG_IsOK(ecode28)) {
     SWIG_exception_fail(SWIG_ArgError(ecode28), "in method '" "fistaTree" "', argument " "28"" of type '" "bool""'");
-  } 
+  }
   arg28 = static_cast< bool >(val28);
   res29 = SWIG_AsCharPtrAndSize(swig_obj[28], &buf29, NULL, &alloc29);
   if (!SWIG_IsOK(res29)) {
@@ -15826,32 +15826,32 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaTree" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaTree" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaTree" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "fistaTree" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaTree" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   ecode36 = SWIG_AsVal_bool(swig_obj[35], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "fistaTree" "', argument " "36"" of type '" "bool""'");
-  } 
+  }
   arg36 = static_cast< bool >(val36);
   res37 = SWIG_AsCharPtrAndSize(swig_obj[36], &buf37, NULL, &alloc37);
   if (!SWIG_IsOK(res37)) {
@@ -15861,7 +15861,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode38 = SWIG_AsVal_bool(swig_obj[37], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaTree" "', argument " "38"" of type '" "bool""'");
-  } 
+  }
   arg38 = static_cast< bool >(val38);
   {
     array39 = obj_to_array_no_conversion(swig_obj[38], NPY_DOUBLE);
@@ -15871,22 +15871,22 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaTree" "', argument " "40"" of type '" "int""'");
-  } 
+  }
   arg40 = static_cast< int >(val40);
   ecode41 = SWIG_AsVal_bool(swig_obj[40], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "fistaTree" "', argument " "41"" of type '" "bool""'");
-  } 
+  }
   arg41 = static_cast< bool >(val41);
   ecode42 = SWIG_AsVal_bool(swig_obj[41], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaTree" "', argument " "42"" of type '" "bool""'");
-  } 
+  }
   arg42 = static_cast< bool >(val42);
   ecode43 = SWIG_AsVal_int(swig_obj[42], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "fistaTree" "', argument " "43"" of type '" "int""'");
-  } 
+  }
   arg43 = static_cast< int >(val43);
   try {
     {
@@ -15897,7 +15897,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -15905,7 +15905,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -15915,7 +15915,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -16108,7 +16108,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int val43 ;
   int ecode43 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
@@ -16125,19 +16125,19 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -16158,43 +16158,43 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_FLOAT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -16202,8 +16202,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -16221,7 +16221,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -16239,7 +16239,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -16256,7 +16256,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -16267,13 +16267,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -16292,43 +16292,43 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -16336,11 +16336,11 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array7 = obj_to_array_no_conversion(swig_obj[6], NPY_INT);
@@ -16355,102 +16355,102 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaTree" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_int(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaTree" "', argument " "10"" of type '" "int""'");
-  } 
+  }
   arg10 = static_cast< int >(val10);
   ecode11 = SWIG_AsVal_float(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaTree" "', argument " "11"" of type '" "float""'");
-  } 
+  }
   arg11 = static_cast< float >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaTree" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   ecode13 = SWIG_AsVal_float(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaTree" "', argument " "13"" of type '" "float""'");
-  } 
+  }
   arg13 = static_cast< float >(val13);
   ecode14 = SWIG_AsVal_float(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaTree" "', argument " "14"" of type '" "float""'");
-  } 
+  }
   arg14 = static_cast< float >(val14);
   ecode15 = SWIG_AsVal_float(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaTree" "', argument " "15"" of type '" "float""'");
-  } 
+  }
   arg15 = static_cast< float >(val15);
   ecode16 = SWIG_AsVal_float(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaTree" "', argument " "16"" of type '" "float""'");
-  } 
+  }
   arg16 = static_cast< float >(val16);
   ecode17 = SWIG_AsVal_float(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaTree" "', argument " "17"" of type '" "float""'");
-  } 
+  }
   arg17 = static_cast< float >(val17);
   ecode18 = SWIG_AsVal_float(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaTree" "', argument " "18"" of type '" "float""'");
-  } 
+  }
   arg18 = static_cast< float >(val18);
   ecode19 = SWIG_AsVal_float(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaTree" "', argument " "19"" of type '" "float""'");
-  } 
+  }
   arg19 = static_cast< float >(val19);
   ecode20 = SWIG_AsVal_float(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaTree" "', argument " "20"" of type '" "float""'");
-  } 
+  }
   arg20 = static_cast< float >(val20);
   ecode21 = SWIG_AsVal_float(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaTree" "', argument " "21"" of type '" "float""'");
-  } 
+  }
   arg21 = static_cast< float >(val21);
   ecode22 = SWIG_AsVal_int(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaTree" "', argument " "22"" of type '" "int""'");
-  } 
+  }
   arg22 = static_cast< int >(val22);
   ecode23 = SWIG_AsVal_int(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaTree" "', argument " "23"" of type '" "int""'");
-  } 
+  }
   arg23 = static_cast< int >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaTree" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaTree" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   ecode26 = SWIG_AsVal_bool(swig_obj[25], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "fistaTree" "', argument " "26"" of type '" "bool""'");
-  } 
+  }
   arg26 = static_cast< bool >(val26);
   ecode27 = SWIG_AsVal_bool(swig_obj[26], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "fistaTree" "', argument " "27"" of type '" "bool""'");
-  } 
+  }
   arg27 = static_cast< bool >(val27);
   ecode28 = SWIG_AsVal_bool(swig_obj[27], &val28);
   if (!SWIG_IsOK(ecode28)) {
     SWIG_exception_fail(SWIG_ArgError(ecode28), "in method '" "fistaTree" "', argument " "28"" of type '" "bool""'");
-  } 
+  }
   arg28 = static_cast< bool >(val28);
   res29 = SWIG_AsCharPtrAndSize(swig_obj[28], &buf29, NULL, &alloc29);
   if (!SWIG_IsOK(res29)) {
@@ -16465,32 +16465,32 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaTree" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaTree" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaTree" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "fistaTree" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaTree" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   ecode36 = SWIG_AsVal_bool(swig_obj[35], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "fistaTree" "', argument " "36"" of type '" "bool""'");
-  } 
+  }
   arg36 = static_cast< bool >(val36);
   res37 = SWIG_AsCharPtrAndSize(swig_obj[36], &buf37, NULL, &alloc37);
   if (!SWIG_IsOK(res37)) {
@@ -16500,7 +16500,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode38 = SWIG_AsVal_bool(swig_obj[37], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaTree" "', argument " "38"" of type '" "bool""'");
-  } 
+  }
   arg38 = static_cast< bool >(val38);
   {
     array39 = obj_to_array_no_conversion(swig_obj[38], NPY_FLOAT);
@@ -16510,22 +16510,22 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaTree" "', argument " "40"" of type '" "int""'");
-  } 
+  }
   arg40 = static_cast< int >(val40);
   ecode41 = SWIG_AsVal_bool(swig_obj[40], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "fistaTree" "', argument " "41"" of type '" "bool""'");
-  } 
+  }
   arg41 = static_cast< bool >(val41);
   ecode42 = SWIG_AsVal_bool(swig_obj[41], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaTree" "', argument " "42"" of type '" "bool""'");
-  } 
+  }
   arg42 = static_cast< bool >(val42);
   ecode43 = SWIG_AsVal_int(swig_obj[42], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "fistaTree" "', argument " "43"" of type '" "int""'");
-  } 
+  }
   arg43 = static_cast< int >(val43);
   try {
     {
@@ -16536,7 +16536,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -16544,7 +16544,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -16554,7 +16554,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -16627,7 +16627,7 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
   PyObject *argv[44] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaTree", 0, 43, argv))) SWIG_fail;
   --argc;
@@ -16636,7 +16636,7 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -16646,34 +16646,34 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
         _v = check_sparse(argv[1]);
         else
         _v = check_matrix(argv[1],NPY_FLOAT);
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[4]) && (array_numdims(argv[4]) == 1) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -16750,7 +16750,7 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[38]) && (array_numdims(argv[38]) == 1) && PyArray_EquivTypenums(array_type(argv[38]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -16759,13 +16759,13 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 43) {
     PyObject *retobj = _wrap_fistaTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'fistaTree'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -16898,7 +16898,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   int val42 ;
   int ecode42 = 0 ;
   Matrix< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
@@ -16915,19 +16915,19 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -16948,43 +16948,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_DOUBLE)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -16992,8 +16992,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -17011,7 +17011,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -17029,7 +17029,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -17046,7 +17046,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -17057,13 +17057,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -17082,43 +17082,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -17126,22 +17126,22 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -17160,43 +17160,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 7 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray7, "data");
     PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -17204,111 +17204,111 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg7 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaGraph" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaGraph" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_double(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaGraph" "', argument " "10"" of type '" "double""'");
-  } 
+  }
   arg10 = static_cast< double >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaGraph" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_double(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaGraph" "', argument " "12"" of type '" "double""'");
-  } 
+  }
   arg12 = static_cast< double >(val12);
   ecode13 = SWIG_AsVal_double(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaGraph" "', argument " "13"" of type '" "double""'");
-  } 
+  }
   arg13 = static_cast< double >(val13);
   ecode14 = SWIG_AsVal_double(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaGraph" "', argument " "14"" of type '" "double""'");
-  } 
+  }
   arg14 = static_cast< double >(val14);
   ecode15 = SWIG_AsVal_double(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaGraph" "', argument " "15"" of type '" "double""'");
-  } 
+  }
   arg15 = static_cast< double >(val15);
   ecode16 = SWIG_AsVal_double(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaGraph" "', argument " "16"" of type '" "double""'");
-  } 
+  }
   arg16 = static_cast< double >(val16);
   ecode17 = SWIG_AsVal_double(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaGraph" "', argument " "17"" of type '" "double""'");
-  } 
+  }
   arg17 = static_cast< double >(val17);
   ecode18 = SWIG_AsVal_double(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaGraph" "', argument " "18"" of type '" "double""'");
-  } 
+  }
   arg18 = static_cast< double >(val18);
   ecode19 = SWIG_AsVal_double(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaGraph" "', argument " "19"" of type '" "double""'");
-  } 
+  }
   arg19 = static_cast< double >(val19);
   ecode20 = SWIG_AsVal_double(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaGraph" "', argument " "20"" of type '" "double""'");
-  } 
+  }
   arg20 = static_cast< double >(val20);
   ecode21 = SWIG_AsVal_int(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaGraph" "', argument " "21"" of type '" "int""'");
-  } 
+  }
   arg21 = static_cast< int >(val21);
   ecode22 = SWIG_AsVal_int(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaGraph" "', argument " "22"" of type '" "int""'");
-  } 
+  }
   arg22 = static_cast< int >(val22);
   ecode23 = SWIG_AsVal_bool(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaGraph" "', argument " "23"" of type '" "bool""'");
-  } 
+  }
   arg23 = static_cast< bool >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaGraph" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaGraph" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   ecode26 = SWIG_AsVal_bool(swig_obj[25], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "fistaGraph" "', argument " "26"" of type '" "bool""'");
-  } 
+  }
   arg26 = static_cast< bool >(val26);
   ecode27 = SWIG_AsVal_bool(swig_obj[26], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "fistaGraph" "', argument " "27"" of type '" "bool""'");
-  } 
+  }
   arg27 = static_cast< bool >(val27);
   res28 = SWIG_AsCharPtrAndSize(swig_obj[27], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
@@ -17323,32 +17323,32 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "fistaGraph" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaGraph" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaGraph" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaGraph" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "fistaGraph" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaGraph" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   res36 = SWIG_AsCharPtrAndSize(swig_obj[35], &buf36, NULL, &alloc36);
   if (!SWIG_IsOK(res36)) {
@@ -17358,7 +17358,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   ecode37 = SWIG_AsVal_bool(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaGraph" "', argument " "37"" of type '" "bool""'");
-  } 
+  }
   arg37 = static_cast< bool >(val37);
   {
     array38 = obj_to_array_no_conversion(swig_obj[37], NPY_DOUBLE);
@@ -17368,22 +17368,22 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaGraph" "', argument " "39"" of type '" "int""'");
-  } 
+  }
   arg39 = static_cast< int >(val39);
   ecode40 = SWIG_AsVal_bool(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaGraph" "', argument " "40"" of type '" "bool""'");
-  } 
+  }
   arg40 = static_cast< bool >(val40);
   ecode41 = SWIG_AsVal_bool(swig_obj[40], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "fistaGraph" "', argument " "41"" of type '" "bool""'");
-  } 
+  }
   arg41 = static_cast< bool >(val41);
   ecode42 = SWIG_AsVal_int(swig_obj[41], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaGraph" "', argument " "42"" of type '" "int""'");
-  } 
+  }
   arg42 = static_cast< int >(val42);
   try {
     {
@@ -17394,7 +17394,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -17402,7 +17402,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
     double *data = (double *)array->data;
     double *idata = result->rawX();
@@ -17412,7 +17412,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -17597,7 +17597,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   int val42 ;
   int ecode42 = 0 ;
   Matrix< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
@@ -17614,19 +17614,19 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -17647,43 +17647,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
         return NULL;
       }
-      
+
       /* fetch sparse attributes */
       PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
       PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
       PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
-      
+
       /* check that types are OK */
       if (check_array(indptr,NPY_INT))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(indices,NPY_INT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
       }
-      
+
       if check_array(data, NPY_FLOAT)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
         return NULL;
       }
-      
+
       if (!PyTuple_Check(shape))
       {
         PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
         return NULL;
       }
-      
+
       /* get array dimensions */
       int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
       int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-      
-      
+
+
       int *pB = (int *)array_data(indptr);
       int *pE = pB + 1;
       int nzmax = (int)array_size(data,0);
@@ -17691,8 +17691,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       Py_DECREF(indices);
       Py_DECREF(data);
       Py_DECREF(shape);
-      
-      
+
+
       arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
       /*@SWIG@*/
     } else {
@@ -17710,7 +17710,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
       }
       arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
-      
+
       /*@SWIG@*/
     }
   }
@@ -17728,7 +17728,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -17745,7 +17745,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -17756,13 +17756,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -17781,43 +17781,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -17825,22 +17825,22 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -17859,43 +17859,43 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 7 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray7, "data");
     PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -17903,111 +17903,111 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg7 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaGraph" "', argument " "8"" of type '" "int""'");
-  } 
+  }
   arg8 = static_cast< int >(val8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaGraph" "', argument " "9"" of type '" "int""'");
-  } 
+  }
   arg9 = static_cast< int >(val9);
   ecode10 = SWIG_AsVal_float(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "fistaGraph" "', argument " "10"" of type '" "float""'");
-  } 
+  }
   arg10 = static_cast< float >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "fistaGraph" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_float(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "fistaGraph" "', argument " "12"" of type '" "float""'");
-  } 
+  }
   arg12 = static_cast< float >(val12);
   ecode13 = SWIG_AsVal_float(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "fistaGraph" "', argument " "13"" of type '" "float""'");
-  } 
+  }
   arg13 = static_cast< float >(val13);
   ecode14 = SWIG_AsVal_float(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "fistaGraph" "', argument " "14"" of type '" "float""'");
-  } 
+  }
   arg14 = static_cast< float >(val14);
   ecode15 = SWIG_AsVal_float(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "fistaGraph" "', argument " "15"" of type '" "float""'");
-  } 
+  }
   arg15 = static_cast< float >(val15);
   ecode16 = SWIG_AsVal_float(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "fistaGraph" "', argument " "16"" of type '" "float""'");
-  } 
+  }
   arg16 = static_cast< float >(val16);
   ecode17 = SWIG_AsVal_float(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "fistaGraph" "', argument " "17"" of type '" "float""'");
-  } 
+  }
   arg17 = static_cast< float >(val17);
   ecode18 = SWIG_AsVal_float(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "fistaGraph" "', argument " "18"" of type '" "float""'");
-  } 
+  }
   arg18 = static_cast< float >(val18);
   ecode19 = SWIG_AsVal_float(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "fistaGraph" "', argument " "19"" of type '" "float""'");
-  } 
+  }
   arg19 = static_cast< float >(val19);
   ecode20 = SWIG_AsVal_float(swig_obj[19], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "fistaGraph" "', argument " "20"" of type '" "float""'");
-  } 
+  }
   arg20 = static_cast< float >(val20);
   ecode21 = SWIG_AsVal_int(swig_obj[20], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "fistaGraph" "', argument " "21"" of type '" "int""'");
-  } 
+  }
   arg21 = static_cast< int >(val21);
   ecode22 = SWIG_AsVal_int(swig_obj[21], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "fistaGraph" "', argument " "22"" of type '" "int""'");
-  } 
+  }
   arg22 = static_cast< int >(val22);
   ecode23 = SWIG_AsVal_bool(swig_obj[22], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "fistaGraph" "', argument " "23"" of type '" "bool""'");
-  } 
+  }
   arg23 = static_cast< bool >(val23);
   ecode24 = SWIG_AsVal_bool(swig_obj[23], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "fistaGraph" "', argument " "24"" of type '" "bool""'");
-  } 
+  }
   arg24 = static_cast< bool >(val24);
   ecode25 = SWIG_AsVal_bool(swig_obj[24], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "fistaGraph" "', argument " "25"" of type '" "bool""'");
-  } 
+  }
   arg25 = static_cast< bool >(val25);
   ecode26 = SWIG_AsVal_bool(swig_obj[25], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "fistaGraph" "', argument " "26"" of type '" "bool""'");
-  } 
+  }
   arg26 = static_cast< bool >(val26);
   ecode27 = SWIG_AsVal_bool(swig_obj[26], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "fistaGraph" "', argument " "27"" of type '" "bool""'");
-  } 
+  }
   arg27 = static_cast< bool >(val27);
   res28 = SWIG_AsCharPtrAndSize(swig_obj[27], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
@@ -18022,32 +18022,32 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "fistaGraph" "', argument " "30"" of type '" "bool""'");
-  } 
+  }
   arg30 = static_cast< bool >(val30);
   ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "fistaGraph" "', argument " "31"" of type '" "bool""'");
-  } 
+  }
   arg31 = static_cast< bool >(val31);
   ecode32 = SWIG_AsVal_bool(swig_obj[31], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "fistaGraph" "', argument " "32"" of type '" "bool""'");
-  } 
+  }
   arg32 = static_cast< bool >(val32);
   ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "fistaGraph" "', argument " "33"" of type '" "bool""'");
-  } 
+  }
   arg33 = static_cast< bool >(val33);
   ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "fistaGraph" "', argument " "34"" of type '" "bool""'");
-  } 
+  }
   arg34 = static_cast< bool >(val34);
   ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaGraph" "', argument " "35"" of type '" "bool""'");
-  } 
+  }
   arg35 = static_cast< bool >(val35);
   res36 = SWIG_AsCharPtrAndSize(swig_obj[35], &buf36, NULL, &alloc36);
   if (!SWIG_IsOK(res36)) {
@@ -18057,7 +18057,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   ecode37 = SWIG_AsVal_bool(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaGraph" "', argument " "37"" of type '" "bool""'");
-  } 
+  }
   arg37 = static_cast< bool >(val37);
   {
     array38 = obj_to_array_no_conversion(swig_obj[37], NPY_FLOAT);
@@ -18067,22 +18067,22 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaGraph" "', argument " "39"" of type '" "int""'");
-  } 
+  }
   arg39 = static_cast< int >(val39);
   ecode40 = SWIG_AsVal_bool(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaGraph" "', argument " "40"" of type '" "bool""'");
-  } 
+  }
   arg40 = static_cast< bool >(val40);
   ecode41 = SWIG_AsVal_bool(swig_obj[40], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "fistaGraph" "', argument " "41"" of type '" "bool""'");
-  } 
+  }
   arg41 = static_cast< bool >(val41);
   ecode42 = SWIG_AsVal_int(swig_obj[41], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaGraph" "', argument " "42"" of type '" "int""'");
-  } 
+  }
   arg42 = static_cast< int >(val42);
   try {
     {
@@ -18093,7 +18093,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp m = result->m();
@@ -18101,7 +18101,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     npy_intp dims[2] = {
       m,n
     };
-    
+
     PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
     float *data = (float *)array->data;
     float *idata = result->rawX();
@@ -18111,7 +18111,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
     }
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -18178,7 +18178,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
   PyObject *argv[43] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaGraph", 0, 42, argv))) SWIG_fail;
   --argc;
@@ -18187,7 +18187,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -18197,34 +18197,34 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
         _v = check_sparse(argv[1]);
         else
         _v = check_matrix(argv[1],NPY_FLOAT);
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[4]) && (array_numdims(argv[4]) == 1) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -18301,7 +18301,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[37]) && (array_numdims(argv[37]) == 1) && PyArray_EquivTypenums(array_type(argv[37]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -18310,13 +18310,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 42) {
     PyObject *retobj = _wrap_fistaGraph__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'fistaGraph'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -18375,7 +18375,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool val16 ;
   int ecode16 = 0 ;
   Vector< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
@@ -18392,7 +18392,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18409,7 +18409,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18420,32 +18420,32 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "proximalFlat" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "proximalFlat" "', argument " "5"" of type '" "double""'");
-  } 
+  }
   arg5 = static_cast< double >(val5);
   ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalFlat" "', argument " "6"" of type '" "double""'");
-  } 
+  }
   arg6 = static_cast< double >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalFlat" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalFlat" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalFlat" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   res10 = SWIG_AsCharPtrAndSize(swig_obj[9], &buf10, NULL, &alloc10);
   if (!SWIG_IsOK(res10)) {
@@ -18455,32 +18455,32 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalFlat" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "proximalFlat" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "proximalFlat" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalFlat" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_int(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalFlat" "', argument " "15"" of type '" "int""'");
-  } 
+  }
   arg15 = static_cast< int >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalFlat" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   try {
     {
@@ -18491,7 +18491,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -18504,7 +18504,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
     memcpy(data,idata,n * sizeof(double));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -18581,7 +18581,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool val16 ;
   int ecode16 = 0 ;
   Vector< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
@@ -18598,7 +18598,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18615,7 +18615,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18626,32 +18626,32 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "proximalFlat" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "proximalFlat" "', argument " "5"" of type '" "float""'");
-  } 
+  }
   arg5 = static_cast< float >(val5);
   ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalFlat" "', argument " "6"" of type '" "float""'");
-  } 
+  }
   arg6 = static_cast< float >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalFlat" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalFlat" "', argument " "8"" of type '" "bool""'");
-  } 
+  }
   arg8 = static_cast< bool >(val8);
   ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalFlat" "', argument " "9"" of type '" "bool""'");
-  } 
+  }
   arg9 = static_cast< bool >(val9);
   res10 = SWIG_AsCharPtrAndSize(swig_obj[9], &buf10, NULL, &alloc10);
   if (!SWIG_IsOK(res10)) {
@@ -18661,32 +18661,32 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalFlat" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "proximalFlat" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "proximalFlat" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalFlat" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_int(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalFlat" "', argument " "15"" of type '" "int""'");
-  } 
+  }
   arg15 = static_cast< int >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalFlat" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   try {
     {
@@ -18697,7 +18697,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -18710,7 +18710,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
     memcpy(data,idata,n * sizeof(float));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -18743,7 +18743,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
   PyObject *argv[17] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalFlat", 0, 16, argv))) SWIG_fail;
   --argc;
@@ -18752,14 +18752,14 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -18789,13 +18789,13 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 16) {
     PyObject *retobj = _wrap_proximalFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'proximalFlat'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -18860,7 +18860,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool val19 ;
   int ecode19 = 0 ;
   Vector< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
@@ -18877,7 +18877,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18894,7 +18894,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -18905,13 +18905,13 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -18930,43 +18930,43 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -18974,11 +18974,11 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
@@ -18993,32 +18993,32 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalTree" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalTree" "', argument " "8"" of type '" "double""'");
-  } 
+  }
   arg8 = static_cast< double >(val8);
   ecode9 = SWIG_AsVal_double(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalTree" "', argument " "9"" of type '" "double""'");
-  } 
+  }
   arg9 = static_cast< double >(val9);
   ecode10 = SWIG_AsVal_double(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "proximalTree" "', argument " "10"" of type '" "double""'");
-  } 
+  }
   arg10 = static_cast< double >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalTree" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "proximalTree" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   res13 = SWIG_AsCharPtrAndSize(swig_obj[12], &buf13, NULL, &alloc13);
   if (!SWIG_IsOK(res13)) {
@@ -19028,32 +19028,32 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalTree" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalTree" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalTree" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   ecode17 = SWIG_AsVal_bool(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "proximalTree" "', argument " "17"" of type '" "bool""'");
-  } 
+  }
   arg17 = static_cast< bool >(val17);
   ecode18 = SWIG_AsVal_int(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalTree" "', argument " "18"" of type '" "int""'");
-  } 
+  }
   arg18 = static_cast< int >(val18);
   ecode19 = SWIG_AsVal_bool(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "proximalTree" "', argument " "19"" of type '" "bool""'");
-  } 
+  }
   arg19 = static_cast< bool >(val19);
   try {
     {
@@ -19064,7 +19064,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -19077,7 +19077,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     memcpy(data,idata,n * sizeof(double));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -19178,7 +19178,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool val19 ;
   int ecode19 = 0 ;
   Vector< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
@@ -19195,7 +19195,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19212,7 +19212,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19223,13 +19223,13 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -19248,43 +19248,43 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -19292,11 +19292,11 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
@@ -19311,32 +19311,32 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalTree" "', argument " "7"" of type '" "int""'");
-  } 
+  }
   arg7 = static_cast< int >(val7);
   ecode8 = SWIG_AsVal_float(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalTree" "', argument " "8"" of type '" "float""'");
-  } 
+  }
   arg8 = static_cast< float >(val8);
   ecode9 = SWIG_AsVal_float(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalTree" "', argument " "9"" of type '" "float""'");
-  } 
+  }
   arg9 = static_cast< float >(val9);
   ecode10 = SWIG_AsVal_float(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "proximalTree" "', argument " "10"" of type '" "float""'");
-  } 
+  }
   arg10 = static_cast< float >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalTree" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   ecode12 = SWIG_AsVal_bool(swig_obj[11], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "proximalTree" "', argument " "12"" of type '" "bool""'");
-  } 
+  }
   arg12 = static_cast< bool >(val12);
   res13 = SWIG_AsCharPtrAndSize(swig_obj[12], &buf13, NULL, &alloc13);
   if (!SWIG_IsOK(res13)) {
@@ -19346,32 +19346,32 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalTree" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalTree" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalTree" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   ecode17 = SWIG_AsVal_bool(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "proximalTree" "', argument " "17"" of type '" "bool""'");
-  } 
+  }
   arg17 = static_cast< bool >(val17);
   ecode18 = SWIG_AsVal_int(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalTree" "', argument " "18"" of type '" "int""'");
-  } 
+  }
   arg18 = static_cast< int >(val18);
   ecode19 = SWIG_AsVal_bool(swig_obj[18], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "proximalTree" "', argument " "19"" of type '" "bool""'");
-  } 
+  }
   arg19 = static_cast< bool >(val19);
   try {
     {
@@ -19382,7 +19382,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -19395,7 +19395,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     memcpy(data,idata,n * sizeof(float));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -19446,7 +19446,7 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
   PyObject *argv[20] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalTree", 0, 19, argv))) SWIG_fail;
   --argc;
@@ -19455,21 +19455,21 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -19499,13 +19499,13 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 19) {
     PyObject *retobj = _wrap_proximalTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'proximalTree'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -19568,7 +19568,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool val18 ;
   int ecode18 = 0 ;
   Vector< double > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
@@ -19585,7 +19585,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19602,7 +19602,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19613,13 +19613,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -19638,43 +19638,43 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -19682,22 +19682,22 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -19716,43 +19716,43 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 5 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray5, "data");
     PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -19760,41 +19760,41 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg5 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalGraph" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalGraph" "', argument " "7"" of type '" "double""'");
-  } 
+  }
   arg7 = static_cast< double >(val7);
   ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalGraph" "', argument " "8"" of type '" "double""'");
-  } 
+  }
   arg8 = static_cast< double >(val8);
   ecode9 = SWIG_AsVal_double(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalGraph" "', argument " "9"" of type '" "double""'");
-  } 
+  }
   arg9 = static_cast< double >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "proximalGraph" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalGraph" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   res12 = SWIG_AsCharPtrAndSize(swig_obj[11], &buf12, NULL, &alloc12);
   if (!SWIG_IsOK(res12)) {
@@ -19804,32 +19804,32 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "proximalGraph" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalGraph" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalGraph" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalGraph" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   ecode17 = SWIG_AsVal_int(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "proximalGraph" "', argument " "17"" of type '" "int""'");
-  } 
+  }
   arg17 = static_cast< int >(val17);
   ecode18 = SWIG_AsVal_bool(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalGraph" "', argument " "18"" of type '" "bool""'");
-  } 
+  }
   arg18 = static_cast< bool >(val18);
   try {
     {
@@ -19840,7 +19840,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -19853,7 +19853,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     memcpy(data,idata,n * sizeof(double));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -19946,7 +19946,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool val18 ;
   int ecode18 = 0 ;
   Vector< float > *result = 0 ;
-  
+
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
@@ -19963,7 +19963,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19980,7 +19980,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -19991,13 +19991,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -20016,43 +20016,43 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -20060,22 +20060,22 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   {
     /* a column compressed storage sparse matrix in python scipy
            looks like this
-    
+
            A = csc_matrix( ... )
            A.indptr # pointer array
            A.indices # indices array
            A.data # nonzero values array
            A.shape # size of matrix
-    
+
            >>> type(A.indptr)
            <type 'numpy.ndarray'> #int32
            >>> type(A.indices)
@@ -20094,43 +20094,43 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 5 : not a column compressed sparse matrix");
       return NULL;
     }
-    
+
     /* fetch sparse attributes */
     PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indptr");
     PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indices");
     PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray5, "data");
     PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
-    
+
     /* check that types are OK */
     if (check_array(indptr,NPY_INT))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(indices,NPY_INT)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
       return NULL;
     }
-    
+
     if check_array(data, NPY_BOOL)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: data array should be 1d and match datatype");
       return NULL;
     }
-    
+
     if (!PyTuple_Check(shape))
     {
       PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
       return NULL;
     }
-    
+
     /* get array dimensions */
     int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
     int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
-    
-    
+
+
     int *pB = (int *)array_data(indptr);
     int *pE = pB + 1;
     int nzmax = (int)array_size(data,0);
@@ -20138,41 +20138,41 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     Py_DECREF(indices);
     Py_DECREF(data);
     Py_DECREF(shape);
-    
-    
+
+
     arg5 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
     /*@SWIG@*/
-    
+
   }
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalGraph" "', argument " "6"" of type '" "int""'");
-  } 
+  }
   arg6 = static_cast< int >(val6);
   ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalGraph" "', argument " "7"" of type '" "float""'");
-  } 
+  }
   arg7 = static_cast< float >(val7);
   ecode8 = SWIG_AsVal_float(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "proximalGraph" "', argument " "8"" of type '" "float""'");
-  } 
+  }
   arg8 = static_cast< float >(val8);
   ecode9 = SWIG_AsVal_float(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "proximalGraph" "', argument " "9"" of type '" "float""'");
-  } 
+  }
   arg9 = static_cast< float >(val9);
   ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "proximalGraph" "', argument " "10"" of type '" "bool""'");
-  } 
+  }
   arg10 = static_cast< bool >(val10);
   ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "proximalGraph" "', argument " "11"" of type '" "bool""'");
-  } 
+  }
   arg11 = static_cast< bool >(val11);
   res12 = SWIG_AsCharPtrAndSize(swig_obj[11], &buf12, NULL, &alloc12);
   if (!SWIG_IsOK(res12)) {
@@ -20182,32 +20182,32 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "proximalGraph" "', argument " "13"" of type '" "bool""'");
-  } 
+  }
   arg13 = static_cast< bool >(val13);
   ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "proximalGraph" "', argument " "14"" of type '" "bool""'");
-  } 
+  }
   arg14 = static_cast< bool >(val14);
   ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "proximalGraph" "', argument " "15"" of type '" "bool""'");
-  } 
+  }
   arg15 = static_cast< bool >(val15);
   ecode16 = SWIG_AsVal_bool(swig_obj[15], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalGraph" "', argument " "16"" of type '" "bool""'");
-  } 
+  }
   arg16 = static_cast< bool >(val16);
   ecode17 = SWIG_AsVal_int(swig_obj[16], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "proximalGraph" "', argument " "17"" of type '" "int""'");
-  } 
+  }
   arg17 = static_cast< int >(val17);
   ecode18 = SWIG_AsVal_bool(swig_obj[17], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalGraph" "', argument " "18"" of type '" "bool""'");
-  } 
+  }
   arg18 = static_cast< bool >(val18);
   try {
     {
@@ -20218,7 +20218,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -20231,7 +20231,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     memcpy(data,idata,n * sizeof(float));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     delete arg1;
@@ -20276,7 +20276,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
   PyObject *argv[19] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalGraph", 0, 18, argv))) SWIG_fail;
   --argc;
@@ -20285,21 +20285,21 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -20329,13 +20329,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 18) {
     PyObject *retobj = _wrap_proximalGraph__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'proximalGraph'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -20353,7 +20353,7 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
   int i1 = 1 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20374,7 +20374,7 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     //int n = result->size();
@@ -20396,7 +20396,7 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
       PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
-      
+
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
     }
@@ -20417,7 +20417,7 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20435,7 +20435,7 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     //int n = result->size();
@@ -20457,7 +20457,7 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
       PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
-      
+
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
     }
@@ -20480,7 +20480,7 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-  
+
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20498,7 +20498,7 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     //int n = result->size();
@@ -20520,7 +20520,7 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
       PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
-      
+
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
     }
@@ -20543,7 +20543,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
   SpMatrix< bool > *data_temp2 ;
   SpMatrix< bool > *data_temp3 ;
   Vector< double > *result = 0 ;
-  
+
   {
     arg2 = &data_temp2;
   }
@@ -20576,7 +20576,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
       StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
       arg1->push_back(node);
     }
-    
+
   }
   try {
     {
@@ -20587,7 +20587,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -20600,7 +20600,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
     memcpy(data,idata,n * sizeof(double));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp2 != NULL) {
@@ -20708,7 +20708,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
   SpMatrix< bool > *data_temp2 ;
   SpMatrix< bool > *data_temp3 ;
   Vector< float > *result = 0 ;
-  
+
   {
     arg2 = &data_temp2;
   }
@@ -20741,7 +20741,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
       StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
       arg1->push_back(node);
     }
-    
+
   }
   try {
     {
@@ -20752,7 +20752,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   {
     npy_intp n = result->n();
@@ -20765,7 +20765,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
     memcpy(data,idata,n * sizeof(float));
     delete result;
     resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
-    
+
   }
   {
     if(data_temp2 != NULL) {
@@ -20870,7 +20870,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "graphOfGroupStruct", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -20884,7 +20884,7 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct(PyObject *self, PyObject *args) {
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'graphOfGroupStruct'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -20910,7 +20910,7 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
   Vector< int > *data_temp6 ;
   Vector< int > *data_temp7 ;
   int result;
-  
+
   {
     arg2 = &data_temp2;
     arg3 = &dim_temp2;
@@ -20953,7 +20953,7 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
       StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
       arg1->push_back(node);
     }
-    
+
   }
   try {
     {
@@ -20964,16 +20964,16 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_From_int(static_cast< int >(result));
   {
     npy_intp dims[1] = {
-      *arg3 
+      *arg3
     };
     PyObject* obj = PyArray_SimpleNewFromData(1, dims, NPY_INT, (void*)(*arg2));
     PyArrayObject* array = (PyArrayObject*) obj;
-    
+
     if (!array) SWIG_fail;
     resultobj = SWIG_Python_AppendOutput(resultobj,obj);
   }
@@ -21085,7 +21085,7 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
   Vector< int > *data_temp6 ;
   Vector< int > *data_temp7 ;
   int result;
-  
+
   {
     arg2 = &data_temp2;
     arg3 = &dim_temp2;
@@ -21125,11 +21125,11 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
       StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
       arg1->push_back(node);
     }
-    
+
   }
   res4 = SWIG_ConvertPtr(swig_obj[1], &argp4,SWIGTYPE_p_p_VectorT_float_t, 0 |  0 );
   if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "treeOfGroupStruct" "', argument " "4"" of type '" "Vector< float > **""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "treeOfGroupStruct" "', argument " "4"" of type '" "Vector< float > **""'");
   }
   arg4 = reinterpret_cast< Vector< float > ** >(argp4);
   try {
@@ -21141,16 +21141,16 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_From_int(static_cast< int >(result));
   {
     npy_intp dims[1] = {
-      *arg3 
+      *arg3
     };
     PyObject* obj = PyArray_SimpleNewFromData(1, dims, NPY_INT, (void*)(*arg2));
     PyArrayObject* array = (PyArrayObject*) obj;
-    
+
     if (!array) SWIG_fail;
     resultobj = SWIG_Python_AppendOutput(resultobj,obj);
   }
@@ -21238,7 +21238,7 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "treeOfGroupStruct", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -21252,7 +21252,7 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct(PyObject *self, PyObject *args) {
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'treeOfGroupStruct'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -21277,7 +21277,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -21294,7 +21294,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -21311,23 +21311,23 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "im2col_sliding" "', argument " "3"" of type '" "int""'");
-  } 
+  }
   arg3 = static_cast< int >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "im2col_sliding" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "im2col_sliding" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   try {
     {
@@ -21338,7 +21338,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -21374,7 +21374,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  
+
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -21391,7 +21391,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
-    
+
     /*@SWIG@*/
   }
   {
@@ -21408,23 +21408,23 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
     }
     arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
-    
+
     /*@SWIG@*/
   }
   ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "im2col_sliding" "', argument " "3"" of type '" "int""'");
-  } 
+  }
   arg3 = static_cast< int >(val3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "im2col_sliding" "', argument " "4"" of type '" "int""'");
-  } 
+  }
   arg4 = static_cast< int >(val4);
   ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "im2col_sliding" "', argument " "5"" of type '" "bool""'");
-  } 
+  }
   arg5 = static_cast< bool >(val5);
   try {
     {
@@ -21435,7 +21435,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
   } catch(char const *_e) {
     PyErr_SetString(PyExc_RuntimeError, _e);
     SWIG_fail;
-    
+
   }
   resultobj = SWIG_Py_Void();
   {
@@ -21461,7 +21461,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
   PyObject *argv[6] = {
     0
   };
-  
+
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "im2col_sliding", 0, 5, argv))) SWIG_fail;
   --argc;
@@ -21470,14 +21470,14 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-        
+
       }
     }
     if (!_v) goto check_1;
@@ -21486,13 +21486,13 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-  
+
   if (argc == 5) {
     PyObject *retobj = _wrap_im2col_sliding__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  
+
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'im2col_sliding'.\n"
     "  Possible C/C++ prototypes are:\n"
@@ -21762,7 +21762,7 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
   size_t i;
   swig_module_info *module_head, *iter;
   int init;
-  
+
   /* check to see if the circular list has been setup, if not, set it up */
   if (swig_module.next==0) {
     /* Initialize the swig_module */
@@ -21773,7 +21773,7 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
   } else {
     init = 0;
   }
-  
+
   /* Try and load any already created modules */
   module_head = SWIG_GetModule(clientdata);
   if (!module_head) {
@@ -21790,18 +21790,18 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
       }
       iter=iter->next;
     } while (iter!= module_head);
-    
+
     /* otherwise we must add our module into the list */
     swig_module.next = module_head->next;
     module_head->next = &swig_module;
   }
-  
+
   /* When multiple interpreters are used, a module could have already been initialized in
        a different interpreter, but not yet have a pointer in this interpreter.
        In this case, we do not want to continue adding types... everything should be
        set up already */
   if (init == 0) return;
-  
+
   /* Now work on filling in swig_module.types */
 #ifdef SWIGRUNTIME_DEBUG
   printf("SWIG_InitializeModule: size %lu\n", (unsigned long)swig_module.size);
@@ -21810,11 +21810,11 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
     swig_type_info *type = 0;
     swig_type_info *ret;
     swig_cast_info *cast;
-    
+
 #ifdef SWIGRUNTIME_DEBUG
     printf("SWIG_InitializeModule: type %lu %s\n", (unsigned long)i, swig_module.type_initial[i]->name);
 #endif
-    
+
     /* if there is another module already loaded */
     if (swig_module.next != &swig_module) {
       type = SWIG_MangledTypeQueryModule(swig_module.next, &swig_module, swig_module.type_initial[i]->name);
@@ -21833,7 +21833,7 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
     } else {
       type = swig_module.type_initial[i];
     }
-    
+
     /* Insert casting types */
     cast = swig_module.cast_initial[i];
     while (cast->type) {
@@ -21864,7 +21864,7 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
           if (!ocast) ret = 0;
         }
       }
-      
+
       if (!ret) {
 #ifdef SWIGRUNTIME_DEBUG
         printf("SWIG_InitializeModule: adding cast %s\n", cast->type->name);
@@ -21881,7 +21881,7 @@ SWIG_InitializeModule(SWIG_INIT_CLIENT_DATA_TYPE clientdata) {
     swig_module.types[i] = type;
   }
   swig_module.types[i] = 0;
-  
+
 #ifdef SWIGRUNTIME_DEBUG
   printf("**** SWIG_InitializeModule: Cast List ******\n");
   for (i = 0; i < swig_module.size; ++i) {
@@ -21909,10 +21909,10 @@ SWIG_PropagateClientData(void) {
   size_t i;
   swig_cast_info *equiv;
   static int init_run = 0;
-  
+
   if (init_run) return;
   init_run = 1;
-  
+
   for (i = 0; i < swig_module.size; i++) {
     if (swig_module.types[i]->clientdata) {
       equiv = swig_module.types[i]->cast;
@@ -21940,11 +21940,11 @@ SWIG_PropagateClientData(void) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
   /* -----------------------------------------------------------------------------
    * constants/methods manipulation
    * ----------------------------------------------------------------------------- */
-  
+
   /* Install Constants */
   SWIGINTERN void
   SWIG_Python_InstallConstants(PyObject *d, swig_const_info constants[]) {
@@ -21968,11 +21968,11 @@ extern "C" {
       }
     }
   }
-  
+
   /* -----------------------------------------------------------------------------
    * Patch %callback methods' docstrings to hold the callback ptrs
    * -----------------------------------------------------------------------------*/
-  
+
   SWIGINTERN void
   SWIG_Python_FixMethods(PyMethodDef *methods, const swig_const_info *const_table, swig_type_info **types, swig_type_info **types_initial) {
     size_t i;
@@ -21985,7 +21985,7 @@ extern "C" {
         const swig_const_info *ci = 0;
         const char *name = c + 10;
         for (j = 0; const_table[j].type; ++j) {
-          if (strncmp(const_table[j].name, name, 
+          if (strncmp(const_table[j].name, name,
               strlen(const_table[j].name)) == 0) {
             ci = &(const_table[j]);
             break;
@@ -22012,8 +22012,8 @@ extern "C" {
         }
       }
     }
-  } 
-  
+  }
+
 #ifdef __cplusplus
 }
 #endif
@@ -22029,7 +22029,7 @@ extern "C" {
 extern "C"
 #endif
 
-SWIGEXPORT 
+SWIGEXPORT
 #if PY_VERSION_HEX >= 0x03000000
 PyObject*
 #else
@@ -22037,7 +22037,7 @@ void
 #endif
 SWIG_init(void) {
   PyObject *m, *d, *md, *globals;
-  
+
 #if PY_VERSION_HEX >= 0x03000000
   static struct PyModuleDef SWIG_module = {
     PyModuleDef_HEAD_INIT,
@@ -22051,7 +22051,7 @@ SWIG_init(void) {
     NULL
   };
 #endif
-  
+
 #if defined(SWIGPYTHON_BUILTIN)
   static SwigPyClientData SwigPyObject_clientdata = {
     0, 0, 0, 0, 0, 0, 0
@@ -22079,21 +22079,21 @@ SWIG_init(void) {
   PyObject *thisown_descr;
   PyObject *self = 0;
   int i;
-  
+
   (void)builtin_pytype;
   (void)builtin_base_count;
   (void)builtin_basetype;
   (void)tuple;
   (void)static_getset;
   (void)self;
-  
+
   /* Metaclass is used to implement static member variables */
   metatype = SwigPyObjectType();
   assert(metatype);
 #endif
-  
+
   (void)globals;
-  
+
   /* Create singletons now to avoid potential deadlocks with multi-threaded usage after module initialization */
   SWIG_This();
   SWIG_Python_TypeCache();
@@ -22101,24 +22101,24 @@ SWIG_init(void) {
 #ifndef SWIGPYTHON_BUILTIN
   SwigPyObject_type();
 #endif
-  
+
   /* Fix SwigMethods to carry the callback ptrs when needed */
   SWIG_Python_FixMethods(SwigMethods, swig_const_table, swig_types, swig_type_initial);
-  
+
 #if PY_VERSION_HEX >= 0x03000000
   m = PyModule_Create(&SWIG_module);
 #else
   m = Py_InitModule(SWIG_name, SwigMethods);
 #endif
-  
+
   md = d = PyModule_GetDict(m);
   (void)md;
-  
+
   SWIG_InitializeModule(0);
-  
+
 #ifdef SWIGPYTHON_BUILTIN
   swigpyobject = SwigPyObject_TypeOnce();
-  
+
   SwigPyObject_stype = SWIG_MangledTypeQuery("_p_SwigPyObject");
   assert(SwigPyObject_stype);
   cd = (SwigPyClientData*) SwigPyObject_stype->clientdata;
@@ -22133,19 +22133,19 @@ SWIG_init(void) {
     return;
 # endif
   }
-  
+
   /* All objects have a 'this' attribute */
   this_descr = PyDescr_NewGetSet(SwigPyObject_type(), &this_getset_def);
   (void)this_descr;
-  
+
   /* All objects have a 'thisown' attribute */
   thisown_descr = PyDescr_NewGetSet(SwigPyObject_type(), &thisown_getset_def);
   (void)thisown_descr;
-  
+
   public_interface = PyList_New(0);
   public_symbol = 0;
   (void)public_symbol;
-  
+
   PyDict_SetItemString(md, "__all__", public_interface);
   Py_DECREF(public_interface);
   for (i = 0; SwigMethods[i].ml_name != NULL; ++i)
@@ -22153,12 +22153,12 @@ SWIG_init(void) {
   for (i = 0; swig_const_table[i].name != 0; ++i)
   SwigPyBuiltin_AddPublicSymbol(public_interface, swig_const_table[i].name);
 #endif
-  
+
   SWIG_InstallConstants(d,swig_const_table);
-  
-  
+
+
   import_array();
-  
+
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "L1COEFFS",SWIG_From_int(static_cast< int >(L1COEFFS)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "L2ERROR",SWIG_From_int(static_cast< int >(L2ERROR)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "PENALTY",SWIG_From_int(static_cast< int >(PENALTY)));
@@ -22170,7 +22170,7 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "L1L2",SWIG_From_int(static_cast< int >(L1L2)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "L1L2FL",SWIG_From_int(static_cast< int >(L1L2FL)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "L1L2MU",SWIG_From_int(static_cast< int >(L1L2MU)));
-  
+
   /* Initialize threading */
   SWIG_PYTHON_INITIALIZE_THREADS;
 #if PY_VERSION_HEX >= 0x03000000
@@ -22179,4 +22179,3 @@ SWIG_init(void) {
   return;
 #endif
 }
-
