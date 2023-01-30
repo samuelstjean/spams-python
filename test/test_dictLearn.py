@@ -256,7 +256,7 @@ def test_structTrainDL():
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
-                       [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                       [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     groups_var = ssp.csc_matrix(np.array([[1, 0, 0, 0, 0],
                            [1, 0, 0, 0, 0],
@@ -267,7 +267,7 @@ def test_structTrainDL():
                            [0, 1, 0, 0, 1],
                            [0, 0, 0, 0, 1],
                            [0, 0, 0, 0, 1],
-                           [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                           [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     graph = {'eta_g': eta_g,'groups' : groups,'groups_var' : groups_var}
     param['graph'] = graph
@@ -317,8 +317,8 @@ def test_structTrainDL():
               [1, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = np.bool)
-    groups = ssp.csc_matrix(groups,dtype=np.bool)
+              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = bool)
+    groups = ssp.csc_matrix(groups,dtype=bool)
     tree = {'eta_g': eta_g,'groups' : groups,'own_variables' : own_variables,
             'N_own_variables' : N_own_variables}
     param['tree'] = tree

@@ -199,7 +199,7 @@ intlist(string s) {
  Return : a vector of StructNodeElem<T>
 */
 template <typename T>
-std::vector<StructNodeElem<T> *> *_groupStructOfString(const char *data) throw(const char *){
+std::vector<StructNodeElem<T> *> *_groupStructOfString(const char *data){
   std::istringstream is(data);
   std::vector<StructNodeElem<T> *> *gstruct = new std::vector<StructNodeElem<T> *>;
 
@@ -224,7 +224,7 @@ std::vector<StructNodeElem<T> *> *_groupStructOfString(const char *data) throw(c
   return gstruct;
 }
 template <typename T>
-std::vector<StructNodeElem<T> *> *_readGroupStruct(const char *file) throw(const char *){
+std::vector<StructNodeElem<T> *> *_readGroupStruct(const char *file){
   std::ifstream infile;
   infile.open (file, ifstream::in);
   if(! infile.good())
@@ -250,7 +250,7 @@ std::vector<StructNodeElem<T> *> *_readGroupStruct(const char *file) throw(const
  Return: StructNodeElem vector
  */
 template <typename T>
-std::vector<StructNodeElem<T> *> *_simpleGroupTree(int *degr, int n) throw(const char *){
+std::vector<StructNodeElem<T> *> *_simpleGroupTree(int *degr, int n){
   std::vector<int> degrees;
   for(int i = 0;i < n;i++)
     degrees.push_back(degr[i]);
@@ -480,7 +480,7 @@ static std::vector<StructNodeElem<T> *> *reorder_group_tree(std::vector<StructNo
        the documantation of proximalTree.
  */
 template <typename T>
-Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatrix<bool> **pgroups,SpMatrix<bool> **pgroups_var) throw(const char *) {
+Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatrix<bool> **pgroups,SpMatrix<bool> **pgroups_var) {
   int nb_vars;
   Vector<T> *peta_g;
   if (! checkGroupTree<T>(gstruct,false,&nb_vars))
@@ -565,7 +565,7 @@ Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatri
    Return : nb of variables
  */
 template <typename T>
-int _treeOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,int **pperm,int *pnb_vars,Vector<T> **peta_g,SpMatrix<bool> **pgroups,Vector<int> **pown_variables,Vector<int> **pN_own_variables) throw(const char *){
+int _treeOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,int **pperm,int *pnb_vars,Vector<T> **peta_g,SpMatrix<bool> **pgroups,Vector<int> **pown_variables,Vector<int> **pN_own_variables){
   int nb_vars;
   *pnb_vars = 0;
   if (! checkGroupTree<T>(gstruct,true,&nb_vars))

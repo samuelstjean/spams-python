@@ -251,7 +251,7 @@ def test_fistaGraph():
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
-                       [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                       [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     groups_var = ssp.csc_matrix(np.array([[1, 0, 0, 0, 0],
                            [1, 0, 0, 0, 0],
@@ -262,7 +262,7 @@ def test_fistaGraph():
                            [0, 1, 0, 0, 1],
                            [0, 0, 0, 0, 1],
                            [0, 0, 0, 0, 1],
-                           [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                           [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     graph = {'eta_g': eta_g,'groups' : groups,'groups_var' : groups_var}
 
@@ -475,8 +475,8 @@ def test_fistaTree():
               [1, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = np.bool)
-    groups = ssp.csc_matrix(groups,dtype=np.bool)
+              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = bool)
+    groups = ssp.csc_matrix(groups,dtype=bool)
     tree = {'eta_g': eta_g,'groups' : groups,'own_variables' : own_variables,
             'N_own_variables' : N_own_variables}
     print('\nVarious regression experiments')
@@ -676,7 +676,7 @@ def test_proximalGraph():
 # g2= {3 4 5 6}
 # g3= {6 7 8 9}
     eta_g = np.array([1, 1, 1],dtype=myfloat)
-    groups = ssp.csc_matrix(np.zeros((3,3)),dtype = np.bool)
+    groups = ssp.csc_matrix(np.zeros((3,3)),dtype = bool)
     groups_var = ssp.csc_matrix(
         np.array([[1, 0, 0],
                   [1, 0, 0],
@@ -687,7 +687,7 @@ def test_proximalGraph():
                   [0, 1, 1],
                   [0, 0, 1],
                   [0, 0, 1],
-                  [0, 0, 1]],dtype=np.bool),dtype=np.bool)
+                  [0, 0, 1]],dtype=bool),dtype=bool)
     graph = {'eta_g': eta_g,'groups' : groups,'groups_var' : groups_var}
 
     print('\ntest prox graph')
@@ -707,7 +707,7 @@ def test_proximalGraph():
                   [0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0],
-                  [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                  [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     groups_var = ssp.csc_matrix(
         np.array([[1, 0, 0, 0, 0],
@@ -719,7 +719,7 @@ def test_proximalGraph():
                   [0, 1, 0, 0, 1],
                   [0, 0, 0, 0, 1],
                   [0, 0, 0, 0, 1],
-                  [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                  [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
     graph = {'eta_g': eta_g,'groups' : groups,'groups_var' : groups_var}
     print('\ntest prox graph')
     alpha = Xtest1('spams','spams.proximalGraph(U,graph,False,lambda1 = lambda1,numThreads  = num_threads ,verbose = verbose,pos = pos,intercept = intercept,regul = regul)',locals())
@@ -753,11 +753,11 @@ def test_proximalTree():
     eta_g = np.array([1,1,1],dtype=myfloat) # weights for each group, they should be non-zero to use fenchel duality
     groups = np.asfortranarray([[0,0,0],
                                 [1,0,0],
-                                [1,0,0]],dtype = np.bool)
+                                [1,0,0]],dtype = bool)
     # first group should always be the root of the tree
     # non-zero entriees mean inclusion relation ship, here g2 is a children of g1,
     # g3 is a children of g1
-    groups = ssp.csc_matrix(groups,dtype=np.bool)
+    groups = ssp.csc_matrix(groups,dtype=bool)
     tree = {'eta_g': eta_g,'groups' : groups,'own_variables' : own_variables,
             'N_own_variables' : N_own_variables}
     print('\ntest prox tree-l0')
@@ -789,8 +789,8 @@ def test_proximalTree():
                     [1,0,0,0,0,0,0,0],
                     [0,0,0,0,1,0,0,0],
                     [0,0,0,0,1,0,0,0],
-                    [0,0,0,0,0,0,1,0]],dtype = np.bool)
-    groups = ssp.csc_matrix(groups,dtype=np.bool)
+                    [0,0,0,0,0,0,1,0]],dtype = bool)
+    groups = ssp.csc_matrix(groups,dtype=bool)
     tree = {'eta_g': eta_g,'groups' : groups, 'own_variables' : own_variables,
             'N_own_variables' : N_own_variables}
     print('\ntest prox tree-l0')
