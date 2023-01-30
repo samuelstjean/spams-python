@@ -1491,7 +1491,6 @@ SWIG_Python_addvarlink(PyObject *p, const char *name, PyObject *(*get_attr)(void
 
 
 static PyObject *Swig_Globals_global = NULL;
-
 SWIGINTERN PyObject *
 SWIG_globals(void) {
   if (Swig_Globals_global == NULL) {
@@ -3741,6 +3740,7 @@ SwigPyBuiltin_iternextfunc_closure(SwigPyWrapperFunction wrapper, PyObject *a) {
 
 #define SWIG_contract_assert(expr, msg) do { if (!(expr)) { SWIG_Error(SWIG_RuntimeError, msg); SWIG_fail; } } while (0)
 
+#define SWIG_contract_assert(expr, msg) do { if (!(expr)) { SWIG_Error(SWIG_RuntimeError, msg); SWIG_fail; } } while (0)
 
 
   #define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail;; } while(0)
@@ -4822,7 +4822,6 @@ SWIGINTERN PyObject *_wrap_m_ones(PyObject *self, PyObject *args) {
   int ecode1 = 0 ;
   PyObject *swig_obj[1] ;
   int *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -4851,7 +4850,6 @@ SWIGINTERN PyObject *_wrap_skip_space(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   char *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -4885,7 +4883,6 @@ SWIGINTERN PyObject *_wrap_parse_line(PyObject *self, PyObject *args) {
   int res2 = 0 ;
   PyObject *swig_obj[2] ;
   int result;
-
   (void)self;
   if (!SWIG_Python_UnpackTuple(args, "parse_line", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
@@ -4922,7 +4919,6 @@ SWIGINTERN PyObject *_wrap_intlist(PyObject *self, PyObject *args) {
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< int > *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -4958,7 +4954,6 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -5002,7 +4997,6 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -5044,7 +5038,6 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "sort", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -5053,7 +5046,6 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
@@ -5062,7 +5054,6 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-
   if (argc == 2) {
     PyObject *retobj = _wrap_sort__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
@@ -5098,7 +5089,6 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   int ecode6 = 0 ;
   double val7 ;
   int ecode7 = 0 ;
-
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
@@ -5228,7 +5218,6 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   int ecode6 = 0 ;
   float val7 ;
   int ecode7 = 0 ;
-
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
@@ -5343,7 +5332,6 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
   PyObject *argv[8] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "mult", 0, 7, argv))) SWIG_fail;
   --argc;
@@ -5352,21 +5340,18 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -5393,6 +5378,13 @@ check_1:
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
+check_1:
+
+  if (argc == 7) {
+    PyObject *retobj = _wrap_mult__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
 
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'mult'.\n"
@@ -5409,7 +5401,6 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   Matrix< double > *arg2 = (Matrix< double > *) 0 ;
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -5543,7 +5534,6 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   Matrix< float > *arg2 = (Matrix< float > *) 0 ;
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -5676,7 +5666,6 @@ SWIGINTERN PyObject *_wrap_AAt(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "AAt", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -5685,14 +5674,12 @@ SWIGINTERN PyObject *_wrap_AAt(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     return _wrap_AAt__SWIG_0(self, argc, argv);
   }
 check_1:
-
   if (argc == 2) {
     PyObject *retobj = _wrap_AAt__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
@@ -5716,7 +5703,6 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
   PyArrayObject *array3 = NULL ;
-
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   {
@@ -5875,7 +5861,6 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *sparray1 = NULL ;
   PyArrayObject *array2 = NULL ;
   PyArrayObject *array3 = NULL ;
-
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   {
@@ -6031,7 +6016,6 @@ SWIGINTERN PyObject *_wrap_XAt(PyObject *self, PyObject *args) {
   PyObject *argv[4] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "XAt", 0, 3, argv))) SWIG_fail;
   --argc;
@@ -6040,18 +6024,23 @@ SWIGINTERN PyObject *_wrap_XAt(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     return _wrap_XAt__SWIG_0(self, argc, argv);
+  }
+check_1:
+
+  if (argc == 3) {
+    PyObject *retobj = _wrap_XAt__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
   }
 check_1:
 
@@ -6077,7 +6066,6 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_0(PyObject *self, Py_ssize_t 
   PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -6121,7 +6109,6 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_1(PyObject *self, Py_ssize_t 
   PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   {
@@ -6163,7 +6150,6 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "applyBayerPattern", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -6172,7 +6158,6 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
@@ -6181,7 +6166,6 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
     SWIG_fail;
   }
 check_1:
-
   if (argc == 2) {
     PyObject *retobj = _wrap_applyBayerPattern__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
@@ -6211,7 +6195,6 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   int ecode4 = 0 ;
   int val5 ;
   int ecode5 = 0 ;
-
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -6301,7 +6284,6 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   int ecode4 = 0 ;
   int val5 ;
   int ecode5 = 0 ;
-
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -6382,7 +6364,6 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
   PyObject *argv[6] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "conjugateGradient", 0, 5, argv))) SWIG_fail;
   --argc;
@@ -6391,21 +6372,18 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 1) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -6417,6 +6395,13 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_conjugateGradient__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 5) {
+    PyObject *retobj = _wrap_conjugateGradient__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -6441,7 +6426,6 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
   PyArrayObject *array1 = NULL ;
-
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6483,7 +6467,6 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
   PyArrayObject *array1 = NULL ;
-
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6526,7 +6509,6 @@ SWIGINTERN PyObject *_wrap_invSym(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "invSym", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -6535,14 +6517,12 @@ SWIGINTERN PyObject *_wrap_invSym(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     return _wrap_invSym__SWIG_0(self, argc, argv);
   }
 check_1:
-
   if (argc == 1) {
     PyObject *retobj = _wrap_invSym__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
@@ -6562,7 +6542,6 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
   PyArrayObject *array1 = NULL ;
-
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6604,7 +6583,6 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
   PyArrayObject *array1 = NULL ;
-
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
@@ -6647,7 +6625,6 @@ SWIGINTERN PyObject *_wrap_normalize(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "normalize", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -6656,14 +6633,12 @@ SWIGINTERN PyObject *_wrap_normalize(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     return _wrap_normalize__SWIG_0(self, argc, argv);
   }
 check_1:
-
   if (argc == 1) {
     PyObject *retobj = _wrap_normalize__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
@@ -6706,7 +6681,6 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -6835,7 +6809,6 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -6942,7 +6915,6 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "sparseProject", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -6951,7 +6923,6 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -6991,6 +6962,13 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_sparseProject__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 9) {
+    PyObject *retobj = _wrap_sparseProject__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -7464,7 +7442,6 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
   PyObject *argv[14] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoD", 0, 13, argv))) SWIG_fail;
   --argc;
@@ -7473,14 +7450,12 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -7499,6 +7474,13 @@ SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_lassoD__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 13) {
+    PyObject *retobj = _wrap_lassoD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8022,7 +8004,6 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
   PyObject *argv[15] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoQq", 0, 14, argv))) SWIG_fail;
   --argc;
@@ -8031,21 +8012,18 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -8064,6 +8042,13 @@ SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_lassoQq__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 14) {
+    PyObject *retobj = _wrap_lassoQq__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8114,7 +8099,6 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   bool val10 ;
   int ecode10 = 0 ;
   SpMatrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
@@ -8309,7 +8293,6 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   bool val10 ;
   int ecode10 = 0 ;
   SpMatrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
@@ -8479,7 +8462,6 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
   PyObject *argv[11] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoMask", 0, 10, argv))) SWIG_fail;
   --argc;
@@ -8488,14 +8470,12 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -8514,6 +8494,13 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_lassoMask__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 10) {
+    PyObject *retobj = _wrap_lassoMask__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8561,7 +8548,6 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool val9 ;
   int ecode9 = 0 ;
   SpMatrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -8748,7 +8734,6 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool val9 ;
   int ecode9 = 0 ;
   SpMatrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -8913,7 +8898,6 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "lassoWeighted", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -8922,21 +8906,18 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -8948,6 +8929,13 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_lassoWeighted__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 9) {
+    PyObject *retobj = _wrap_lassoWeighted__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -9403,7 +9391,6 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
   PyObject *argv[11] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "omp", 0, 10, argv))) SWIG_fail;
   --argc;
@@ -9412,14 +9399,12 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
@@ -9438,6 +9423,13 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_omp__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 10) {
+    PyObject *retobj = _wrap_omp__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -9943,7 +9935,6 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
   PyObject *argv[12] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "ompMask", 0, 11, argv))) SWIG_fail;
   --argc;
@@ -9952,32 +9943,35 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[7]) && (array_numdims(argv[7]) == 1) && PyArray_EquivTypenums(array_type(argv[7]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[9]) && (array_numdims(argv[9]) == 1) && PyArray_EquivTypenums(array_type(argv[9]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_ompMask__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 11) {
+    PyObject *retobj = _wrap_ompMask__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10016,7 +10010,6 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   int val6 ;
   int ecode6 = 0 ;
   SpMatrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
@@ -10167,7 +10160,6 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   int val6 ;
   int ecode6 = 0 ;
   SpMatrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
@@ -10305,7 +10297,6 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
   PyObject *argv[7] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "somp", 0, 6, argv))) SWIG_fail;
   --argc;
@@ -10314,14 +10305,12 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -10333,6 +10322,13 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_somp__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 6) {
+    PyObject *retobj = _wrap_somp__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10377,7 +10373,6 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
   int val8 ;
   int ecode8 = 0 ;
   SpMatrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
@@ -10617,7 +10612,6 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
   int val8 ;
   int ecode8 = 0 ;
   SpMatrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
@@ -10838,7 +10832,6 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
   PyObject *argv[9] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "cd", 0, 8, argv))) SWIG_fail;
   --argc;
@@ -10847,14 +10840,12 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -10873,6 +10864,13 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_cd__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 8) {
+    PyObject *retobj = _wrap_cd__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10918,7 +10916,6 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -11069,7 +11066,6 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode8 = 0 ;
   int val9 ;
   int ecode9 = 0 ;
-
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
@@ -11200,7 +11196,6 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "l1L2BCD", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -11209,21 +11204,18 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -11242,6 +11234,13 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_l1L2BCD__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 9) {
+    PyObject *retobj = _wrap_l1L2BCD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -12739,7 +12738,6 @@ SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
   PyObject *argv[42] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "alltrainDL", 0, 41, argv))) SWIG_fail;
   --argc;
@@ -12797,6 +12795,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_alltrainDL__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 41) {
+    PyObject *retobj = _wrap_alltrainDL__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -13274,7 +13279,6 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
   PyObject *argv[10] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysis", 0, 9, argv))) SWIG_fail;
   --argc;
@@ -13283,7 +13287,6 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -13295,6 +13298,13 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_archetypalAnalysis__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 9) {
+    PyObject *retobj = _wrap_archetypalAnalysis__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -13790,7 +13800,6 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
   PyObject *argv[9] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysisInit", 0, 8, argv))) SWIG_fail;
   --argc;
@@ -13799,14 +13808,12 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -13818,6 +13825,13 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 8) {
+    PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -13851,7 +13865,6 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
   int val4 ;
   int ecode4 = 0 ;
   SpMatrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
@@ -13981,7 +13994,6 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
   int val4 ;
   int ecode4 = 0 ;
   SpMatrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
@@ -14103,7 +14115,6 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
   PyObject *argv[5] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "decompSimplex", 0, 4, argv))) SWIG_fail;
   --argc;
@@ -14112,18 +14123,23 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_decompSimplex__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 4) {
+    PyObject *retobj = _wrap_decompSimplex__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -14263,7 +14279,6 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int val40 ;
   int ecode40 = 0 ;
   Matrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
@@ -14790,7 +14805,6 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int val40 ;
   int ecode40 = 0 ;
   Matrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
@@ -15203,7 +15217,6 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
   PyObject *argv[41] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaFlat", 0, 40, argv))) SWIG_fail;
   --argc;
@@ -15212,7 +15225,6 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -15235,14 +15247,12 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -15324,6 +15334,13 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_fistaFlat__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 40) {
+    PyObject *retobj = _wrap_fistaFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -15469,7 +15486,6 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int val43 ;
   int ecode43 = 0 ;
   Matrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
@@ -16108,7 +16124,6 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int val43 ;
   int ecode43 = 0 ;
   Matrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
@@ -16627,7 +16642,6 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
   PyObject *argv[44] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaTree", 0, 43, argv))) SWIG_fail;
   --argc;
@@ -16755,6 +16769,13 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_fistaTree__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 43) {
+    PyObject *retobj = _wrap_fistaTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -16898,7 +16919,6 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   int val42 ;
   int ecode42 = 0 ;
   Matrix< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
@@ -17597,7 +17617,6 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   int val42 ;
   int ecode42 = 0 ;
   Matrix< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
@@ -18178,7 +18197,6 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
   PyObject *argv[43] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "fistaGraph", 0, 42, argv))) SWIG_fail;
   --argc;
@@ -18187,7 +18205,6 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -18210,21 +18227,18 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[4]) && (array_numdims(argv[4]) == 1) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -18316,6 +18330,13 @@ check_1:
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
+check_1:
+
+  if (argc == 42) {
+    PyObject *retobj = _wrap_fistaGraph__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
 
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'fistaGraph'.\n"
@@ -18375,7 +18396,6 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool val16 ;
   int ecode16 = 0 ;
   Vector< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
@@ -18581,7 +18601,6 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool val16 ;
   int ecode16 = 0 ;
   Vector< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
@@ -18743,7 +18762,6 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
   PyObject *argv[17] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalFlat", 0, 16, argv))) SWIG_fail;
   --argc;
@@ -18752,14 +18770,12 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -18785,6 +18801,13 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_proximalFlat__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 16) {
+    PyObject *retobj = _wrap_proximalFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -18860,7 +18883,6 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool val19 ;
   int ecode19 = 0 ;
   Vector< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
@@ -19178,7 +19200,6 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool val19 ;
   int ecode19 = 0 ;
   Vector< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
@@ -19446,7 +19467,6 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
   PyObject *argv[20] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalTree", 0, 19, argv))) SWIG_fail;
   --argc;
@@ -19455,14 +19475,12 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -19495,6 +19513,13 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_proximalTree__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 19) {
+    PyObject *retobj = _wrap_proximalTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -19568,7 +19593,6 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool val18 ;
   int ecode18 = 0 ;
   Vector< double > *result = 0 ;
-
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
@@ -19946,7 +19970,6 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool val18 ;
   int ecode18 = 0 ;
   Vector< float > *result = 0 ;
-
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
@@ -20276,7 +20299,6 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
   PyObject *argv[19] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "proximalGraph", 0, 18, argv))) SWIG_fail;
   --argc;
@@ -20285,7 +20307,6 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -20299,7 +20320,6 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
-
       }
     }
     if (!_v) goto check_1;
@@ -20335,6 +20355,13 @@ check_1:
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
+check_1:
+
+  if (argc == 18) {
+    PyObject *retobj = _wrap_proximalGraph__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
 
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'proximalGraph'.\n"
@@ -20353,7 +20380,6 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
   int i1 = 1 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20417,7 +20443,6 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20480,7 +20505,6 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
-
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -20870,7 +20894,6 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct(PyObject *self, PyObject *args) {
   PyObject *argv[2] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "graphOfGroupStruct", 0, 1, argv))) SWIG_fail;
   --argc;
@@ -21238,7 +21261,6 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct(PyObject *self, PyObject *args) {
   PyObject *argv[3] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "treeOfGroupStruct", 0, 2, argv))) SWIG_fail;
   --argc;
@@ -21277,7 +21299,6 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -21374,7 +21395,6 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
@@ -21461,7 +21481,6 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
   PyObject *argv[6] = {
     0
   };
-
   (void)self;
   if (!(argc = SWIG_Python_UnpackTuple(args, "im2col_sliding", 0, 5, argv))) SWIG_fail;
   --argc;
@@ -21470,18 +21489,23 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
     {
       {
         _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     {
       {
         _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
-
       }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_im2col_sliding__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+
+  if (argc == 5) {
+    PyObject *retobj = _wrap_im2col_sliding__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -21940,7 +21964,6 @@ SWIG_PropagateClientData(void) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
   /* -----------------------------------------------------------------------------
    * constants/methods manipulation
    * ----------------------------------------------------------------------------- */

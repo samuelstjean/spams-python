@@ -11,6 +11,7 @@
 #include <list>
 #include <vector>
 #include <cmath>
+
 typedef unsigned int uint32_t;
 typedef int int32_t;
 
@@ -35,9 +36,7 @@ template<typename T> void _sort(Vector<T> *v,bool mode){
   v->sort(mode);
 }
 
-
 template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) {
-
   if(A->m() != B->m() || B->m() != B->n())
     throw("AAt: incompatible dimensions of result matrix");
   A->AAt((Matrix<T>&)(*B));
