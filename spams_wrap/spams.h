@@ -10,8 +10,7 @@
 #include <fstream>
 #include <list>
 #include <vector>
-#include <math.h>
-#include <iostream>
+#include <cmath>
 typedef unsigned int uint32_t;
 typedef int int32_t;
 
@@ -29,29 +28,29 @@ typedef int int32_t;
 #include "lsqsplx.h"
 #include "arch.h"
 #include "cblas_alt_template.h"
-#include<iostream>
+#include <iostream>
 /* from linalg */
 
-template<typename T> void _sort(Vector<T> *v,bool mode) throw(const char *){
+template<typename T> void _sort(Vector<T> *v,bool mode){
   v->sort(mode);
 }
 
 
-template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) throw(const char *) {
-  
+template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) {
+
   if(A->m() != B->m() || B->m() != B->n())
     throw("AAt: incompatible dimensions of result matrix");
   A->AAt((Matrix<T>&)(*B));
 }
 
-template<typename T> void _XAt(SpMatrix<T> *A,Matrix<T> *X,Matrix<T> *XAt) throw(const char *) {
+template<typename T> void _XAt(SpMatrix<T> *A,Matrix<T> *X,Matrix<T> *XAt) {
   if(X->n() != A->n() || X->m() != XAt->m() || A->m() != XAt->n())
     throw("XAt: incompatible dimensions of result matrix");
   A->XAt((Matrix<T>&)(*X),(Matrix<T>&)(*XAt));
 }
 
 template<typename T> inline void _mult(Matrix<T> *X,Matrix<T> *Y,Matrix<T> *XY,const bool transX, const bool transY,
-      const T a, const T b) throw(const char *) {
+      const T a, const T b) {
   int xrows, xcols, yrows, ycols;
   if(transX) {
     xrows = X->n();
@@ -72,12 +71,12 @@ template<typename T> inline void _mult(Matrix<T> *X,Matrix<T> *Y,Matrix<T> *XY,c
   }
   X->mult((Matrix<T>&)(*Y),(Matrix<T>&)(*XY),transX,transY,a,b);
 }
-  
-template<typename T> void _applyBayerPattern(Vector<T> *v,int offset) throw(const char *){
+
+template<typename T> void _applyBayerPattern(Vector<T> *v,int offset){
   v->applyBayerPattern(offset);
 }
 
-template<typename T> void _conjugateGradient(Matrix<T> *A,Vector<T> *b,Vector<T> *x,const T tol,const int itermax) throw(const char *){
+template<typename T> void _conjugateGradient(Matrix<T> *A,Vector<T> *b,Vector<T> *x,const T tol,const int itermax){
   if(A->n() != x->n() || A->m() != b->n())
     throw("conjugateGradient: incompatible matrix and vectore sizes");
   A->conjugateGradient((Vector<T> &)(*b),(Vector<T> &)(*x),tol,itermax);
@@ -98,7 +97,7 @@ template<typename T> void _normalize(Matrix<T> *A) {
 template <typename T> inline void _sparseProject(Matrix<T> *U,Matrix<T> *V,
       const T thrs,   const int mode, const T lambda1,
       const T lambda2, const T lambda3, const bool pos,
-      const int numThreads) throw(const char *) {
+      const int numThreads) {
   if(U->m() != V->m() || U->n() != V->n())
     throw("sparseProject: incompatible matrices");
   U->sparseProject((Matrix<T>&)(*V),thrs,mode,lambda1,lambda2,lambda3,pos,numThreads);
@@ -108,8 +107,7 @@ template <typename T>
 SpMatrix<T> *_lassoD(Matrix<T> *X, Matrix<T> *D,Matrix<T> **path,bool return_reg_path,
 		    int L, const T constraint, const T lambda2, constraint_type mode,
       const bool pos, const bool ols, const int numThreads,
-		    int max_length_path,const bool verbose, bool cholevsky) 
-throw(const char *) 
+		    int max_length_path,const bool verbose, bool cholevsky)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -146,8 +144,7 @@ template <typename T>
 SpMatrix<T> *_lassoQq(Matrix<T> *X, Matrix<T> *Q, Matrix<T> *q,Matrix<T> **path,bool return_reg_path,
 		      int L, const T constraint, const T lambda2, constraint_type mode,
 		      const bool pos, const bool ols, const int numThreads,
-		      int max_length_path,const bool verbose, bool cholevsky) 
-throw(const char *) 
+		      int max_length_path,const bool verbose, bool cholevsky)
 // lambda2 is ignored
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
@@ -190,8 +187,7 @@ throw(const char *)
 template <typename T>
 SpMatrix<T> *_lassoMask(Matrix<T> *X, Matrix<T> *D,Matrix<bool> *B,
 		    int L, const T constraint, const T lambda2, constraint_type mode,
-			const bool pos, const int numThreads,bool verbose) 
-throw(const char *) 
+			const bool pos, const int numThreads,bool verbose)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -217,8 +213,7 @@ throw(const char *)
 template <typename T>
 SpMatrix<T> *_lassoWeighted(Matrix<T> *X, Matrix<T> *D,Matrix<T> *W,
 		    int L, const T constraint, constraint_type mode,
-			const bool pos, const int numThreads,bool verbose) 
-throw(const char *) 
+			const bool pos, const int numThreads,bool verbose)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -248,7 +243,7 @@ throw(const char *)
 }
 
 template <typename T>
-SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads) throw(const char *){
+SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads){
   SpMatrix<T> *alpha = new SpMatrix<T>();
     int n = X->m();
     int nD = D->m();
@@ -267,7 +262,7 @@ SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_pat
     if (! given_L && ! given_eps && ! given_Lambda)
       throw("omp : You should either provide L, eps or lambda");
     int scalar_L = MIN(n,K);
-    if(! given_L) 
+    if(! given_L)
       pL = &scalar_L;
     else if (sizeL > 1)
       vecL = true;
@@ -293,7 +288,7 @@ SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_pat
 }
 
 template <typename T>
-SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads) throw(const char *){
+SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads){
   SpMatrix<T> *alpha = new SpMatrix<T>();
     int n = X->m();
     int M = X->n();
@@ -317,7 +312,7 @@ SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path
     if (! given_L && ! given_eps && ! given_Lambda)
       throw("omp : You should either provide L, eps or lambda");
     int scalar_L = MIN(n,K);
-    if(! given_L) 
+    if(! given_L)
       pL = &scalar_L;
     else if (sizeL > 1)
       vecL = true;
@@ -342,7 +337,7 @@ SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path
     return alpha;
 }
 template <typename T>
-SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constraint_type mode, int itermax, T tol,int numThreads) throw(const char *){
+SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constraint_type mode, int itermax, T tol,int numThreads){
   int n = X->m();
   int M = X->n();
   int nD = D->m();
@@ -351,7 +346,7 @@ SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constrai
     throw("cd : incompatible X D matrices dimensions");
   int Ka = alpha->m();
   int Ma = alpha->n();
-  if (Ma != M || Ka != K) 
+  if (Ma != M || Ka != K)
     throw("cd : incompatible X D A0 matrices dimensions");
   SpMatrix<T> *alpha0 = new SpMatrix<T>();
   alpha0->copy((SpMatrix<T> &)(*alpha));
@@ -360,7 +355,7 @@ SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constrai
 }
 
 template <typename T>
-SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, int numThreads) throw(const char *){
+SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, int numThreads){
   int *list_groups = groups->rawX();
   int Ng = groups->n();
   int n = X->m();
@@ -373,9 +368,9 @@ SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, 
   if (list_groups[0] != 0)
     throw("somp : First group index should be zero");
   for (int i = 0; i<Ng-1; ++i) {
-    if (list_groups[i] >= M) 
+    if (list_groups[i] >= M)
       throw("Size of groups is not consistent");
-    if (list_groups[i] >= list_groups[i+1]) 
+    if (list_groups[i] >= list_groups[i+1])
       throw("Group indices should be a strictly non-decreasing sequence");
     Y[i].setData(prX+list_groups[i]*n,n,list_groups[i+1]-list_groups[i]);
   }
@@ -405,7 +400,7 @@ SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, 
 	 Pr[count]=static_cast<T>(v[j]);
 	 Ir[count++]=static_cast<mwSize>(r[j]);
        }
-       for (int j = 0; j<=nn; ++j) 
+       for (int j = 0; j<=nn; ++j)
 	 Jc[countcol++]=static_cast<mwSize>(offset+pB[j]);
        --countcol;
        offset = Jc[countcol];
@@ -416,7 +411,7 @@ SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, 
    return alpha;
 }
 template <typename T>
-void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T lambda1, constraint_type mode,int itermax,T tol,int numThreads) throw(const char *){
+void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T lambda1, constraint_type mode,int itermax,T tol,int numThreads){
   int n = X->m();
   int M = X->n();
   int nD = D->m();
@@ -436,9 +431,9 @@ void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T l
   if (list_groups[0] != 0)
     throw("l1L2BCD : First group index should be zero");
   for (int i = 0; i<Ng-1; ++i) {
-    if (list_groups[i] >= M) 
+    if (list_groups[i] >= M)
       throw("l1L2BCD : size of groups is not consistent");
-    if (list_groups[i] >= list_groups[i+1]) 
+    if (list_groups[i] >= list_groups[i+1])
       throw("l1L2BCD : group indices should be a strictly non-decreasing sequence");
     Y[i].setData(prX+list_groups[i]*n,n,list_groups[i+1]-list_groups[i]);
     alpha[i].setData(pr_alpha+list_groups[i]*K,K,list_groups[i+1]-list_groups[i]);
@@ -457,9 +452,9 @@ void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T l
 #include <Python.h>
 #include <numpy/arrayobject.h>
 #endif
-template<typename T> 
+template<typename T>
 Matrix<T> *_fistaFlat(Matrix<T> *X,AbstractMatrixB<T> *D,Matrix<T> *alpha0,
-	     Matrix<T> *alpha,  
+	     Matrix<T> *alpha,
 	     Vector<int> *groups, // params
 	     int num_threads,
 	     int max_it,
@@ -497,7 +492,6 @@ Matrix<T> *_fistaFlat(Matrix<T> *X,AbstractMatrixB<T> *D,Matrix<T> *alpha0,
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *) 
 {
 using namespace FISTA;
  int mD = D->m();
@@ -552,7 +546,7 @@ using namespace FISTA;
   param.log=log;
   if (param.log) {
     int n = strlen(logName);
-    if(n == 0) 
+    if(n == 0)
       throw("fistaFlat : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
@@ -572,7 +566,7 @@ using namespace FISTA;
   param.sqrt_step = sqrt_step;
   param.transpose = transpose;
 
-  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) { 
+  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
       throw("fistaFlat : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
@@ -596,9 +590,9 @@ using namespace FISTA;
       param.num_threads =  MIN(MAX_THREADS,omp_get_num_procs());
 #endif
    }
-   if (param.regul==GRAPH || param.regul==GRAPHMULT) 
+   if (param.regul==GRAPH || param.regul==GRAPHMULT)
     throw("Error: fistaGraph should be used instead");
-  if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF) 
+  if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
       throw("Error: fistaFlat should be used instead");
 
   Matrix<T> *optim_info = new Matrix<T>();
@@ -607,7 +601,7 @@ using namespace FISTA;
   return optim_info;
 }
 
-template<typename T> 
+template<typename T>
 Matrix<T> *_fistaTree(
 	     Matrix<T> *X,AbstractMatrixB<T> *D,Matrix<T> *alpha0,
 	     Matrix<T> *alpha, // tree :
@@ -649,7 +643,6 @@ Matrix<T> *_fistaTree(
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *) 
 {
 using namespace FISTA;
  int mD = D->m();
@@ -696,7 +689,7 @@ using namespace FISTA;
   param.log=log;
   if(param.log) {
     int n = strlen(logName);
-    if(n == 0) 
+    if(n == 0)
       throw("fistaTree : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
@@ -717,7 +710,7 @@ using namespace FISTA;
   param.sqrt_step = sqrt_step;
   param.transpose = transpose;
 
-  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) { 
+  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
       throw("fistaTree : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
@@ -742,9 +735,9 @@ using namespace FISTA;
 #endif
    }
 
-   if (param.regul==GRAPH || param.regul==GRAPHMULT) 
+   if (param.regul==GRAPH || param.regul==GRAPHMULT)
     throw("Error: fistaGraph should be used instead");
-  if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) 
+  if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20)
       throw("fistaTree error: with multi-task-tree, lambda2 should be > 0");
   TreeStruct<T> tree;
   tree.Nv=0;
@@ -756,13 +749,13 @@ using namespace FISTA;
   int num_var = 0;
   for (int i = 0; i<num_groups; ++i)
     num_var+=pr_N_own_variables[i];
-  if (pAlpha < num_var) 
+  if (pAlpha < num_var)
     throw("fistaTree error: Input alpha is too small");
   if(num_groups != eta_g->n())
     throw("fistaTree error: in tree, nb of groups incompatible with eta_g size");
   if((num_groups != groups->n()) || (num_groups != groups->m()))
     throw("fistaTree error: in tree, nb of groups incompatible with groups size");
-  for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i]; 
+  for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
    tree.Ng=num_groups;
    tree.weights= eta_g->rawX();
    tree.own_variables= own_variables->rawX();
@@ -776,7 +769,7 @@ using namespace FISTA;
   return optim_info;
 }
 
-template<typename T> 
+template<typename T>
 Matrix<T> *_fistaGraph(
 	     Matrix<T> *X,AbstractMatrixB<T> *D,Matrix<T> *alpha0,
 	     Matrix<T> *alpha, // tree :
@@ -817,7 +810,6 @@ Matrix<T> *_fistaGraph(
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *) 
 {
   using namespace FISTA;
   cout << "FISTA\n";
@@ -866,7 +858,7 @@ throw(const char *)
 
   if (param.log) {
     int n = strlen(logName);
-    if(n == 0) 
+    if(n == 0)
       throw("fistaGraph : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
@@ -886,7 +878,7 @@ throw(const char *)
   param.sqrt_step = sqrt_step;
   param.transpose = transpose;
 
-  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) { 
+  if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
       throw("fistaGraph : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
@@ -911,10 +903,10 @@ throw(const char *)
 #endif
    }
 
-   if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF) 
+   if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
       throw("fistaGraph error: fistaTree should be used instead");
 
-  if (param.regul==GRAPHMULT && abs<T>(param.lambda2 - 0) < 1e-20) 
+  if (param.regul==GRAPHMULT && abs<T>(param.lambda2 - 0) < 1e-20)
       throw("fistaGraph error: with multi-task-graph, lambda2 should be > 0");
   if(groups->m() != groups->n())
     throw("fistaGraph error: size of field groups is not consistent");
@@ -938,8 +930,8 @@ throw(const char *)
   return optim_info;
 }
 
-template<typename T> 
-Vector<T> *_proximalFlat(Matrix<T> *alpha0,Matrix<T> *alpha, 
+template<typename T>
+Vector<T> *_proximalFlat(Matrix<T> *alpha0,Matrix<T> *alpha,
 		 Vector<int> *groups,  // params
 		int num_threads,
 		T lambda1,
@@ -954,8 +946,7 @@ Vector<T> *_proximalFlat(Matrix<T> *alpha0,Matrix<T> *alpha,
 		bool eval,
 		int size_group,
 		bool transpose
-		) 
-throw(const char *) 
+		)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -963,7 +954,7 @@ using namespace FISTA;
   if (param.regul==INCORRECT_REG)
     throw("proximalFlat : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
-  if (param.regul==GRAPH || param.regul==GRAPHMULT) 
+  if (param.regul==GRAPH || param.regul==GRAPHMULT)
     throw("proximalFlat : proximalGraph should be used instead");
   param.num_threads = (num_threads < 0) ? -1 : num_threads;
   param.lambda = lambda1;
@@ -991,16 +982,16 @@ using namespace FISTA;
       throw("fistaFlat : Wrong size of param.groups");
     param.groups = groups->rawX();
   }
-  
+
   Vector<T> *val_loss = new Vector<T>();
   FISTA::PROX((Matrix<T> &)(*alpha0),(Matrix<T> &)(*alpha),param,(Vector<T> &)(*val_loss));
   return val_loss;
 }
 
-template<typename T> 
+template<typename T>
 Vector<T> *_proximalTree(Matrix<T> *alpha0,Matrix<T> *alpha, // tree
 		Vector<T> *eta_g,SpMatrix<bool> *groups,Vector<int> *own_variables,
-		Vector<int> *N_own_variables, // params :	 
+		Vector<int> *N_own_variables, // params :
 		int num_threads,
 		T lambda1,
 		T lambda2,
@@ -1014,8 +1005,7 @@ Vector<T> *_proximalTree(Matrix<T> *alpha0,Matrix<T> *alpha, // tree
 		bool eval,
 		int size_group,
 		bool transpose
-		) 
-throw(const char *) 
+		)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -1043,7 +1033,7 @@ using namespace FISTA;
   if (param.regul==INCORRECT_REG)
     throw("proximalTree : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
-  if (param.regul==GRAPH || param.regul==GRAPHMULT) 
+  if (param.regul==GRAPH || param.regul==GRAPHMULT)
     throw("proximalTree : proximalGraph should be used instead");
   if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) {
     throw("proximalTree error: with multi-task-tree, lambda2 should be > 0");
@@ -1059,13 +1049,13 @@ using namespace FISTA;
   int num_var = 0;
   for (int i = 0; i<num_groups; ++i)
     num_var+=pr_N_own_variables[i];
-  if (pAlpha < num_var) 
+  if (pAlpha < num_var)
     throw("proximalTree error: Input alpha is too small");
   if(num_groups != eta_g->n())
     throw("proximalTree error: in tree, nb of groups incompatible with eta_g size");
   if((num_groups != groups->n()) || (num_groups != groups->m()))
     throw("proximalTree error: in tree, nb of groups incompatible with groups size");
-  for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i]; 
+  for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
    tree.Ng=num_groups;
    tree.weights= eta_g->rawX();
    tree.own_variables= own_variables->rawX();
@@ -1077,9 +1067,9 @@ using namespace FISTA;
   return val_loss;
 }
 
-template<typename T> 
+template<typename T>
 Vector<T> *_proximalGraph(Matrix<T> *alpha0,Matrix<T> *alpha, // graph
-		Vector<T> *eta_g,SpMatrix<bool> *groups,SpMatrix<bool> *groups_var, // params :	 
+		Vector<T> *eta_g,SpMatrix<bool> *groups,SpMatrix<bool> *groups_var, // params :
 		int num_threads,
 		T lambda1,
 		T lambda2,
@@ -1093,8 +1083,7 @@ Vector<T> *_proximalGraph(Matrix<T> *alpha0,Matrix<T> *alpha, // graph
 		bool eval,
 		int size_group,
 		bool transpose
-		) 
-throw(const char *) 
+		)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -1102,7 +1091,7 @@ using namespace FISTA;
   if (param.regul==INCORRECT_REG)
     throw("proximalGraph : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
-  if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF) 
+  if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
     throw("proximalGraph : proximalTree should be used instead");
   if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) {
       throw("proximalGraph error: with multi-task-graph, lambda2 should be > 0");
@@ -1149,7 +1138,7 @@ using namespace FISTA;
 /* end prox */
 
 /* from dictLearn */
-template<typename T> 
+template<typename T>
 Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **omB,Vector<int> **omiter,bool return_model,Matrix<T> *m_A,Matrix<T> *m_B,int m_iter,
 		    Matrix<T> *D1,
 		    Vector<T> *eta_g,SpMatrix<bool> *groups,
@@ -1165,7 +1154,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
 		    double lambda2,
 		    double lambda3,
 		    int iter,
-		    double t0, 
+		    double t0,
 		    constraint_type mode,
 		    char* name_regul,
 		    bool posAlpha,
@@ -1184,7 +1173,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
 		    bool batch,
 		    bool log,
 		    char *logName
-		    )  throw(const char *){
+		    ) {
 #ifdef _OPENMP
   num_threads = num_threads <= 0 ? omp_get_num_procs() : num_threads;
 #else
@@ -1243,25 +1232,25 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   param.log=log;
   if(param.log) {
     int n = strlen(logName);
-    if(n == 0) 
+    if(n == 0)
       throw("trainDL : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
   }
-  if (param.regul==FISTA::TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) 
+  if (param.regul==FISTA::TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20)
     throw("structTrainDL error: with multi-task-tree, lambda2 should be > 0");
 
   /* graph */
   GraphStruct<T> *pgraph =NULL;
   //GraphStruct<T> *pgraph = (GraphStruct<T> *) 0;
   GraphStruct<T> graph;
-  if (param.regul==FISTA::GRAPH || param.regul==FISTA::GRAPH_RIDGE || 
+  if (param.regul==FISTA::GRAPH || param.regul==FISTA::GRAPH_RIDGE ||
       param.regul==FISTA::GRAPH_L2) {
-    if(eta_g->n() <=  0) 
+    if(eta_g->n() <=  0)
       throw("structTrainDL error: graph is required\n");
     if(groups->m() != groups->n())
       throw("structTrainDL error: size of graph field groups is not consistent");
-    
+
     pgraph = &graph;
     graph.Nv = groups_var->m();
     graph.Ng = groups_var->n();
@@ -1276,7 +1265,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
       throw("structTrainDL error: size of graph field groups_var is not consistent");
     if (eta_g->n() != groups_var->n())
       throw("structTrainDL error: size of field eta_g is not consistent");
-    
+
   }
   /* tree */
   TreeStruct<T> tree;
@@ -1284,7 +1273,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   tree.Nv=0;
   int num_groups = own_variables->n();
   if (param.regul==FISTA::TREE_L0 || param.regul==FISTA::TREE_L2 || param.regul==FISTA::TREE_LINF) {
-    if(num_groups<=  0) 
+    if(num_groups<=  0)
       throw("structTrainDL error: tree is required\n");
     if (num_groups != N_own_variables->n()) {
       throw("structTrainDL error: in tree,  own_variables and N_own_variables must have same dimension");
@@ -1294,13 +1283,13 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
     int num_var = 0;
     for (int i = 0; i<num_groups; ++i)
       num_var+=pr_N_own_variables[i];
-    if (K != num_var) 
+    if (K != num_var)
       throw("structTrainDL error: size of tree is inconsistent with K");
     if(num_groups != eta_g->n())
       throw("structTrainDL error: in tree, nb of groups incompatible with eta_g size");
     if((num_groups != groups->n()) || (num_groups != groups->m()))
       throw("structTrainDL error: in tree, nb of groups incompatible with groups size");
-    for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i]; 
+    for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
     tree.Ng=num_groups;
     tree.weights= eta_g->rawX();
     tree.own_variables= own_variables->rawX();
@@ -1339,7 +1328,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
 
 /* from dictLearn/arch */
 template <typename T>
-Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) throw(const char *)  {
+Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads)  {
   Matrix<T>* Z = new Matrix<T>(Z0->m(),Z0->n());
   *spA = new SpMatrix<T>();
   *spB = new SpMatrix<T>();
@@ -1348,7 +1337,7 @@ Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** sp
 }
 
 template <typename T>
-Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) throw(const char *) {
+Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) {
   Matrix<T>* Z = new Matrix<T>(X->m(),p);
   *spA = new SpMatrix<T>();
   *spB = new SpMatrix<T>();
@@ -1367,7 +1356,7 @@ template <typename T>
 /* end dictLearn/arch */
 /* end  dictLearn */
 /* utility : equivalent of matlab im2col in 'sliding' mode */
-/* 
+/*
    input:
      A : image as matrix of mm lines of nn values (for rgb nn = 3 * dimx)
      RGB : true if image is true color (3 values per pixel)
@@ -1377,8 +1366,8 @@ template <typename T>
      stored by columns.
 */
 template<typename T>
-void _im2col_sliding(Matrix<T>  *A,Matrix<T>  *B,int m, int n,bool RGB)  throw(const char *){
-  /* if RGB is true A has 3*n columns, R G B columns are consecutives 
+void _im2col_sliding(Matrix<T>  *A,Matrix<T>  *B,int m, int n,bool RGB) {
+  /* if RGB is true A has 3*n columns, R G B columns are consecutives
    */
   int mm = A->m();
   int nn = A->n();
