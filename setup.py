@@ -11,6 +11,12 @@ from numpy.distutils.system_info import blas_info
 
 import distro
 
+# for np >= 1.22
+try:
+    np.__config__.blas_opt_info = np.distutils.__config__.blas_ilp64_opt_info
+    np.__config__.lapack_opt_info = np.distutils.__config__.lapack_ilp64_opt_info
+except Exception:
+    pass
 
 def get_config():
 
