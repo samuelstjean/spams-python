@@ -3748,38 +3748,19 @@ SwigPyBuiltin_iternextfunc_closure(SwigPyWrapperFunction wrapper, PyObject *a) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_AbstractMatrixBT_double_t swig_types[0]
-#define SWIGTYPE_p_AbstractMatrixBT_float_t swig_types[1]
-#define SWIGTYPE_p_DataT_double_t swig_types[2]
-#define SWIGTYPE_p_DataT_float_t swig_types[3]
-#define SWIGTYPE_p_MatrixT_bool_t swig_types[4]
-#define SWIGTYPE_p_MatrixT_double_t swig_types[5]
-#define SWIGTYPE_p_MatrixT_float_t swig_types[6]
-#define SWIGTYPE_p_SpMatrixT_bool_t swig_types[7]
-#define SWIGTYPE_p_SpMatrixT_double_t swig_types[8]
-#define SWIGTYPE_p_SpMatrixT_float_t swig_types[9]
-#define SWIGTYPE_p_SwigPyObject swig_types[10]
-#define SWIGTYPE_p_VectorT_double_t swig_types[11]
-#define SWIGTYPE_p_VectorT_float_t swig_types[12]
-#define SWIGTYPE_p_VectorT_int_t swig_types[13]
-#define SWIGTYPE_p_char swig_types[14]
-#define SWIGTYPE_p_int swig_types[15]
-#define SWIGTYPE_p_p_MatrixT_double_t swig_types[16]
-#define SWIGTYPE_p_p_MatrixT_float_t swig_types[17]
-#define SWIGTYPE_p_p_SpMatrixT_bool_t swig_types[18]
-#define SWIGTYPE_p_p_SpMatrixT_double_t swig_types[19]
-#define SWIGTYPE_p_p_SpMatrixT_float_t swig_types[20]
-#define SWIGTYPE_p_p_VectorT_double_t swig_types[21]
-#define SWIGTYPE_p_p_VectorT_float_t swig_types[22]
-#define SWIGTYPE_p_p_VectorT_int_t swig_types[23]
-#define SWIGTYPE_p_p_int swig_types[24]
-#define SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t swig_types[25]
-#define SWIGTYPE_p_std__vectorT_StructNodeElemT_float_t_p_t swig_types[26]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[27]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[28]
-#define SWIGTYPE_p_string swig_types[29]
-static swig_type_info *swig_types[31];
-static swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
+#define SWIGTYPE_p_SwigPyObject swig_types[0]
+#define SWIGTYPE_p_char swig_types[1]
+#define SWIGTYPE_p_int swig_types[2]
+#define SWIGTYPE_p_p_SpMatrixT_bool_t swig_types[3]
+#define SWIGTYPE_p_p_SpMatrixT_double_t swig_types[4]
+#define SWIGTYPE_p_p_SpMatrixT_float_t swig_types[5]
+#define SWIGTYPE_p_p_VectorT_float_t swig_types[6]
+#define SWIGTYPE_p_p_int swig_types[7]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[8]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[9]
+#define SWIGTYPE_p_string swig_types[10]
+static swig_type_info *swig_types[12];
+static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3940,6 +3921,30 @@ namespace swig {
 #endif
 
 
+#ifndef SWIG_FILE_WITH_INIT
+#  define NO_IMPORT_ARRAY
+#endif
+#include <stdio.h>
+//#include "spams.h"
+#undef _POSIX_C_SOURCE
+extern "C" {
+#include <Python.h>
+#include <numpy/arrayobject.h>
+}
+#define check_array(a,npy_type) (!is_array(a) || !require_contiguous(a) || !require_dimensions(a,1) || !require_native(a) || array_type(a)!=npy_type)
+
+
+#ifndef SWIG_FILE_WITH_INIT
+#define NO_IMPORT_ARRAY
+#endif
+#include "stdio.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#include <numpy/arrayobject.h>
+
+
+#include <complex>
+
+
 #include <limits.h>
 #if !defined(SWIG_NO_LLONG_MAX)
 # if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
@@ -4030,6 +4035,13 @@ SWIG_CanCastAsInteger(double *d, double min, double max) {
   }
   return 0;
 }
+
+
+#if NPY_API_VERSION < NPY_1_7_API_VERSION
+#define NPY_ARRAY_DEFAULT NPY_DEFAULT
+#define NPY_ARRAY_FARRAY  NPY_FARRAY
+#define NPY_FORTRANORDER  NPY_FORTRAN
+#endif
 
 
   SWIGINTERN int
@@ -4252,6 +4264,470 @@ SWIGINTERNINLINE PyObject*
 }
 
 
+/* Macros to extract array attributes.
+ */
+#if NPY_API_VERSION < NPY_1_7_API_VERSION
+#define is_array(a)            ((a) && PyArray_Check((PyArrayObject*)a))
+#define array_type(a)          (int)(PyArray_TYPE((PyArrayObject*)a))
+#define array_numdims(a)       (((PyArrayObject*)a)->nd)
+#define array_dimensions(a)    (((PyArrayObject*)a)->dimensions)
+#define array_size(a,i)        (((PyArrayObject*)a)->dimensions[i])
+#define array_strides(a)       (((PyArrayObject*)a)->strides)
+#define array_stride(a,i)      (((PyArrayObject*)a)->strides[i])
+#define array_data(a)          (((PyArrayObject*)a)->data)
+#define array_descr(a)         (((PyArrayObject*)a)->descr)
+#define array_flags(a)         (((PyArrayObject*)a)->flags)
+#define array_clearflags(a,f)  (((PyArrayObject*)a)->flags) &= ~f
+#define array_enableflags(a,f) (((PyArrayObject*)a)->flags) = f
+#define array_is_fortran(a)    (PyArray_ISFORTRAN((PyArrayObject*)a))
+#else
+#define is_array(a)            ((a) && PyArray_Check(a))
+#define array_type(a)          PyArray_TYPE((PyArrayObject*)a)
+#define array_numdims(a)       PyArray_NDIM((PyArrayObject*)a)
+#define array_dimensions(a)    PyArray_DIMS((PyArrayObject*)a)
+#define array_strides(a)       PyArray_STRIDES((PyArrayObject*)a)
+#define array_stride(a,i)      PyArray_STRIDE((PyArrayObject*)a,i)
+#define array_size(a,i)        PyArray_DIM((PyArrayObject*)a,i)
+#define array_data(a)          PyArray_DATA((PyArrayObject*)a)
+#define array_descr(a)         PyArray_DESCR((PyArrayObject*)a)
+#define array_flags(a)         PyArray_FLAGS((PyArrayObject*)a)
+#define array_enableflags(a,f) PyArray_ENABLEFLAGS((PyArrayObject*)a,f)
+#define array_clearflags(a,f)  PyArray_CLEARFLAGS((PyArrayObject*)a,f)
+#define array_is_fortran(a)    (PyArray_IS_F_CONTIGUOUS((PyArrayObject*)a))
+#endif
+#define array_is_contiguous(a) (PyArray_ISCONTIGUOUS((PyArrayObject*)a))
+#define array_is_native(a)     (PyArray_ISNOTSWAPPED((PyArrayObject*)a))
+
+
+  /* Given a PyObject, return a string describing its type.
+   */
+  const char* pytype_string(PyObject* py_obj)
+  {
+    if (py_obj == NULL          ) return "C NULL value";
+    if (py_obj == Py_None       ) return "Python None" ;
+    if (PyCallable_Check(py_obj)) return "callable"    ;
+    if (PyBytes_Check(   py_obj)) return "string"      ;
+    if (PyLong_Check(    py_obj)) return "int"         ;
+    if (PyFloat_Check(   py_obj)) return "float"       ;
+    if (PyDict_Check(    py_obj)) return "dict"        ;
+    if (PyList_Check(    py_obj)) return "list"        ;
+    if (PyTuple_Check(   py_obj)) return "tuple"       ;
+
+    return "unknown type";
+  }
+
+  /* Given a NumPy typecode, return a string describing the type.
+   */
+  const char* typecode_string(int typecode)
+  {
+    static const char* type_names[25] = {"bool",
+                                         "byte",
+                                         "unsigned byte",
+                                         "short",
+                                         "unsigned short",
+                                         "int",
+                                         "unsigned int",
+                                         "long",
+                                         "unsigned long",
+                                         "long long",
+                                         "unsigned long long",
+                                         "float",
+                                         "double",
+                                         "long double",
+                                         "complex float",
+                                         "complex double",
+                                         "complex long double",
+                                         "object",
+                                         "string",
+                                         "unicode",
+                                         "void",
+                                         "ntypes",
+                                         "notype",
+                                         "char",
+                                         "unknown"};
+    return typecode < 24 ? type_names[typecode] : type_names[24];
+  }
+
+  /* Make sure input has correct numpy type.  This now just calls
+     PyArray_EquivTypenums().
+   */
+  int type_match(int actual_type,
+                 int desired_type)
+  {
+    return PyArray_EquivTypenums(actual_type, desired_type);
+  }
+
+void free_cap(PyObject * cap)
+  {
+    void* array = (void*) PyCapsule_GetPointer(cap,SWIGPY_CAPSULE_NAME);
+    if (array != NULL) free(array);
+  }
+
+
+
+
+  /* Given a PyObject pointer, cast it to a PyArrayObject pointer if
+   * legal.  If not, set the python error string appropriately and
+   * return NULL.
+   */
+  PyArrayObject* obj_to_array_no_conversion(PyObject* input,
+                                            int        typecode)
+  {
+    PyArrayObject* ary = NULL;
+    if (is_array(input) && (typecode == NPY_NOTYPE ||
+                            PyArray_EquivTypenums(array_type(input), typecode)))
+    {
+      ary = (PyArrayObject*) input;
+    }
+    else if is_array(input)
+    {
+      const char* desired_type = typecode_string(typecode);
+      const char* actual_type  = typecode_string(array_type(input));
+      PyErr_Format(PyExc_TypeError,
+                   "Array of type '%s' required.  Array of type '%s' given",
+                   desired_type, actual_type);
+      ary = NULL;
+    }
+    else
+    {
+      const char* desired_type = typecode_string(typecode);
+      const char* actual_type  = pytype_string(input);
+      PyErr_Format(PyExc_TypeError,
+                   "Array of type '%s' required.  A '%s' was given",
+                   desired_type,
+                   actual_type);
+      ary = NULL;
+    }
+    return ary;
+  }
+
+  /* Convert the given PyObject to a NumPy array with the given
+   * typecode.  On success, return a valid PyArrayObject* with the
+   * correct type.  On failure, the python error string will be set and
+   * the routine returns NULL.
+   */
+  PyArrayObject* obj_to_array_allow_conversion(PyObject* input,
+                                               int       typecode,
+                                               int*      is_new_object)
+  {
+    PyArrayObject* ary = NULL;
+    PyObject*      py_obj;
+    if (is_array(input) && (typecode == NPY_NOTYPE ||
+                            PyArray_EquivTypenums(array_type(input),typecode)))
+    {
+      ary = (PyArrayObject*) input;
+      *is_new_object = 0;
+    }
+    else
+    {
+      py_obj = PyArray_FROMANY(input, typecode, 0, 0, NPY_ARRAY_DEFAULT);
+      /* If NULL, PyArray_FromObject will have set python error value.*/
+      ary = (PyArrayObject*) py_obj;
+      *is_new_object = 1;
+    }
+    return ary;
+  }
+
+  /* Given a PyArrayObject, check to see if it is contiguous.  If so,
+   * return the input pointer and flag it as not a new object.  If it is
+   * not contiguous, create a new PyArrayObject using the original data,
+   * flag it as a new object and return the pointer.
+   */
+  PyArrayObject* make_contiguous(PyArrayObject* ary,
+                                 int*           is_new_object,
+                                 int            min_dims,
+                                 int            max_dims)
+  {
+    PyArrayObject* result;
+    if (array_is_contiguous(ary))
+    {
+      result = ary;
+      *is_new_object = 0;
+    }
+    else
+    {
+      result = (PyArrayObject*) PyArray_ContiguousFromObject((PyObject*)ary,
+                                                              array_type(ary),
+                                                              min_dims,
+                                                              max_dims);
+      *is_new_object = 1;
+    }
+    return result;
+  }
+
+  /* Given a PyArrayObject, check to see if it is Fortran-contiguous.
+   * If so, return the input pointer, but do not flag it as not a new
+   * object.  If it is not Fortran-contiguous, create a new
+   * PyArrayObject using the original data, flag it as a new object
+   * and return the pointer.
+   */
+  PyArrayObject* make_fortran(PyArrayObject* ary,
+                              int*           is_new_object)
+  {
+    PyArrayObject* result;
+    if (array_is_fortran(ary))
+    {
+      result = ary;
+      *is_new_object = 0;
+    }
+    else
+    {
+      Py_INCREF(array_descr(ary));
+      result = (PyArrayObject*) PyArray_FromArray(ary,
+                                                  array_descr(ary),
+#if NPY_API_VERSION < NPY_1_7_API_VERSION
+                                                  NPY_FORTRANORDER);
+#else
+                                                  NPY_ARRAY_F_CONTIGUOUS);
+#endif
+      *is_new_object = 1;
+    }
+    return result;
+  }
+
+  /* Convert a given PyObject to a contiguous PyArrayObject of the
+   * specified type.  If the input object is not a contiguous
+   * PyArrayObject, a new one will be created and the new object flag
+   * will be set.
+   */
+  PyArrayObject* obj_to_array_contiguous_allow_conversion(PyObject* input,
+                                                          int       typecode,
+                                                          int*      is_new_object)
+  {
+    int is_new1 = 0;
+    int is_new2 = 0;
+    PyArrayObject* ary2;
+    PyArrayObject* ary1 = obj_to_array_allow_conversion(input,
+                                                        typecode,
+                                                        &is_new1);
+    if (ary1)
+    {
+      ary2 = make_contiguous(ary1, &is_new2, 0, 0);
+      if ( is_new1 && is_new2)
+      {
+        Py_DECREF(ary1);
+      }
+      ary1 = ary2;
+    }
+    *is_new_object = is_new1 || is_new2;
+    return ary1;
+  }
+
+  /* Convert a given PyObject to a Fortran-ordered PyArrayObject of the
+   * specified type.  If the input object is not a Fortran-ordered
+   * PyArrayObject, a new one will be created and the new object flag
+   * will be set.
+   */
+  PyArrayObject* obj_to_array_fortran_allow_conversion(PyObject* input,
+                                                       int       typecode,
+                                                       int*      is_new_object)
+  {
+    int is_new1 = 0;
+    int is_new2 = 0;
+    PyArrayObject* ary2;
+    PyArrayObject* ary1 = obj_to_array_allow_conversion(input,
+                                                        typecode,
+                                                        &is_new1);
+    if (ary1)
+    {
+      ary2 = make_fortran(ary1, &is_new2);
+      if (is_new1 && is_new2)
+      {
+        Py_DECREF(ary1);
+      }
+      ary1 = ary2;
+    }
+    *is_new_object = is_new1 || is_new2;
+    return ary1;
+  }
+
+
+  /* Test whether a python object is contiguous.  If array is
+   * contiguous, return 1.  Otherwise, set the python error string and
+   * return 0.
+   */
+  int require_contiguous(PyArrayObject* ary)
+  {
+    int contiguous = 1;
+    if (!array_is_contiguous(ary))
+    {
+      PyErr_SetString(PyExc_TypeError,
+                      "Array must be contiguous.  A non-contiguous array was given");
+      contiguous = 0;
+    }
+    return contiguous;
+  }
+
+  /* Test whether a python object is (C_ or F_) contiguous.  If array is
+   * contiguous, return 1.  Otherwise, set the python error string and
+   * return 0.
+   */
+  int require_c_or_f_contiguous(PyArrayObject* ary)
+  {
+    int contiguous = 1;
+    if (!(array_is_contiguous(ary) || array_is_fortran(ary)))
+    {
+      PyErr_SetString(PyExc_TypeError,
+                      "Array must be contiguous (C_ or F_).  A non-contiguous array was given");
+      contiguous = 0;
+    }
+    return contiguous;
+  }
+
+  /* Require that a numpy array is not byte-swapped.  If the array is
+   * not byte-swapped, return 1.  Otherwise, set the python error string
+   * and return 0.
+   */
+  int require_native(PyArrayObject* ary)
+  {
+    int native = 1;
+    if (!array_is_native(ary))
+    {
+      PyErr_SetString(PyExc_TypeError,
+                      "Array must have native byteorder.  "
+                      "A byte-swapped array was given");
+      native = 0;
+    }
+    return native;
+  }
+
+  /* Require the given PyArrayObject to have a specified number of
+   * dimensions.  If the array has the specified number of dimensions,
+   * return 1.  Otherwise, set the python error string and return 0.
+   */
+  int require_dimensions(PyArrayObject* ary,
+                         int            exact_dimensions)
+  {
+    int success = 1;
+    if (array_numdims(ary) != exact_dimensions)
+    {
+      PyErr_Format(PyExc_TypeError,
+                   "Array must have %d dimensions.  Given array has %d dimensions",
+                   exact_dimensions,
+                   array_numdims(ary));
+      success = 0;
+    }
+    return success;
+  }
+
+  /* Require the given PyArrayObject to have one of a list of specified
+   * number of dimensions.  If the array has one of the specified number
+   * of dimensions, return 1.  Otherwise, set the python error string
+   * and return 0.
+   */
+  int require_dimensions_n(PyArrayObject* ary,
+                           int*           exact_dimensions,
+                           int            n)
+  {
+    int success = 0;
+    int i;
+    char dims_str[255] = "";
+    char s[255];
+    for (i = 0; i < n && !success; i++)
+    {
+      if (array_numdims(ary) == exact_dimensions[i])
+      {
+        success = 1;
+      }
+    }
+    if (!success)
+    {
+      for (i = 0; i < n-1; i++)
+      {
+        sprintf(s, "%d, ", exact_dimensions[i]);
+        strcat(dims_str,s);
+      }
+      sprintf(s, " or %d", exact_dimensions[n-1]);
+      strcat(dims_str,s);
+      PyErr_Format(PyExc_TypeError,
+                   "Array must have %s dimensions.  Given array has %d dimensions",
+                   dims_str,
+                   array_numdims(ary));
+    }
+    return success;
+  }
+
+  /* Require the given PyArrayObject to have a specified shape.  If the
+   * array has the specified shape, return 1.  Otherwise, set the python
+   * error string and return 0.
+   */
+  int require_size(PyArrayObject* ary,
+                   npy_intp*      size,
+                   int            n)
+  {
+    int i;
+    int success = 1;
+    size_t len;
+    char desired_dims[255] = "[";
+    char s[255];
+    char actual_dims[255] = "[";
+    for(i=0; i < n;i++)
+    {
+      if (size[i] != -1 &&  size[i] != array_size(ary,i))
+      {
+        success = 0;
+      }
+    }
+    if (!success)
+    {
+      for (i = 0; i < n; i++)
+      {
+        if (size[i] == -1)
+        {
+          sprintf(s, "*,");
+        }
+        else
+        {
+          sprintf(s, "%ld,", (long int)size[i]);
+        }
+        strcat(desired_dims,s);
+      }
+      len = strlen(desired_dims);
+      desired_dims[len-1] = ']';
+      for (i = 0; i < n; i++)
+      {
+        sprintf(s, "%ld,", (long int)array_size(ary,i));
+        strcat(actual_dims,s);
+      }
+      len = strlen(actual_dims);
+      actual_dims[len-1] = ']';
+      PyErr_Format(PyExc_TypeError,
+                   "Array must have shape of %s.  Given array has shape of %s",
+                   desired_dims,
+                   actual_dims);
+    }
+    return success;
+  }
+
+  /* Require the given PyArrayObject to be Fortran ordered.  If the
+   * the PyArrayObject is already Fortran ordered, do nothing.  Else,
+   * set the Fortran ordering flag and recompute the strides.
+   */
+  int require_fortran(PyArrayObject* ary)
+  {
+    int success = 1;
+    int nd = array_numdims(ary);
+    int i;
+    npy_intp * strides = array_strides(ary);
+    if (array_is_fortran(ary)) return success;
+    int n_non_one = 0;
+    /* Set the Fortran ordered flag */
+    const npy_intp *dims = array_dimensions(ary);
+    for (i=0; i < nd; ++i)
+      n_non_one += (dims[i] != 1) ? 1 : 0;
+    if (n_non_one > 1)
+      array_clearflags(ary,NPY_ARRAY_CARRAY);
+    array_enableflags(ary,NPY_ARRAY_FARRAY);
+    /* Recompute the strides */
+    strides[0] = strides[nd-1];
+    for (i=1; i < nd; ++i)
+      strides[i] = strides[i-1] * array_size(ary,i-1);
+    return success;
+  }
+
+
+
+
 SWIGINTERN int
 SWIG_AsVal_bool (PyObject *obj, bool *val)
 {
@@ -4320,6 +4796,18 @@ SWIG_AsVal_float (PyObject * obj, float *val)
   }
   return res;
 }
+
+
+   const int check_sparse(PyObject* input) {
+    return (PyObject_HasAttrString(input, "indptr") &&
+        PyObject_HasAttrString(input, "indices") &&
+        PyObject_HasAttrString(input, "data") &&
+        PyObject_HasAttrString(input, "shape")
+        ) ? 1 : 0;
+  }
+  const int check_matrix(PyObject* input,int data_typecode) {
+   return (is_array(input) && (array_numdims(input) == 2) && PyArray_EquivTypenums(array_type(input),data_typecode));
+  }
 
 #ifdef __cplusplus
 extern "C" {
@@ -4464,31 +4952,42 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   PyObject *resultobj = 0;
   Vector< double > *arg1 = (Vector< double > *) 0 ;
   bool arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sort" "', argument " "1"" of type '" "Vector< double > *""'");
+  {
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    if (!array1 || !require_dimensions(array1,1) || !require_contiguous(array1) || !require_native(array1)) SWIG_fail;
+    arg1 = new Vector<double> ((double *)array_data(array1),(int)array_size(array1,0));
   }
-  arg1 = reinterpret_cast< Vector< double > * >(argp1);
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sort" "', argument " "2"" of type '" "bool""'");
   }
   arg2 = static_cast< bool >(val2);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _sort< double >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _sort< double >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -4497,31 +4996,42 @@ SWIGINTERN PyObject *_wrap_sort__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   PyObject *resultobj = 0;
   Vector< float > *arg1 = (Vector< float > *) 0 ;
   bool arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   bool val2 ;
   int ecode2 = 0 ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sort" "', argument " "1"" of type '" "Vector< float > *""'");
+  {
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    if (!array1 || !require_dimensions(array1,1) || !require_contiguous(array1) || !require_native(array1)) SWIG_fail;
+    arg1 = new Vector<float> ((float *)array_data(array1),(int)array_size(array1,0));
   }
-  arg1 = reinterpret_cast< Vector< float > * >(argp1);
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sort" "', argument " "2"" of type '" "bool""'");
   }
   arg2 = static_cast< bool >(val2);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _sort< float >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _sort< float >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -4538,9 +5048,10 @@ SWIGINTERN PyObject *_wrap_sort(PyObject *self, PyObject *args) {
   if (argc == 2) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_sort__SWIG_0(self, argc, argv);
@@ -4573,12 +5084,9 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   bool arg5 ;
   double arg6 ;
   double arg7 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   bool val4 ;
   int ecode4 = 0 ;
   bool val5 ;
@@ -4590,21 +5098,57 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
 
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "mult" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "mult" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "mult" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "mult" "', argument " "4"" of type '" "bool""'");
@@ -4625,14 +5169,38 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "mult" "', argument " "7"" of type '" "double""'");
   }
   arg7 = static_cast< double >(val7);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _mult< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _mult< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -4646,12 +5214,9 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   bool arg5 ;
   float arg6 ;
   float arg7 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   bool val4 ;
   int ecode4 = 0 ;
   bool val5 ;
@@ -4663,21 +5228,57 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
 
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "mult" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "mult" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "mult" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "mult" "', argument " "4"" of type '" "bool""'");
@@ -4698,14 +5299,38 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "mult" "', argument " "7"" of type '" "float""'");
   }
   arg7 = static_cast< float >(val7);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _mult< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _mult< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -4722,43 +5347,46 @@ SWIGINTERN PyObject *_wrap_mult(PyObject *self, PyObject *args) {
   if (argc == 7) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    return _wrap_mult__SWIG_0(self, argc, argv);
+    return _wrap_mult__SWIG_1(self, argc, argv);
   }
 check_1:
 
   if (argc == 7) {
-    PyObject *retobj = _wrap_mult__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_mult__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -4776,31 +5404,132 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *resultobj = 0;
   SpMatrix< double > *arg1 = (SpMatrix< double > *) 0 ;
   Matrix< double > *arg2 = (Matrix< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyObject *sparray1 = NULL ;
+  PyArrayObject *array2 = NULL ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AAt" "', argument " "1"" of type '" "SpMatrix< double > *""'");
-  }
-  arg1 = reinterpret_cast< SpMatrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AAt" "', argument " "2"" of type '" "Matrix< double > *""'");
-  }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _AAt< double >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray1 = swig_obj[0];
+    if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
+        PyObject_HasAttrString(sparray1, "indices") &&
+        PyObject_HasAttrString(sparray1, "data") &&
+        PyObject_HasAttrString(sparray1, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_DOUBLE)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _AAt< double >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -4809,31 +5538,132 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   PyObject *resultobj = 0;
   SpMatrix< float > *arg1 = (SpMatrix< float > *) 0 ;
   Matrix< float > *arg2 = (Matrix< float > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyObject *sparray1 = NULL ;
+  PyArrayObject *array2 = NULL ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "AAt" "', argument " "1"" of type '" "SpMatrix< float > *""'");
-  }
-  arg1 = reinterpret_cast< SpMatrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "AAt" "', argument " "2"" of type '" "Matrix< float > *""'");
-  }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _AAt< float >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray1 = swig_obj[0];
+    if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
+        PyObject_HasAttrString(sparray1, "indices") &&
+        PyObject_HasAttrString(sparray1, "data") &&
+        PyObject_HasAttrString(sparray1, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_FLOAT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _AAt< float >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -4850,15 +5680,10 @@ SWIGINTERN PyObject *_wrap_AAt(PyObject *self, PyObject *args) {
   if (argc == 2) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     return _wrap_AAt__SWIG_0(self, argc, argv);
@@ -4885,38 +5710,156 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   SpMatrix< double > *arg1 = (SpMatrix< double > *) 0 ;
   Matrix< double > *arg2 = (Matrix< double > *) 0 ;
   Matrix< double > *arg3 = (Matrix< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyObject *sparray1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
 
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XAt" "', argument " "1"" of type '" "SpMatrix< double > *""'");
-  }
-  arg1 = reinterpret_cast< SpMatrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "XAt" "', argument " "2"" of type '" "Matrix< double > *""'");
-  }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "XAt" "', argument " "3"" of type '" "Matrix< double > *""'");
-  }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _XAt< double >(arg1,arg2,arg3);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray1 = swig_obj[0];
+    if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
+        PyObject_HasAttrString(sparray1, "indices") &&
+        PyObject_HasAttrString(sparray1, "data") &&
+        PyObject_HasAttrString(sparray1, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_DOUBLE)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _XAt< double >(arg1,arg2,arg3);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -4926,38 +5869,156 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   SpMatrix< float > *arg1 = (SpMatrix< float > *) 0 ;
   Matrix< float > *arg2 = (Matrix< float > *) 0 ;
   Matrix< float > *arg3 = (Matrix< float > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyObject *sparray1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
 
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "XAt" "', argument " "1"" of type '" "SpMatrix< float > *""'");
-  }
-  arg1 = reinterpret_cast< SpMatrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "XAt" "', argument " "2"" of type '" "Matrix< float > *""'");
-  }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "XAt" "', argument " "3"" of type '" "Matrix< float > *""'");
-  }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _XAt< float >(arg1,arg2,arg3);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray1 = swig_obj[0];
+    if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
+        PyObject_HasAttrString(sparray1, "indices") &&
+        PyObject_HasAttrString(sparray1, "data") &&
+        PyObject_HasAttrString(sparray1, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray1, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray1, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_FLOAT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
+  }
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _XAt< float >(arg1,arg2,arg3);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -4974,21 +6035,17 @@ SWIGINTERN PyObject *_wrap_XAt(PyObject *self, PyObject *args) {
   if (argc == 3) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     return _wrap_XAt__SWIG_0(self, argc, argv);
@@ -5014,31 +6071,42 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_0(PyObject *self, Py_ssize_t 
   PyObject *resultobj = 0;
   Vector< double > *arg1 = (Vector< double > *) 0 ;
   int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "applyBayerPattern" "', argument " "1"" of type '" "Vector< double > *""'");
+  {
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    if (!array1 || !require_dimensions(array1,1) || !require_contiguous(array1) || !require_native(array1)) SWIG_fail;
+    arg1 = new Vector<double> ((double *)array_data(array1),(int)array_size(array1,0));
   }
-  arg1 = reinterpret_cast< Vector< double > * >(argp1);
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "applyBayerPattern" "', argument " "2"" of type '" "int""'");
   }
   arg2 = static_cast< int >(val2);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _applyBayerPattern< double >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _applyBayerPattern< double >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5047,31 +6115,42 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern__SWIG_1(PyObject *self, Py_ssize_t 
   PyObject *resultobj = 0;
   Vector< float > *arg1 = (Vector< float > *) 0 ;
   int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
 
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "applyBayerPattern" "', argument " "1"" of type '" "Vector< float > *""'");
+  {
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    if (!array1 || !require_dimensions(array1,1) || !require_contiguous(array1) || !require_native(array1)) SWIG_fail;
+    arg1 = new Vector<float> ((float *)array_data(array1),(int)array_size(array1,0));
   }
-  arg1 = reinterpret_cast< Vector< float > * >(argp1);
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "applyBayerPattern" "', argument " "2"" of type '" "int""'");
   }
   arg2 = static_cast< int >(val2);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _applyBayerPattern< float >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _applyBayerPattern< float >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5088,9 +6167,10 @@ SWIGINTERN PyObject *_wrap_applyBayerPattern(PyObject *self, PyObject *args) {
   if (argc == 2) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 1) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_applyBayerPattern__SWIG_0(self, argc, argv);
@@ -5121,12 +6201,9 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   Vector< double > *arg3 = (Vector< double > *) 0 ;
   double arg4 ;
   int arg5 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   double val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -5134,21 +6211,33 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "conjugateGradient" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "conjugateGradient" "', argument " "2"" of type '" "Vector< double > *""'");
+  {
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    if (!array2 || !require_dimensions(array2,1) || !require_contiguous(array2) || !require_native(array2)) SWIG_fail;
+    arg2 = new Vector<double> ((double *)array_data(array2),(int)array_size(array2,0));
   }
-  arg2 = reinterpret_cast< Vector< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "conjugateGradient" "', argument " "3"" of type '" "Vector< double > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<double> ((double *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< double > * >(argp3);
   ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "conjugateGradient" "', argument " "4"" of type '" "double""'");
@@ -5159,14 +6248,38 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "conjugateGradient" "', argument " "5"" of type '" "int""'");
   }
   arg5 = static_cast< int >(val5);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _conjugateGradient< double >(arg1,arg2,arg3,arg4,arg5);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _conjugateGradient< double >(arg1,arg2,arg3,arg4,arg5);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -5178,12 +6291,9 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   Vector< float > *arg3 = (Vector< float > *) 0 ;
   float arg4 ;
   int arg5 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   float val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -5191,21 +6301,33 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "conjugateGradient" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "conjugateGradient" "', argument " "2"" of type '" "Vector< float > *""'");
+  {
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    if (!array2 || !require_dimensions(array2,1) || !require_contiguous(array2) || !require_native(array2)) SWIG_fail;
+    arg2 = new Vector<float> ((float *)array_data(array2),(int)array_size(array2,0));
   }
-  arg2 = reinterpret_cast< Vector< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "conjugateGradient" "', argument " "3"" of type '" "Vector< float > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<float> ((float *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< float > * >(argp3);
   ecode4 = SWIG_AsVal_float(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "conjugateGradient" "', argument " "4"" of type '" "float""'");
@@ -5216,14 +6338,38 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "conjugateGradient" "', argument " "5"" of type '" "int""'");
   }
   arg5 = static_cast< int >(val5);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _conjugateGradient< float >(arg1,arg2,arg3,arg4,arg5);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _conjugateGradient< float >(arg1,arg2,arg3,arg4,arg5);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -5240,38 +6386,41 @@ SWIGINTERN PyObject *_wrap_conjugateGradient(PyObject *self, PyObject *args) {
   if (argc == 5) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[3], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 1) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[3], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_conjugateGradient__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_conjugateGradient__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 5) {
-    PyObject *retobj = _wrap_conjugateGradient__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_conjugateGradient__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -5288,24 +6437,41 @@ fail:
 SWIGINTERN PyObject *_wrap_invSym__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
 
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "invSym" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
     _invSym< double >(arg1);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5313,24 +6479,41 @@ fail:
 SWIGINTERN PyObject *_wrap_invSym__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
 
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "invSym" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
     _invSym< float >(arg1);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5347,9 +6530,10 @@ SWIGINTERN PyObject *_wrap_invSym(PyObject *self, PyObject *args) {
   if (argc == 1) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     return _wrap_invSym__SWIG_0(self, argc, argv);
@@ -5374,24 +6558,41 @@ fail:
 SWIGINTERN PyObject *_wrap_normalize__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   Matrix< double > *arg1 = (Matrix< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
 
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "normalize" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
     _normalize< double >(arg1);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5399,24 +6600,41 @@ fail:
 SWIGINTERN PyObject *_wrap_normalize__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   Matrix< float > *arg1 = (Matrix< float > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
 
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "normalize" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
     _normalize< float >(arg1);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -5433,9 +6651,10 @@ SWIGINTERN PyObject *_wrap_normalize(PyObject *self, PyObject *args) {
   if (argc == 1) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     return _wrap_normalize__SWIG_0(self, argc, argv);
@@ -5468,10 +6687,8 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
   double arg7 ;
   bool arg8 ;
   int arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   double val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -5489,16 +6706,40 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sparseProject" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "sparseProject" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "sparseProject" "', argument " "3"" of type '" "double""'");
@@ -5534,14 +6775,32 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "sparseProject" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _sparseProject< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _sparseProject< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -5557,10 +6816,8 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
   float arg7 ;
   bool arg8 ;
   int arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   float val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -5578,16 +6835,40 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sparseProject" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "sparseProject" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
   ecode3 = SWIG_AsVal_float(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "sparseProject" "', argument " "3"" of type '" "float""'");
@@ -5623,14 +6904,32 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "sparseProject" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _sparseProject< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _sparseProject< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -5647,53 +6946,55 @@ SWIGINTERN PyObject *_wrap_sparseProject(PyObject *self, PyObject *args) {
   if (argc == 9) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[2], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[2], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_sparseProject__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_sparseProject__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 9) {
-    PyObject *retobj = _wrap_sparseProject__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_sparseProject__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -5723,12 +7024,9 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   int arg12 ;
   bool arg13 ;
   bool arg14 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  Matrix< double > *data_temp3 ;
   bool val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -5753,86 +7051,183 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   int ecode14 = 0 ;
   SpMatrix< double > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
   (void)self;
-  if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoD" "', argument " "1"" of type '" "Matrix< double > *""'");
+  if ((nobjs < 13) || (nobjs > 13)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoD" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoD" "', argument " "3"" of type '" "Matrix< double > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< double > ** >(argp3);
-  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoD" "', argument " "4"" of type '" "bool""'");
   }
   arg4 = static_cast< bool >(val4);
-  ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_int(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoD" "', argument " "5"" of type '" "int""'");
   }
   arg5 = static_cast< int >(val5);
-  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_double(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoD" "', argument " "6"" of type '" "double""'");
   }
   arg6 = static_cast< double >(val6);
-  ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_double(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoD" "', argument " "7"" of type '" "double""'");
   }
   arg7 = static_cast< double >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoD" "', argument " "8"" of type '" "constraint_type""'");
   }
   arg8 = static_cast< constraint_type >(val8);
-  ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoD" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoD" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoD" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoD" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
+  ecode13 = SWIG_AsVal_bool(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoD" "', argument " "13"" of type '" "bool""'");
   }
   arg13 = static_cast< bool >(val13);
-  ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
+  ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoD" "', argument " "14"" of type '" "bool""'");
   }
   arg14 = static_cast< bool >(val14);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_lassoD< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_lassoD< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -5853,12 +7248,9 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   int arg12 ;
   bool arg13 ;
   bool arg14 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  Matrix< float > *data_temp3 ;
   bool val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -5883,141 +7275,234 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   int ecode14 = 0 ;
   SpMatrix< float > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
   (void)self;
-  if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoD" "', argument " "1"" of type '" "Matrix< float > *""'");
+  if ((nobjs < 13) || (nobjs > 13)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoD" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoD" "', argument " "3"" of type '" "Matrix< float > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< float > ** >(argp3);
-  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoD" "', argument " "4"" of type '" "bool""'");
   }
   arg4 = static_cast< bool >(val4);
-  ecode5 = SWIG_AsVal_int(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_int(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoD" "', argument " "5"" of type '" "int""'");
   }
   arg5 = static_cast< int >(val5);
-  ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_float(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoD" "', argument " "6"" of type '" "float""'");
   }
   arg6 = static_cast< float >(val6);
-  ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_float(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoD" "', argument " "7"" of type '" "float""'");
   }
   arg7 = static_cast< float >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoD" "', argument " "8"" of type '" "constraint_type""'");
   }
   arg8 = static_cast< constraint_type >(val8);
-  ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoD" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoD" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoD" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoD" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  ecode13 = SWIG_AsVal_bool(swig_obj[12], &val13);
+  ecode13 = SWIG_AsVal_bool(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoD" "', argument " "13"" of type '" "bool""'");
   }
   arg13 = static_cast< bool >(val13);
-  ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
+  ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoD" "', argument " "14"" of type '" "bool""'");
   }
   arg14 = static_cast< bool >(val14);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_lassoD< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_lassoD< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_lassoD(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[15] = {
+  PyObject *argv[14] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "lassoD", 0, 14, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "lassoD", 0, 13, argv))) SWIG_fail;
   --argc;
-  if (argc == 14) {
+  if (argc == 13) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_lassoD__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_lassoD__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
-  if (argc == 14) {
-    PyObject *retobj = _wrap_lassoD__SWIG_1(self, argc, argv);
+  if (argc == 13) {
+    PyObject *retobj = _wrap_lassoD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -6048,14 +7533,10 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int arg13 ;
   bool arg14 ;
   bool arg15 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  Matrix< double > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   int val6 ;
@@ -6080,91 +7561,206 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode15 = 0 ;
   SpMatrix< double > *result = 0 ;
 
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 15) || (nobjs > 15)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoQq" "', argument " "1"" of type '" "Matrix< double > *""'");
+  if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoQq" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoQq" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "lassoQq" "', argument " "4"" of type '" "Matrix< double > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< double > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoQq" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_int(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoQq" "', argument " "6"" of type '" "int""'");
   }
   arg6 = static_cast< int >(val6);
-  ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_double(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoQq" "', argument " "7"" of type '" "double""'");
   }
   arg7 = static_cast< double >(val7);
-  ecode8 = SWIG_AsVal_double(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_double(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoQq" "', argument " "8"" of type '" "double""'");
   }
   arg8 = static_cast< double >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoQq" "', argument " "9"" of type '" "constraint_type""'");
   }
   arg9 = static_cast< constraint_type >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoQq" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_bool(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoQq" "', argument " "11"" of type '" "bool""'");
   }
   arg11 = static_cast< bool >(val11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoQq" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  ecode13 = SWIG_AsVal_int(swig_obj[12], &val13);
+  ecode13 = SWIG_AsVal_int(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoQq" "', argument " "13"" of type '" "int""'");
   }
   arg13 = static_cast< int >(val13);
-  ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
+  ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoQq" "', argument " "14"" of type '" "bool""'");
   }
   arg14 = static_cast< bool >(val14);
-  ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
+  ecode15 = SWIG_AsVal_bool(swig_obj[13], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "lassoQq" "', argument " "15"" of type '" "bool""'");
   }
   arg15 = static_cast< bool >(val15);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_lassoQq< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_lassoQq< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -6186,14 +7782,10 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int arg13 ;
   bool arg14 ;
   bool arg15 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  Matrix< float > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   int val6 ;
@@ -6218,152 +7810,264 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int ecode15 = 0 ;
   SpMatrix< float > *result = 0 ;
 
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 15) || (nobjs > 15)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoQq" "', argument " "1"" of type '" "Matrix< float > *""'");
+  if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoQq" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoQq" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "lassoQq" "', argument " "4"" of type '" "Matrix< float > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< float > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lassoQq" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_int(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lassoQq" "', argument " "6"" of type '" "int""'");
   }
   arg6 = static_cast< int >(val6);
-  ecode7 = SWIG_AsVal_float(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_float(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "lassoQq" "', argument " "7"" of type '" "float""'");
   }
   arg7 = static_cast< float >(val7);
-  ecode8 = SWIG_AsVal_float(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_float(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "lassoQq" "', argument " "8"" of type '" "float""'");
   }
   arg8 = static_cast< float >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoQq" "', argument " "9"" of type '" "constraint_type""'");
   }
   arg9 = static_cast< constraint_type >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoQq" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_bool(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_bool(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "lassoQq" "', argument " "11"" of type '" "bool""'");
   }
   arg11 = static_cast< bool >(val11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "lassoQq" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  ecode13 = SWIG_AsVal_int(swig_obj[12], &val13);
+  ecode13 = SWIG_AsVal_int(swig_obj[11], &val13);
   if (!SWIG_IsOK(ecode13)) {
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lassoQq" "', argument " "13"" of type '" "int""'");
   }
   arg13 = static_cast< int >(val13);
-  ecode14 = SWIG_AsVal_bool(swig_obj[13], &val14);
+  ecode14 = SWIG_AsVal_bool(swig_obj[12], &val14);
   if (!SWIG_IsOK(ecode14)) {
     SWIG_exception_fail(SWIG_ArgError(ecode14), "in method '" "lassoQq" "', argument " "14"" of type '" "bool""'");
   }
   arg14 = static_cast< bool >(val14);
-  ecode15 = SWIG_AsVal_bool(swig_obj[14], &val15);
+  ecode15 = SWIG_AsVal_bool(swig_obj[13], &val15);
   if (!SWIG_IsOK(ecode15)) {
     SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "lassoQq" "', argument " "15"" of type '" "bool""'");
   }
   arg15 = static_cast< bool >(val15);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_lassoQq< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_lassoQq< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_lassoQq(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[16] = {
+  PyObject *argv[15] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "lassoQq", 0, 15, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "lassoQq", 0, 14, argv))) SWIG_fail;
   --argc;
-  if (argc == 15) {
+  if (argc == 14) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[7], NULL);
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_lassoQq__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_lassoQq__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
-  if (argc == 15) {
-    PyObject *retobj = _wrap_lassoQq__SWIG_1(self, argc, argv);
+  if (argc == 14) {
+    PyObject *retobj = _wrap_lassoQq__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -6389,12 +8093,9 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   bool arg8 ;
   int arg9 ;
   bool arg10 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   double val5 ;
@@ -6413,21 +8114,57 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoMask" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoMask" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoMask" "', argument " "3"" of type '" "Matrix< bool > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< bool > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoMask" "', argument " "4"" of type '" "int""'");
@@ -6463,14 +8200,78 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoMask" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_lassoMask< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_lassoMask< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -6487,12 +8288,9 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   bool arg8 ;
   int arg9 ;
   bool arg10 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   float val5 ;
@@ -6511,21 +8309,57 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoMask" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoMask" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoMask" "', argument " "3"" of type '" "Matrix< bool > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< bool > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoMask" "', argument " "4"" of type '" "int""'");
@@ -6561,14 +8395,78 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "lassoMask" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_lassoMask< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_lassoMask< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -6585,39 +8483,41 @@ SWIGINTERN PyObject *_wrap_lassoMask(PyObject *self, PyObject *args) {
   if (argc == 10) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_lassoMask__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_lassoMask__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 10) {
-    PyObject *retobj = _wrap_lassoMask__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_lassoMask__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -6642,12 +8542,9 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool arg7 ;
   int arg8 ;
   bool arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   double val5 ;
@@ -6664,21 +8561,57 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoWeighted" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoWeighted" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoWeighted" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoWeighted" "', argument " "4"" of type '" "int""'");
@@ -6709,14 +8642,78 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoWeighted" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_lassoWeighted< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_lassoWeighted< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -6732,12 +8729,9 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool arg7 ;
   int arg8 ;
   bool arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   float val5 ;
@@ -6754,21 +8748,57 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "lassoWeighted" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lassoWeighted" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lassoWeighted" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "lassoWeighted" "', argument " "4"" of type '" "int""'");
@@ -6799,14 +8829,78 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "lassoWeighted" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_lassoWeighted< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_lassoWeighted< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -6823,38 +8917,41 @@ SWIGINTERN PyObject *_wrap_lassoWeighted(PyObject *self, PyObject *args) {
   if (argc == 9) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_lassoWeighted__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_lassoWeighted__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 9) {
-    PyObject *retobj = _wrap_lassoWeighted__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_lassoWeighted__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -6881,95 +8978,204 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   bool arg9 ;
   Vector< double > *arg10 = (Vector< double > *) 0 ;
   int arg11 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  Matrix< double > *data_temp3 ;
   bool val4 ;
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
+  PyArrayObject *array6 = NULL ;
   bool val7 ;
   int ecode7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array8 = NULL ;
   bool val9 ;
   int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
+  PyArrayObject *array10 = NULL ;
   int val11 ;
   int ecode11 = 0 ;
   SpMatrix< double > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
   (void)self;
-  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "omp" "', argument " "1"" of type '" "Matrix< double > *""'");
+  if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "omp" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "omp" "', argument " "3"" of type '" "Matrix< double > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< double > ** >(argp3);
-  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "omp" "', argument " "4"" of type '" "bool""'");
   }
   arg4 = static_cast< bool >(val4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "omp" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "omp" "', argument " "6"" of type '" "Vector< int > *""'");
+  {
+    array6 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array6 || !require_dimensions(array6,1) || !require_contiguous(array6) || !require_native(array6)) SWIG_fail;
+    arg6 = new Vector<int> ((int *)array_data(array6),(int)array_size(array6,0));
   }
-  arg6 = reinterpret_cast< Vector< int > * >(argp6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "omp" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "omp" "', argument " "8"" of type '" "Vector< double > *""'");
+  {
+    array8 = obj_to_array_no_conversion(swig_obj[6], NPY_DOUBLE);
+    if (!array8 || !require_dimensions(array8,1) || !require_contiguous(array8) || !require_native(array8)) SWIG_fail;
+    arg8 = new Vector<double> ((double *)array_data(array8),(int)array_size(array8,0));
   }
-  arg8 = reinterpret_cast< Vector< double > * >(argp8);
-  ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "omp" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  res10 = SWIG_ConvertPtr(swig_obj[9], &argp10,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "omp" "', argument " "10"" of type '" "Vector< double > *""'");
+  {
+    array10 = obj_to_array_no_conversion(swig_obj[8], NPY_DOUBLE);
+    if (!array10 || !require_dimensions(array10,1) || !require_contiguous(array10) || !require_native(array10)) SWIG_fail;
+    arg10 = new Vector<double> ((double *)array_data(array10),(int)array_size(array10,0));
   }
-  arg10 = reinterpret_cast< Vector< double > * >(argp10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "omp" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_omp< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_omp< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
   return NULL;
 }
 
@@ -6987,138 +9193,245 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   bool arg9 ;
   Vector< float > *arg10 = (Vector< float > *) 0 ;
   int arg11 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  Matrix< float > *data_temp3 ;
   bool val4 ;
   int ecode4 = 0 ;
   bool val5 ;
   int ecode5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
+  PyArrayObject *array6 = NULL ;
   bool val7 ;
   int ecode7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array8 = NULL ;
   bool val9 ;
   int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
+  PyArrayObject *array10 = NULL ;
   int val11 ;
   int ecode11 = 0 ;
   SpMatrix< float > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
   (void)self;
-  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "omp" "', argument " "1"" of type '" "Matrix< float > *""'");
+  if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "omp" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "omp" "', argument " "3"" of type '" "Matrix< float > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< float > ** >(argp3);
-  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  ecode4 = SWIG_AsVal_bool(swig_obj[2], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "omp" "', argument " "4"" of type '" "bool""'");
   }
   arg4 = static_cast< bool >(val4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "omp" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "omp" "', argument " "6"" of type '" "Vector< int > *""'");
+  {
+    array6 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array6 || !require_dimensions(array6,1) || !require_contiguous(array6) || !require_native(array6)) SWIG_fail;
+    arg6 = new Vector<int> ((int *)array_data(array6),(int)array_size(array6,0));
   }
-  arg6 = reinterpret_cast< Vector< int > * >(argp6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[5], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "omp" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "omp" "', argument " "8"" of type '" "Vector< float > *""'");
+  {
+    array8 = obj_to_array_no_conversion(swig_obj[6], NPY_FLOAT);
+    if (!array8 || !require_dimensions(array8,1) || !require_contiguous(array8) || !require_native(array8)) SWIG_fail;
+    arg8 = new Vector<float> ((float *)array_data(array8),(int)array_size(array8,0));
   }
-  arg8 = reinterpret_cast< Vector< float > * >(argp8);
-  ecode9 = SWIG_AsVal_bool(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_bool(swig_obj[7], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "omp" "', argument " "9"" of type '" "bool""'");
   }
   arg9 = static_cast< bool >(val9);
-  res10 = SWIG_ConvertPtr(swig_obj[9], &argp10,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "omp" "', argument " "10"" of type '" "Vector< float > *""'");
+  {
+    array10 = obj_to_array_no_conversion(swig_obj[8], NPY_FLOAT);
+    if (!array10 || !require_dimensions(array10,1) || !require_contiguous(array10) || !require_native(array10)) SWIG_fail;
+    arg10 = new Vector<float> ((float *)array_data(array10),(int)array_size(array10,0));
   }
-  arg10 = reinterpret_cast< Vector< float > * >(argp10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[9], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "omp" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_omp< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_omp< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[12] = {
+  PyObject *argv[11] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "omp", 0, 11, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "omp", 0, 10, argv))) SWIG_fail;
   --argc;
-  if (argc == 11) {
+  if (argc == 10) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[6]) && (array_numdims(argv[6]) == 1) && PyArray_EquivTypenums(array_type(argv[6]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[7], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[9], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[8]) && (array_numdims(argv[8]) == 1) && PyArray_EquivTypenums(array_type(argv[8]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_omp__SWIG_0(self, argc, argv);
@@ -7127,7 +9440,7 @@ SWIGINTERN PyObject *_wrap_omp(PyObject *self, PyObject *args) {
   }
 check_1:
 
-  if (argc == 11) {
+  if (argc == 10) {
     PyObject *retobj = _wrap_omp__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
@@ -7156,102 +9469,228 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   bool arg10 ;
   Vector< double > *arg11 = (Vector< double > *) 0 ;
   int arg12 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  Matrix< double > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   bool val6 ;
   int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  PyArrayObject *array7 = NULL ;
   bool val8 ;
   int ecode8 = 0 ;
-  void *argp9 = 0 ;
-  int res9 = 0 ;
+  PyArrayObject *array9 = NULL ;
   bool val10 ;
   int ecode10 = 0 ;
-  void *argp11 = 0 ;
-  int res11 = 0 ;
+  PyArrayObject *array11 = NULL ;
   int val12 ;
   int ecode12 = 0 ;
   SpMatrix< double > *result = 0 ;
 
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 12) || (nobjs > 12)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ompMask" "', argument " "1"" of type '" "Matrix< double > *""'");
+  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ompMask" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ompMask" "', argument " "3"" of type '" "Matrix< bool > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< bool > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "ompMask" "', argument " "4"" of type '" "Matrix< double > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< double > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ompMask" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_bool(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ompMask" "', argument " "6"" of type '" "bool""'");
   }
   arg6 = static_cast< bool >(val6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "ompMask" "', argument " "7"" of type '" "Vector< int > *""'");
+  {
+    array7 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
+    if (!array7 || !require_dimensions(array7,1) || !require_contiguous(array7) || !require_native(array7)) SWIG_fail;
+    arg7 = new Vector<int> ((int *)array_data(array7),(int)array_size(array7,0));
   }
-  arg7 = reinterpret_cast< Vector< int > * >(argp7);
-  ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_bool(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "ompMask" "', argument " "8"" of type '" "bool""'");
   }
   arg8 = static_cast< bool >(val8);
-  res9 = SWIG_ConvertPtr(swig_obj[8], &argp9,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res9)) {
-    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "ompMask" "', argument " "9"" of type '" "Vector< double > *""'");
+  {
+    array9 = obj_to_array_no_conversion(swig_obj[7], NPY_DOUBLE);
+    if (!array9 || !require_dimensions(array9,1) || !require_contiguous(array9) || !require_native(array9)) SWIG_fail;
+    arg9 = new Vector<double> ((double *)array_data(array9),(int)array_size(array9,0));
   }
-  arg9 = reinterpret_cast< Vector< double > * >(argp9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "ompMask" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  res11 = SWIG_ConvertPtr(swig_obj[10], &argp11,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "ompMask" "', argument " "11"" of type '" "Vector< double > *""'");
+  {
+    array11 = obj_to_array_no_conversion(swig_obj[9], NPY_DOUBLE);
+    if (!array11 || !require_dimensions(array11,1) || !require_contiguous(array11) || !require_native(array11)) SWIG_fail;
+    arg11 = new Vector<double> ((double *)array_data(array11),(int)array_size(array11,0));
   }
-  arg11 = reinterpret_cast< Vector< double > * >(argp11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "ompMask" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_ompMask< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_ompMask< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg9;
+  }
+  {
+    delete arg11;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg9;
+  }
+  {
+    delete arg11;
+  }
   return NULL;
 }
 
@@ -7270,145 +9709,269 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   bool arg10 ;
   Vector< float > *arg11 = (Vector< float > *) 0 ;
   int arg12 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  Matrix< float > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   bool val6 ;
   int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  PyArrayObject *array7 = NULL ;
   bool val8 ;
   int ecode8 = 0 ;
-  void *argp9 = 0 ;
-  int res9 = 0 ;
+  PyArrayObject *array9 = NULL ;
   bool val10 ;
   int ecode10 = 0 ;
-  void *argp11 = 0 ;
-  int res11 = 0 ;
+  PyArrayObject *array11 = NULL ;
   int val12 ;
   int ecode12 = 0 ;
   SpMatrix< float > *result = 0 ;
 
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 12) || (nobjs > 12)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ompMask" "', argument " "1"" of type '" "Matrix< float > *""'");
+  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ompMask" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ompMask" "', argument " "3"" of type '" "Matrix< bool > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d bool Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<bool> ((bool *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< bool > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "ompMask" "', argument " "4"" of type '" "Matrix< float > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< float > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[3], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "ompMask" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_bool(swig_obj[4], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "ompMask" "', argument " "6"" of type '" "bool""'");
   }
   arg6 = static_cast< bool >(val6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "ompMask" "', argument " "7"" of type '" "Vector< int > *""'");
+  {
+    array7 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
+    if (!array7 || !require_dimensions(array7,1) || !require_contiguous(array7) || !require_native(array7)) SWIG_fail;
+    arg7 = new Vector<int> ((int *)array_data(array7),(int)array_size(array7,0));
   }
-  arg7 = reinterpret_cast< Vector< int > * >(argp7);
-  ecode8 = SWIG_AsVal_bool(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_bool(swig_obj[6], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "ompMask" "', argument " "8"" of type '" "bool""'");
   }
   arg8 = static_cast< bool >(val8);
-  res9 = SWIG_ConvertPtr(swig_obj[8], &argp9,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res9)) {
-    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "ompMask" "', argument " "9"" of type '" "Vector< float > *""'");
+  {
+    array9 = obj_to_array_no_conversion(swig_obj[7], NPY_FLOAT);
+    if (!array9 || !require_dimensions(array9,1) || !require_contiguous(array9) || !require_native(array9)) SWIG_fail;
+    arg9 = new Vector<float> ((float *)array_data(array9),(int)array_size(array9,0));
   }
-  arg9 = reinterpret_cast< Vector< float > * >(argp9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[8], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "ompMask" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  res11 = SWIG_ConvertPtr(swig_obj[10], &argp11,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "ompMask" "', argument " "11"" of type '" "Vector< float > *""'");
+  {
+    array11 = obj_to_array_no_conversion(swig_obj[9], NPY_FLOAT);
+    if (!array11 || !require_dimensions(array11,1) || !require_contiguous(array11) || !require_native(array11)) SWIG_fail;
+    arg11 = new Vector<float> ((float *)array_data(array11),(int)array_size(array11,0));
   }
-  arg11 = reinterpret_cast< Vector< float > * >(argp11);
-  ecode12 = SWIG_AsVal_int(swig_obj[11], &val12);
+  ecode12 = SWIG_AsVal_int(swig_obj[10], &val12);
   if (!SWIG_IsOK(ecode12)) {
     SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "ompMask" "', argument " "12"" of type '" "int""'");
   }
   arg12 = static_cast< int >(val12);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_ompMask< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_ompMask< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg9;
+  }
+  {
+    delete arg11;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg9;
+  }
+  {
+    delete arg11;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[13] = {
+  PyObject *argv[12] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "ompMask", 0, 12, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ompMask", 0, 11, argv))) SWIG_fail;
   --argc;
-  if (argc == 12) {
+  if (argc == 11) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[7]) && (array_numdims(argv[7]) == 1) && PyArray_EquivTypenums(array_type(argv[7]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[8], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[10], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[9]) && (array_numdims(argv[9]) == 1) && PyArray_EquivTypenums(array_type(argv[9]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_ompMask__SWIG_0(self, argc, argv);
@@ -7417,7 +9980,7 @@ SWIGINTERN PyObject *_wrap_ompMask(PyObject *self, PyObject *args) {
   }
 check_1:
 
-  if (argc == 12) {
+  if (argc == 11) {
     PyObject *retobj = _wrap_ompMask__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
@@ -7440,12 +10003,9 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   int arg4 ;
   double arg5 ;
   int arg6 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   double val5 ;
@@ -7456,21 +10016,45 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
 
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "somp" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "somp" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "somp" "', argument " "3"" of type '" "Vector< int > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_INT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<int> ((int *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< int > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "somp" "', argument " "4"" of type '" "int""'");
@@ -7486,14 +10070,78 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "somp" "', argument " "6"" of type '" "int""'");
   }
   arg6 = static_cast< int >(val6);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_somp< double >(arg1,arg2,arg3,arg4,arg5,arg6);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_somp< double >(arg1,arg2,arg3,arg4,arg5,arg6);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -7506,12 +10154,9 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   int arg4 ;
   float arg5 ;
   int arg6 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   float val5 ;
@@ -7522,21 +10167,45 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
 
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "somp" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "somp" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "somp" "', argument " "3"" of type '" "Vector< int > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_INT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<int> ((int *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< int > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "somp" "', argument " "4"" of type '" "int""'");
@@ -7552,14 +10221,78 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "somp" "', argument " "6"" of type '" "int""'");
   }
   arg6 = static_cast< int >(val6);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_somp< float >(arg1,arg2,arg3,arg4,arg5,arg6);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_somp< float >(arg1,arg2,arg3,arg4,arg5,arg6);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -7576,32 +10309,34 @@ SWIGINTERN PyObject *_wrap_somp(PyObject *self, PyObject *args) {
   if (argc == 6) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_somp__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_somp__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 6) {
-    PyObject *retobj = _wrap_somp__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_somp__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -7625,12 +10360,9 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
   int arg6 ;
   double arg7 ;
   int arg8 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyObject *sparray3 = NULL ;
   double val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -7645,21 +10377,118 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
 
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cd" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "cd" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "cd" "', argument " "3"" of type '" "SpMatrix< double > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray3 = swig_obj[2];
+    if ( !( PyObject_HasAttrString(sparray3, "indptr") &&
+        PyObject_HasAttrString(sparray3, "indices") &&
+        PyObject_HasAttrString(sparray3, "data") &&
+        PyObject_HasAttrString(sparray3, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 3 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray3, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_DOUBLE)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg3 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg3 = reinterpret_cast< SpMatrix< double > * >(argp3);
   ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cd" "', argument " "4"" of type '" "double""'");
@@ -7685,14 +10514,78 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "cd" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_cd< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_cd< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -7707,12 +10600,9 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
   int arg6 ;
   float arg7 ;
   int arg8 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyObject *sparray3 = NULL ;
   float val4 ;
   int ecode4 = 0 ;
   int val5 ;
@@ -7727,21 +10617,118 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
 
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cd" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "cd" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "cd" "', argument " "3"" of type '" "SpMatrix< float > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray3 = swig_obj[2];
+    if ( !( PyObject_HasAttrString(sparray3, "indptr") &&
+        PyObject_HasAttrString(sparray3, "indices") &&
+        PyObject_HasAttrString(sparray3, "data") &&
+        PyObject_HasAttrString(sparray3, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 3 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray3, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray3, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_FLOAT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg3: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg3 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg3 = reinterpret_cast< SpMatrix< float > * >(argp3);
   ecode4 = SWIG_AsVal_float(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cd" "', argument " "4"" of type '" "float""'");
@@ -7767,14 +10754,78 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "cd" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_cd< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_cd< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   return NULL;
 }
 
@@ -7791,45 +10842,41 @@ SWIGINTERN PyObject *_wrap_cd(PyObject *self, PyObject *args) {
   if (argc == 8) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[3], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[3], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_cd__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_cd__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 8) {
-    PyObject *retobj = _wrap_cd__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_cd__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -7854,14 +10901,10 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   int arg7 ;
   double arg8 ;
   int arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
   double val5 ;
   int ecode5 = 0 ;
   int val6 ;
@@ -7875,26 +10918,62 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "l1L2BCD" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "l1L2BCD" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "l1L2BCD" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "l1L2BCD" "', argument " "4"" of type '" "Vector< int > *""'");
+  {
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_INT);
+    if (!array4 || !require_dimensions(array4,1) || !require_contiguous(array4) || !require_native(array4)) SWIG_fail;
+    arg4 = new Vector<int> ((int *)array_data(array4),(int)array_size(array4,0));
   }
-  arg4 = reinterpret_cast< Vector< int > * >(argp4);
   ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "l1L2BCD" "', argument " "5"" of type '" "double""'");
@@ -7920,14 +10999,44 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "l1L2BCD" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _l1L2BCD< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _l1L2BCD< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
   return NULL;
 }
 
@@ -7943,14 +11052,10 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   int arg7 ;
   float arg8 ;
   int arg9 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
   float val5 ;
   int ecode5 = 0 ;
   int val6 ;
@@ -7964,26 +11069,62 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
 
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "l1L2BCD" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "l1L2BCD" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "l1L2BCD" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "l1L2BCD" "', argument " "4"" of type '" "Vector< int > *""'");
+  {
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_INT);
+    if (!array4 || !require_dimensions(array4,1) || !require_contiguous(array4) || !require_native(array4)) SWIG_fail;
+    arg4 = new Vector<int> ((int *)array_data(array4),(int)array_size(array4,0));
   }
-  arg4 = reinterpret_cast< Vector< int > * >(argp4);
   ecode5 = SWIG_AsVal_float(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "l1L2BCD" "', argument " "5"" of type '" "float""'");
@@ -8009,14 +11150,44 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "l1L2BCD" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _l1L2BCD< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _l1L2BCD< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
   return NULL;
 }
 
@@ -8033,45 +11204,48 @@ SWIGINTERN PyObject *_wrap_l1L2BCD(PyObject *self, PyObject *args) {
   if (argc == 9) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[7], NULL);
+        int res = SWIG_AsVal_float(argv[7], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_l1L2BCD__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_l1L2BCD__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 9) {
-    PyObject *retobj = _wrap_l1L2BCD__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_l1L2BCD__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8131,36 +11305,23 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   bool arg42 ;
   bool arg43 ;
   char *arg44 = (char *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  Matrix< double > *data_temp3 ;
+  Matrix< double > *data_temp4 ;
+  Vector< int > *data_temp5 ;
   bool val6 ;
   int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array7 = NULL ;
+  PyArrayObject *array8 = NULL ;
   int val9 ;
   int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
-  void *argp11 = 0 ;
-  int res11 = 0 ;
-  void *argp12 = 0 ;
-  int res12 = 0 ;
-  void *argp13 = 0 ;
-  int res13 = 0 ;
-  void *argp14 = 0 ;
-  int res14 = 0 ;
-  void *argp15 = 0 ;
-  int res15 = 0 ;
+  PyArrayObject *array10 = NULL ;
+  PyArrayObject *array11 = NULL ;
+  PyObject *sparray12 = NULL ;
+  PyObject *sparray13 = NULL ;
+  PyArrayObject *array14 = NULL ;
+  PyArrayObject *array15 = NULL ;
   int val16 ;
   int ecode16 = 0 ;
   double val17 ;
@@ -8223,238 +11384,611 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   int alloc44 = 0 ;
   Matrix< double > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 44) || (nobjs > 44)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_DataT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "alltrainDL" "', argument " "1"" of type '" "Data< double > *""'");
+  {
+    arg3 = &data_temp3;
   }
-  arg1 = reinterpret_cast< Data< double > * >(argp1);
+  {
+    arg4 = &data_temp4;
+  }
+  {
+    arg5 = &data_temp5;
+  }
+  (void)self;
+  if ((nobjs < 41) || (nobjs > 41)) SWIG_fail;
+  {
+    if ( PyObject_HasAttrString(swig_obj[0], "indptr")) {
+      PyObject* sparray =swig_obj[0];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[0];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_DOUBLE)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg1 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+      }
+      arg1 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
+  }
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "alltrainDL" "', argument " "2"" of type '" "bool""'");
   }
   arg2 = static_cast< bool >(val2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "alltrainDL" "', argument " "3"" of type '" "Matrix< double > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< double > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "alltrainDL" "', argument " "4"" of type '" "Matrix< double > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< double > ** >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "alltrainDL" "', argument " "5"" of type '" "Vector< int > **""'");
-  }
-  arg5 = reinterpret_cast< Vector< int > ** >(argp5);
-  ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_bool(swig_obj[2], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "alltrainDL" "', argument " "6"" of type '" "bool""'");
   }
   arg6 = static_cast< bool >(val6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "alltrainDL" "', argument " "7"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array7 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array7 to a numpy
+    	fortran array7 by just modifying the strides */
+    if (!array7 || !require_dimensions(array7,2) || !array_is_fortran(array7) || !require_native(array7)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 7 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg7 = new Matrix<double> ((double *)array_data(array7),(int)array_size(array7,0),(int)array_size(array7,1));
+
+    /*@SWIG@*/
   }
-  arg7 = reinterpret_cast< Matrix< double > * >(argp7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "alltrainDL" "', argument " "8"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array8 = obj_to_array_no_conversion(swig_obj[4], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array8 to a numpy
+    	fortran array8 by just modifying the strides */
+    if (!array8 || !require_dimensions(array8,2) || !array_is_fortran(array8) || !require_native(array8)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 8 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg8 = new Matrix<double> ((double *)array_data(array8),(int)array_size(array8,0),(int)array_size(array8,1));
+
+    /*@SWIG@*/
   }
-  arg8 = reinterpret_cast< Matrix< double > * >(argp8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[5], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "alltrainDL" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  res10 = SWIG_ConvertPtr(swig_obj[9], &argp10,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "alltrainDL" "', argument " "10"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array10 = obj_to_array_no_conversion(swig_obj[6], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array10 to a numpy
+    	fortran array10 by just modifying the strides */
+    if (!array10 || !require_dimensions(array10,2) || !array_is_fortran(array10) || !require_native(array10)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 10 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg10 = new Matrix<double> ((double *)array_data(array10),(int)array_size(array10,0),(int)array_size(array10,1));
+
+    /*@SWIG@*/
   }
-  arg10 = reinterpret_cast< Matrix< double > * >(argp10);
-  res11 = SWIG_ConvertPtr(swig_obj[10], &argp11,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "alltrainDL" "', argument " "11"" of type '" "Vector< double > *""'");
+  {
+    array11 = obj_to_array_no_conversion(swig_obj[7], NPY_DOUBLE);
+    if (!array11 || !require_dimensions(array11,1) || !require_contiguous(array11) || !require_native(array11)) SWIG_fail;
+    arg11 = new Vector<double> ((double *)array_data(array11),(int)array_size(array11,0));
   }
-  arg11 = reinterpret_cast< Vector< double > * >(argp11);
-  res12 = SWIG_ConvertPtr(swig_obj[11], &argp12,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res12)) {
-    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "alltrainDL" "', argument " "12"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray12 = swig_obj[8];
+    if ( !( PyObject_HasAttrString(sparray12, "indptr") &&
+        PyObject_HasAttrString(sparray12, "indices") &&
+        PyObject_HasAttrString(sparray12, "data") &&
+        PyObject_HasAttrString(sparray12, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 12 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray12, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg12 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg12 = reinterpret_cast< SpMatrix< bool > * >(argp12);
-  res13 = SWIG_ConvertPtr(swig_obj[12], &argp13,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res13)) {
-    SWIG_exception_fail(SWIG_ArgError(res13), "in method '" "alltrainDL" "', argument " "13"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray13 = swig_obj[9];
+    if ( !( PyObject_HasAttrString(sparray13, "indptr") &&
+        PyObject_HasAttrString(sparray13, "indices") &&
+        PyObject_HasAttrString(sparray13, "data") &&
+        PyObject_HasAttrString(sparray13, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 13 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray13, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg13 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg13 = reinterpret_cast< SpMatrix< bool > * >(argp13);
-  res14 = SWIG_ConvertPtr(swig_obj[13], &argp14,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res14)) {
-    SWIG_exception_fail(SWIG_ArgError(res14), "in method '" "alltrainDL" "', argument " "14"" of type '" "Vector< int > *""'");
+  {
+    array14 = obj_to_array_no_conversion(swig_obj[10], NPY_INT);
+    if (!array14 || !require_dimensions(array14,1) || !require_contiguous(array14) || !require_native(array14)) SWIG_fail;
+    arg14 = new Vector<int> ((int *)array_data(array14),(int)array_size(array14,0));
   }
-  arg14 = reinterpret_cast< Vector< int > * >(argp14);
-  res15 = SWIG_ConvertPtr(swig_obj[14], &argp15,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res15)) {
-    SWIG_exception_fail(SWIG_ArgError(res15), "in method '" "alltrainDL" "', argument " "15"" of type '" "Vector< int > *""'");
+  {
+    array15 = obj_to_array_no_conversion(swig_obj[11], NPY_INT);
+    if (!array15 || !require_dimensions(array15,1) || !require_contiguous(array15) || !require_native(array15)) SWIG_fail;
+    arg15 = new Vector<int> ((int *)array_data(array15),(int)array_size(array15,0));
   }
-  arg15 = reinterpret_cast< Vector< int > * >(argp15);
-  ecode16 = SWIG_AsVal_int(swig_obj[15], &val16);
+  ecode16 = SWIG_AsVal_int(swig_obj[12], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "alltrainDL" "', argument " "16"" of type '" "int""'");
   }
   arg16 = static_cast< int >(val16);
-  ecode17 = SWIG_AsVal_double(swig_obj[16], &val17);
+  ecode17 = SWIG_AsVal_double(swig_obj[13], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "alltrainDL" "', argument " "17"" of type '" "double""'");
   }
   arg17 = static_cast< double >(val17);
-  ecode18 = SWIG_AsVal_bool(swig_obj[17], &val18);
+  ecode18 = SWIG_AsVal_bool(swig_obj[14], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "alltrainDL" "', argument " "18"" of type '" "bool""'");
   }
   arg18 = static_cast< bool >(val18);
-  ecode19 = SWIG_AsVal_bool(swig_obj[18], &val19);
+  ecode19 = SWIG_AsVal_bool(swig_obj[15], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "alltrainDL" "', argument " "19"" of type '" "bool""'");
   }
   arg19 = static_cast< bool >(val19);
-  ecode20 = SWIG_AsVal_int(swig_obj[19], &val20);
+  ecode20 = SWIG_AsVal_int(swig_obj[16], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "alltrainDL" "', argument " "20"" of type '" "int""'");
   }
   arg20 = static_cast< int >(val20);
-  ecode21 = SWIG_AsVal_int(swig_obj[20], &val21);
+  ecode21 = SWIG_AsVal_int(swig_obj[17], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "alltrainDL" "', argument " "21"" of type '" "int""'");
   }
   arg21 = static_cast< int >(val21);
-  ecode22 = SWIG_AsVal_double(swig_obj[21], &val22);
+  ecode22 = SWIG_AsVal_double(swig_obj[18], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "alltrainDL" "', argument " "22"" of type '" "double""'");
   }
   arg22 = static_cast< double >(val22);
-  ecode23 = SWIG_AsVal_double(swig_obj[22], &val23);
+  ecode23 = SWIG_AsVal_double(swig_obj[19], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "alltrainDL" "', argument " "23"" of type '" "double""'");
   }
   arg23 = static_cast< double >(val23);
-  ecode24 = SWIG_AsVal_double(swig_obj[23], &val24);
+  ecode24 = SWIG_AsVal_double(swig_obj[20], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "alltrainDL" "', argument " "24"" of type '" "double""'");
   }
   arg24 = static_cast< double >(val24);
-  ecode25 = SWIG_AsVal_int(swig_obj[24], &val25);
+  ecode25 = SWIG_AsVal_int(swig_obj[21], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "alltrainDL" "', argument " "25"" of type '" "int""'");
   }
   arg25 = static_cast< int >(val25);
-  ecode26 = SWIG_AsVal_double(swig_obj[25], &val26);
+  ecode26 = SWIG_AsVal_double(swig_obj[22], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "alltrainDL" "', argument " "26"" of type '" "double""'");
   }
   arg26 = static_cast< double >(val26);
-  ecode27 = SWIG_AsVal_int(swig_obj[26], &val27);
+  ecode27 = SWIG_AsVal_int(swig_obj[23], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "alltrainDL" "', argument " "27"" of type '" "constraint_type""'");
   }
   arg27 = static_cast< constraint_type >(val27);
-  res28 = SWIG_AsCharPtrAndSize(swig_obj[27], &buf28, NULL, &alloc28);
+  res28 = SWIG_AsCharPtrAndSize(swig_obj[24], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
     SWIG_exception_fail(SWIG_ArgError(res28), "in method '" "alltrainDL" "', argument " "28"" of type '" "char *""'");
   }
   arg28 = reinterpret_cast< char * >(buf28);
-  ecode29 = SWIG_AsVal_bool(swig_obj[28], &val29);
+  ecode29 = SWIG_AsVal_bool(swig_obj[25], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "alltrainDL" "', argument " "29"" of type '" "bool""'");
   }
   arg29 = static_cast< bool >(val29);
-  ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
+  ecode30 = SWIG_AsVal_bool(swig_obj[26], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "alltrainDL" "', argument " "30"" of type '" "bool""'");
   }
   arg30 = static_cast< bool >(val30);
-  ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
+  ecode31 = SWIG_AsVal_bool(swig_obj[27], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "alltrainDL" "', argument " "31"" of type '" "bool""'");
   }
   arg31 = static_cast< bool >(val31);
-  ecode32 = SWIG_AsVal_int(swig_obj[31], &val32);
+  ecode32 = SWIG_AsVal_int(swig_obj[28], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "alltrainDL" "', argument " "32"" of type '" "constraint_type_D""'");
   }
   arg32 = static_cast< constraint_type_D >(val32);
-  ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
+  ecode33 = SWIG_AsVal_bool(swig_obj[29], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "alltrainDL" "', argument " "33"" of type '" "bool""'");
   }
   arg33 = static_cast< bool >(val33);
-  ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
+  ecode34 = SWIG_AsVal_bool(swig_obj[30], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "alltrainDL" "', argument " "34"" of type '" "bool""'");
   }
   arg34 = static_cast< bool >(val34);
-  ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
+  ecode35 = SWIG_AsVal_bool(swig_obj[31], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "alltrainDL" "', argument " "35"" of type '" "bool""'");
   }
   arg35 = static_cast< bool >(val35);
-  ecode36 = SWIG_AsVal_double(swig_obj[35], &val36);
+  ecode36 = SWIG_AsVal_double(swig_obj[32], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "alltrainDL" "', argument " "36"" of type '" "double""'");
   }
   arg36 = static_cast< double >(val36);
-  ecode37 = SWIG_AsVal_double(swig_obj[36], &val37);
+  ecode37 = SWIG_AsVal_double(swig_obj[33], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "alltrainDL" "', argument " "37"" of type '" "double""'");
   }
   arg37 = static_cast< double >(val37);
-  ecode38 = SWIG_AsVal_double(swig_obj[37], &val38);
+  ecode38 = SWIG_AsVal_double(swig_obj[34], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "alltrainDL" "', argument " "38"" of type '" "double""'");
   }
   arg38 = static_cast< double >(val38);
-  ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
+  ecode39 = SWIG_AsVal_int(swig_obj[35], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "alltrainDL" "', argument " "39"" of type '" "int""'");
   }
   arg39 = static_cast< int >(val39);
-  ecode40 = SWIG_AsVal_bool(swig_obj[39], &val40);
+  ecode40 = SWIG_AsVal_bool(swig_obj[36], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "alltrainDL" "', argument " "40"" of type '" "bool""'");
   }
   arg40 = static_cast< bool >(val40);
-  ecode41 = SWIG_AsVal_int(swig_obj[40], &val41);
+  ecode41 = SWIG_AsVal_int(swig_obj[37], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "alltrainDL" "', argument " "41"" of type '" "int""'");
   }
   arg41 = static_cast< int >(val41);
-  ecode42 = SWIG_AsVal_bool(swig_obj[41], &val42);
+  ecode42 = SWIG_AsVal_bool(swig_obj[38], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "alltrainDL" "', argument " "42"" of type '" "bool""'");
   }
   arg42 = static_cast< bool >(val42);
-  ecode43 = SWIG_AsVal_bool(swig_obj[42], &val43);
+  ecode43 = SWIG_AsVal_bool(swig_obj[39], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "alltrainDL" "', argument " "43"" of type '" "bool""'");
   }
   arg43 = static_cast< bool >(val43);
-  res44 = SWIG_AsCharPtrAndSize(swig_obj[43], &buf44, NULL, &alloc44);
+  res44 = SWIG_AsCharPtrAndSize(swig_obj[40], &buf44, NULL, &alloc44);
   if (!SWIG_IsOK(res44)) {
     SWIG_exception_fail(SWIG_ArgError(res44), "in method '" "alltrainDL" "', argument " "44"" of type '" "char *""'");
   }
   arg44 = reinterpret_cast< char * >(buf44);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_alltrainDL< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43,arg44);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_alltrainDL< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43,arg44);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      double *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp5 != NULL) {
+      npy_intp n = data_temp5->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp5->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
+  {
+    delete arg11;
+  }
+  {
+    delete arg12;
+  }
+  {
+    delete arg13;
+  }
+  {
+    delete arg14;
+  }
+  {
+    delete arg15;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc44 == SWIG_NEWOBJ) delete[] buf44;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
+  {
+    delete arg11;
+  }
+  {
+    delete arg12;
+  }
+  {
+    delete arg13;
+  }
+  {
+    delete arg14;
+  }
+  {
+    delete arg15;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc44 == SWIG_NEWOBJ) delete[] buf44;
   return NULL;
@@ -8507,36 +12041,23 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   bool arg42 ;
   bool arg43 ;
   char *arg44 = (char *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
   bool val2 ;
   int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  Matrix< float > *data_temp3 ;
+  Matrix< float > *data_temp4 ;
+  Vector< int > *data_temp5 ;
   bool val6 ;
   int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array7 = NULL ;
+  PyArrayObject *array8 = NULL ;
   int val9 ;
   int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
-  void *argp11 = 0 ;
-  int res11 = 0 ;
-  void *argp12 = 0 ;
-  int res12 = 0 ;
-  void *argp13 = 0 ;
-  int res13 = 0 ;
-  void *argp14 = 0 ;
-  int res14 = 0 ;
-  void *argp15 = 0 ;
-  int res15 = 0 ;
+  PyArrayObject *array10 = NULL ;
+  PyArrayObject *array11 = NULL ;
+  PyObject *sparray12 = NULL ;
+  PyObject *sparray13 = NULL ;
+  PyArrayObject *array14 = NULL ;
+  PyArrayObject *array15 = NULL ;
   int val16 ;
   int ecode16 = 0 ;
   float val17 ;
@@ -8599,238 +12120,611 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   int alloc44 = 0 ;
   Matrix< float > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 44) || (nobjs > 44)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_DataT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "alltrainDL" "', argument " "1"" of type '" "Data< float > *""'");
+  {
+    arg3 = &data_temp3;
   }
-  arg1 = reinterpret_cast< Data< float > * >(argp1);
+  {
+    arg4 = &data_temp4;
+  }
+  {
+    arg5 = &data_temp5;
+  }
+  (void)self;
+  if ((nobjs < 41) || (nobjs > 41)) SWIG_fail;
+  {
+    if ( PyObject_HasAttrString(swig_obj[0], "indptr")) {
+      PyObject* sparray =swig_obj[0];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[0];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_FLOAT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg1: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg1 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+      }
+      arg1 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
+  }
   ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "alltrainDL" "', argument " "2"" of type '" "bool""'");
   }
   arg2 = static_cast< bool >(val2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "alltrainDL" "', argument " "3"" of type '" "Matrix< float > **""'");
-  }
-  arg3 = reinterpret_cast< Matrix< float > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "alltrainDL" "', argument " "4"" of type '" "Matrix< float > **""'");
-  }
-  arg4 = reinterpret_cast< Matrix< float > ** >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "alltrainDL" "', argument " "5"" of type '" "Vector< int > **""'");
-  }
-  arg5 = reinterpret_cast< Vector< int > ** >(argp5);
-  ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_bool(swig_obj[2], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "alltrainDL" "', argument " "6"" of type '" "bool""'");
   }
   arg6 = static_cast< bool >(val6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "alltrainDL" "', argument " "7"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array7 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array7 to a numpy
+    	fortran array7 by just modifying the strides */
+    if (!array7 || !require_dimensions(array7,2) || !array_is_fortran(array7) || !require_native(array7)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 7 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg7 = new Matrix<float> ((float *)array_data(array7),(int)array_size(array7,0),(int)array_size(array7,1));
+
+    /*@SWIG@*/
   }
-  arg7 = reinterpret_cast< Matrix< float > * >(argp7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "alltrainDL" "', argument " "8"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array8 = obj_to_array_no_conversion(swig_obj[4], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array8 to a numpy
+    	fortran array8 by just modifying the strides */
+    if (!array8 || !require_dimensions(array8,2) || !array_is_fortran(array8) || !require_native(array8)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 8 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg8 = new Matrix<float> ((float *)array_data(array8),(int)array_size(array8,0),(int)array_size(array8,1));
+
+    /*@SWIG@*/
   }
-  arg8 = reinterpret_cast< Matrix< float > * >(argp8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[5], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "alltrainDL" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  res10 = SWIG_ConvertPtr(swig_obj[9], &argp10,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "alltrainDL" "', argument " "10"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array10 = obj_to_array_no_conversion(swig_obj[6], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array10 to a numpy
+    	fortran array10 by just modifying the strides */
+    if (!array10 || !require_dimensions(array10,2) || !array_is_fortran(array10) || !require_native(array10)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 10 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg10 = new Matrix<float> ((float *)array_data(array10),(int)array_size(array10,0),(int)array_size(array10,1));
+
+    /*@SWIG@*/
   }
-  arg10 = reinterpret_cast< Matrix< float > * >(argp10);
-  res11 = SWIG_ConvertPtr(swig_obj[10], &argp11,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "alltrainDL" "', argument " "11"" of type '" "Vector< float > *""'");
+  {
+    array11 = obj_to_array_no_conversion(swig_obj[7], NPY_FLOAT);
+    if (!array11 || !require_dimensions(array11,1) || !require_contiguous(array11) || !require_native(array11)) SWIG_fail;
+    arg11 = new Vector<float> ((float *)array_data(array11),(int)array_size(array11,0));
   }
-  arg11 = reinterpret_cast< Vector< float > * >(argp11);
-  res12 = SWIG_ConvertPtr(swig_obj[11], &argp12,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res12)) {
-    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "alltrainDL" "', argument " "12"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray12 = swig_obj[8];
+    if ( !( PyObject_HasAttrString(sparray12, "indptr") &&
+        PyObject_HasAttrString(sparray12, "indices") &&
+        PyObject_HasAttrString(sparray12, "data") &&
+        PyObject_HasAttrString(sparray12, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 12 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray12, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray12, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg12: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg12 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg12 = reinterpret_cast< SpMatrix< bool > * >(argp12);
-  res13 = SWIG_ConvertPtr(swig_obj[12], &argp13,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res13)) {
-    SWIG_exception_fail(SWIG_ArgError(res13), "in method '" "alltrainDL" "', argument " "13"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray13 = swig_obj[9];
+    if ( !( PyObject_HasAttrString(sparray13, "indptr") &&
+        PyObject_HasAttrString(sparray13, "indices") &&
+        PyObject_HasAttrString(sparray13, "data") &&
+        PyObject_HasAttrString(sparray13, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 13 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray13, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray13, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg13: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg13 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg13 = reinterpret_cast< SpMatrix< bool > * >(argp13);
-  res14 = SWIG_ConvertPtr(swig_obj[13], &argp14,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res14)) {
-    SWIG_exception_fail(SWIG_ArgError(res14), "in method '" "alltrainDL" "', argument " "14"" of type '" "Vector< int > *""'");
+  {
+    array14 = obj_to_array_no_conversion(swig_obj[10], NPY_INT);
+    if (!array14 || !require_dimensions(array14,1) || !require_contiguous(array14) || !require_native(array14)) SWIG_fail;
+    arg14 = new Vector<int> ((int *)array_data(array14),(int)array_size(array14,0));
   }
-  arg14 = reinterpret_cast< Vector< int > * >(argp14);
-  res15 = SWIG_ConvertPtr(swig_obj[14], &argp15,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res15)) {
-    SWIG_exception_fail(SWIG_ArgError(res15), "in method '" "alltrainDL" "', argument " "15"" of type '" "Vector< int > *""'");
+  {
+    array15 = obj_to_array_no_conversion(swig_obj[11], NPY_INT);
+    if (!array15 || !require_dimensions(array15,1) || !require_contiguous(array15) || !require_native(array15)) SWIG_fail;
+    arg15 = new Vector<int> ((int *)array_data(array15),(int)array_size(array15,0));
   }
-  arg15 = reinterpret_cast< Vector< int > * >(argp15);
-  ecode16 = SWIG_AsVal_int(swig_obj[15], &val16);
+  ecode16 = SWIG_AsVal_int(swig_obj[12], &val16);
   if (!SWIG_IsOK(ecode16)) {
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "alltrainDL" "', argument " "16"" of type '" "int""'");
   }
   arg16 = static_cast< int >(val16);
-  ecode17 = SWIG_AsVal_float(swig_obj[16], &val17);
+  ecode17 = SWIG_AsVal_float(swig_obj[13], &val17);
   if (!SWIG_IsOK(ecode17)) {
     SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "alltrainDL" "', argument " "17"" of type '" "float""'");
   }
   arg17 = static_cast< float >(val17);
-  ecode18 = SWIG_AsVal_bool(swig_obj[17], &val18);
+  ecode18 = SWIG_AsVal_bool(swig_obj[14], &val18);
   if (!SWIG_IsOK(ecode18)) {
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "alltrainDL" "', argument " "18"" of type '" "bool""'");
   }
   arg18 = static_cast< bool >(val18);
-  ecode19 = SWIG_AsVal_bool(swig_obj[18], &val19);
+  ecode19 = SWIG_AsVal_bool(swig_obj[15], &val19);
   if (!SWIG_IsOK(ecode19)) {
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "alltrainDL" "', argument " "19"" of type '" "bool""'");
   }
   arg19 = static_cast< bool >(val19);
-  ecode20 = SWIG_AsVal_int(swig_obj[19], &val20);
+  ecode20 = SWIG_AsVal_int(swig_obj[16], &val20);
   if (!SWIG_IsOK(ecode20)) {
     SWIG_exception_fail(SWIG_ArgError(ecode20), "in method '" "alltrainDL" "', argument " "20"" of type '" "int""'");
   }
   arg20 = static_cast< int >(val20);
-  ecode21 = SWIG_AsVal_int(swig_obj[20], &val21);
+  ecode21 = SWIG_AsVal_int(swig_obj[17], &val21);
   if (!SWIG_IsOK(ecode21)) {
     SWIG_exception_fail(SWIG_ArgError(ecode21), "in method '" "alltrainDL" "', argument " "21"" of type '" "int""'");
   }
   arg21 = static_cast< int >(val21);
-  ecode22 = SWIG_AsVal_double(swig_obj[21], &val22);
+  ecode22 = SWIG_AsVal_double(swig_obj[18], &val22);
   if (!SWIG_IsOK(ecode22)) {
     SWIG_exception_fail(SWIG_ArgError(ecode22), "in method '" "alltrainDL" "', argument " "22"" of type '" "double""'");
   }
   arg22 = static_cast< double >(val22);
-  ecode23 = SWIG_AsVal_double(swig_obj[22], &val23);
+  ecode23 = SWIG_AsVal_double(swig_obj[19], &val23);
   if (!SWIG_IsOK(ecode23)) {
     SWIG_exception_fail(SWIG_ArgError(ecode23), "in method '" "alltrainDL" "', argument " "23"" of type '" "double""'");
   }
   arg23 = static_cast< double >(val23);
-  ecode24 = SWIG_AsVal_double(swig_obj[23], &val24);
+  ecode24 = SWIG_AsVal_double(swig_obj[20], &val24);
   if (!SWIG_IsOK(ecode24)) {
     SWIG_exception_fail(SWIG_ArgError(ecode24), "in method '" "alltrainDL" "', argument " "24"" of type '" "double""'");
   }
   arg24 = static_cast< double >(val24);
-  ecode25 = SWIG_AsVal_int(swig_obj[24], &val25);
+  ecode25 = SWIG_AsVal_int(swig_obj[21], &val25);
   if (!SWIG_IsOK(ecode25)) {
     SWIG_exception_fail(SWIG_ArgError(ecode25), "in method '" "alltrainDL" "', argument " "25"" of type '" "int""'");
   }
   arg25 = static_cast< int >(val25);
-  ecode26 = SWIG_AsVal_double(swig_obj[25], &val26);
+  ecode26 = SWIG_AsVal_double(swig_obj[22], &val26);
   if (!SWIG_IsOK(ecode26)) {
     SWIG_exception_fail(SWIG_ArgError(ecode26), "in method '" "alltrainDL" "', argument " "26"" of type '" "double""'");
   }
   arg26 = static_cast< double >(val26);
-  ecode27 = SWIG_AsVal_int(swig_obj[26], &val27);
+  ecode27 = SWIG_AsVal_int(swig_obj[23], &val27);
   if (!SWIG_IsOK(ecode27)) {
     SWIG_exception_fail(SWIG_ArgError(ecode27), "in method '" "alltrainDL" "', argument " "27"" of type '" "constraint_type""'");
   }
   arg27 = static_cast< constraint_type >(val27);
-  res28 = SWIG_AsCharPtrAndSize(swig_obj[27], &buf28, NULL, &alloc28);
+  res28 = SWIG_AsCharPtrAndSize(swig_obj[24], &buf28, NULL, &alloc28);
   if (!SWIG_IsOK(res28)) {
     SWIG_exception_fail(SWIG_ArgError(res28), "in method '" "alltrainDL" "', argument " "28"" of type '" "char *""'");
   }
   arg28 = reinterpret_cast< char * >(buf28);
-  ecode29 = SWIG_AsVal_bool(swig_obj[28], &val29);
+  ecode29 = SWIG_AsVal_bool(swig_obj[25], &val29);
   if (!SWIG_IsOK(ecode29)) {
     SWIG_exception_fail(SWIG_ArgError(ecode29), "in method '" "alltrainDL" "', argument " "29"" of type '" "bool""'");
   }
   arg29 = static_cast< bool >(val29);
-  ecode30 = SWIG_AsVal_bool(swig_obj[29], &val30);
+  ecode30 = SWIG_AsVal_bool(swig_obj[26], &val30);
   if (!SWIG_IsOK(ecode30)) {
     SWIG_exception_fail(SWIG_ArgError(ecode30), "in method '" "alltrainDL" "', argument " "30"" of type '" "bool""'");
   }
   arg30 = static_cast< bool >(val30);
-  ecode31 = SWIG_AsVal_bool(swig_obj[30], &val31);
+  ecode31 = SWIG_AsVal_bool(swig_obj[27], &val31);
   if (!SWIG_IsOK(ecode31)) {
     SWIG_exception_fail(SWIG_ArgError(ecode31), "in method '" "alltrainDL" "', argument " "31"" of type '" "bool""'");
   }
   arg31 = static_cast< bool >(val31);
-  ecode32 = SWIG_AsVal_int(swig_obj[31], &val32);
+  ecode32 = SWIG_AsVal_int(swig_obj[28], &val32);
   if (!SWIG_IsOK(ecode32)) {
     SWIG_exception_fail(SWIG_ArgError(ecode32), "in method '" "alltrainDL" "', argument " "32"" of type '" "constraint_type_D""'");
   }
   arg32 = static_cast< constraint_type_D >(val32);
-  ecode33 = SWIG_AsVal_bool(swig_obj[32], &val33);
+  ecode33 = SWIG_AsVal_bool(swig_obj[29], &val33);
   if (!SWIG_IsOK(ecode33)) {
     SWIG_exception_fail(SWIG_ArgError(ecode33), "in method '" "alltrainDL" "', argument " "33"" of type '" "bool""'");
   }
   arg33 = static_cast< bool >(val33);
-  ecode34 = SWIG_AsVal_bool(swig_obj[33], &val34);
+  ecode34 = SWIG_AsVal_bool(swig_obj[30], &val34);
   if (!SWIG_IsOK(ecode34)) {
     SWIG_exception_fail(SWIG_ArgError(ecode34), "in method '" "alltrainDL" "', argument " "34"" of type '" "bool""'");
   }
   arg34 = static_cast< bool >(val34);
-  ecode35 = SWIG_AsVal_bool(swig_obj[34], &val35);
+  ecode35 = SWIG_AsVal_bool(swig_obj[31], &val35);
   if (!SWIG_IsOK(ecode35)) {
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "alltrainDL" "', argument " "35"" of type '" "bool""'");
   }
   arg35 = static_cast< bool >(val35);
-  ecode36 = SWIG_AsVal_double(swig_obj[35], &val36);
+  ecode36 = SWIG_AsVal_double(swig_obj[32], &val36);
   if (!SWIG_IsOK(ecode36)) {
     SWIG_exception_fail(SWIG_ArgError(ecode36), "in method '" "alltrainDL" "', argument " "36"" of type '" "double""'");
   }
   arg36 = static_cast< double >(val36);
-  ecode37 = SWIG_AsVal_double(swig_obj[36], &val37);
+  ecode37 = SWIG_AsVal_double(swig_obj[33], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "alltrainDL" "', argument " "37"" of type '" "double""'");
   }
   arg37 = static_cast< double >(val37);
-  ecode38 = SWIG_AsVal_float(swig_obj[37], &val38);
+  ecode38 = SWIG_AsVal_float(swig_obj[34], &val38);
   if (!SWIG_IsOK(ecode38)) {
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "alltrainDL" "', argument " "38"" of type '" "float""'");
   }
   arg38 = static_cast< float >(val38);
-  ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
+  ecode39 = SWIG_AsVal_int(swig_obj[35], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "alltrainDL" "', argument " "39"" of type '" "int""'");
   }
   arg39 = static_cast< int >(val39);
-  ecode40 = SWIG_AsVal_bool(swig_obj[39], &val40);
+  ecode40 = SWIG_AsVal_bool(swig_obj[36], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "alltrainDL" "', argument " "40"" of type '" "bool""'");
   }
   arg40 = static_cast< bool >(val40);
-  ecode41 = SWIG_AsVal_int(swig_obj[40], &val41);
+  ecode41 = SWIG_AsVal_int(swig_obj[37], &val41);
   if (!SWIG_IsOK(ecode41)) {
     SWIG_exception_fail(SWIG_ArgError(ecode41), "in method '" "alltrainDL" "', argument " "41"" of type '" "int""'");
   }
   arg41 = static_cast< int >(val41);
-  ecode42 = SWIG_AsVal_bool(swig_obj[41], &val42);
+  ecode42 = SWIG_AsVal_bool(swig_obj[38], &val42);
   if (!SWIG_IsOK(ecode42)) {
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "alltrainDL" "', argument " "42"" of type '" "bool""'");
   }
   arg42 = static_cast< bool >(val42);
-  ecode43 = SWIG_AsVal_bool(swig_obj[42], &val43);
+  ecode43 = SWIG_AsVal_bool(swig_obj[39], &val43);
   if (!SWIG_IsOK(ecode43)) {
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "alltrainDL" "', argument " "43"" of type '" "bool""'");
   }
   arg43 = static_cast< bool >(val43);
-  res44 = SWIG_AsCharPtrAndSize(swig_obj[43], &buf44, NULL, &alloc44);
+  res44 = SWIG_AsCharPtrAndSize(swig_obj[40], &buf44, NULL, &alloc44);
   if (!SWIG_IsOK(res44)) {
     SWIG_exception_fail(SWIG_ArgError(res44), "in method '" "alltrainDL" "', argument " "44"" of type '" "char *""'");
   }
   arg44 = reinterpret_cast< char * >(buf44);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_alltrainDL< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43,arg44);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_alltrainDL< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43,arg44);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp3->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp dims[2] = {
+        m,n
+      };
+      float *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(2, dims, NPY_FLOAT,(void*)data);
+      if (!array) SWIG_fail;
+      if (! require_fortran(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;
+      }
+
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp5 != NULL) {
+      npy_intp n = data_temp5->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp5->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
+  {
+    delete arg11;
+  }
+  {
+    delete arg12;
+  }
+  {
+    delete arg13;
+  }
+  {
+    delete arg14;
+  }
+  {
+    delete arg15;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc44 == SWIG_NEWOBJ) delete[] buf44;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
+  {
+    delete arg10;
+  }
+  {
+    delete arg11;
+  }
+  {
+    delete arg12;
+  }
+  {
+    delete arg13;
+  }
+  {
+    delete arg14;
+  }
+  {
+    delete arg15;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc44 == SWIG_NEWOBJ) delete[] buf44;
   return NULL;
@@ -8839,79 +12733,74 @@ fail:
 
 SWIGINTERN PyObject *_wrap_alltrainDL(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[45] = {
+  PyObject *argv[42] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "alltrainDL", 0, 44, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "alltrainDL", 0, 41, argv))) SWIG_fail;
   --argc;
-  if (argc == 44) {
+  if (argc == 41) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_DataT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[6], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[7], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[9], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[10], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        if( PyObject_HasAttrString(argv[0], "indptr"))
+        _v = check_sparse(argv[0]);
+        else
+        _v = check_matrix(argv[0],NPY_FLOAT);
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[16], NULL);
+        _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[4]) && (array_numdims(argv[4]) == 2) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[6]) && (array_numdims(argv[6]) == 2) && PyArray_EquivTypenums(array_type(argv[6]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[7]) && (array_numdims(argv[7]) == 1) && PyArray_EquivTypenums(array_type(argv[7]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[13], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[37], NULL);
+        int res = SWIG_AsVal_float(argv[34], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_alltrainDL__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_alltrainDL__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
-  if (argc == 44) {
-    PyObject *retobj = _wrap_alltrainDL__SWIG_1(self, argc, argv);
+  if (argc == 41) {
+    PyObject *retobj = _wrap_alltrainDL__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8938,14 +12827,11 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
   int arg9 ;
   bool arg10 ;
   int arg11 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  SpMatrix< double > *data_temp3 ;
+  SpMatrix< double > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   double val6 ;
@@ -8962,71 +12848,194 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
   int ecode11 = 0 ;
   Matrix< double > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "archetypalAnalysis" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    arg3 = &data_temp3;
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
+  {
+    arg4 = &data_temp4;
+  }
+  (void)self;
+  if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
+  }
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "archetypalAnalysis" "', argument " "2"" of type '" "int""'");
   }
   arg2 = static_cast< int >(val2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "archetypalAnalysis" "', argument " "3"" of type '" "SpMatrix< double > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< double > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "archetypalAnalysis" "', argument " "4"" of type '" "SpMatrix< double > **""'");
-  }
-  arg4 = reinterpret_cast< SpMatrix< double > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysis" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_double(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysis" "', argument " "6"" of type '" "double""'");
   }
   arg6 = static_cast< double >(val6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysis" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysis" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysis" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysis" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[8], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "archetypalAnalysis" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_archetypalAnalysis< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_archetypalAnalysis< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      double *xdata = data_temp3->v();
+      double *data = (double *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(double));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp nzmax = data_temp4->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      double *xdata = data_temp4->v();
+      double *data = (double *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(double));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp4->r();
+      int *pB = data_temp4->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
@@ -9044,14 +13053,11 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
   int arg9 ;
   bool arg10 ;
   int arg11 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  PyArrayObject *array1 = NULL ;
   int val2 ;
   int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  SpMatrix< float > *data_temp3 ;
+  SpMatrix< float > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   float val6 ;
@@ -9068,119 +13074,231 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
   int ecode11 = 0 ;
   Matrix< float > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "archetypalAnalysis" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    arg3 = &data_temp3;
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
+  {
+    arg4 = &data_temp4;
+  }
+  (void)self;
+  if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
+  }
   ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "archetypalAnalysis" "', argument " "2"" of type '" "int""'");
   }
   arg2 = static_cast< int >(val2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "archetypalAnalysis" "', argument " "3"" of type '" "SpMatrix< float > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< float > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "archetypalAnalysis" "', argument " "4"" of type '" "SpMatrix< float > **""'");
-  }
-  arg4 = reinterpret_cast< SpMatrix< float > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysis" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_float(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysis" "', argument " "6"" of type '" "float""'");
   }
   arg6 = static_cast< float >(val6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysis" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysis" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysis" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  ecode10 = SWIG_AsVal_bool(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_bool(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysis" "', argument " "10"" of type '" "bool""'");
   }
   arg10 = static_cast< bool >(val10);
-  ecode11 = SWIG_AsVal_int(swig_obj[10], &val11);
+  ecode11 = SWIG_AsVal_int(swig_obj[8], &val11);
   if (!SWIG_IsOK(ecode11)) {
     SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "archetypalAnalysis" "', argument " "11"" of type '" "int""'");
   }
   arg11 = static_cast< int >(val11);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_archetypalAnalysis< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_archetypalAnalysis< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      float *xdata = data_temp3->v();
+      float *data = (float *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(float));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp nzmax = data_temp4->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      float *xdata = data_temp4->v();
+      float *data = (float *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(float));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp4->r();
+      int *pB = data_temp4->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    delete arg1;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_archetypalAnalysis(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[12] = {
+  PyObject *argv[10] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysis", 0, 11, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysis", 0, 9, argv))) SWIG_fail;
   --argc;
-  if (argc == 11) {
+  if (argc == 9) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        int res = SWIG_AsVal_float(argv[3], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_archetypalAnalysis__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_archetypalAnalysis__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
-  if (argc == 11) {
-    PyObject *retobj = _wrap_archetypalAnalysis__SWIG_1(self, argc, argv);
+  if (argc == 9) {
+    PyObject *retobj = _wrap_archetypalAnalysis__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -9206,14 +13324,10 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
   int arg8 ;
   int arg9 ;
   int arg10 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  SpMatrix< double > *data_temp3 ;
+  SpMatrix< double > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   double val6 ;
@@ -9228,66 +13342,207 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
   int ecode10 = 0 ;
   Matrix< double > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "archetypalAnalysisInit" "', argument " "1"" of type '" "Matrix< double > *""'");
+  if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "archetypalAnalysisInit" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "archetypalAnalysisInit" "', argument " "3"" of type '" "SpMatrix< double > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< double > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_SpMatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "archetypalAnalysisInit" "', argument " "4"" of type '" "SpMatrix< double > **""'");
-  }
-  arg4 = reinterpret_cast< SpMatrix< double > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysisInit" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_double(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysisInit" "', argument " "6"" of type '" "double""'");
   }
   arg6 = static_cast< double >(val6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysisInit" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysisInit" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysisInit" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  ecode10 = SWIG_AsVal_int(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_int(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysisInit" "', argument " "10"" of type '" "int""'");
   }
   arg10 = static_cast< int >(val10);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_archetypalAnalysisInit< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_archetypalAnalysisInit< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      double *xdata = data_temp3->v();
+      double *data = (double *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(double));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp nzmax = data_temp4->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      double *xdata = data_temp4->v();
+      double *data = (double *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(double));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp4->r();
+      int *pB = data_temp4->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -9304,14 +13559,10 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
   int arg8 ;
   int arg9 ;
   int arg10 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  SpMatrix< float > *data_temp3 ;
+  SpMatrix< float > *data_temp4 ;
   bool val5 ;
   int ecode5 = 0 ;
   float val6 ;
@@ -9326,120 +13577,251 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
   int ecode10 = 0 ;
   Matrix< float > *result = 0 ;
 
+  {
+    arg3 = &data_temp3;
+  }
+  {
+    arg4 = &data_temp4;
+  }
   (void)self;
-  if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "archetypalAnalysisInit" "', argument " "1"" of type '" "Matrix< float > *""'");
+  if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "archetypalAnalysisInit" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "archetypalAnalysisInit" "', argument " "3"" of type '" "SpMatrix< float > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< float > ** >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_SpMatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "archetypalAnalysisInit" "', argument " "4"" of type '" "SpMatrix< float > **""'");
-  }
-  arg4 = reinterpret_cast< SpMatrix< float > ** >(argp4);
-  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  ecode5 = SWIG_AsVal_bool(swig_obj[2], &val5);
   if (!SWIG_IsOK(ecode5)) {
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "archetypalAnalysisInit" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  ecode6 = SWIG_AsVal_float(swig_obj[5], &val6);
+  ecode6 = SWIG_AsVal_float(swig_obj[3], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "archetypalAnalysisInit" "', argument " "6"" of type '" "float""'");
   }
   arg6 = static_cast< float >(val6);
-  ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
+  ecode7 = SWIG_AsVal_bool(swig_obj[4], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "archetypalAnalysisInit" "', argument " "7"" of type '" "bool""'");
   }
   arg7 = static_cast< bool >(val7);
-  ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
+  ecode8 = SWIG_AsVal_int(swig_obj[5], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "archetypalAnalysisInit" "', argument " "8"" of type '" "int""'");
   }
   arg8 = static_cast< int >(val8);
-  ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
+  ecode9 = SWIG_AsVal_int(swig_obj[6], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "archetypalAnalysisInit" "', argument " "9"" of type '" "int""'");
   }
   arg9 = static_cast< int >(val9);
-  ecode10 = SWIG_AsVal_int(swig_obj[9], &val10);
+  ecode10 = SWIG_AsVal_int(swig_obj[7], &val10);
   if (!SWIG_IsOK(ecode10)) {
     SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "archetypalAnalysisInit" "', argument " "10"" of type '" "int""'");
   }
   arg10 = static_cast< int >(val10);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_archetypalAnalysisInit< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_archetypalAnalysisInit< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      float *xdata = data_temp3->v();
+      float *data = (float *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(float));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp m = data_temp4->m();
+      npy_intp n = data_temp4->n();
+      npy_intp nzmax = data_temp4->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      float *xdata = data_temp4->v();
+      float *data = (float *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(float));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp4->r();
+      int *pB = data_temp4->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_archetypalAnalysisInit(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[11] = {
+  PyObject *argv[9] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysisInit", 0, 10, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "archetypalAnalysisInit", 0, 8, argv))) SWIG_fail;
   --argc;
-  if (argc == 10) {
+  if (argc == 8) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_SpMatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[3], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
-  if (argc == 10) {
-    PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_1(self, argc, argv);
+  if (argc == 8) {
+    PyObject *retobj = _wrap_archetypalAnalysisInit__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -9459,10 +13841,8 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
   Matrix< double > *arg2 = (Matrix< double > *) 0 ;
   bool arg3 ;
   int arg4 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   bool val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -9471,16 +13851,40 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "decompSimplex" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "decompSimplex" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
   ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "decompSimplex" "', argument " "3"" of type '" "bool""'");
@@ -9491,14 +13895,72 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "decompSimplex" "', argument " "4"" of type '" "int""'");
   }
   arg4 = static_cast< int >(val4);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< double > *)_decompSimplex< double >(arg1,arg2,arg3,arg4);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< double > *)_decompSimplex< double >(arg1,arg2,arg3,arg4);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
+    int i;
+    double *xdata = result->v();
+    double *data = (double *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(double));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -9509,10 +13971,8 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
   Matrix< float > *arg2 = (Matrix< float > *) 0 ;
   bool arg3 ;
   int arg4 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   bool val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -9521,16 +13981,40 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "decompSimplex" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "decompSimplex" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
   ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "decompSimplex" "', argument " "3"" of type '" "bool""'");
@@ -9541,14 +14025,72 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "decompSimplex" "', argument " "4"" of type '" "int""'");
   }
   arg4 = static_cast< int >(val4);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (SpMatrix< float > *)_decompSimplex< float >(arg1,arg2,arg3,arg4);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (SpMatrix< float > *)_decompSimplex< float >(arg1,arg2,arg3,arg4);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_SpMatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp nzmax = result->nzmax();
+    npy_intp dims[2] = {
+      m,n
+    };
+    dims[0] = n + 1;
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    dims[0] = nzmax;
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
+    int i;
+    float *xdata = result->v();
+    float *data = (float *)array_data(vdata);
+    memcpy(data,xdata,nzmax * sizeof(float));
+    npy_int *pi = (npy_int *)array_data(indices);
+    int *r = result->r();
+    int *pB = result->pB();
+    if(sizeof(npy_int) == sizeof(int)) {
+      memcpy(pi,r,nzmax * sizeof(int));
+      pi = (npy_int *)array_data(indptr);
+      memcpy(pi,pB,(n + 1) * sizeof(int));
+    } else {
+      for(i = 0;i< nzmax;i++)
+      *(pi+i) = (npy_int) *(r+i);
+      pi = (npy_int *)array_data(indptr);
+      for(i = 0;i< n + 1;i++)
+      *(pi+i) = (npy_int) *(pB+i);
+    }
+    PyObject* tuple = PyTuple_New(4);
+    PyObject* shape = PyTuple_New(2);
+    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+    PyTuple_SetItem(tuple,1,(PyObject* )indices);
+    PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+    PyTuple_SetItem(tuple,3,shape);
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -9565,15 +14107,17 @@ SWIGINTERN PyObject *_wrap_decompSimplex(PyObject *self, PyObject *args) {
   if (argc == 4) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_decompSimplex__SWIG_0(self, argc, argv);
@@ -9639,16 +14183,10 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   bool arg38 ;
   bool arg39 ;
   int arg40 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
   int val6 ;
   int ecode6 = 0 ;
   int val7 ;
@@ -9712,8 +14250,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int alloc34 = 0 ;
   bool val35 ;
   int ecode35 = 0 ;
-  void *argp36 = 0 ;
-  int res36 = 0 ;
+  PyArrayObject *array36 = NULL ;
   int val37 ;
   int ecode37 = 0 ;
   bool val38 ;
@@ -9726,31 +14263,159 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaFlat" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaFlat" "', argument " "2"" of type '" "AbstractMatrixB< double > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_DOUBLE)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaFlat" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaFlat" "', argument " "4"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< double > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaFlat" "', argument " "5"" of type '" "Vector< int > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<int> ((int *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< int > * >(argp5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "fistaFlat" "', argument " "6"" of type '" "int""'");
@@ -9901,11 +14566,11 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaFlat" "', argument " "35"" of type '" "bool""'");
   }
   arg35 = static_cast< bool >(val35);
-  res36 = SWIG_ConvertPtr(swig_obj[35], &argp36,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res36)) {
-    SWIG_exception_fail(SWIG_ArgError(res36), "in method '" "fistaFlat" "', argument " "36"" of type '" "Vector< double > *""'");
+  {
+    array36 = obj_to_array_no_conversion(swig_obj[35], NPY_DOUBLE);
+    if (!array36 || !require_dimensions(array36,1) || !require_contiguous(array36) || !require_native(array36)) SWIG_fail;
+    arg36 = new Vector<double> ((double *)array_data(array36),(int)array_size(array36,0));
   }
-  arg36 = reinterpret_cast< Vector< double > * >(argp36);
   ecode37 = SWIG_AsVal_int(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaFlat" "', argument " "37"" of type '" "int""'");
@@ -9926,20 +14591,79 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaFlat" "', argument " "40"" of type '" "int""'");
   }
   arg40 = static_cast< int >(val40);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_fistaFlat< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_fistaFlat< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc26 == SWIG_NEWOBJ) delete[] buf26;
   if (alloc27 == SWIG_NEWOBJ) delete[] buf27;
   if (alloc34 == SWIG_NEWOBJ) delete[] buf34;
+  {
+    delete arg36;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc26 == SWIG_NEWOBJ) delete[] buf26;
   if (alloc27 == SWIG_NEWOBJ) delete[] buf27;
   if (alloc34 == SWIG_NEWOBJ) delete[] buf34;
+  {
+    delete arg36;
+  }
   return NULL;
 }
 
@@ -9986,16 +14710,10 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   bool arg38 ;
   bool arg39 ;
   int arg40 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
   int val6 ;
   int ecode6 = 0 ;
   int val7 ;
@@ -10059,8 +14777,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int alloc34 = 0 ;
   bool val35 ;
   int ecode35 = 0 ;
-  void *argp36 = 0 ;
-  int res36 = 0 ;
+  PyArrayObject *array36 = NULL ;
   int val37 ;
   int ecode37 = 0 ;
   bool val38 ;
@@ -10073,31 +14790,159 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaFlat" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaFlat" "', argument " "2"" of type '" "AbstractMatrixB< float > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_FLOAT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaFlat" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaFlat" "', argument " "4"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< float > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaFlat" "', argument " "5"" of type '" "Vector< int > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<int> ((int *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< int > * >(argp5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "fistaFlat" "', argument " "6"" of type '" "int""'");
@@ -10248,11 +15093,11 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode35), "in method '" "fistaFlat" "', argument " "35"" of type '" "bool""'");
   }
   arg35 = static_cast< bool >(val35);
-  res36 = SWIG_ConvertPtr(swig_obj[35], &argp36,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res36)) {
-    SWIG_exception_fail(SWIG_ArgError(res36), "in method '" "fistaFlat" "', argument " "36"" of type '" "Vector< float > *""'");
+  {
+    array36 = obj_to_array_no_conversion(swig_obj[35], NPY_FLOAT);
+    if (!array36 || !require_dimensions(array36,1) || !require_contiguous(array36) || !require_native(array36)) SWIG_fail;
+    arg36 = new Vector<float> ((float *)array_data(array36),(int)array_size(array36,0));
   }
-  arg36 = reinterpret_cast< Vector< float > * >(argp36);
   ecode37 = SWIG_AsVal_int(swig_obj[36], &val37);
   if (!SWIG_IsOK(ecode37)) {
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaFlat" "', argument " "37"" of type '" "int""'");
@@ -10273,20 +15118,79 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaFlat" "', argument " "40"" of type '" "int""'");
   }
   arg40 = static_cast< int >(val40);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_fistaFlat< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_fistaFlat< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc26 == SWIG_NEWOBJ) delete[] buf26;
   if (alloc27 == SWIG_NEWOBJ) delete[] buf27;
   if (alloc34 == SWIG_NEWOBJ) delete[] buf34;
+  {
+    delete arg36;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc26 == SWIG_NEWOBJ) delete[] buf26;
   if (alloc27 == SWIG_NEWOBJ) delete[] buf27;
   if (alloc34 == SWIG_NEWOBJ) delete[] buf34;
+  {
+    delete arg36;
+  }
   return NULL;
 }
 
@@ -10303,113 +15207,127 @@ SWIGINTERN PyObject *_wrap_fistaFlat(PyObject *self, PyObject *args) {
   if (argc == 40) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_AbstractMatrixBT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[7], NULL);
+        if( PyObject_HasAttrString(argv[1], "indptr"))
+        _v = check_sparse(argv[1]);
+        else
+        _v = check_matrix(argv[1],NPY_FLOAT);
+
+
+
+
+
+
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[7], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[9], NULL);
+        int res = SWIG_AsVal_float(argv[9], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[10], NULL);
+        int res = SWIG_AsVal_float(argv[10], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[11], NULL);
+        int res = SWIG_AsVal_float(argv[11], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[12], NULL);
+        int res = SWIG_AsVal_float(argv[12], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[13], NULL);
+        int res = SWIG_AsVal_float(argv[13], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[14], NULL);
+        int res = SWIG_AsVal_float(argv[14], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[15], NULL);
+        int res = SWIG_AsVal_float(argv[15], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[16], NULL);
+        int res = SWIG_AsVal_float(argv[16], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[17], NULL);
+        int res = SWIG_AsVal_float(argv[17], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[35], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[35]) && (array_numdims(argv[35]) == 1) && PyArray_EquivTypenums(array_type(argv[35]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_fistaFlat__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_fistaFlat__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 40) {
-    PyObject *retobj = _wrap_fistaFlat__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_fistaFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10468,22 +15386,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   bool arg41 ;
   bool arg42 ;
   int arg43 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyObject *sparray6 = NULL ;
+  PyArrayObject *array7 = NULL ;
+  PyArrayObject *array8 = NULL ;
   int val9 ;
   int ecode9 = 0 ;
   int val10 ;
@@ -10547,8 +15456,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   int alloc37 = 0 ;
   bool val38 ;
   int ecode38 = 0 ;
-  void *argp39 = 0 ;
-  int res39 = 0 ;
+  PyArrayObject *array39 = NULL ;
   int val40 ;
   int ecode40 = 0 ;
   bool val41 ;
@@ -10561,46 +15469,247 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaTree" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaTree" "', argument " "2"" of type '" "AbstractMatrixB< double > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_DOUBLE)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaTree" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaTree" "', argument " "4"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< double > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaTree" "', argument " "5"" of type '" "Vector< double > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_DOUBLE);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<double> ((double *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< double > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "fistaTree" "', argument " "6"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray6 = swig_obj[5];
+    if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
+        PyObject_HasAttrString(sparray6, "indices") &&
+        PyObject_HasAttrString(sparray6, "data") &&
+        PyObject_HasAttrString(sparray6, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg6 = reinterpret_cast< SpMatrix< bool > * >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "fistaTree" "', argument " "7"" of type '" "Vector< int > *""'");
+  {
+    array7 = obj_to_array_no_conversion(swig_obj[6], NPY_INT);
+    if (!array7 || !require_dimensions(array7,1) || !require_contiguous(array7) || !require_native(array7)) SWIG_fail;
+    arg7 = new Vector<int> ((int *)array_data(array7),(int)array_size(array7,0));
   }
-  arg7 = reinterpret_cast< Vector< int > * >(argp7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "fistaTree" "', argument " "8"" of type '" "Vector< int > *""'");
+  {
+    array8 = obj_to_array_no_conversion(swig_obj[7], NPY_INT);
+    if (!array8 || !require_dimensions(array8,1) || !require_contiguous(array8) || !require_native(array8)) SWIG_fail;
+    arg8 = new Vector<int> ((int *)array_data(array8),(int)array_size(array8,0));
   }
-  arg8 = reinterpret_cast< Vector< int > * >(argp8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaTree" "', argument " "9"" of type '" "int""'");
@@ -10751,11 +15860,11 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaTree" "', argument " "38"" of type '" "bool""'");
   }
   arg38 = static_cast< bool >(val38);
-  res39 = SWIG_ConvertPtr(swig_obj[38], &argp39,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res39)) {
-    SWIG_exception_fail(SWIG_ArgError(res39), "in method '" "fistaTree" "', argument " "39"" of type '" "Vector< double > *""'");
+  {
+    array39 = obj_to_array_no_conversion(swig_obj[38], NPY_DOUBLE);
+    if (!array39 || !require_dimensions(array39,1) || !require_contiguous(array39) || !require_native(array39)) SWIG_fail;
+    arg39 = new Vector<double> ((double *)array_data(array39),(int)array_size(array39,0));
   }
-  arg39 = reinterpret_cast< Vector< double > * >(argp39);
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaTree" "', argument " "40"" of type '" "int""'");
@@ -10776,20 +15885,97 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "fistaTree" "', argument " "43"" of type '" "int""'");
   }
   arg43 = static_cast< int >(val43);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_fistaTree< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_fistaTree< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc30 == SWIG_NEWOBJ) delete[] buf30;
   if (alloc37 == SWIG_NEWOBJ) delete[] buf37;
+  {
+    delete arg39;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc30 == SWIG_NEWOBJ) delete[] buf30;
   if (alloc37 == SWIG_NEWOBJ) delete[] buf37;
+  {
+    delete arg39;
+  }
   return NULL;
 }
 
@@ -10839,22 +16025,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   bool arg41 ;
   bool arg42 ;
   int arg43 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyObject *sparray6 = NULL ;
+  PyArrayObject *array7 = NULL ;
+  PyArrayObject *array8 = NULL ;
   int val9 ;
   int ecode9 = 0 ;
   int val10 ;
@@ -10918,8 +16095,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   int alloc37 = 0 ;
   bool val38 ;
   int ecode38 = 0 ;
-  void *argp39 = 0 ;
-  int res39 = 0 ;
+  PyArrayObject *array39 = NULL ;
   int val40 ;
   int ecode40 = 0 ;
   bool val41 ;
@@ -10932,46 +16108,247 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
 
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaTree" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaTree" "', argument " "2"" of type '" "AbstractMatrixB< float > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_FLOAT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaTree" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaTree" "', argument " "4"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< float > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaTree" "', argument " "5"" of type '" "Vector< float > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_FLOAT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<float> ((float *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< float > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "fistaTree" "', argument " "6"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray6 = swig_obj[5];
+    if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
+        PyObject_HasAttrString(sparray6, "indices") &&
+        PyObject_HasAttrString(sparray6, "data") &&
+        PyObject_HasAttrString(sparray6, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg6 = reinterpret_cast< SpMatrix< bool > * >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "fistaTree" "', argument " "7"" of type '" "Vector< int > *""'");
+  {
+    array7 = obj_to_array_no_conversion(swig_obj[6], NPY_INT);
+    if (!array7 || !require_dimensions(array7,1) || !require_contiguous(array7) || !require_native(array7)) SWIG_fail;
+    arg7 = new Vector<int> ((int *)array_data(array7),(int)array_size(array7,0));
   }
-  arg7 = reinterpret_cast< Vector< int > * >(argp7);
-  res8 = SWIG_ConvertPtr(swig_obj[7], &argp8,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "fistaTree" "', argument " "8"" of type '" "Vector< int > *""'");
+  {
+    array8 = obj_to_array_no_conversion(swig_obj[7], NPY_INT);
+    if (!array8 || !require_dimensions(array8,1) || !require_contiguous(array8) || !require_native(array8)) SWIG_fail;
+    arg8 = new Vector<int> ((int *)array_data(array8),(int)array_size(array8,0));
   }
-  arg8 = reinterpret_cast< Vector< int > * >(argp8);
   ecode9 = SWIG_AsVal_int(swig_obj[8], &val9);
   if (!SWIG_IsOK(ecode9)) {
     SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "fistaTree" "', argument " "9"" of type '" "int""'");
@@ -11122,11 +16499,11 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode38), "in method '" "fistaTree" "', argument " "38"" of type '" "bool""'");
   }
   arg38 = static_cast< bool >(val38);
-  res39 = SWIG_ConvertPtr(swig_obj[38], &argp39,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res39)) {
-    SWIG_exception_fail(SWIG_ArgError(res39), "in method '" "fistaTree" "', argument " "39"" of type '" "Vector< float > *""'");
+  {
+    array39 = obj_to_array_no_conversion(swig_obj[38], NPY_FLOAT);
+    if (!array39 || !require_dimensions(array39,1) || !require_contiguous(array39) || !require_native(array39)) SWIG_fail;
+    arg39 = new Vector<float> ((float *)array_data(array39),(int)array_size(array39,0));
   }
-  arg39 = reinterpret_cast< Vector< float > * >(argp39);
   ecode40 = SWIG_AsVal_int(swig_obj[39], &val40);
   if (!SWIG_IsOK(ecode40)) {
     SWIG_exception_fail(SWIG_ArgError(ecode40), "in method '" "fistaTree" "', argument " "40"" of type '" "int""'");
@@ -11147,20 +16524,97 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     SWIG_exception_fail(SWIG_ArgError(ecode43), "in method '" "fistaTree" "', argument " "43"" of type '" "int""'");
   }
   arg43 = static_cast< int >(val43);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_fistaTree< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_fistaTree< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42,arg43);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc30 == SWIG_NEWOBJ) delete[] buf30;
   if (alloc37 == SWIG_NEWOBJ) delete[] buf37;
+  {
+    delete arg39;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
+  {
+    delete arg8;
+  }
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc30 == SWIG_NEWOBJ) delete[] buf30;
   if (alloc37 == SWIG_NEWOBJ) delete[] buf37;
+  {
+    delete arg39;
+  }
   return NULL;
 }
 
@@ -11177,119 +16631,134 @@ SWIGINTERN PyObject *_wrap_fistaTree(PyObject *self, PyObject *args) {
   if (argc == 43) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_AbstractMatrixBT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[10], NULL);
+        if( PyObject_HasAttrString(argv[1], "indptr"))
+        _v = check_sparse(argv[1]);
+        else
+        _v = check_matrix(argv[1],NPY_FLOAT);
+
+
+
+
+
+
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[4]) && (array_numdims(argv[4]) == 1) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[10], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[12], NULL);
+        int res = SWIG_AsVal_float(argv[12], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[13], NULL);
+        int res = SWIG_AsVal_float(argv[13], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[14], NULL);
+        int res = SWIG_AsVal_float(argv[14], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[15], NULL);
+        int res = SWIG_AsVal_float(argv[15], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[16], NULL);
+        int res = SWIG_AsVal_float(argv[16], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[17], NULL);
+        int res = SWIG_AsVal_float(argv[17], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[18], NULL);
+        int res = SWIG_AsVal_float(argv[18], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[19], NULL);
+        int res = SWIG_AsVal_float(argv[19], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[20], NULL);
+        int res = SWIG_AsVal_float(argv[20], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[38], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[38]) && (array_numdims(argv[38]) == 1) && PyArray_EquivTypenums(array_type(argv[38]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_fistaTree__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_fistaTree__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 43) {
-    PyObject *retobj = _wrap_fistaTree__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_fistaTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -11347,20 +16816,12 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   bool arg40 ;
   bool arg41 ;
   int arg42 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyObject *sparray6 = NULL ;
+  PyObject *sparray7 = NULL ;
   int val8 ;
   int ecode8 = 0 ;
   int val9 ;
@@ -11424,8 +16885,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   int alloc36 = 0 ;
   bool val37 ;
   int ecode37 = 0 ;
-  void *argp38 = 0 ;
-  int res38 = 0 ;
+  PyArrayObject *array38 = NULL ;
   int val39 ;
   int ecode39 = 0 ;
   bool val40 ;
@@ -11438,41 +16898,315 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
 
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaGraph" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaGraph" "', argument " "2"" of type '" "AbstractMatrixB< double > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_DOUBLE)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<double> ((double *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<double> ((double *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaGraph" "', argument " "3"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<double> ((double *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaGraph" "', argument " "4"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<double> ((double *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< double > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaGraph" "', argument " "5"" of type '" "Vector< double > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_DOUBLE);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<double> ((double *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< double > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "fistaGraph" "', argument " "6"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray6 = swig_obj[5];
+    if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
+        PyObject_HasAttrString(sparray6, "indices") &&
+        PyObject_HasAttrString(sparray6, "data") &&
+        PyObject_HasAttrString(sparray6, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg6 = reinterpret_cast< SpMatrix< bool > * >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "fistaGraph" "', argument " "7"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray7 = swig_obj[6];
+    if ( !( PyObject_HasAttrString(sparray7, "indptr") &&
+        PyObject_HasAttrString(sparray7, "indices") &&
+        PyObject_HasAttrString(sparray7, "data") &&
+        PyObject_HasAttrString(sparray7, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 7 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray7, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg7 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg7 = reinterpret_cast< SpMatrix< bool > * >(argp7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaGraph" "', argument " "8"" of type '" "int""'");
@@ -11623,11 +17357,11 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaGraph" "', argument " "37"" of type '" "bool""'");
   }
   arg37 = static_cast< bool >(val37);
-  res38 = SWIG_ConvertPtr(swig_obj[37], &argp38,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res38)) {
-    SWIG_exception_fail(SWIG_ArgError(res38), "in method '" "fistaGraph" "', argument " "38"" of type '" "Vector< double > *""'");
+  {
+    array38 = obj_to_array_no_conversion(swig_obj[37], NPY_DOUBLE);
+    if (!array38 || !require_dimensions(array38,1) || !require_contiguous(array38) || !require_native(array38)) SWIG_fail;
+    arg38 = new Vector<double> ((double *)array_data(array38),(int)array_size(array38,0));
   }
-  arg38 = reinterpret_cast< Vector< double > * >(argp38);
   ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaGraph" "', argument " "39"" of type '" "int""'");
@@ -11648,20 +17382,91 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaGraph" "', argument " "42"" of type '" "int""'");
   }
   arg42 = static_cast< int >(val42);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< double > *)_fistaGraph< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< double > *)_fistaGraph< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(double));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc36 == SWIG_NEWOBJ) delete[] buf36;
+  {
+    delete arg38;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc36 == SWIG_NEWOBJ) delete[] buf36;
+  {
+    delete arg38;
+  }
   return NULL;
 }
 
@@ -11710,20 +17515,12 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   bool arg40 ;
   bool arg41 ;
   int arg42 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyArrayObject *array4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyObject *sparray6 = NULL ;
+  PyObject *sparray7 = NULL ;
   int val8 ;
   int ecode8 = 0 ;
   int val9 ;
@@ -11787,8 +17584,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   int alloc36 = 0 ;
   bool val37 ;
   int ecode37 = 0 ;
-  void *argp38 = 0 ;
-  int res38 = 0 ;
+  PyArrayObject *array38 = NULL ;
   int val39 ;
   int ecode39 = 0 ;
   bool val40 ;
@@ -11801,41 +17597,315 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
 
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fistaGraph" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_AbstractMatrixBT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "fistaGraph" "', argument " "2"" of type '" "AbstractMatrixB< float > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
+      PyObject* sparray =swig_obj[1];
+      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      sparray = swig_obj[1];
+      if ( !( PyObject_HasAttrString(sparray, "indptr") &&
+          PyObject_HasAttrString(sparray, "indices") &&
+          PyObject_HasAttrString(sparray, "data") &&
+          PyObject_HasAttrString(sparray, "shape"))) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 2 : not a column compressed sparse matrix");
+        return NULL;
+      }
+
+      /* fetch sparse attributes */
+      PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray, "indptr");
+      PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray, "indices");
+      PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray, "data");
+      PyObject* shape = PyObject_GetAttrString(sparray, "shape");
+
+      /* check that types are OK */
+      if (check_array(indptr,NPY_INT))
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(indices,NPY_INT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
+        return NULL;
+      }
+
+      if check_array(data, NPY_FLOAT)
+      {
+        PyErr_SetString(PyExc_TypeError,"spmatrix arg2: data array should be 1d and match datatype");
+        return NULL;
+      }
+
+      if (!PyTuple_Check(shape))
+      {
+        PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+        return NULL;
+      }
+
+      /* get array dimensions */
+      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+      int *pB = (int *)array_data(indptr);
+      int *pE = pB + 1;
+      int nzmax = (int)array_size(data,0);
+      Py_DECREF(indptr);
+      Py_DECREF(indices);
+      Py_DECREF(data);
+      Py_DECREF(shape);
+
+
+      arg2 = new SpMatrix<float> ((float *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+      /*@SWIG@*/
+    } else {
+      PyArrayObject* array = NULL;
+      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+      /* !!!!!
+      	WARNING! bug (?) : the variable name choosen above must not appear
+      	in the string, otherwise swig will not correctly generate
+      	final variable names (above name + number)
+      	*/
+      /* we cannot use require_fortran, because it convert a numpy C array to a numpy
+      	fortran array by just modifying the strides */
+      if (!array || !require_dimensions(array,2) || !array_is_fortran(array) || !require_native(array)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+      }
+      arg2 = new Matrix<float> ((float *)array_data(array),(int)array_size(array,0),(int)array_size(array,1));
+
+      /*@SWIG@*/
+    }
   }
-  arg2 = reinterpret_cast< AbstractMatrixB< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "fistaGraph" "', argument " "3"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array3 to a numpy
+    	fortran array3 by just modifying the strides */
+    if (!array3 || !require_dimensions(array3,2) || !array_is_fortran(array3) || !require_native(array3)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 3 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg3 = new Matrix<float> ((float *)array_data(array3),(int)array_size(array3,0),(int)array_size(array3,1));
+
+    /*@SWIG@*/
   }
-  arg3 = reinterpret_cast< Matrix< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "fistaGraph" "', argument " "4"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array4 to a numpy
+    	fortran array4 by just modifying the strides */
+    if (!array4 || !require_dimensions(array4,2) || !array_is_fortran(array4) || !require_native(array4)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 4 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg4 = new Matrix<float> ((float *)array_data(array4),(int)array_size(array4,0),(int)array_size(array4,1));
+
+    /*@SWIG@*/
   }
-  arg4 = reinterpret_cast< Matrix< float > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "fistaGraph" "', argument " "5"" of type '" "Vector< float > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_FLOAT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<float> ((float *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< float > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "fistaGraph" "', argument " "6"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray6 = swig_obj[5];
+    if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
+        PyObject_HasAttrString(sparray6, "indices") &&
+        PyObject_HasAttrString(sparray6, "data") &&
+        PyObject_HasAttrString(sparray6, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 6 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray6, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray6, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg6: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg6 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg6 = reinterpret_cast< SpMatrix< bool > * >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "fistaGraph" "', argument " "7"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray7 = swig_obj[6];
+    if ( !( PyObject_HasAttrString(sparray7, "indptr") &&
+        PyObject_HasAttrString(sparray7, "indices") &&
+        PyObject_HasAttrString(sparray7, "data") &&
+        PyObject_HasAttrString(sparray7, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 7 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray7, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray7, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg7: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg7 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg7 = reinterpret_cast< SpMatrix< bool > * >(argp7);
   ecode8 = SWIG_AsVal_int(swig_obj[7], &val8);
   if (!SWIG_IsOK(ecode8)) {
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "fistaGraph" "', argument " "8"" of type '" "int""'");
@@ -11986,11 +18056,11 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     SWIG_exception_fail(SWIG_ArgError(ecode37), "in method '" "fistaGraph" "', argument " "37"" of type '" "bool""'");
   }
   arg37 = static_cast< bool >(val37);
-  res38 = SWIG_ConvertPtr(swig_obj[37], &argp38,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res38)) {
-    SWIG_exception_fail(SWIG_ArgError(res38), "in method '" "fistaGraph" "', argument " "38"" of type '" "Vector< float > *""'");
+  {
+    array38 = obj_to_array_no_conversion(swig_obj[37], NPY_FLOAT);
+    if (!array38 || !require_dimensions(array38,1) || !require_contiguous(array38) || !require_native(array38)) SWIG_fail;
+    arg38 = new Vector<float> ((float *)array_data(array38),(int)array_size(array38,0));
   }
-  arg38 = reinterpret_cast< Vector< float > * >(argp38);
   ecode39 = SWIG_AsVal_int(swig_obj[38], &val39);
   if (!SWIG_IsOK(ecode39)) {
     SWIG_exception_fail(SWIG_ArgError(ecode39), "in method '" "fistaGraph" "', argument " "39"" of type '" "int""'");
@@ -12011,20 +18081,91 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     SWIG_exception_fail(SWIG_ArgError(ecode42), "in method '" "fistaGraph" "', argument " "42"" of type '" "int""'");
   }
   arg42 = static_cast< int >(val42);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Matrix< float > *)_fistaGraph< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Matrix< float > *)_fistaGraph< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27,arg28,arg29,arg30,arg31,arg32,arg33,arg34,arg35,arg36,arg37,arg38,arg39,arg40,arg41,arg42);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
+  {
+    npy_intp m = result->m();
+    npy_intp n = result->n();
+    npy_intp dims[2] = {
+      m,n
+    };
+
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(2, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,m * n * sizeof(float));
+    delete result;
+    if (! require_fortran(array)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;
+    }
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc36 == SWIG_NEWOBJ) delete[] buf36;
+  {
+    delete arg38;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
+  {
+    delete arg7;
+  }
   if (alloc28 == SWIG_NEWOBJ) delete[] buf28;
   if (alloc29 == SWIG_NEWOBJ) delete[] buf29;
   if (alloc36 == SWIG_NEWOBJ) delete[] buf36;
+  {
+    delete arg38;
+  }
   return NULL;
 }
 
@@ -12041,119 +18182,134 @@ SWIGINTERN PyObject *_wrap_fistaGraph(PyObject *self, PyObject *args) {
   if (argc == 42) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_AbstractMatrixBT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[4], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[9], NULL);
+        if( PyObject_HasAttrString(argv[1], "indptr"))
+        _v = check_sparse(argv[1]);
+        else
+        _v = check_matrix(argv[1],NPY_FLOAT);
+
+
+
+
+
+
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 2) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[3]) && (array_numdims(argv[3]) == 2) && PyArray_EquivTypenums(array_type(argv[3]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[4]) && (array_numdims(argv[4]) == 1) && PyArray_EquivTypenums(array_type(argv[4]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[9], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[11], NULL);
+        int res = SWIG_AsVal_float(argv[11], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[12], NULL);
+        int res = SWIG_AsVal_float(argv[12], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[13], NULL);
+        int res = SWIG_AsVal_float(argv[13], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[14], NULL);
+        int res = SWIG_AsVal_float(argv[14], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[15], NULL);
+        int res = SWIG_AsVal_float(argv[15], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[16], NULL);
+        int res = SWIG_AsVal_float(argv[16], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[17], NULL);
+        int res = SWIG_AsVal_float(argv[17], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[18], NULL);
+        int res = SWIG_AsVal_float(argv[18], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[19], NULL);
+        int res = SWIG_AsVal_float(argv[19], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[37], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[37]) && (array_numdims(argv[37]) == 1) && PyArray_EquivTypenums(array_type(argv[37]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_fistaGraph__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_fistaGraph__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 42) {
-    PyObject *retobj = _wrap_fistaGraph__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_fistaGraph__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -12185,12 +18341,9 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool arg14 ;
   int arg15 ;
   bool arg16 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   double val5 ;
@@ -12222,21 +18375,45 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
 
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalFlat" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalFlat" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalFlat" "', argument " "3"" of type '" "Vector< int > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_INT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<int> ((int *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< int > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "proximalFlat" "', argument " "4"" of type '" "int""'");
@@ -12302,15 +18479,51 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalFlat" "', argument " "16"" of type '" "bool""'");
   }
   arg16 = static_cast< bool >(val16);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< double > *)_proximalFlat< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< double > *)_proximalFlat< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_double_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(double));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   if (alloc10 == SWIG_NEWOBJ) delete[] buf10;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   if (alloc10 == SWIG_NEWOBJ) delete[] buf10;
   return NULL;
 }
@@ -12334,12 +18547,9 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool arg14 ;
   int arg15 ;
   bool arg16 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
   int val4 ;
   int ecode4 = 0 ;
   float val5 ;
@@ -12371,21 +18581,45 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
 
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalFlat" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalFlat" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalFlat" "', argument " "3"" of type '" "Vector< int > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_INT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<int> ((int *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< int > * >(argp3);
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "proximalFlat" "', argument " "4"" of type '" "int""'");
@@ -12451,15 +18685,51 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
     SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "proximalFlat" "', argument " "16"" of type '" "bool""'");
   }
   arg16 = static_cast< bool >(val16);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< float > *)_proximalFlat< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< float > *)_proximalFlat< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_float_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(float));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   if (alloc10 == SWIG_NEWOBJ) delete[] buf10;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
   if (alloc10 == SWIG_NEWOBJ) delete[] buf10;
   return NULL;
 }
@@ -12477,46 +18747,48 @@ SWIGINTERN PyObject *_wrap_proximalFlat(PyObject *self, PyObject *args) {
   if (argc == 16) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[4], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[4], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[5], NULL);
+        int res = SWIG_AsVal_float(argv[5], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_proximalFlat__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_proximalFlat__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 16) {
-    PyObject *retobj = _wrap_proximalFlat__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_proximalFlat__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -12551,18 +18823,12 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   bool arg17 ;
   int arg18 ;
   bool arg19 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyObject *sparray4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyArrayObject *array6 = NULL ;
   int val7 ;
   int ecode7 = 0 ;
   double val8 ;
@@ -12594,36 +18860,133 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
 
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalTree" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalTree" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalTree" "', argument " "3"" of type '" "Vector< double > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<double> ((double *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "proximalTree" "', argument " "4"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray4 = swig_obj[3];
+    if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
+        PyObject_HasAttrString(sparray4, "indices") &&
+        PyObject_HasAttrString(sparray4, "data") &&
+        PyObject_HasAttrString(sparray4, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg4 = reinterpret_cast< SpMatrix< bool > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "proximalTree" "', argument " "5"" of type '" "Vector< int > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<int> ((int *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< int > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "proximalTree" "', argument " "6"" of type '" "Vector< int > *""'");
+  {
+    array6 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
+    if (!array6 || !require_dimensions(array6,1) || !require_contiguous(array6) || !require_native(array6)) SWIG_fail;
+    arg6 = new Vector<int> ((int *)array_data(array6),(int)array_size(array6,0));
   }
-  arg6 = reinterpret_cast< Vector< int > * >(argp6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalTree" "', argument " "7"" of type '" "int""'");
@@ -12689,15 +19052,69 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "proximalTree" "', argument " "19"" of type '" "bool""'");
   }
   arg19 = static_cast< bool >(val19);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< double > *)_proximalTree< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< double > *)_proximalTree< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_double_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(double));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
   if (alloc13 == SWIG_NEWOBJ) delete[] buf13;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
   if (alloc13 == SWIG_NEWOBJ) delete[] buf13;
   return NULL;
 }
@@ -12724,18 +19141,12 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   bool arg17 ;
   int arg18 ;
   bool arg19 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyObject *sparray4 = NULL ;
+  PyArrayObject *array5 = NULL ;
+  PyArrayObject *array6 = NULL ;
   int val7 ;
   int ecode7 = 0 ;
   float val8 ;
@@ -12767,36 +19178,133 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
 
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalTree" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalTree" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalTree" "', argument " "3"" of type '" "Vector< float > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<float> ((float *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "proximalTree" "', argument " "4"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray4 = swig_obj[3];
+    if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
+        PyObject_HasAttrString(sparray4, "indices") &&
+        PyObject_HasAttrString(sparray4, "data") &&
+        PyObject_HasAttrString(sparray4, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg4 = reinterpret_cast< SpMatrix< bool > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "proximalTree" "', argument " "5"" of type '" "Vector< int > *""'");
+  {
+    array5 = obj_to_array_no_conversion(swig_obj[4], NPY_INT);
+    if (!array5 || !require_dimensions(array5,1) || !require_contiguous(array5) || !require_native(array5)) SWIG_fail;
+    arg5 = new Vector<int> ((int *)array_data(array5),(int)array_size(array5,0));
   }
-  arg5 = reinterpret_cast< Vector< int > * >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "proximalTree" "', argument " "6"" of type '" "Vector< int > *""'");
+  {
+    array6 = obj_to_array_no_conversion(swig_obj[5], NPY_INT);
+    if (!array6 || !require_dimensions(array6,1) || !require_contiguous(array6) || !require_native(array6)) SWIG_fail;
+    arg6 = new Vector<int> ((int *)array_data(array6),(int)array_size(array6,0));
   }
-  arg6 = reinterpret_cast< Vector< int > * >(argp6);
   ecode7 = SWIG_AsVal_int(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "proximalTree" "', argument " "7"" of type '" "int""'");
@@ -12862,15 +19370,69 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "proximalTree" "', argument " "19"" of type '" "bool""'");
   }
   arg19 = static_cast< bool >(val19);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< float > *)_proximalTree< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< float > *)_proximalTree< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_float_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(float));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
   if (alloc13 == SWIG_NEWOBJ) delete[] buf13;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
+  {
+    delete arg6;
+  }
   if (alloc13 == SWIG_NEWOBJ) delete[] buf13;
   return NULL;
 }
@@ -12888,52 +19450,55 @@ SWIGINTERN PyObject *_wrap_proximalTree(PyObject *self, PyObject *args) {
   if (argc == 19) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[7], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[7], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[8], NULL);
+        int res = SWIG_AsVal_float(argv[8], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[9], NULL);
+        int res = SWIG_AsVal_float(argv[9], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_proximalTree__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_proximalTree__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 19) {
-    PyObject *retobj = _wrap_proximalTree__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_proximalTree__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -12967,16 +19532,11 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   bool arg16 ;
   int arg17 ;
   bool arg18 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyObject *sparray4 = NULL ;
+  PyObject *sparray5 = NULL ;
   int val6 ;
   int ecode6 = 0 ;
   double val7 ;
@@ -13008,31 +19568,201 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalGraph" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalGraph" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalGraph" "', argument " "3"" of type '" "Vector< double > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<double> ((double *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< double > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "proximalGraph" "', argument " "4"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray4 = swig_obj[3];
+    if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
+        PyObject_HasAttrString(sparray4, "indices") &&
+        PyObject_HasAttrString(sparray4, "data") &&
+        PyObject_HasAttrString(sparray4, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg4 = reinterpret_cast< SpMatrix< bool > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "proximalGraph" "', argument " "5"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray5 = swig_obj[4];
+    if ( !( PyObject_HasAttrString(sparray5, "indptr") &&
+        PyObject_HasAttrString(sparray5, "indices") &&
+        PyObject_HasAttrString(sparray5, "data") &&
+        PyObject_HasAttrString(sparray5, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 5 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray5, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg5 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg5 = reinterpret_cast< SpMatrix< bool > * >(argp5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalGraph" "', argument " "6"" of type '" "int""'");
@@ -13098,15 +19828,63 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalGraph" "', argument " "18"" of type '" "bool""'");
   }
   arg18 = static_cast< bool >(val18);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< double > *)_proximalGraph< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< double > *)_proximalGraph< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_double_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(double));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc12 == SWIG_NEWOBJ) delete[] buf12;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc12 == SWIG_NEWOBJ) delete[] buf12;
   return NULL;
 }
@@ -13132,16 +19910,11 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   bool arg16 ;
   int arg17 ;
   bool arg18 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
+  PyArrayObject *array3 = NULL ;
+  PyObject *sparray4 = NULL ;
+  PyObject *sparray5 = NULL ;
   int val6 ;
   int ecode6 = 0 ;
   float val7 ;
@@ -13173,31 +19946,201 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
 
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "proximalGraph" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "proximalGraph" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_VectorT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "proximalGraph" "', argument " "3"" of type '" "Vector< float > *""'");
+  {
+    array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
+    if (!array3 || !require_dimensions(array3,1) || !require_contiguous(array3) || !require_native(array3)) SWIG_fail;
+    arg3 = new Vector<float> ((float *)array_data(array3),(int)array_size(array3,0));
   }
-  arg3 = reinterpret_cast< Vector< float > * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "proximalGraph" "', argument " "4"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray4 = swig_obj[3];
+    if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
+        PyObject_HasAttrString(sparray4, "indices") &&
+        PyObject_HasAttrString(sparray4, "data") &&
+        PyObject_HasAttrString(sparray4, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 4 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray4, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray4, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg4: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg4 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg4 = reinterpret_cast< SpMatrix< bool > * >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "proximalGraph" "', argument " "5"" of type '" "SpMatrix< bool > *""'");
+  {
+    /* a column compressed storage sparse matrix in python scipy
+           looks like this
+
+           A = csc_matrix( ... )
+           A.indptr # pointer array
+           A.indices # indices array
+           A.data # nonzero values array
+           A.shape # size of matrix
+
+           >>> type(A.indptr)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.indices)
+           <type 'numpy.ndarray'> #int32
+           >>> type(A.data)
+           <type 'numpy.ndarray'>
+           >>> type(A.shape)
+           <type 'tuple'>
+         */
+    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    sparray5 = swig_obj[4];
+    if ( !( PyObject_HasAttrString(sparray5, "indptr") &&
+        PyObject_HasAttrString(sparray5, "indices") &&
+        PyObject_HasAttrString(sparray5, "data") &&
+        PyObject_HasAttrString(sparray5, "shape"))) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 5 : not a column compressed sparse matrix");
+      return NULL;
+    }
+
+    /* fetch sparse attributes */
+    PyArrayObject* indptr = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indptr");
+    PyArrayObject* indices = (PyArrayObject *) PyObject_GetAttrString(sparray5, "indices");
+    PyArrayObject* data = (PyArrayObject *) PyObject_GetAttrString(sparray5, "data");
+    PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
+
+    /* check that types are OK */
+    if (check_array(indptr,NPY_INT))
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(indices,NPY_INT)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
+      return NULL;
+    }
+
+    if check_array(data, NPY_BOOL)
+    {
+      PyErr_SetString(PyExc_TypeError,"spmatrix arg5: data array should be 1d and match datatype");
+      return NULL;
+    }
+
+    if (!PyTuple_Check(shape))
+    {
+      PyErr_SetString(PyExc_TypeError,"shape should be a tuple");
+      return NULL;
+    }
+
+    /* get array dimensions */
+    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+
+
+    int *pB = (int *)array_data(indptr);
+    int *pE = pB + 1;
+    int nzmax = (int)array_size(data,0);
+    Py_DECREF(indptr);
+    Py_DECREF(indices);
+    Py_DECREF(data);
+    Py_DECREF(shape);
+
+
+    arg5 = new SpMatrix<bool> ((bool *)array_data(data),(int *)array_data(indices),pB,pE,m,n,nzmax);
+    /*@SWIG@*/
+
   }
-  arg5 = reinterpret_cast< SpMatrix< bool > * >(argp5);
   ecode6 = SWIG_AsVal_int(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "proximalGraph" "', argument " "6"" of type '" "int""'");
@@ -13263,15 +20206,63 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "proximalGraph" "', argument " "18"" of type '" "bool""'");
   }
   arg18 = static_cast< bool >(val18);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< float > *)_proximalGraph< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< float > *)_proximalGraph< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_float_t, 0 |  0 );
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(float));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc12 == SWIG_NEWOBJ) delete[] buf12;
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
+  {
+    delete arg3;
+  }
+  {
+    delete arg4;
+  }
+  {
+    delete arg5;
+  }
   if (alloc12 == SWIG_NEWOBJ) delete[] buf12;
   return NULL;
 }
@@ -13289,52 +20280,55 @@ SWIGINTERN PyObject *_wrap_proximalGraph(PyObject *self, PyObject *args) {
   if (argc == 18) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_FLOAT);
+
+      }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[6], NULL);
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        _v = is_array(argv[2]) && (array_numdims(argv[2]) == 1) && PyArray_EquivTypenums(array_type(argv[2]),NPY_FLOAT);
+
+      }
+    }
+    if (!_v) goto check_1;
+    {
+      {
+        int res = SWIG_AsVal_float(argv[6], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[7], NULL);
+        int res = SWIG_AsVal_float(argv[7], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
     {
       {
-        int res = SWIG_AsVal_double(argv[8], NULL);
+        int res = SWIG_AsVal_float(argv[8], NULL);
         _v = SWIG_CheckState(res);
       }
     }
     if (!_v) goto check_1;
-    PyObject *retobj = _wrap_proximalGraph__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_proximalGraph__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_1:
 
   if (argc == 18) {
-    PyObject *retobj = _wrap_proximalGraph__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_proximalGraph__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -13352,31 +20346,60 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   int *arg1 = (int *) 0 ;
   int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
+  PyArrayObject *array1 = NULL ;
+  int i1 = 1 ;
+  PyObject *swig_obj[1] ;
   std::vector< StructNodeElem< double > * > *result = 0 ;
 
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "simpleGroupTree", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "simpleGroupTree" "', argument " "1"" of type '" "int *""'");
-  }
-  arg1 = reinterpret_cast< int * >(argp1);
-  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "simpleGroupTree" "', argument " "2"" of type '" "int""'");
-  }
-  arg2 = static_cast< int >(val2);
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (std::vector< StructNodeElem< double > * > *)_simpleGroupTree< double >(arg1,arg2);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_INT);
+    if (!array1 || !require_dimensions(array1,1) || !require_contiguous(array1)
+      || !require_native(array1)) SWIG_fail;
+    arg1 = (int*) array_data(array1);
+    arg2 = 1;
+    for (i1=0; i1 < array_numdims(array1); ++i1) arg2 *= array_size(array1,i1);
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0 |  0 );
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (std::vector< StructNodeElem< double > * > *)_simpleGroupTree< double >(arg1,arg2);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
+  }
+  {
+    //int n = result->size();
+    PyObject* node_list = PyList_New(0);
+    for(std::vector<StructNodeElem<double> *>::iterator it = result->begin();it != result->end();it++) {
+      PyObject* tuple = PyTuple_New(4);
+      StructNodeElem<double> *node = *it;
+      int inode = node->node_num;
+      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
+      int k = node->vars->size();
+      PyObject *vars = PyList_New(0);
+      std::vector<int> *pvars = node->vars;
+      for(int i = 0;i < k;i++)
+      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyTuple_SetItem(tuple,2, (PyObject* )vars);
+      k = node->children->size();
+      pvars = node->children;
+      PyObject *children = PyList_New(0);
+      for(int i = 0;i < k;i++)
+      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+
+      PyTuple_SetItem(tuple,3,(PyObject* )children );
+      PyList_Append(node_list,tuple);
+    }
+    del_gstruct(result);
+    resultobj = SWIG_Python_AppendOutput(resultobj,node_list);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -13400,12 +20423,44 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "readGroupStruct" "', argument " "1"" of type '" "char const *""'");
   }
   arg1 = reinterpret_cast< char * >(buf1);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (std::vector< StructNodeElem< double > * > *)_readGroupStruct< double >((char const *)arg1);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (std::vector< StructNodeElem< double > * > *)_readGroupStruct< double >((char const *)arg1);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0 |  0 );
+  {
+    //int n = result->size();
+    PyObject* node_list = PyList_New(0);
+    for(std::vector<StructNodeElem<double> *>::iterator it = result->begin();it != result->end();it++) {
+      PyObject* tuple = PyTuple_New(4);
+      StructNodeElem<double> *node = *it;
+      int inode = node->node_num;
+      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
+      int k = node->vars->size();
+      PyObject *vars = PyList_New(0);
+      std::vector<int> *pvars = node->vars;
+      for(int i = 0;i < k;i++)
+      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyTuple_SetItem(tuple,2, (PyObject* )vars);
+      k = node->children->size();
+      pvars = node->children;
+      PyObject *children = PyList_New(0);
+      for(int i = 0;i < k;i++)
+      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+
+      PyTuple_SetItem(tuple,3,(PyObject* )children );
+      PyList_Append(node_list,tuple);
+    }
+    del_gstruct(result);
+    resultobj = SWIG_Python_AppendOutput(resultobj,node_list);
+  }
   if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
   return resultobj;
 fail:
@@ -13431,12 +20486,44 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "groupStructOfString" "', argument " "1"" of type '" "char const *""'");
   }
   arg1 = reinterpret_cast< char * >(buf1);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (std::vector< StructNodeElem< double > * > *)_groupStructOfString< double >((char const *)arg1);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (std::vector< StructNodeElem< double > * > *)_groupStructOfString< double >((char const *)arg1);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0 |  0 );
+  {
+    //int n = result->size();
+    PyObject* node_list = PyList_New(0);
+    for(std::vector<StructNodeElem<double> *>::iterator it = result->begin();it != result->end();it++) {
+      PyObject* tuple = PyTuple_New(4);
+      StructNodeElem<double> *node = *it;
+      int inode = node->node_num;
+      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
+      int k = node->vars->size();
+      PyObject *vars = PyList_New(0);
+      std::vector<int> *pvars = node->vars;
+      for(int i = 0;i < k;i++)
+      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyTuple_SetItem(tuple,2, (PyObject* )vars);
+      k = node->children->size();
+      pvars = node->children;
+      PyObject *children = PyList_New(0);
+      for(int i = 0;i < k;i++)
+      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+
+      PyTuple_SetItem(tuple,3,(PyObject* )children );
+      PyList_Append(node_list,tuple);
+    }
+    del_gstruct(result);
+    resultobj = SWIG_Python_AppendOutput(resultobj,node_list);
+  }
   if (alloc1 == SWIG_NEWOBJ) delete[] buf1;
   return resultobj;
 fail:
@@ -13450,39 +20537,162 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
   std::vector< StructNodeElem< double > * > *arg1 = (std::vector< StructNodeElem< double > * > *) 0 ;
   SpMatrix< bool > **arg2 = (SpMatrix< bool > **) 0 ;
   SpMatrix< bool > **arg3 = (SpMatrix< bool > **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  SpMatrix< bool > *data_temp2 ;
+  SpMatrix< bool > *data_temp3 ;
   Vector< double > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "graphOfGroupStruct" "', argument " "1"" of type '" "std::vector< StructNodeElem< double > * > *""'");
-  }
-  arg1 = reinterpret_cast< std::vector< StructNodeElem< double > * > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "graphOfGroupStruct" "', argument " "2"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg2 = reinterpret_cast< SpMatrix< bool > ** >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "graphOfGroupStruct" "', argument " "3"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< bool > ** >(argp3);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< double > *)_graphOfGroupStruct< double >(arg1,arg2,arg3);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    arg2 = &data_temp2;
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_double_t, 0 |  0 );
+  {
+    arg3 = &data_temp3;
+  }
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    PyObject* pytree = swig_obj[0];
+    if(!PyList_Check(pytree)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 must be a list");SWIG_fail;
+    }
+    arg1 = new std::vector<StructNodeElem<double> *>;
+    for(Py_ssize_t i = 0;i < PyList_Size(pytree);i++) {
+      PyObject* pynode = PyList_GetItem(pytree,i);
+      if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
+      }
+      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      double w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
+      std::vector<int> *vars = new std::vector<int>;
+      std::vector<int> *children = new std::vector<int>;
+      PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
+      PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
+      for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
+      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
+      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
+      arg1->push_back(node);
+    }
+
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< double > *)_graphOfGroupStruct< double >(arg1,arg2,arg3);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
+  }
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *data = (double *)array->data;
+    double *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(double));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp2 != NULL) {
+      npy_intp m = data_temp2->m();
+      npy_intp n = data_temp2->n();
+      npy_intp nzmax = data_temp2->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp2->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp2->r();
+      int *pB = data_temp2->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp3->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    del_gstruct(arg1);
+  }
   return resultobj;
 fail:
+  {
+    del_gstruct(arg1);
+  }
   return NULL;
 }
 
@@ -13492,67 +20702,181 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
   std::vector< StructNodeElem< float > * > *arg1 = (std::vector< StructNodeElem< float > * > *) 0 ;
   SpMatrix< bool > **arg2 = (SpMatrix< bool > **) 0 ;
   SpMatrix< bool > **arg3 = (SpMatrix< bool > **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  SpMatrix< bool > *data_temp2 ;
+  SpMatrix< bool > *data_temp3 ;
   Vector< float > *result = 0 ;
 
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_StructNodeElemT_float_t_p_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "graphOfGroupStruct" "', argument " "1"" of type '" "std::vector< StructNodeElem< float > * > *""'");
-  }
-  arg1 = reinterpret_cast< std::vector< StructNodeElem< float > * > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "graphOfGroupStruct" "', argument " "2"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg2 = reinterpret_cast< SpMatrix< bool > ** >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "graphOfGroupStruct" "', argument " "3"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg3 = reinterpret_cast< SpMatrix< bool > ** >(argp3);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (Vector< float > *)_graphOfGroupStruct< float >(arg1,arg2,arg3);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    arg2 = &data_temp2;
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VectorT_float_t, 0 |  0 );
+  {
+    arg3 = &data_temp3;
+  }
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    PyObject* pytree = swig_obj[0];
+    if(!PyList_Check(pytree)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 must be a list");SWIG_fail;
+    }
+    arg1 = new std::vector<StructNodeElem<float> *>;
+    for(Py_ssize_t i = 0;i < PyList_Size(pytree);i++) {
+      PyObject* pynode = PyList_GetItem(pytree,i);
+      if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
+      }
+      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      float w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
+      std::vector<int> *vars = new std::vector<int>;
+      std::vector<int> *children = new std::vector<int>;
+      PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
+      PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
+      for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
+      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
+      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
+      arg1->push_back(node);
+    }
+
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (Vector< float > *)_graphOfGroupStruct< float >(arg1,arg2,arg3);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
+  }
+  {
+    npy_intp n = result->n();
+    npy_intp dims[1] = {
+      n
+    };
+    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNew(1, dims, NPY_FLOAT);
+    float *data = (float *)array->data;
+    float *idata = result->rawX();
+    memcpy(data,idata,n * sizeof(float));
+    delete result;
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+
+  }
+  {
+    if(data_temp2 != NULL) {
+      npy_intp m = data_temp2->m();
+      npy_intp n = data_temp2->n();
+      npy_intp nzmax = data_temp2->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp2->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp2->r();
+      int *pB = data_temp2->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp3 != NULL) {
+      npy_intp m = data_temp3->m();
+      npy_intp n = data_temp3->n();
+      npy_intp nzmax = data_temp3->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp3->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp3->r();
+      int *pB = data_temp3->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    del_gstruct(arg1);
+  }
   return resultobj;
 fail:
+  {
+    del_gstruct(arg1);
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_graphOfGroupStruct(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[4] = {
+  PyObject *argv[2] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "graphOfGroupStruct", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "graphOfGroupStruct", 0, 1, argv))) SWIG_fail;
   --argc;
-  if (argc == 3) {
-    int _v = 0;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
+  if (argc == 1) {
     PyObject *retobj = _wrap_graphOfGroupStruct__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-check_1:
-
-  if (argc == 3) {
+  if (argc == 1) {
     PyObject *retobj = _wrap_graphOfGroupStruct__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
@@ -13576,67 +20900,167 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
   SpMatrix< bool > **arg5 = (SpMatrix< bool > **) 0 ;
   Vector< int > **arg6 = (Vector< int > **) 0 ;
   Vector< int > **arg7 = (Vector< int > **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  int *data_temp2 = NULL ;
+  int dim_temp2 ;
+  Vector< double > *data_temp4 ;
+  SpMatrix< bool > *data_temp5 ;
+  Vector< int > *data_temp6 ;
+  Vector< int > *data_temp7 ;
   int result;
 
-  (void)self;
-  if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "treeOfGroupStruct" "', argument " "1"" of type '" "std::vector< StructNodeElem< double > * > *""'");
-  }
-  arg1 = reinterpret_cast< std::vector< StructNodeElem< double > * > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "treeOfGroupStruct" "', argument " "2"" of type '" "int **""'");
-  }
-  arg2 = reinterpret_cast< int ** >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "treeOfGroupStruct" "', argument " "3"" of type '" "int *""'");
-  }
-  arg3 = reinterpret_cast< int * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_VectorT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "treeOfGroupStruct" "', argument " "4"" of type '" "Vector< double > **""'");
-  }
-  arg4 = reinterpret_cast< Vector< double > ** >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "treeOfGroupStruct" "', argument " "5"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg5 = reinterpret_cast< SpMatrix< bool > ** >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "treeOfGroupStruct" "', argument " "6"" of type '" "Vector< int > **""'");
-  }
-  arg6 = reinterpret_cast< Vector< int > ** >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "treeOfGroupStruct" "', argument " "7"" of type '" "Vector< int > **""'");
-  }
-  arg7 = reinterpret_cast< Vector< int > ** >(argp7);
   {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (int)_treeOfGroupStruct< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+    arg2 = &data_temp2;
+    arg3 = &dim_temp2;
+  }
+  {
+    arg4 = &data_temp4;
+  }
+  {
+    arg5 = &data_temp5;
+  }
+  {
+    arg6 = &data_temp6;
+  }
+  {
+    arg7 = &data_temp7;
+  }
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    PyObject* pytree = swig_obj[0];
+    if(!PyList_Check(pytree)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 must be a list");SWIG_fail;
+    }
+    arg1 = new std::vector<StructNodeElem<double> *>;
+    for(Py_ssize_t i = 0;i < PyList_Size(pytree);i++) {
+      PyObject* pynode = PyList_GetItem(pytree,i);
+      if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
+      }
+      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      double w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
+      std::vector<int> *vars = new std::vector<int>;
+      std::vector<int> *children = new std::vector<int>;
+      PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
+      PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
+      for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
+      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
+      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
+      arg1->push_back(node);
+    }
+
+  }
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (int)_treeOfGroupStruct< double >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_From_int(static_cast< int >(result));
+  {
+    npy_intp dims[1] = {
+      *arg3
+    };
+    PyObject* obj = PyArray_SimpleNewFromData(1, dims, NPY_INT, (void*)(*arg2));
+    PyArrayObject* array = (PyArrayObject*) obj;
+
+    if (!array) SWIG_fail;
+    resultobj = SWIG_Python_AppendOutput(resultobj,obj);
+  }
+  {
+    if(data_temp4 != NULL) {
+      npy_intp n = data_temp4->n();
+      npy_intp dims[1] = {
+        n
+      };
+      double *data = data_temp4->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_DOUBLE,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp5 != NULL) {
+      npy_intp m = data_temp5->m();
+      npy_intp n = data_temp5->n();
+      npy_intp nzmax = data_temp5->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp5->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp5->r();
+      int *pB = data_temp5->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp6 != NULL) {
+      npy_intp n = data_temp6->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp6->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp7 != NULL) {
+      npy_intp n = data_temp7->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp7->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    del_gstruct(arg1);
+  }
   return resultobj;
 fail:
+  {
+    del_gstruct(arg1);
+  }
   return NULL;
 }
 
@@ -13650,101 +21074,177 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
   SpMatrix< bool > **arg5 = (SpMatrix< bool > **) 0 ;
   Vector< int > **arg6 = (Vector< int > **) 0 ;
   Vector< int > **arg7 = (Vector< int > **) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  int *data_temp2 = NULL ;
+  int dim_temp2 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
-  void *argp5 = 0 ;
-  int res5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  SpMatrix< bool > *data_temp5 ;
+  Vector< int > *data_temp6 ;
+  Vector< int > *data_temp7 ;
   int result;
 
+  {
+    arg2 = &data_temp2;
+    arg3 = &dim_temp2;
+  }
+  {
+    arg5 = &data_temp5;
+  }
+  {
+    arg6 = &data_temp6;
+  }
+  {
+    arg7 = &data_temp7;
+  }
   (void)self;
-  if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_std__vectorT_StructNodeElemT_float_t_p_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "treeOfGroupStruct" "', argument " "1"" of type '" "std::vector< StructNodeElem< float > * > *""'");
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    PyObject* pytree = swig_obj[0];
+    if(!PyList_Check(pytree)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"arg 1 must be a list");SWIG_fail;
+    }
+    arg1 = new std::vector<StructNodeElem<float> *>;
+    for(Py_ssize_t i = 0;i < PyList_Size(pytree);i++) {
+      PyObject* pynode = PyList_GetItem(pytree,i);
+      if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
+        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
+      }
+      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      float w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
+      std::vector<int> *vars = new std::vector<int>;
+      std::vector<int> *children = new std::vector<int>;
+      PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
+      PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
+      for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
+      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
+      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
+      arg1->push_back(node);
+    }
+
   }
-  arg1 = reinterpret_cast< std::vector< StructNodeElem< float > * > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "treeOfGroupStruct" "', argument " "2"" of type '" "int **""'");
-  }
-  arg2 = reinterpret_cast< int ** >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "treeOfGroupStruct" "', argument " "3"" of type '" "int *""'");
-  }
-  arg3 = reinterpret_cast< int * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4,SWIGTYPE_p_p_VectorT_float_t, 0 |  0 );
+  res4 = SWIG_ConvertPtr(swig_obj[1], &argp4,SWIGTYPE_p_p_VectorT_float_t, 0 |  0 );
   if (!SWIG_IsOK(res4)) {
     SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "treeOfGroupStruct" "', argument " "4"" of type '" "Vector< float > **""'");
   }
   arg4 = reinterpret_cast< Vector< float > ** >(argp4);
-  res5 = SWIG_ConvertPtr(swig_obj[4], &argp5,SWIGTYPE_p_p_SpMatrixT_bool_t, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "treeOfGroupStruct" "', argument " "5"" of type '" "SpMatrix< bool > **""'");
-  }
-  arg5 = reinterpret_cast< SpMatrix< bool > ** >(argp5);
-  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "treeOfGroupStruct" "', argument " "6"" of type '" "Vector< int > **""'");
-  }
-  arg6 = reinterpret_cast< Vector< int > ** >(argp6);
-  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7,SWIGTYPE_p_p_VectorT_int_t, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "treeOfGroupStruct" "', argument " "7"" of type '" "Vector< int > **""'");
-  }
-  arg7 = reinterpret_cast< Vector< int > ** >(argp7);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (int)_treeOfGroupStruct< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      result = (int)_treeOfGroupStruct< float >(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_From_int(static_cast< int >(result));
+  {
+    npy_intp dims[1] = {
+      *arg3
+    };
+    PyObject* obj = PyArray_SimpleNewFromData(1, dims, NPY_INT, (void*)(*arg2));
+    PyArrayObject* array = (PyArrayObject*) obj;
+
+    if (!array) SWIG_fail;
+    resultobj = SWIG_Python_AppendOutput(resultobj,obj);
+  }
+  {
+    if(data_temp5 != NULL) {
+      npy_intp m = data_temp5->m();
+      npy_intp n = data_temp5->n();
+      npy_intp nzmax = data_temp5->nzmax();
+      npy_intp dims[2] = {
+        m,n
+      };
+      dims[0] = n + 1;
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      dims[0] = nzmax;
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
+      if (! indptr || !indices || !vdata) SWIG_fail;
+      int i;
+      bool *xdata = data_temp5->v();
+      bool *data = (bool *)array_data(vdata);
+      memcpy(data,xdata,nzmax * sizeof(bool));
+      npy_int *pi = (npy_int *)array_data(indices);
+      int *r = data_temp5->r();
+      int *pB = data_temp5->pB();
+      if(sizeof(npy_int) == sizeof(int)) {
+        memcpy(pi,r,nzmax * sizeof(int));
+        pi = (npy_int *)array_data(indptr);
+        memcpy(pi,pB,(n + 1) * sizeof(int));
+      } else {
+        for(i = 0;i< nzmax;i++)
+        *(pi+i) = (npy_int) *(r+i);
+        pi = (npy_int *)array_data(indptr);
+        for(i = 0;i< n + 1;i++)
+        *(pi+i) = (npy_int) *(pB+i);
+      }
+      PyObject* tuple = PyTuple_New(4);
+      PyObject* shape = PyTuple_New(2);
+      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(tuple,0, (PyObject* )indptr);
+      PyTuple_SetItem(tuple,1,(PyObject* )indices);
+      PyTuple_SetItem(tuple,2,(PyObject* )vdata);
+      PyTuple_SetItem(tuple,3,shape);
+      resultobj = SWIG_Python_AppendOutput(resultobj,tuple);
+    }
+  }
+  {
+    if(data_temp6 != NULL) {
+      npy_intp n = data_temp6->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp6->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    if(data_temp7 != NULL) {
+      npy_intp n = data_temp7->n();
+      npy_intp dims[1] = {
+        n
+      };
+      int *data = data_temp7->rawX();
+      PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, NPY_INT,(void*)data);
+      if (!array) SWIG_fail;
+      resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array);
+    }
+  }
+  {
+    del_gstruct(arg1);
+  }
   return resultobj;
 fail:
+  {
+    del_gstruct(arg1);
+  }
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_treeOfGroupStruct(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[8] = {
+  PyObject *argv[3] = {
     0
   };
 
   (void)self;
-  if (!(argc = SWIG_Python_UnpackTuple(args, "treeOfGroupStruct", 0, 7, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "treeOfGroupStruct", 0, 2, argv))) SWIG_fail;
   --argc;
-  if (argc == 7) {
-    int _v = 0;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_std__vectorT_StructNodeElemT_double_t_p_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[3], &vptr, SWIGTYPE_p_p_VectorT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
+  if (argc == 1) {
     PyObject *retobj = _wrap_treeOfGroupStruct__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-check_1:
-
-  if (argc == 7) {
+  if (argc == 2) {
     PyObject *retobj = _wrap_treeOfGroupStruct__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
@@ -13766,10 +21266,8 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
   int arg3 ;
   int arg4 ;
   bool arg5 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   int val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -13779,16 +21277,40 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "im2col_sliding" "', argument " "1"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<double> ((double *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "im2col_sliding" "', argument " "2"" of type '" "Matrix< double > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d double Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<double> ((double *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< double > * >(argp2);
   ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "im2col_sliding" "', argument " "3"" of type '" "int""'");
@@ -13804,14 +21326,32 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "im2col_sliding" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _im2col_sliding< double >(arg1,arg2,arg3,arg4,arg5);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _im2col_sliding< double >(arg1,arg2,arg3,arg4,arg5);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -13823,10 +21363,8 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
   int arg3 ;
   int arg4 ;
   bool arg5 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  PyArrayObject *array1 = NULL ;
+  PyArrayObject *array2 = NULL ;
   int val3 ;
   int ecode3 = 0 ;
   int val4 ;
@@ -13836,16 +21374,40 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "im2col_sliding" "', argument " "1"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array1 to a numpy
+    	fortran array1 by just modifying the strides */
+    if (!array1 || !require_dimensions(array1,2) || !array_is_fortran(array1) || !require_native(array1)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 1 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg1 = new Matrix<float> ((float *)array_data(array1),(int)array_size(array1,0),(int)array_size(array1,1));
+
+    /*@SWIG@*/
   }
-  arg1 = reinterpret_cast< Matrix< float > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_MatrixT_float_t, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "im2col_sliding" "', argument " "2"" of type '" "Matrix< float > *""'");
+  {
+    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
+    /* !!!!!
+    	WARNING! bug (?) : the variable name choosen above must not appear
+    	in the string, otherwise swig will not correctly generate
+    	final variable names (above name + number)
+    	*/
+    /* we cannot use require_fortran, because it convert a numpy C array2 to a numpy
+    	fortran array2 by just modifying the strides */
+    if (!array2 || !require_dimensions(array2,2) || !array_is_fortran(array2) || !require_native(array2)) {
+      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"matrix arg 2 must be a 2d float Fortran Array"); SWIG_fail;
+    }
+    arg2 = new Matrix<float> ((float *)array_data(array2),(int)array_size(array2,0),(int)array_size(array2,1));
+
+    /*@SWIG@*/
   }
-  arg2 = reinterpret_cast< Matrix< float > * >(argp2);
   ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "im2col_sliding" "', argument " "3"" of type '" "int""'");
@@ -13861,14 +21423,32 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "im2col_sliding" "', argument " "5"" of type '" "bool""'");
   }
   arg5 = static_cast< bool >(val5);
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    _im2col_sliding< float >(arg1,arg2,arg3,arg4,arg5);
-    SWIG_PYTHON_THREAD_END_ALLOW;
+  try {
+    {
+      SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+      _im2col_sliding< float >(arg1,arg2,arg3,arg4,arg5);
+      SWIG_PYTHON_THREAD_END_ALLOW;
+    }
+  } catch(char const *_e) {
+    PyErr_SetString(PyExc_RuntimeError, _e);
+    SWIG_fail;
+
   }
   resultobj = SWIG_Py_Void();
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return resultobj;
 fail:
+  {
+    delete arg1;
+  }
+  {
+    delete arg2;
+  }
   return NULL;
 }
 
@@ -13885,15 +21465,17 @@ SWIGINTERN PyObject *_wrap_im2col_sliding(PyObject *self, PyObject *args) {
   if (argc == 5) {
     int _v = 0;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[0]) && (array_numdims(argv[0]) == 2) && PyArray_EquivTypenums(array_type(argv[0]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_MatrixT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        _v = is_array(argv[1]) && (array_numdims(argv[1]) == 2) && PyArray_EquivTypenums(array_type(argv[1]),NPY_DOUBLE);
+
+      }
     }
     if (!_v) goto check_1;
     PyObject *retobj = _wrap_im2col_sliding__SWIG_0(self, argc, argv);
@@ -13959,12 +21541,12 @@ static PyMethodDef SwigMethods[] = {
 		"sparseProject(Matrix< float > * U, Matrix< float > * V, float const thrs, int const mode, float const lambda1, float const lambda2, float const lambda3, bool const pos, int const numThreads)\n"
 		""},
 	 { "lassoD", _wrap_lassoD, METH_VARARGS, "\n"
-		"lassoD(Matrix< double > * X, Matrix< double > * D, Matrix< double > ** path, bool return_reg_path, int L, double const constraint, double const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< double >\n"
-		"lassoD(Matrix< float > * X, Matrix< float > * D, Matrix< float > ** path, bool return_reg_path, int L, float const constraint, float const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< float > *\n"
+		"lassoD(Matrix< double > * X, Matrix< double > * D, bool return_reg_path, int L, double const constraint, double const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< double >\n"
+		"lassoD(Matrix< float > * X, Matrix< float > * D, bool return_reg_path, int L, float const constraint, float const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< float > *\n"
 		""},
 	 { "lassoQq", _wrap_lassoQq, METH_VARARGS, "\n"
-		"lassoQq(Matrix< double > * X, Matrix< double > * Q, Matrix< double > * q, Matrix< double > ** path, bool return_reg_path, int L, double const constraint, double const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< double >\n"
-		"lassoQq(Matrix< float > * X, Matrix< float > * Q, Matrix< float > * q, Matrix< float > ** path, bool return_reg_path, int L, float const constraint, float const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< float > *\n"
+		"lassoQq(Matrix< double > * X, Matrix< double > * Q, Matrix< double > * q, bool return_reg_path, int L, double const constraint, double const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< double >\n"
+		"lassoQq(Matrix< float > * X, Matrix< float > * Q, Matrix< float > * q, bool return_reg_path, int L, float const constraint, float const lambda2, constraint_type mode, bool const pos, bool const ols, int const numThreads, int max_length_path, bool const verbose, bool cholevsky) -> SpMatrix< float > *\n"
 		""},
 	 { "lassoMask", _wrap_lassoMask, METH_VARARGS, "\n"
 		"lassoMask(Matrix< double > * X, Matrix< double > * D, Matrix< bool > * B, int L, double const constraint, double const lambda2, constraint_type mode, bool const pos, int const numThreads, bool verbose) -> SpMatrix< double >\n"
@@ -13975,12 +21557,12 @@ static PyMethodDef SwigMethods[] = {
 		"lassoWeighted(Matrix< float > * X, Matrix< float > * D, Matrix< float > * W, int L, float const constraint, constraint_type mode, bool const pos, int const numThreads, bool verbose) -> SpMatrix< float > *\n"
 		""},
 	 { "omp", _wrap_omp, METH_VARARGS, "\n"
-		"omp(Matrix< double > * X, Matrix< double > * D, Matrix< double > ** path, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< double > * eps, bool given_Lambda, Vector< double > * Lambda, int const numThreads) -> SpMatrix< double >\n"
-		"omp(Matrix< float > * X, Matrix< float > * D, Matrix< float > ** path, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< float > * eps, bool given_Lambda, Vector< float > * Lambda, int const numThreads) -> SpMatrix< float > *\n"
+		"omp(Matrix< double > * X, Matrix< double > * D, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< double > * eps, bool given_Lambda, Vector< double > * Lambda, int const numThreads) -> SpMatrix< double >\n"
+		"omp(Matrix< float > * X, Matrix< float > * D, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< float > * eps, bool given_Lambda, Vector< float > * Lambda, int const numThreads) -> SpMatrix< float > *\n"
 		""},
 	 { "ompMask", _wrap_ompMask, METH_VARARGS, "\n"
-		"ompMask(Matrix< double > * X, Matrix< double > * D, Matrix< bool > * B, Matrix< double > ** path, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< double > * eps, bool given_Lambda, Vector< double > * Lambda, int const numThreads) -> SpMatrix< double >\n"
-		"ompMask(Matrix< float > * X, Matrix< float > * D, Matrix< bool > * B, Matrix< float > ** path, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< float > * eps, bool given_Lambda, Vector< float > * Lambda, int const numThreads) -> SpMatrix< float > *\n"
+		"ompMask(Matrix< double > * X, Matrix< double > * D, Matrix< bool > * B, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< double > * eps, bool given_Lambda, Vector< double > * Lambda, int const numThreads) -> SpMatrix< double >\n"
+		"ompMask(Matrix< float > * X, Matrix< float > * D, Matrix< bool > * B, bool return_reg_path, bool given_L, Vector< int > * L, bool given_eps, Vector< float > * eps, bool given_Lambda, Vector< float > * Lambda, int const numThreads) -> SpMatrix< float > *\n"
 		""},
 	 { "somp", _wrap_somp, METH_VARARGS, "\n"
 		"somp(Matrix< double > * X, Matrix< double > * D, Vector< int > * groups, int LL, double eps, int numThreads) -> SpMatrix< double >\n"
@@ -13995,16 +21577,16 @@ static PyMethodDef SwigMethods[] = {
 		"l1L2BCD(Matrix< float > * X, Matrix< float > * D, Matrix< float > * alpha0, Vector< int > * groups, float lambda1, constraint_type mode, int itermax, float tol, int numThreads)\n"
 		""},
 	 { "alltrainDL", _wrap_alltrainDL, METH_VARARGS, "\n"
-		"alltrainDL(Data< double > * X, bool in_memory, Matrix< double > ** omA, Matrix< double > ** omB, Vector< int > ** omiter, bool return_model, Matrix< double > * m_A, Matrix< double > * m_B, int m_iter, Matrix< double > * D1, Vector< double > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, Vector< int > * own_variables, Vector< int > * N_own_variables, int num_threads, double tol, bool fixed_step, bool ista, int batch_size, int K, double lambda1, double lambda2, double lambda3, int iter, double t0, constraint_type mode, char * name_regul, bool posAlpha, bool posD, bool expand, constraint_type_D modeD, bool whiten, bool clean, bool verbose, double gamma1, double gamma2, double rho, int iter_updateD, bool stochastic, int modeParam, bool batch, bool log, char * logName) -> Matrix< double >\n"
-		"alltrainDL(Data< float > * X, bool in_memory, Matrix< float > ** omA, Matrix< float > ** omB, Vector< int > ** omiter, bool return_model, Matrix< float > * m_A, Matrix< float > * m_B, int m_iter, Matrix< float > * D1, Vector< float > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, Vector< int > * own_variables, Vector< int > * N_own_variables, int num_threads, float tol, bool fixed_step, bool ista, int batch_size, int K, double lambda1, double lambda2, double lambda3, int iter, double t0, constraint_type mode, char * name_regul, bool posAlpha, bool posD, bool expand, constraint_type_D modeD, bool whiten, bool clean, bool verbose, double gamma1, double gamma2, float rho, int iter_updateD, bool stochastic, int modeParam, bool batch, bool log, char * logName) -> Matrix< float > *\n"
+		"alltrainDL(Data< double > * X, bool in_memory, bool return_model, Matrix< double > * m_A, Matrix< double > * m_B, int m_iter, Matrix< double > * D1, Vector< double > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, Vector< int > * own_variables, Vector< int > * N_own_variables, int num_threads, double tol, bool fixed_step, bool ista, int batch_size, int K, double lambda1, double lambda2, double lambda3, int iter, double t0, constraint_type mode, char * name_regul, bool posAlpha, bool posD, bool expand, constraint_type_D modeD, bool whiten, bool clean, bool verbose, double gamma1, double gamma2, double rho, int iter_updateD, bool stochastic, int modeParam, bool batch, bool log, char * logName) -> Matrix< double >\n"
+		"alltrainDL(Data< float > * X, bool in_memory, bool return_model, Matrix< float > * m_A, Matrix< float > * m_B, int m_iter, Matrix< float > * D1, Vector< float > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, Vector< int > * own_variables, Vector< int > * N_own_variables, int num_threads, float tol, bool fixed_step, bool ista, int batch_size, int K, double lambda1, double lambda2, double lambda3, int iter, double t0, constraint_type mode, char * name_regul, bool posAlpha, bool posD, bool expand, constraint_type_D modeD, bool whiten, bool clean, bool verbose, double gamma1, double gamma2, float rho, int iter_updateD, bool stochastic, int modeParam, bool batch, bool log, char * logName) -> Matrix< float > *\n"
 		""},
 	 { "archetypalAnalysis", _wrap_archetypalAnalysis, METH_VARARGS, "\n"
-		"archetypalAnalysis(Matrix< double > * X, int p, SpMatrix< double > ** spA, SpMatrix< double > ** spB, bool robust, double epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) -> Matrix< double >\n"
-		"archetypalAnalysis(Matrix< float > * X, int p, SpMatrix< float > ** spA, SpMatrix< float > ** spB, bool robust, float epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) -> Matrix< float > *\n"
+		"archetypalAnalysis(Matrix< double > * X, int p, bool robust, double epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) -> Matrix< double >\n"
+		"archetypalAnalysis(Matrix< float > * X, int p, bool robust, float epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) -> Matrix< float > *\n"
 		""},
 	 { "archetypalAnalysisInit", _wrap_archetypalAnalysisInit, METH_VARARGS, "\n"
-		"archetypalAnalysisInit(Matrix< double > * X, Matrix< double > * Z0, SpMatrix< double > ** spA, SpMatrix< double > ** spB, bool robust, double epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) -> Matrix< double >\n"
-		"archetypalAnalysisInit(Matrix< float > * X, Matrix< float > * Z0, SpMatrix< float > ** spA, SpMatrix< float > ** spB, bool robust, float epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) -> Matrix< float > *\n"
+		"archetypalAnalysisInit(Matrix< double > * X, Matrix< double > * Z0, bool robust, double epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) -> Matrix< double >\n"
+		"archetypalAnalysisInit(Matrix< float > * X, Matrix< float > * Z0, bool robust, float epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) -> Matrix< float > *\n"
 		""},
 	 { "decompSimplex", _wrap_decompSimplex, METH_VARARGS, "\n"
 		"decompSimplex(Matrix< double > * X, Matrix< double > * Z, bool computeXtX, int numThreads) -> SpMatrix< double >\n"
@@ -14034,16 +21616,16 @@ static PyMethodDef SwigMethods[] = {
 		"proximalGraph(Matrix< double > * alpha0, Matrix< double > * alpha, Vector< double > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, int num_threads, double lambda1, double lambda2, double lambda3, bool intercept, bool resetflow, char * name_regul, bool verbose, bool pos, bool clever, bool eval, int size_group, bool transpose) -> Vector< double >\n"
 		"proximalGraph(Matrix< float > * alpha0, Matrix< float > * alpha, Vector< float > * eta_g, SpMatrix< bool > * groups, SpMatrix< bool > * groups_var, int num_threads, float lambda1, float lambda2, float lambda3, bool intercept, bool resetflow, char * name_regul, bool verbose, bool pos, bool clever, bool eval, int size_group, bool transpose) -> Vector< float > *\n"
 		""},
-	 { "simpleGroupTree", _wrap_simpleGroupTree, METH_VARARGS, "simpleGroupTree(int * degr, int n) -> std::vector< StructNodeElem< double > * > *"},
+	 { "simpleGroupTree", _wrap_simpleGroupTree, METH_O, "simpleGroupTree(int * degr) -> std::vector< StructNodeElem< double > * > *"},
 	 { "readGroupStruct", _wrap_readGroupStruct, METH_O, "readGroupStruct(char const * file) -> std::vector< StructNodeElem< double > * > *"},
 	 { "groupStructOfString", _wrap_groupStructOfString, METH_O, "groupStructOfString(char const * data) -> std::vector< StructNodeElem< double > * > *"},
 	 { "graphOfGroupStruct", _wrap_graphOfGroupStruct, METH_VARARGS, "\n"
-		"graphOfGroupStruct(std::vector< StructNodeElem< double > * > * gstruct, SpMatrix< bool > ** pgroups, SpMatrix< bool > ** pgroups_var) -> Vector< double >\n"
-		"graphOfGroupStruct(std::vector< StructNodeElem< float > * > * gstruct, SpMatrix< bool > ** pgroups, SpMatrix< bool > ** pgroups_var) -> Vector< float > *\n"
+		"graphOfGroupStruct(std::vector< StructNodeElem< double > * > * gstruct) -> Vector< double >\n"
+		"graphOfGroupStruct(std::vector< StructNodeElem< float > * > * gstruct) -> Vector< float > *\n"
 		""},
 	 { "treeOfGroupStruct", _wrap_treeOfGroupStruct, METH_VARARGS, "\n"
-		"treeOfGroupStruct(std::vector< StructNodeElem< double > * > * gstruct, int ** pperm, int * pnb_vars, Vector< double > ** peta_g, SpMatrix< bool > ** pgroups, Vector< int > ** pown_variables, Vector< int > ** pN_own_variables) -> int\n"
-		"treeOfGroupStruct(std::vector< StructNodeElem< float > * > * gstruct, int ** pperm, int * pnb_vars, Vector< float > ** peta_g, SpMatrix< bool > ** pgroups, Vector< int > ** pown_variables, Vector< int > ** pN_own_variables) -> int\n"
+		"treeOfGroupStruct(std::vector< StructNodeElem< double > * > * gstruct) -> int\n"
+		"treeOfGroupStruct(std::vector< StructNodeElem< float > * > * gstruct, Vector< float > ** peta_g) -> int\n"
 		""},
 	 { "im2col_sliding", _wrap_im2col_sliding, METH_VARARGS, "\n"
 		"im2col_sliding(Matrix< double > * A, Matrix< double > * B, int m, int n, bool RGB)\n"
@@ -14055,129 +21637,53 @@ static PyMethodDef SwigMethods[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_AbstractMatrixBT_double_t = {"_p_AbstractMatrixBT_double_t", "AbstractMatrixB< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_AbstractMatrixBT_float_t = {"_p_AbstractMatrixBT_float_t", "AbstractMatrixB< float > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_DataT_double_t = {"_p_DataT_double_t", "Data< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_DataT_float_t = {"_p_DataT_float_t", "Data< float > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_MatrixT_bool_t = {"_p_MatrixT_bool_t", "Matrix< bool > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_MatrixT_double_t = {"_p_MatrixT_double_t", "Matrix< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_MatrixT_float_t = {"_p_MatrixT_float_t", "Matrix< float > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_SpMatrixT_bool_t = {"_p_SpMatrixT_bool_t", "SpMatrix< bool > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_SpMatrixT_double_t = {"_p_SpMatrixT_double_t", "SpMatrix< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_SpMatrixT_float_t = {"_p_SpMatrixT_float_t", "SpMatrix< float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SwigPyObject = {"_p_SwigPyObject", "SwigPyObject *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_VectorT_double_t = {"_p_VectorT_double_t", "Vector< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_VectorT_float_t = {"_p_VectorT_float_t", "Vector< float > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_VectorT_int_t = {"_p_VectorT_int_t", "Vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_MatrixT_double_t = {"_p_p_MatrixT_double_t", "Matrix< double > **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_MatrixT_float_t = {"_p_p_MatrixT_float_t", "Matrix< float > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_SpMatrixT_bool_t = {"_p_p_SpMatrixT_bool_t", "SpMatrix< bool > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_SpMatrixT_double_t = {"_p_p_SpMatrixT_double_t", "SpMatrix< double > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_SpMatrixT_float_t = {"_p_p_SpMatrixT_float_t", "SpMatrix< float > **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_VectorT_double_t = {"_p_p_VectorT_double_t", "Vector< double > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_VectorT_float_t = {"_p_p_VectorT_float_t", "Vector< float > **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_p_VectorT_int_t = {"_p_p_VectorT_int_t", "Vector< int > **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_int = {"_p_p_int", "int **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_StructNodeElemT_double_t_p_t = {"_p_std__vectorT_StructNodeElemT_double_t_p_t", "std::vector< StructNodeElem< double > * > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_StructNodeElemT_float_t_p_t = {"_p_std__vectorT_StructNodeElemT_float_t_p_t", "std::vector< StructNodeElem< float > * > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_string = {"_p_string", "string *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_AbstractMatrixBT_double_t,
-  &_swigt__p_AbstractMatrixBT_float_t,
-  &_swigt__p_DataT_double_t,
-  &_swigt__p_DataT_float_t,
-  &_swigt__p_MatrixT_bool_t,
-  &_swigt__p_MatrixT_double_t,
-  &_swigt__p_MatrixT_float_t,
-  &_swigt__p_SpMatrixT_bool_t,
-  &_swigt__p_SpMatrixT_double_t,
-  &_swigt__p_SpMatrixT_float_t,
   &_swigt__p_SwigPyObject,
-  &_swigt__p_VectorT_double_t,
-  &_swigt__p_VectorT_float_t,
-  &_swigt__p_VectorT_int_t,
   &_swigt__p_char,
   &_swigt__p_int,
-  &_swigt__p_p_MatrixT_double_t,
-  &_swigt__p_p_MatrixT_float_t,
   &_swigt__p_p_SpMatrixT_bool_t,
   &_swigt__p_p_SpMatrixT_double_t,
   &_swigt__p_p_SpMatrixT_float_t,
-  &_swigt__p_p_VectorT_double_t,
   &_swigt__p_p_VectorT_float_t,
-  &_swigt__p_p_VectorT_int_t,
   &_swigt__p_p_int,
-  &_swigt__p_std__vectorT_StructNodeElemT_double_t_p_t,
-  &_swigt__p_std__vectorT_StructNodeElemT_float_t_p_t,
   &_swigt__p_std__vectorT_int_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_string,
 };
 
-static swig_cast_info _swigc__p_AbstractMatrixBT_double_t[] = {  {&_swigt__p_AbstractMatrixBT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_AbstractMatrixBT_float_t[] = {  {&_swigt__p_AbstractMatrixBT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_DataT_double_t[] = {  {&_swigt__p_DataT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_DataT_float_t[] = {  {&_swigt__p_DataT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_MatrixT_bool_t[] = {  {&_swigt__p_MatrixT_bool_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_MatrixT_double_t[] = {  {&_swigt__p_MatrixT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_MatrixT_float_t[] = {  {&_swigt__p_MatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SpMatrixT_bool_t[] = {  {&_swigt__p_SpMatrixT_bool_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SpMatrixT_double_t[] = {  {&_swigt__p_SpMatrixT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SpMatrixT_float_t[] = {  {&_swigt__p_SpMatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SwigPyObject[] = {  {&_swigt__p_SwigPyObject, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VectorT_double_t[] = {  {&_swigt__p_VectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VectorT_float_t[] = {  {&_swigt__p_VectorT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VectorT_int_t[] = {  {&_swigt__p_VectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_p_MatrixT_double_t[] = {  {&_swigt__p_p_MatrixT_double_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_p_MatrixT_float_t[] = {  {&_swigt__p_p_MatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_SpMatrixT_bool_t[] = {  {&_swigt__p_p_SpMatrixT_bool_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_SpMatrixT_double_t[] = {  {&_swigt__p_p_SpMatrixT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_SpMatrixT_float_t[] = {  {&_swigt__p_p_SpMatrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_p_VectorT_double_t[] = {  {&_swigt__p_p_VectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_VectorT_float_t[] = {  {&_swigt__p_p_VectorT_float_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_p_VectorT_int_t[] = {  {&_swigt__p_p_VectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_int[] = {  {&_swigt__p_p_int, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_StructNodeElemT_double_t_p_t[] = {  {&_swigt__p_std__vectorT_StructNodeElemT_double_t_p_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_StructNodeElemT_float_t_p_t[] = {  {&_swigt__p_std__vectorT_StructNodeElemT_float_t_p_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vectorT_int_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_string[] = {  {&_swigt__p_string, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_AbstractMatrixBT_double_t,
-  _swigc__p_AbstractMatrixBT_float_t,
-  _swigc__p_DataT_double_t,
-  _swigc__p_DataT_float_t,
-  _swigc__p_MatrixT_bool_t,
-  _swigc__p_MatrixT_double_t,
-  _swigc__p_MatrixT_float_t,
-  _swigc__p_SpMatrixT_bool_t,
-  _swigc__p_SpMatrixT_double_t,
-  _swigc__p_SpMatrixT_float_t,
   _swigc__p_SwigPyObject,
-  _swigc__p_VectorT_double_t,
-  _swigc__p_VectorT_float_t,
-  _swigc__p_VectorT_int_t,
   _swigc__p_char,
   _swigc__p_int,
-  _swigc__p_p_MatrixT_double_t,
-  _swigc__p_p_MatrixT_float_t,
   _swigc__p_p_SpMatrixT_bool_t,
   _swigc__p_p_SpMatrixT_double_t,
   _swigc__p_p_SpMatrixT_float_t,
-  _swigc__p_p_VectorT_double_t,
   _swigc__p_p_VectorT_float_t,
-  _swigc__p_p_VectorT_int_t,
   _swigc__p_p_int,
-  _swigc__p_std__vectorT_StructNodeElemT_double_t_p_t,
-  _swigc__p_std__vectorT_StructNodeElemT_float_t_p_t,
   _swigc__p_std__vectorT_int_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_string,
