@@ -432,7 +432,7 @@ def __allTrainDL(X,return_model= None,model= None,in_memory= False,
 
     if tree is None and graph is None:
         eta_g = np.array([],dtype=X.dtype,order="F")
-        groups = ssp.csc_matrix(np.array([[False],[False]],dtype=np.bool,order="F"))
+        groups = ssp.csc_matrix(np.array([[False],[False]],dtype=bool,order="F"))
     if tree is not None:
         if not ('eta_g' in tree and 'groups' in tree and
                 'own_variables' in tree and 'N_own_variables' in tree):
@@ -454,7 +454,7 @@ def __allTrainDL(X,return_model= None,model= None,in_memory= False,
         groups = graph['groups']
         groups_var = graph['groups_var']
     else:
-        groups_var = ssp.csc_matrix(np.array([[False],[False]],dtype=np.bool,order="F"))
+        groups_var = ssp.csc_matrix(np.array([[False],[False]],dtype=bool,order="F"))
 
     if model is None:
         m_A = np.array([[],[]],dtype=X.dtype,order="F")
