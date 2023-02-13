@@ -70,7 +70,7 @@ jobs:
 
       - name: Build sdist
         run: |
-          python -m pip install numpy distro
+          python -m pip install numpy distro build
           python -m build --sdist
 
       - uses: actions/upload-artifact@v3
