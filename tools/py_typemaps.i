@@ -10,11 +10,11 @@ extern "C" {
 #include <Python.h>
 #include <numpy/arrayobject.h>
 }
+#define check_array_int(a) (!is_array(a) || !require_contiguous(a) || !require_dimensions(a,1) || !require_native(a) || !PyArray_ISINTEGER(a))
 #define check_array(a,npy_type) (!is_array(a) || !require_contiguous(a) || !require_dimensions(a,1) || !require_native(a) || array_type(a)!=npy_type)
 %}
 
 //#endif
-%include "stdint.i"
 %include "numpy.i"
 
 %typemap(throws) const char * %{
@@ -196,13 +196,13 @@ extern "C" {
         PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
         /* check that types are OK */
-	if (check_array(indptr,NPY_INTP))
+	if (check_array_int(indptr))
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indptr array should be 1d int's");
             return NULL;
         }
 
-	  if check_array(indices,NPY_INTP)
+	  if check_array_int(indices)
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indices array should be 1d int's");
             return NULL;
@@ -281,9 +281,9 @@ extern "C" {
     npy_intp nzmax = result->nzmax();
     npy_intp dims[2] = {m,n};
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, DATA_TYPECODE);
     int i;
     DATA_TYPE *xdata = result->v();
@@ -333,9 +333,9 @@ extern "C" {
     npy_intp nzmax = data_temp$argnum->nzmax();
     npy_intp dims[2] = {m,n};
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, DATA_TYPECODE);
     if (! indptr || !indices || !vdata) SWIG_fail;
     int i;
