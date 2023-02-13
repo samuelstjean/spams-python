@@ -4037,51 +4037,47 @@ SWIG_CanCastAsInteger(double *d, double min, double max) {
 }
 
 
-#if NPY_API_VERSION < NPY_1_7_API_VERSION
-#define NPY_ARRAY_DEFAULT NPY_DEFAULT
-#define NPY_ARRAY_FARRAY  NPY_FARRAY
-#define NPY_FORTRANORDER  NPY_FORTRAN
-#endif
-
-
-  SWIGINTERN int
-  SWIG_AsVal_long (PyObject * obj, long * val)
-  {
-    if (PyLong_Check(obj)) {
-      long v = PyLong_AsLong(obj);
-      if (v != -1 || !PyErr_Occurred()) {
-	if (val) *val = v;
-	return SWIG_OK;
-      } else {
-	PyErr_Clear();
-      }
-    }
-#ifdef SWIG_PYTHON_CAST_MODE
-    {
-      int dispatch = 0;
-      long v = PyLong_AsLong(obj);
-      if (v != -1 || !PyErr_Occurred()) {
-	if (val) *val = v;
-	return SWIG_AddCast(SWIG_OK);
-      } else {
-	PyErr_Clear();
-      }
-      if (!dispatch) {
-	double d;
-	int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
-	if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, LONG_MIN, LONG_MAX)) {
-	  if (val) *val = (long)(d);
-	  return res;
-	}
-      }
-    }
-#endif
-    if (!PyArray_IsScalar(obj,Integer)) return SWIG_TypeError;
-    PyArray_Descr * longDescr = PyArray_DescrFromType(NPY_LONG);
-    PyArray_CastScalarToCtype(obj, (void*)val, longDescr);
-    Py_DECREF(longDescr);
+SWIGINTERN int
+SWIG_AsVal_long (PyObject *obj, long* val)
+{
+#if PY_VERSION_HEX < 0x03000000
+  if (PyInt_Check(obj)) {
+    if (val) *val = PyInt_AsLong(obj);
     return SWIG_OK;
+  } else
+#endif
+  if (PyLong_Check(obj)) {
+    long v = PyLong_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      PyErr_Clear();
+      return SWIG_OverflowError;
+    }
   }
+#ifdef SWIG_PYTHON_CAST_MODE
+  {
+    int dispatch = 0;
+    long v = PyInt_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_AddCast(SWIG_OK);
+    } else {
+      PyErr_Clear();
+    }
+    if (!dispatch) {
+      double d;
+      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
+      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, LONG_MIN, LONG_MAX)) {
+	if (val) *val = (long)(d);
+	return res;
+      }
+    }
+  }
+#endif
+  return SWIG_TypeError;
+}
 
 
 SWIGINTERN int
@@ -4262,6 +4258,13 @@ SWIGINTERNINLINE PyObject*
 {
   return PyInt_FromLong((long) value);
 }
+
+
+#if NPY_API_VERSION < NPY_1_7_API_VERSION
+#define NPY_ARRAY_DEFAULT NPY_DEFAULT
+#define NPY_ARRAY_FARRAY  NPY_FARRAY
+#define NPY_FORTRANORDER  NPY_FORTRAN
+#endif
 
 
 /* Macros to extract array attributes.
@@ -5099,7 +5102,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5116,7 +5119,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5133,7 +5136,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5229,7 +5232,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   (void)self;
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5246,7 +5249,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5263,7 +5266,7 @@ SWIGINTERN PyObject *_wrap_mult__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5428,7 +5431,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray1 = swig_obj[0];
     if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
         PyObject_HasAttrString(sparray1, "indices") &&
@@ -5445,13 +5448,13 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
@@ -5488,7 +5491,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
 
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5562,7 +5565,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray1 = swig_obj[0];
     if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
         PyObject_HasAttrString(sparray1, "indices") &&
@@ -5579,13 +5582,13 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
@@ -5622,7 +5625,7 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
 
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5735,7 +5738,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray1 = swig_obj[0];
     if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
         PyObject_HasAttrString(sparray1, "indices") &&
@@ -5752,13 +5755,13 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
@@ -5795,7 +5798,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
 
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5812,7 +5815,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5894,7 +5897,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray1 = swig_obj[0];
     if ( !( PyObject_HasAttrString(sparray1, "indptr") &&
         PyObject_HasAttrString(sparray1, "indices") &&
@@ -5911,13 +5914,13 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     PyObject* shape = PyObject_GetAttrString(sparray1, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
       return NULL;
@@ -5954,7 +5957,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
 
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -5971,7 +5974,7 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6212,7 +6215,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_0(PyObject *self, Py_ssize_t 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6302,7 +6305,7 @@ SWIGINTERN PyObject *_wrap_conjugateGradient__SWIG_1(PyObject *self, Py_ssize_t 
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6442,7 +6445,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6484,7 +6487,7 @@ SWIGINTERN PyObject *_wrap_invSym__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6563,7 +6566,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6605,7 +6608,7 @@ SWIGINTERN PyObject *_wrap_normalize__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6707,7 +6710,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6724,7 +6727,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_0(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6836,7 +6839,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -6853,7 +6856,7 @@ SWIGINTERN PyObject *_wrap_sparseProject__SWIG_1(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7057,7 +7060,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
   (void)self;
   if ((nobjs < 13) || (nobjs > 13)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7074,7 +7077,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7164,9 +7167,9 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -7281,7 +7284,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
   (void)self;
   if ((nobjs < 13) || (nobjs > 13)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7298,7 +7301,7 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7388,9 +7391,9 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -7567,7 +7570,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7584,7 +7587,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7601,7 +7604,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7691,9 +7694,9 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -7816,7 +7819,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 14) || (nobjs > 14)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7833,7 +7836,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7850,7 +7853,7 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -7940,9 +7943,9 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -8115,7 +8118,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8132,7 +8135,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8149,7 +8152,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8219,9 +8222,9 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -8310,7 +8313,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8327,7 +8330,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8344,7 +8347,7 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8414,9 +8417,9 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -8562,7 +8565,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8579,7 +8582,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8596,7 +8599,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8661,9 +8664,9 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -8749,7 +8752,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8766,7 +8769,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8783,7 +8786,7 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -8848,9 +8851,9 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -9002,7 +9005,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9019,7 +9022,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9094,9 +9097,9 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -9217,7 +9220,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
   (void)self;
   if ((nobjs < 10) || (nobjs > 10)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9234,7 +9237,7 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9309,9 +9312,9 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -9494,7 +9497,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9511,7 +9514,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9528,7 +9531,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9603,9 +9606,9 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -9734,7 +9737,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 11) || (nobjs > 11)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9751,7 +9754,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9768,7 +9771,7 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_BOOL);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -9843,9 +9846,9 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -10017,7 +10020,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10034,7 +10037,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10089,9 +10092,9 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -10168,7 +10171,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
   (void)self;
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10185,7 +10188,7 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10240,9 +10243,9 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -10378,7 +10381,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10395,7 +10398,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10430,7 +10433,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray3 = swig_obj[2];
     if ( !( PyObject_HasAttrString(sparray3, "indptr") &&
         PyObject_HasAttrString(sparray3, "indices") &&
@@ -10447,13 +10450,13 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
       return NULL;
@@ -10533,9 +10536,9 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -10618,7 +10621,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10635,7 +10638,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10670,7 +10673,7 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray3 = swig_obj[2];
     if ( !( PyObject_HasAttrString(sparray3, "indptr") &&
         PyObject_HasAttrString(sparray3, "indices") &&
@@ -10687,13 +10690,13 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     PyObject* shape = PyObject_GetAttrString(sparray3, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg3: indices array should be 1d int's");
       return NULL;
@@ -10773,9 +10776,9 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -10919,7 +10922,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10936,7 +10939,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -10953,7 +10956,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11070,7 +11073,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11087,7 +11090,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11104,7 +11107,7 @@ SWIGINTERN PyObject *_wrap_l1L2BCD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11398,7 +11401,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     if ( PyObject_HasAttrString(swig_obj[0], "indptr")) {
       PyObject* sparray =swig_obj[0];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[0];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -11415,13 +11418,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
         return NULL;
@@ -11457,7 +11460,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11485,7 +11488,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   }
   arg6 = static_cast< bool >(val6);
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array7 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11502,7 +11505,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array8 = obj_to_array_no_conversion(swig_obj[4], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11524,7 +11527,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   }
   arg9 = static_cast< int >(val9);
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array10 = obj_to_array_no_conversion(swig_obj[6], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -11564,7 +11567,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray12 = swig_obj[8];
     if ( !( PyObject_HasAttrString(sparray12, "indptr") &&
         PyObject_HasAttrString(sparray12, "indices") &&
@@ -11581,13 +11584,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
       return NULL;
@@ -11642,7 +11645,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray13 = swig_obj[9];
     if ( !( PyObject_HasAttrString(sparray13, "indptr") &&
         PyObject_HasAttrString(sparray13, "indices") &&
@@ -11659,13 +11662,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
       return NULL;
@@ -12134,7 +12137,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     if ( PyObject_HasAttrString(swig_obj[0], "indptr")) {
       PyObject* sparray =swig_obj[0];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[0];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -12151,13 +12154,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg1: indices array should be 1d int's");
         return NULL;
@@ -12193,7 +12196,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -12221,7 +12224,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   }
   arg6 = static_cast< bool >(val6);
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array7 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -12238,7 +12241,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array8 = obj_to_array_no_conversion(swig_obj[4], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -12260,7 +12263,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   }
   arg9 = static_cast< int >(val9);
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array10 = obj_to_array_no_conversion(swig_obj[6], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -12300,7 +12303,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray12 = swig_obj[8];
     if ( !( PyObject_HasAttrString(sparray12, "indptr") &&
         PyObject_HasAttrString(sparray12, "indices") &&
@@ -12317,13 +12320,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray12, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg12: indices array should be 1d int's");
       return NULL;
@@ -12378,7 +12381,7 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray13 = swig_obj[9];
     if ( !( PyObject_HasAttrString(sparray13, "indptr") &&
         PyObject_HasAttrString(sparray13, "indices") &&
@@ -12395,13 +12398,13 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray13, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg13: indices array should be 1d int's");
       return NULL;
@@ -12857,7 +12860,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -12951,9 +12954,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -12994,9 +12997,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13083,7 +13086,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
   (void)self;
   if ((nobjs < 9) || (nobjs > 9)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13177,9 +13180,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13220,9 +13223,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13351,7 +13354,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13368,7 +13371,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13452,9 +13455,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13495,9 +13498,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13586,7 +13589,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
   (void)self;
   if ((nobjs < 8) || (nobjs > 8)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13603,7 +13606,7 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13687,9 +13690,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13730,9 +13733,9 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -13852,7 +13855,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13869,7 +13872,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13914,9 +13917,9 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_DOUBLE);
     int i;
     double *xdata = result->v();
@@ -13982,7 +13985,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -13999,7 +14002,7 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14044,9 +14047,9 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
       m,n
     };
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_FLOAT);
     int i;
     float *xdata = result->v();
@@ -14264,7 +14267,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14301,7 +14304,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -14318,13 +14321,13 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -14360,7 +14363,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14378,7 +14381,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14395,7 +14398,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14791,7 +14794,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 40) || (nobjs > 40)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14828,7 +14831,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -14845,13 +14848,13 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -14887,7 +14890,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14905,7 +14908,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -14922,7 +14925,7 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -15470,7 +15473,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -15507,7 +15510,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -15524,13 +15527,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -15566,7 +15569,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -15584,7 +15587,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -15601,7 +15604,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -15641,7 +15644,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray6 = swig_obj[5];
     if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
         PyObject_HasAttrString(sparray6, "indices") &&
@@ -15658,13 +15661,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
@@ -16109,7 +16112,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   (void)self;
   if ((nobjs < 43) || (nobjs > 43)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -16146,7 +16149,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -16163,13 +16166,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -16205,7 +16208,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -16223,7 +16226,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -16240,7 +16243,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -16280,7 +16283,7 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray6 = swig_obj[5];
     if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
         PyObject_HasAttrString(sparray6, "indices") &&
@@ -16297,13 +16300,13 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
@@ -16899,7 +16902,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -16936,7 +16939,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -16953,13 +16956,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -16995,7 +16998,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17013,7 +17016,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17030,7 +17033,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17070,7 +17073,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray6 = swig_obj[5];
     if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
         PyObject_HasAttrString(sparray6, "indices") &&
@@ -17087,13 +17090,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
@@ -17148,7 +17151,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray7 = swig_obj[6];
     if ( !( PyObject_HasAttrString(sparray7, "indptr") &&
         PyObject_HasAttrString(sparray7, "indices") &&
@@ -17165,13 +17168,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
       return NULL;
@@ -17598,7 +17601,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   (void)self;
   if ((nobjs < 42) || (nobjs > 42)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17635,7 +17638,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
          */
     if ( PyObject_HasAttrString(swig_obj[1], "indptr")) {
       PyObject* sparray =swig_obj[1];
-      /*@SWIG:py_typemaps.i,181,map_sparse@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
       sparray = swig_obj[1];
       if ( !( PyObject_HasAttrString(sparray, "indptr") &&
           PyObject_HasAttrString(sparray, "indices") &&
@@ -17652,13 +17655,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
       /* check that types are OK */
-      if (check_array(indptr,NPY_INT))
+      if (check_array(indptr,NPY_INTP))
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indptr array should be 1d int's");
         return NULL;
       }
 
-      if check_array(indices,NPY_INT)
+      if check_array(indices,NPY_INTP)
       {
         PyErr_SetString(PyExc_TypeError,"spmatrix arg2: indices array should be 1d int's");
         return NULL;
@@ -17694,7 +17697,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       /*@SWIG@*/
     } else {
       PyArrayObject* array = NULL;
-      /*@SWIG:py_typemaps.i,85,map_matrix@*/
+      /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
       array = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
       /* !!!!!
       	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17712,7 +17715,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     }
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array3 = obj_to_array_no_conversion(swig_obj[2], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17729,7 +17732,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array4 = obj_to_array_no_conversion(swig_obj[3], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -17769,7 +17772,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray6 = swig_obj[5];
     if ( !( PyObject_HasAttrString(sparray6, "indptr") &&
         PyObject_HasAttrString(sparray6, "indices") &&
@@ -17786,13 +17789,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray6, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg6: indices array should be 1d int's");
       return NULL;
@@ -17847,7 +17850,7 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray7 = swig_obj[6];
     if ( !( PyObject_HasAttrString(sparray7, "indptr") &&
         PyObject_HasAttrString(sparray7, "indices") &&
@@ -17864,13 +17867,13 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     PyObject* shape = PyObject_GetAttrString(sparray7, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg7: indices array should be 1d int's");
       return NULL;
@@ -18376,7 +18379,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18393,7 +18396,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18582,7 +18585,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
   (void)self;
   if ((nobjs < 16) || (nobjs > 16)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18599,7 +18602,7 @@ SWIGINTERN PyObject *_wrap_proximalFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18861,7 +18864,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18878,7 +18881,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -18918,7 +18921,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray4 = swig_obj[3];
     if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
         PyObject_HasAttrString(sparray4, "indices") &&
@@ -18935,13 +18938,13 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
@@ -19179,7 +19182,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
   (void)self;
   if ((nobjs < 19) || (nobjs > 19)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -19196,7 +19199,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -19236,7 +19239,7 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray4 = swig_obj[3];
     if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
         PyObject_HasAttrString(sparray4, "indices") &&
@@ -19253,13 +19256,13 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
@@ -19569,7 +19572,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -19586,7 +19589,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -19626,7 +19629,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray4 = swig_obj[3];
     if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
         PyObject_HasAttrString(sparray4, "indices") &&
@@ -19643,13 +19646,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
@@ -19704,7 +19707,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray5 = swig_obj[4];
     if ( !( PyObject_HasAttrString(sparray5, "indptr") &&
         PyObject_HasAttrString(sparray5, "indices") &&
@@ -19721,13 +19724,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
       return NULL;
@@ -19947,7 +19950,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
   (void)self;
   if ((nobjs < 18) || (nobjs > 18)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -19964,7 +19967,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -20004,7 +20007,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray4 = swig_obj[3];
     if ( !( PyObject_HasAttrString(sparray4, "indptr") &&
         PyObject_HasAttrString(sparray4, "indices") &&
@@ -20021,13 +20024,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     PyObject* shape = PyObject_GetAttrString(sparray4, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg4: indices array should be 1d int's");
       return NULL;
@@ -20082,7 +20085,7 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
            >>> type(A.shape)
            <type 'tuple'>
          */
-    /*@SWIG:py_typemaps.i,181,map_sparse@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,181,map_sparse@*/
     sparray5 = swig_obj[4];
     if ( !( PyObject_HasAttrString(sparray5, "indptr") &&
         PyObject_HasAttrString(sparray5, "indices") &&
@@ -20099,13 +20102,13 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     PyObject* shape = PyObject_GetAttrString(sparray5, "shape");
 
     /* check that types are OK */
-    if (check_array(indptr,NPY_INT))
+    if (check_array(indptr,NPY_INTP))
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indptr array should be 1d int's");
       return NULL;
     }
 
-    if check_array(indices,NPY_INT)
+    if check_array(indices,NPY_INTP)
     {
       PyErr_SetString(PyExc_TypeError,"spmatrix arg5: indices array should be 1d int's");
       return NULL;
@@ -20608,9 +20611,9 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -20651,9 +20654,9 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -20773,9 +20776,9 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -20816,9 +20819,9 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -20995,9 +20998,9 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -21160,9 +21163,9 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
         m,n
       };
       dims[0] = n + 1;
-      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       dims[0] = nzmax;
-      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+      PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
       PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_BOOL);
       if (! indptr || !indices || !vdata) SWIG_fail;
       int i;
@@ -21278,7 +21281,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -21295,7 +21298,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_0(PyObject *self, Py_ssize_t nob
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_DOUBLE);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -21375,7 +21378,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
   (void)self;
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array1 = obj_to_array_no_conversion(swig_obj[0], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear
@@ -21392,7 +21395,7 @@ SWIGINTERN PyObject *_wrap_im2col_sliding__SWIG_1(PyObject *self, Py_ssize_t nob
     /*@SWIG@*/
   }
   {
-    /*@SWIG:py_typemaps.i,85,map_matrix@*/
+    /*@SWIG:spams_wrap/py_typemaps.i,85,map_matrix@*/
     array2 = obj_to_array_no_conversion(swig_obj[1], NPY_FLOAT);
     /* !!!!!
     	WARNING! bug (?) : the variable name choosen above must not appear

@@ -2,7 +2,6 @@ import numpy as np
 import scipy.sparse as ssp
 import spams
 import time
-import platform
 
 from test_utils import *
 
@@ -91,7 +90,7 @@ def test_conjGrad():
     x2 = np.abs(b - x1)
     print("Mean error on b : %f" % (x2.sum() / b.shape[0]))
 
-    err = abs(y1 - y2)
+    err = np.abs(y1 - y2)
     return err.max()
 
 
@@ -105,37 +104,3 @@ def test_normalize():
     A = np.asfortranarray(np.random.random(size=(100, 1000)), dtype=myfloat)
     res2 = Xtest1("spams", "spams.normalize(A)", locals())
     return None
-
-
-tests = [
-    "sort",
-    test_sort,
-    "calcAAt",
-    test_calcAAt,
-    "calcXAt",
-    test_calcXAt,
-    "calcXY",
-    test_calcXY,
-    "calcXYt",
-    test_calcXYt,
-    "calcXtY",
-    test_calcXtY,
-    "bayer",
-    test_bayer,
-    "conjGrad",
-    test_conjGrad,
-    "invSym",
-    test_invSym,
-    "normalize",
-    test_normalize,
-]
-
-broken_on_windows = [
-    "calcAAt",
-    test_calcAAt,
-    "calcXAt",
-    test_calcXAt,
-]
-
-if platform.system() == "Windows":
-    tests = [t for t in tests if t not in broken_on_windows]

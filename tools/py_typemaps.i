@@ -195,13 +195,13 @@ extern "C" {
         PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
         /* check that types are OK */
-	if (check_array(indptr,NPY_INT))
+	if (check_array(indptr,NPY_INTP))
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indptr array should be 1d int's");
             return NULL;
         }
 
-	  if check_array(indices,NPY_INT)
+	  if check_array(indices,NPY_INTP)
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indices array should be 1d int's");
             return NULL;
@@ -280,9 +280,9 @@ extern "C" {
     npy_intp nzmax = result->nzmax();
     npy_intp dims[2] = {m,n};
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, DATA_TYPECODE);
     int i;
     DATA_TYPE *xdata = result->v();
@@ -332,9 +332,9 @@ extern "C" {
     npy_intp nzmax = data_temp$argnum->nzmax();
     npy_intp dims[2] = {m,n};
     dims[0] = n + 1;
-    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indptr = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     dims[0] = nzmax;
-    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INT);
+    PyArrayObject *indices = (PyArrayObject * )PyArray_SimpleNew(1,dims, NPY_INTP);
     PyArrayObject *vdata = (PyArrayObject * )PyArray_SimpleNew(1,dims, DATA_TYPECODE);
     if (! indptr || !indices || !vdata) SWIG_fail;
     int i;
@@ -558,4 +558,3 @@ extern "C" {
 	%template(f_name) _ ## f_name<double>;
 	%enddef
 #endif
-
