@@ -117,7 +117,7 @@ Use of spams functions should only be done through module spams."
 %enddef
 
 #ifdef SWIGPYTHON
-%include "typemaps.i"
+%include "py_typemaps.i"
 %init %{
     import_array();
 %}
