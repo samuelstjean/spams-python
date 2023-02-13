@@ -12,6 +12,14 @@ from numpy.distutils.system_info import blas_info
 import distro
 
 
+# for np >= 1.22
+try:
+    blasinfo = np.distutils.__config__.blas_ilp64_opt_info
+    lapackinfo = np.distutils.__config__.lapack_ilp64_opt_info
+except Exception:
+    blasinfo = np.__config__.blas_opt_info
+    lapackinfo = np.__config__.lapack_opt_info
+
 def get_config():
 
     incs = ['spams_wrap']
@@ -23,18 +31,18 @@ def get_config():
 
     cc_flags = ['-fPIC', '-m64']
 
-    for _ in np.__config__.blas_opt_info.get('extra_compile_args', []):
+    for _ in blasinfo.get('extra_compile_args', []):
         if _ not in cc_flags:
             cc_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_compile_args', []):
+    for _ in lapackinfo.get('extra_compile_args', []):
         if _ not in cc_flags:
             cc_flags.append(_)
 
     link_flags = []
-    for _ in np.__config__.blas_opt_info.get('extra_link_args', []):
+    for _ in blasinfo.get('extra_link_args', []):
         if _ not in link_flags:
             link_flags.append(_)
-    for _ in np.__config__.lapack_opt_info.get('extra_link_args', []):
+    for _ in lapackinfo.get('extra_link_args', []):
         if _ not in link_flags:
             link_flags.append(_)
 
@@ -45,17 +53,17 @@ def get_config():
         libs = ['stdc++']
 
         is_mkl = False
-        for lib in np.__config__.blas_opt_info.get('libraries', []):
+        for lib in blasinfo.get('libraries', []):
             if 'mkl' in lib:
                 is_mkl = True
                 break
 
     libdirs = blas_info().get_lib_dirs()
     if is_mkl:
-        for _ in np.__config__.blas_opt_info.get('include_dirs', []):
+        for _ in blasinfo.get('include_dirs', []):
             if _ not in incs:
                 incs.append(_)
-        for _ in np.__config__.blas_opt_info.get('library_dirs', []):
+        for _ in blasinfo.get('library_dirs', []):
             if _ not in libdirs:
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
