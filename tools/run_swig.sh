@@ -1,1 +1,1 @@
-swig -c++ -python -o spams_wrap.cpp -O -builtin -dirvtable -threads spams.i
+swig -c++ -python -o spams_wrap/spams_wrap.cpp -O -builtin -dirvtable -threads -Ispams_wrap tools/spams.i

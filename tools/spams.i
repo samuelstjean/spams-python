@@ -33,7 +33,7 @@ Use of spams functions should only be done through module spams."
    Following macros define which typemap must be applied to arguments of C++ functions are converted.
    args of type inplace_* may containt input data or are ready (allocated)
     to receive output data. Typemaps of type 'in' are applied to them
-    before function call. 
+    before function call.
    args of type argout_* are used when multiple return values are needed.
     they are of type **; their storage is allocated on return of the C++ function.
      Typemaps of type 'in' are applied to them  before function call,
@@ -218,4 +218,3 @@ INSTANTIATE_DATA(treeOfGroupStruct)
 
 /* misc */
 INSTANTIATE_DATA(im2col_sliding)
-

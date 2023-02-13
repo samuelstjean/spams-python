@@ -14,6 +14,7 @@ extern "C" {
 %}
 
 //#endif
+%include "stdint.i"
 %include "numpy.i"
 
 %typemap(throws) const char * %{
