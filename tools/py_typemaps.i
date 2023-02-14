@@ -10,6 +10,7 @@ extern "C" {
 #include <Python.h>
 #include <numpy/arrayobject.h>
 }
+#define check_array_int(a) (!is_array(a) || !require_contiguous(a) || !require_dimensions(a,1) || !require_native(a) || !PyArray_ISINTEGER(a))
 #define check_array(a,npy_type) (!is_array(a) || !require_contiguous(a) || !require_dimensions(a,1) || !require_native(a) || array_type(a)!=npy_type)
 %}
 
@@ -195,13 +196,13 @@ extern "C" {
         PyObject* shape = PyObject_GetAttrString(sparray, "shape");
 
         /* check that types are OK */
-	if (check_array(indptr,NPY_INT))
+	if (check_array_int(indptr))
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indptr array should be 1d int's");
             return NULL;
         }
 
-	  if check_array(indices,NPY_INT)
+	  if check_array_int(indices)
         {
             PyErr_SetString(PyExc_TypeError,"spmatrix arg$argnum: indices array should be 1d int's");
             return NULL;
@@ -558,4 +559,3 @@ extern "C" {
 	%template(f_name) _ ## f_name<double>;
 	%enddef
 #endif
-
