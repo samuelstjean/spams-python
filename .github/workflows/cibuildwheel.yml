@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        pyver: ['cp36', 'cp37', 'cp38', 'cp39', 'cp310', 'cp311']
 
     steps:
       - uses: actions/checkout@v3
@@ -39,6 +40,7 @@ jobs:
 
       - name: Build wheels
         env:
+          CIBW_BUILD: ${{matrix.pyver}}-*
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_SKIP: "*-win32 *-manylinux_i686 pp* *-musllinux_*"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
