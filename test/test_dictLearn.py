@@ -1,7 +1,7 @@
-import sys
+import os.path
 import numpy as np
-import scipy
 import scipy.sparse as ssp
+
 try:
     from PIL import Image
 except Exception as e:
@@ -13,6 +13,7 @@ import time
 from test_utils import *
 
 ssprand = ssp.rand
+imgpath = os.path.dirname(os.path.realpath(__file__))
 
 
 def _extract_lasso_param(f_param):
@@ -40,7 +41,7 @@ def _objective(X,D,param,imgname = None):
         image.save("%s.png" %imgname)
 
 def test_trainDL():
-    img_file = 'test/boat.png'
+    img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
     except:
@@ -131,7 +132,7 @@ def test_trainDL():
     return None
 
 def test_trainDL_Memory():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except:
@@ -188,7 +189,7 @@ def test_trainDL_Memory():
     return None
 
 def test_structTrainDL():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except Exception as e:
@@ -359,7 +360,7 @@ def test_structTrainDL():
 
 
 def test_nmf():
-    img_file = 'test/boat.png'
+    img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
     except:
@@ -393,7 +394,7 @@ def test_nmf():
 
 # Archetypal Analysis, run first steps with FISTA and run last steps with activeSet,
 def test_archetypalAnalysis():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except Exception as e:
