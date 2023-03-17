@@ -289,12 +289,20 @@ static inline int init_omp(const int numThreads) {
    int NUM_THREADS;
 #ifdef _OPENMP
    NUM_THREADS = (numThreads == -1) ? MIN(MAX_THREADS,omp_get_num_procs()) : numThreads;
+
+   // using 0 thread is undefined behavior/implementation defined, so we force it to 1 instead
+   // https://github.com/samuelstjean/spams-python/issues/33
+   // https://www.openmp.org/spec-html/5.0/openmpsu110.html
+   if (NUM_THREADS == 0) {
+      NUM_THREADS = 1;
+   }
    // omp_set_max_active_levels(1);
    omp_set_dynamic(0);
    omp_set_num_threads(NUM_THREADS);
 #else
    NUM_THREADS = 1;
 #endif
+
    return NUM_THREADS;
 }
 
