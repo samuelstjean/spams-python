@@ -126,7 +126,7 @@ unlike the official version which can use any blas implementation.
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
-      version='2.6.5',
+      version='2.6.6',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',
