@@ -8,7 +8,7 @@ from openmp_helpers import add_openmp_flags_if_available
 import numpy as np
 from numpy.distutils.system_info import blas_info
 
-import distro
+# import distro
 
 
 # for np >= 1.22
@@ -67,10 +67,10 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
-            libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
-        else:
-            libs.extend(['openblas'])
+        # if 'centos' in distro.id():
+        #     libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
+        # else:
+        libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
@@ -81,9 +81,9 @@ def get_config():
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
 
-    if platform.system() == 'Darwin':
-        cc_flags.append('-I/usr/local/opt/openblas/include')
-        link_flags.append('-L/usr/local/opt/openblas/lib')
+    # if platform.system() == 'Darwin':
+    #     cc_flags.append('-I/usr/local/opt/openblas/include')
+    #     link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
         # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -91,6 +91,7 @@ def get_config():
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         libs.append('openblas')
         libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
+        # libpath = os.path.join('C:/opt/openblas/openblas_dll')
         libdirs.append(libpath)
         incs.append('C:/Miniconda/envs/openblas/Library/include')
         incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
