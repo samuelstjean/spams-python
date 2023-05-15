@@ -47,10 +47,19 @@ if [[ $PLATFORM == "macosx-x86_64" ]]; then
 fi
 
 if [[ $PLATFORM == "macosx-arm64" ]]; then
+  # Clean up the previous openblas/gfortran install because delocate will pick up remnants instead of the arm64 version
+    sudo rm -f /usr/local/bin/gfortran
+    for f in libgfortran.dylib libgfortran.5.dylib libgcc_s.1.dylib libgcc_s.1.1.dylib libquadmath.dylib libquadmath.0.dylib; do
+        sudo rm -rf /usr/local/lib/$f
+    done
+  sudo rm -f /usr/local/lib/*openblas*
+
   # OpenBLAS
   # need a version of OpenBLAS that is suited for gcc >= 11
   basedir=$(python tools/openblas_support.py)
 
+#   we want to force a dynamic linking
+  sudo rm $basedir/lib/*.a
   # use /opt/arm64-builds as a prefix, because that's what the multibuild
   # OpenBLAS pkgconfig files state
 #   sudo mkdir -p /opt/arm64-builds/lib
@@ -60,8 +69,6 @@ if [[ $PLATFORM == "macosx-arm64" ]]; then
   cp -r $basedir/lib/* /usr/local/lib
   cp $basedir/include/* /usr/local/include
 
-  # we want to force a dynamic linking
-  sudo rm /usr/local/lib/*.a
 
   curl -L https://github.com/fxcoudert/gfortran-for-macOS/releases/download/12.1-monterey/gfortran-ARM-12.1-Monterey.dmg -o gfortran.dmg
   GFORTRAN_SHA256=$(shasum -a 256 gfortran.dmg)
