@@ -61,7 +61,7 @@ if [[ $PLATFORM == "macosx-arm64" ]]; then
   cp $basedir/include/* /usr/local/include
 
   # we want to force a dynamic linking
-  sudo rm /opt/arm64-builds/lib/*.a
+  sudo rm /usr/local/lib/*.a
 
   curl -L https://github.com/fxcoudert/gfortran-for-macOS/releases/download/12.1-monterey/gfortran-ARM-12.1-Monterey.dmg -o gfortran.dmg
   GFORTRAN_SHA256=$(shasum -a 256 gfortran.dmg)
