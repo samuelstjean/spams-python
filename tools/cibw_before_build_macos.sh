@@ -82,4 +82,9 @@ if [[ $PLATFORM == "macosx-arm64" ]]; then
   hdiutil attach -mountpoint /Volumes/gfortran gfortran.dmg
   sudo installer -pkg /Volumes/gfortran/gfortran.pkg -target /
   type -p gfortran
+
+  # Link these into /usr/local so that there's no need to add rpath or -L
+  for f in libgfortran.dylib libgfortran.5.dylib libgcc_s.1.dylib libgcc_s.1.1.dylib libquadmath.dylib libquadmath.0.dylib; do
+    ln -sf /usr/local/gfortran/lib/$f /usr/local/lib/$f
+  done
 fi
