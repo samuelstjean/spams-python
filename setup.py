@@ -8,6 +8,8 @@ from openmp_helpers import add_openmp_flags_if_available
 import numpy as np
 from numpy.distutils.system_info import blas_info
 
+import distro
+
 # for np >= 1.22
 try:
     blasinfo = np.distutils.__config__.blas_ilp64_opt_info
@@ -64,7 +66,10 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        libs.extend(['openblas'])
+        if 'centos' in distro.id():
+            libs.extend(['openblaso'])  # for openmp support in openblas under redhat
+        else:
+            libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if platform.system() != 'Darwin':
