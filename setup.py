@@ -10,7 +10,6 @@ from numpy.distutils.system_info import blas_info
 
 import distro
 
-
 # for np >= 1.22
 try:
     blasinfo = np.distutils.__config__.blas_ilp64_opt_info
@@ -68,7 +67,7 @@ def get_config():
         libs.extend(['mkl_rt'])
     else:
         if 'centos' in distro.id():
-            libs.extend(['openblaso', 'lapack'])  # for openmp support in openblas
+            libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
             libs.extend(['openblas'])
 
@@ -81,9 +80,9 @@ def get_config():
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
 
-    if platform.system() == 'Darwin':
-        cc_flags.append('-I/usr/local/opt/openblas/include')
-        link_flags.append('-L/usr/local/opt/openblas/lib')
+    # if platform.system() == 'Darwin':
+    #     cc_flags.append('-I/usr/local/opt/openblas/include')
+    #     link_flags.append('-L/usr/local/opt/openblas/lib')
 
     if platform.system() == 'Windows':
         # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -91,6 +90,7 @@ def get_config():
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
         libs.append('openblas')
         libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
+        # libpath = os.path.join('C:/opt/openblas/openblas_dll')
         libdirs.append(libpath)
         incs.append('C:/Miniconda/envs/openblas/Library/include')
         incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
@@ -119,14 +119,10 @@ if platform.system() == 'Darwin':
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
 This (unofficial) version includes pre-built wheels for python 3 on windows, mac (with openmp support) and linux.
-
-In addition, building from source explicitly requires openblas on mac/linux and intel mkl on windows,
-unlike the official version which can use any blas implementation.
-
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
-      version='2.6.6',
+      version='2.6.7',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',
