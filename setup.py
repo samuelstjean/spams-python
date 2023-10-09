@@ -3,7 +3,7 @@ import platform
 
 from setuptools import setup, Extension, find_packages
 from distutils.sysconfig import get_python_inc
-from openmp_helpers import add_openmp_flags_if_available
+from extension_helpers import add_openmp_flags_if_available
 
 import numpy as np
 from numpy.distutils.system_info import blas_info
