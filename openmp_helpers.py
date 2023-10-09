@@ -24,8 +24,6 @@
 # ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
 # This module defines functions that can be used to check whether OpenMP is
 # available and if so what flags to use. To use this, import the
 # add_openmp_flags_if_available function in a setup_package.py file where you
@@ -43,24 +41,27 @@ import os
 import sys
 import glob
 import time
+import logging
 import datetime
 import tempfile
 import subprocess
 
-from distutils import log
-from distutils.errors import LinkError, CompileError
-from distutils.ccompiler import new_compiler
-from distutils.sysconfig import get_config_var, customize_compiler
+from setuptools.command.build_ext import customize_compiler, get_config_var, new_compiler
 
+from ._setup_helpers import get_compiler
 
-__all__ = ['add_openmp_flags_if_available']
+__all__ = ["add_openmp_flags_if_available"]
 
 try:
     # Check if this has already been instantiated, only set the default once.
     _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_
 except NameError:
+    import builtins
+
     # It hasn't, so do so.
-    _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_ = False
+    builtins._EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_ = False
+
+log = logging.getLogger(__name__)
 
 CCODE = """
 #include <omp.h>
@@ -73,7 +74,14 @@ int main(void) {
 """
 
 
-def _get_flag_value_from_var(flag, var, delim=' '):
+CCODE_ICX = """
+#ifndef __INTEL_LLVM_COMPILER
+#error This is not the Intel oneAPI compiler
+#endif
+"""
+
+
+def _get_flag_value_from_var(flag, var, delim=" "):
     """
     Extract flags from an environment variable.
 
@@ -102,7 +110,7 @@ def _get_flag_value_from_var(flag, var, delim=' '):
     This function is not supported on Windows.
     """
 
-    if sys.platform.startswith('win'):
+    if sys.platform.startswith("win"):
         return None
 
     # Simple input validation
@@ -128,6 +136,44 @@ def _get_flag_value_from_var(flag, var, delim=' '):
                 return item[flag_length:]
 
 
+def _check_if_compiler_is_icx():
+    """
+    Check whether the compiler is the Intel oneAPI compiler.
+
+    Returns
+    -------
+    result : bool
+        `True` if the test passed, `False` otherwise.
+    """
+
+    ccompiler = new_compiler()
+    customize_compiler(ccompiler)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        start_dir = os.path.abspath(".")
+
+        try:
+            os.chdir(tmp_dir)
+
+            # Write test program
+            with open("test_icx.c", "w") as f:
+                f.write(CCODE_ICX)
+
+            os.mkdir("objects")
+
+            # Compile program
+            ccompiler.compile(["test_icx.c"], output_dir="objects")
+        except Exception:
+            is_icx = False
+        else:
+            is_icx = True
+
+        finally:
+            os.chdir(start_dir)
+
+    return is_icx
+
+
 def get_openmp_flags():
     """
     Utility for returning compiler and linker flags possibly needed for
@@ -146,23 +192,27 @@ def get_openmp_flags():
     compile_flags = []
     link_flags = []
 
-    if get_compiler() == 'msvc':
-        compile_flags.append('-openmp')
+    if get_compiler() == "msvc":
+        compile_flags.append("-openmp")
     else:
-
-        include_path = _get_flag_value_from_var('-I', 'CFLAGS')
+        include_path = _get_flag_value_from_var("-I", "CFLAGS")
         if include_path:
-            compile_flags.append('-I' + include_path)
+            compile_flags.append("-I" + include_path)
 
-        lib_path = _get_flag_value_from_var('-L', 'LDFLAGS')
+        lib_path = _get_flag_value_from_var("-L", "LDFLAGS")
         if lib_path:
-            link_flags.append('-L' + lib_path)
-            link_flags.append('-Wl,-rpath,' + lib_path)
+            link_flags.append("-L" + lib_path)
+            link_flags.append("-Wl,-rpath," + lib_path)
 
-        compile_flags.append('-fopenmp')
-        link_flags.append('-fopenmp')
+        if _check_if_compiler_is_icx():
+            openmp_flags = "-qopenmp"
+        else:
+            openmp_flags = "-fopenmp"
 
-    return {'compiler_flags': compile_flags, 'linker_flags': link_flags}
+        compile_flags.append(openmp_flags)
+        link_flags.append(openmp_flags)
+
+    return {"compiler_flags": compile_flags, "linker_flags": link_flags}
 
 
 def check_openmp_support(openmp_flags=None):
@@ -197,51 +247,50 @@ def check_openmp_support(openmp_flags=None):
         # customize_compiler().
         openmp_flags = get_openmp_flags()
 
-    compile_flags = openmp_flags.get('compiler_flags')
-    link_flags = openmp_flags.get('linker_flags')
+    compile_flags = openmp_flags.get("compiler_flags")
+    link_flags = openmp_flags.get("linker_flags")
 
-    tmp_dir = tempfile.mkdtemp()
-    start_dir = os.path.abspath('.')
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        start_dir = os.path.abspath(".")
 
-    try:
-        os.chdir(tmp_dir)
+        try:
+            os.chdir(tmp_dir)
 
-        # Write test program
-        with open('test_openmp.c', 'w') as f:
-            f.write(CCODE)
+            # Write test program
+            with open("test_openmp.c", "w") as f:
+                f.write(CCODE)
 
-        os.mkdir('objects')
+            os.mkdir("objects")
 
-        # Compile, test program
-        ccompiler.compile(['test_openmp.c'], output_dir='objects',
-                          extra_postargs=compile_flags)
+            # Compile, test program
+            ccompiler.compile(["test_openmp.c"], output_dir="objects", extra_postargs=compile_flags)
 
-        # Link test program
-        objects = glob.glob(os.path.join('objects', '*' + ccompiler.obj_extension))
-        ccompiler.link_executable(objects, 'test_openmp',
-                                  extra_postargs=link_flags)
+            # Link test program
+            objects = glob.glob(os.path.join("objects", "*" + ccompiler.obj_extension))
+            ccompiler.link_executable(objects, "test_openmp", extra_postargs=link_flags)
 
-        # Run test program
-        output = subprocess.check_output('./test_openmp')
-        output = output.decode(sys.stdout.encoding or 'utf-8').splitlines()
+            # Run test program
+            output = subprocess.check_output("./test_openmp")
+            output = output.decode(sys.stdout.encoding or "utf-8").splitlines()
 
-        if 'nthreads=' in output[0]:
-            nthreads = int(output[0].strip().split('=')[1])
-            if len(output) == nthreads:
-                is_openmp_supported = True
+            if "nthreads=" in output[0]:
+                nthreads = int(output[0].strip().split("=")[1])
+                if len(output) == nthreads:
+                    is_openmp_supported = True
+                else:
+                    log.warn(
+                        "Unexpected number of lines from output of test OpenMP "
+                        "program (output was {})".format(output)
+                    )
+                    is_openmp_supported = False
             else:
-                log.warn("Unexpected number of lines from output of test OpenMP "
-                         "program (output was {0})".format(output))
+                log.warn(f"Unexpected output from test OpenMP program (output was {output})")
                 is_openmp_supported = False
-        else:
-            log.warn("Unexpected output from test OpenMP "
-                     "program (output was {0})".format(output))
+        except Exception:
             is_openmp_supported = False
-    except (CompileError, LinkError, subprocess.CalledProcessError):
-        is_openmp_supported = False
 
-    finally:
-        os.chdir(start_dir)
+        finally:
+            os.chdir(start_dir)
 
     return is_openmp_supported
 
@@ -250,9 +299,10 @@ def is_openmp_supported():
     """
     Determine whether the build compiler has OpenMP support.
     """
-    log_threshold = log.set_threshold(log.FATAL)
+    log_threshold = log.level
+    log.setLevel("CRITICAL")
     ret = check_openmp_support()
-    log.set_threshold(log_threshold)
+    log.setLevel(log_threshold)
     return ret
 
 
@@ -264,7 +314,7 @@ def add_openmp_flags_if_available(extension):
     Returns `True` if the flags were added, `False` otherwise.
     """
 
-    if _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_:
+    if _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_:  # noqa: F821
         log.info("OpenMP support has been explicitly disabled.")
         return False
 
@@ -272,14 +322,15 @@ def add_openmp_flags_if_available(extension):
     using_openmp = check_openmp_support(openmp_flags=openmp_flags)
 
     if using_openmp:
-        compile_flags = openmp_flags.get('compiler_flags')
-        link_flags = openmp_flags.get('linker_flags')
+        compile_flags = openmp_flags.get("compiler_flags")
+        link_flags = openmp_flags.get("linker_flags")
         log.info("Compiling Cython/C/C++ extension with OpenMP support")
         extension.extra_compile_args.extend(compile_flags)
         extension.extra_link_args.extend(link_flags)
     else:
-        log.warn("Cannot compile Cython/C/C++ extension with OpenMP, reverting "
-                 "to non-parallel code")
+        log.warn(
+            "Cannot compile Cython/C/C++ extension with OpenMP, reverting to non-parallel code"
+        )
 
     return using_openmp
 
@@ -292,186 +343,36 @@ def is_openmp_enabled():
     Determine whether this package was built with OpenMP support.
     \"\"\"
     return {return_bool}
-"""[1:]
+"""[
+    1:
+]
 
 
-def generate_openmp_enabled_py(packagename, srcdir='.', disable_openmp=None):
+def generate_openmp_enabled_py(packagename, srcdir=".", disable_openmp=None):
     """
     Generate ``package.openmp_enabled.is_openmp_enabled``, which can then be used
     to determine, post build, whether the package was built with or without
     OpenMP support.
     """
 
-    epoch = int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", time.time()))
     timestamp = datetime.datetime.utcfromtimestamp(epoch)
 
     if disable_openmp is not None:
-        _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_ = disable_openmp
-    if _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_:
+        import builtins
+
+        builtins._EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_ = disable_openmp
+    if _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_:  # noqa: F821
         log.info("OpenMP support has been explicitly disabled.")
-    openmp_support = False if _EXTENSION_HELPERS_DISABLE_OPENMP_SETUP_ else is_openmp_supported()
-
-    src = _IS_OPENMP_ENABLED_SRC.format(packagename=packagename,
-                                        timestamp=timestamp,
-                                        return_bool=openmp_support)
-
-    package_srcdir = os.path.join(srcdir, *packagename.split('.'))
-    is_openmp_enabled_py = os.path.join(package_srcdir, 'openmp_enabled.py')
-    with open(is_openmp_enabled_py, 'w') as f:
-        f.write(src)
-
-
-"""
-This module contains various utilities for introspecting the distutils
-module and the setup process.
-
-Some of these utilities require the
-`extension_helpers.setup_helpers.register_commands` function to be called first,
-as it will affect introspection of setuptools command-line arguments.  Other
-utilities in this module do not have that restriction.
-"""
-
-from distutils import ccompiler
-from distutils.dist import Distribution
-from distutils.errors import DistutilsError
-
-
-__all__ = ['get_compiler']
-
-
-def get_dummy_distribution():
-    """
-    Returns a distutils Distribution object used to instrument the setup
-    environment before calling the actual setup() function.
-    """
-
-    # Pre-parse the Distutils command-line options and config files to if
-    # the option is set.
-    dist = Distribution({'script_name': os.path.basename(sys.argv[0]),
-                         'script_args': sys.argv[1:]})
-
-    with silence():
-        try:
-            dist.parse_config_files()
-            dist.parse_command_line()
-        except (DistutilsError, AttributeError, SystemExit):
-            # Let distutils handle DistutilsErrors itself AttributeErrors can
-            # get raise for ./setup.py --help SystemExit can be raised if a
-            # display option was used, for example
-            pass
-
-    return dist
-
-
-def get_main_package_directory(distribution):
-    """
-    Given a Distribution object, return the main package directory.
-    """
-    return min(distribution.packages, key=len).replace('.', os.sep)
-
-
-def get_distutils_option(option, commands):
-    """ Returns the value of the given distutils option.
-
-    Parameters
-    ----------
-    option : str
-        The name of the option
-
-    commands : list of str
-        The list of commands on which this option is available
-
-    Returns
-    -------
-    val : str or None
-        the value of the given distutils option. If the option is not set,
-        returns None.
-    """
-
-    dist = get_dummy_distribution()
-
-    for cmd in commands:
-        cmd_opts = dist.command_options.get(cmd)
-        if cmd_opts is not None and option in cmd_opts:
-            return cmd_opts[option][1]
+        openmp_support = False
     else:
-        return None
+        openmp_support = is_openmp_supported()
 
+    src = _IS_OPENMP_ENABLED_SRC.format(
+        packagename=packagename, timestamp=timestamp, return_bool=openmp_support
+    )
 
-def get_distutils_build_option(option):
-    """ Returns the value of the given distutils build option.
-
-    Parameters
-    ----------
-    option : str
-        The name of the option
-
-    Returns
-    -------
-    val : str or None
-        The value of the given distutils build option. If the option
-        is not set, returns None.
-    """
-    return get_distutils_option(option, ['build', 'build_ext', 'build_clib'])
-
-
-def get_compiler():
-    """
-    Determines the compiler that will be used to build extension modules.
-
-    Returns
-    -------
-    compiler : str
-        The compiler option specified for the build, build_ext, or build_clib
-        command; or the default compiler for the platform if none was
-        specified.
-
-    """
-
-    compiler = get_distutils_build_option('compiler')
-    if compiler is None:
-        return ccompiler.get_default_compiler()
-
-    return compiler
-
-# Licensed under a 3-clause BSD style license - see LICENSE.rst
-
-import contextlib
-
-
-__all__ = ['write_if_different']
-
-
-class _DummyFile(object):
-    """A noop writeable object."""
-
-    errors = ''
-
-    def write(self, s):
-        pass
-
-    def flush(self):
-        pass
-
-
-@contextlib.contextmanager
-def silence():
-    """A context manager that silences sys.stdout and sys.stderr."""
-
-    old_stdout = sys.stdout
-    old_stderr = sys.stderr
-    sys.stdout = _DummyFile()
-    sys.stderr = _DummyFile()
-    exception_occurred = False
-    try:
-        yield
-    except:  # noqa
-        exception_occurred = True
-        # Go ahead and clean up so that exception handling can work normally
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
-        raise
-
-    if not exception_occurred:
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
+    package_srcdir = os.path.join(srcdir, *packagename.split("."))
+    is_openmp_enabled_py = os.path.join(package_srcdir, "openmp_enabled.py")
+    with open(is_openmp_enabled_py, "w") as f:
+        f.write(src)
