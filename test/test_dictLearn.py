@@ -1,7 +1,7 @@
-import sys
+import os.path
 import numpy as np
-import scipy
 import scipy.sparse as ssp
+
 try:
     from PIL import Image
 except Exception as e:
@@ -13,6 +13,7 @@ import time
 from test_utils import *
 
 ssprand = ssp.rand
+imgpath = os.path.dirname(os.path.realpath(__file__))
 
 
 def _extract_lasso_param(f_param):
@@ -40,7 +41,7 @@ def _objective(X,D,param,imgname = None):
         image.save("%s.png" %imgname)
 
 def test_trainDL():
-    img_file = 'test/boat.png'
+    img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
     except:
@@ -131,7 +132,7 @@ def test_trainDL():
     return None
 
 def test_trainDL_Memory():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except:
@@ -188,7 +189,7 @@ def test_trainDL_Memory():
     return None
 
 def test_structTrainDL():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except Exception as e:
@@ -256,7 +257,7 @@ def test_structTrainDL():
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
                        [0, 0, 0, 0, 0],
-                       [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                       [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     groups_var = ssp.csc_matrix(np.array([[1, 0, 0, 0, 0],
                            [1, 0, 0, 0, 0],
@@ -267,7 +268,7 @@ def test_structTrainDL():
                            [0, 1, 0, 0, 1],
                            [0, 0, 0, 0, 1],
                            [0, 0, 0, 0, 1],
-                           [0, 0, 1, 0, 0]],dtype=np.bool),dtype=np.bool)
+                           [0, 0, 1, 0, 0]],dtype=bool),dtype=bool)
 
     graph = {'eta_g': eta_g,'groups' : groups,'groups_var' : groups_var}
     param['graph'] = graph
@@ -317,8 +318,8 @@ def test_structTrainDL():
               [1, 0, 0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
               [0, 0, 0, 0, 1, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = np.bool)
-    groups = ssp.csc_matrix(groups,dtype=np.bool)
+              [0, 0, 0, 0, 0, 0, 1, 0]],dtype = bool)
+    groups = ssp.csc_matrix(groups,dtype=bool)
     tree = {'eta_g': eta_g,'groups' : groups,'own_variables' : own_variables,
             'N_own_variables' : N_own_variables}
     param['tree'] = tree
@@ -359,7 +360,7 @@ def test_structTrainDL():
 
 
 def test_nmf():
-    img_file = 'test/boat.png'
+    img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
     except:
@@ -393,7 +394,7 @@ def test_nmf():
 
 # Archetypal Analysis, run first steps with FISTA and run last steps with activeSet,
 def test_archetypalAnalysis():
-    img_file = 'test/lena.png'
+    img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
     except Exception as e:

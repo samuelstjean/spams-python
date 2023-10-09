@@ -11,7 +11,6 @@
 #include <list>
 #include <vector>
 #include <cmath>
-#include <iostream>
 typedef unsigned int uint32_t;
 typedef int int32_t;
 
@@ -29,29 +28,29 @@ typedef int int32_t;
 #include "lsqsplx.h"
 #include "arch.h"
 #include "cblas_alt_template.h"
-#include<iostream>
+#include <iostream>
 /* from linalg */
 
-template<typename T> void _sort(Vector<T> *v,bool mode) throw(const char *){
+template<typename T> void _sort(Vector<T> *v,bool mode){
   v->sort(mode);
 }
 
 
-template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) throw(const char *) {
+template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) {
 
   if(A->m() != B->m() || B->m() != B->n())
     throw("AAt: incompatible dimensions of result matrix");
   A->AAt((Matrix<T>&)(*B));
 }
 
-template<typename T> void _XAt(SpMatrix<T> *A,Matrix<T> *X,Matrix<T> *XAt) throw(const char *) {
+template<typename T> void _XAt(SpMatrix<T> *A,Matrix<T> *X,Matrix<T> *XAt) {
   if(X->n() != A->n() || X->m() != XAt->m() || A->m() != XAt->n())
     throw("XAt: incompatible dimensions of result matrix");
   A->XAt((Matrix<T>&)(*X),(Matrix<T>&)(*XAt));
 }
 
 template<typename T> inline void _mult(Matrix<T> *X,Matrix<T> *Y,Matrix<T> *XY,const bool transX, const bool transY,
-      const T a, const T b) throw(const char *) {
+      const T a, const T b) {
   int xrows, xcols, yrows, ycols;
   if(transX) {
     xrows = X->n();
@@ -73,11 +72,11 @@ template<typename T> inline void _mult(Matrix<T> *X,Matrix<T> *Y,Matrix<T> *XY,c
   X->mult((Matrix<T>&)(*Y),(Matrix<T>&)(*XY),transX,transY,a,b);
 }
 
-template<typename T> void _applyBayerPattern(Vector<T> *v,int offset) throw(const char *){
+template<typename T> void _applyBayerPattern(Vector<T> *v,int offset){
   v->applyBayerPattern(offset);
 }
 
-template<typename T> void _conjugateGradient(Matrix<T> *A,Vector<T> *b,Vector<T> *x,const T tol,const int itermax) throw(const char *){
+template<typename T> void _conjugateGradient(Matrix<T> *A,Vector<T> *b,Vector<T> *x,const T tol,const int itermax){
   if(A->n() != x->n() || A->m() != b->n())
     throw("conjugateGradient: incompatible matrix and vectore sizes");
   A->conjugateGradient((Vector<T> &)(*b),(Vector<T> &)(*x),tol,itermax);
@@ -98,7 +97,7 @@ template<typename T> void _normalize(Matrix<T> *A) {
 template <typename T> inline void _sparseProject(Matrix<T> *U,Matrix<T> *V,
       const T thrs,   const int mode, const T lambda1,
       const T lambda2, const T lambda3, const bool pos,
-      const int numThreads) throw(const char *) {
+      const int numThreads) {
   if(U->m() != V->m() || U->n() != V->n())
     throw("sparseProject: incompatible matrices");
   U->sparseProject((Matrix<T>&)(*V),thrs,mode,lambda1,lambda2,lambda3,pos,numThreads);
@@ -109,7 +108,6 @@ SpMatrix<T> *_lassoD(Matrix<T> *X, Matrix<T> *D,Matrix<T> **path,bool return_reg
 		    int L, const T constraint, const T lambda2, constraint_type mode,
       const bool pos, const bool ols, const int numThreads,
 		    int max_length_path,const bool verbose, bool cholevsky)
-throw(const char *)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -147,7 +145,6 @@ SpMatrix<T> *_lassoQq(Matrix<T> *X, Matrix<T> *Q, Matrix<T> *q,Matrix<T> **path,
 		      int L, const T constraint, const T lambda2, constraint_type mode,
 		      const bool pos, const bool ols, const int numThreads,
 		      int max_length_path,const bool verbose, bool cholevsky)
-throw(const char *)
 // lambda2 is ignored
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
@@ -191,7 +188,6 @@ template <typename T>
 SpMatrix<T> *_lassoMask(Matrix<T> *X, Matrix<T> *D,Matrix<bool> *B,
 		    int L, const T constraint, const T lambda2, constraint_type mode,
 			const bool pos, const int numThreads,bool verbose)
-throw(const char *)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -218,7 +214,6 @@ template <typename T>
 SpMatrix<T> *_lassoWeighted(Matrix<T> *X, Matrix<T> *D,Matrix<T> *W,
 		    int L, const T constraint, constraint_type mode,
 			const bool pos, const int numThreads,bool verbose)
-throw(const char *)
 {
   SpMatrix<T> *alpha = new SpMatrix<T>();
   int n = X->m();
@@ -248,7 +243,7 @@ throw(const char *)
 }
 
 template <typename T>
-SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads) throw(const char *){
+SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads){
   SpMatrix<T> *alpha = new SpMatrix<T>();
     int n = X->m();
     int nD = D->m();
@@ -293,7 +288,7 @@ SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_pat
 }
 
 template <typename T>
-SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads) throw(const char *){
+SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path,bool return_reg_path,bool given_L,Vector<int>*L,bool given_eps,Vector<T>*eps,bool given_Lambda,Vector<T>*Lambda,const int numThreads){
   SpMatrix<T> *alpha = new SpMatrix<T>();
     int n = X->m();
     int M = X->n();
@@ -342,7 +337,7 @@ SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path
     return alpha;
 }
 template <typename T>
-SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constraint_type mode, int itermax, T tol,int numThreads) throw(const char *){
+SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constraint_type mode, int itermax, T tol,int numThreads){
   int n = X->m();
   int M = X->n();
   int nD = D->m();
@@ -360,7 +355,7 @@ SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constrai
 }
 
 template <typename T>
-SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, int numThreads) throw(const char *){
+SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, int numThreads){
   int *list_groups = groups->rawX();
   int Ng = groups->n();
   int n = X->m();
@@ -416,7 +411,7 @@ SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, 
    return alpha;
 }
 template <typename T>
-void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T lambda1, constraint_type mode,int itermax,T tol,int numThreads) throw(const char *){
+void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T lambda1, constraint_type mode,int itermax,T tol,int numThreads){
   int n = X->m();
   int M = X->n();
   int nD = D->m();
@@ -497,7 +492,6 @@ Matrix<T> *_fistaFlat(Matrix<T> *X,AbstractMatrixB<T> *D,Matrix<T> *alpha0,
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *)
 {
 using namespace FISTA;
  int mD = D->m();
@@ -649,7 +643,6 @@ Matrix<T> *_fistaTree(
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *)
 {
 using namespace FISTA;
  int mD = D->m();
@@ -817,7 +810,6 @@ Matrix<T> *_fistaGraph(
 	     bool transpose,
              int linesearch_mode
 )
-throw(const char *)
 {
   using namespace FISTA;
   cout << "FISTA\n";
@@ -955,7 +947,6 @@ Vector<T> *_proximalFlat(Matrix<T> *alpha0,Matrix<T> *alpha,
 		int size_group,
 		bool transpose
 		)
-throw(const char *)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -1015,7 +1006,6 @@ Vector<T> *_proximalTree(Matrix<T> *alpha0,Matrix<T> *alpha, // tree
 		int size_group,
 		bool transpose
 		)
-throw(const char *)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -1094,7 +1084,6 @@ Vector<T> *_proximalGraph(Matrix<T> *alpha0,Matrix<T> *alpha, // graph
 		int size_group,
 		bool transpose
 		)
-throw(const char *)
 {
 using namespace FISTA;
   FISTA::ParamFISTA<T> param;
@@ -1184,7 +1173,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
 		    bool batch,
 		    bool log,
 		    char *logName
-		    )  throw(const char *){
+		    ) {
 #ifdef _OPENMP
   num_threads = num_threads <= 0 ? omp_get_num_procs() : num_threads;
 #else
@@ -1339,7 +1328,7 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
 
 /* from dictLearn/arch */
 template <typename T>
-Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads) throw(const char *)  {
+Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, int numThreads)  {
   Matrix<T>* Z = new Matrix<T>(Z0->m(),Z0->n());
   *spA = new SpMatrix<T>();
   *spB = new SpMatrix<T>();
@@ -1348,7 +1337,7 @@ Matrix<T> *_archetypalAnalysisInit(Matrix<T>* X, Matrix<T>* Z0, SpMatrix<T>** sp
 }
 
 template <typename T>
-Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) throw(const char *) {
+Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<T>** spB, bool robust, T epsilon, bool computeXtX, int stepsFISTA, int stepsAS, bool randominit, int numThreads) {
   Matrix<T>* Z = new Matrix<T>(X->m(),p);
   *spA = new SpMatrix<T>();
   *spB = new SpMatrix<T>();
@@ -1357,7 +1346,7 @@ Matrix<T> *_archetypalAnalysis(Matrix<T>* X, int p, SpMatrix<T>** spA, SpMatrix<
 }
 
 template <typename T>
-  SpMatrix<T> *_decompSimplex(Matrix<T>* X, Matrix<T>* Z, bool computeXtX, int numThreads) throw(const char*){
+  SpMatrix<T> *_decompSimplex(Matrix<T>* X, Matrix<T>* Z, bool computeXtX, int numThreads){
   SpMatrix<T>* alpha = new SpMatrix<T>();
   decompSimplex<T>((Matrix<T>&)(*X), (Matrix<T>&)(*Z), (SpMatrix<T>&) (*alpha), computeXtX,numThreads);
   return alpha;
@@ -1377,7 +1366,7 @@ template <typename T>
      stored by columns.
 */
 template<typename T>
-void _im2col_sliding(Matrix<T>  *A,Matrix<T>  *B,int m, int n,bool RGB)  throw(const char *){
+void _im2col_sliding(Matrix<T>  *A,Matrix<T>  *B,int m, int n,bool RGB) {
   /* if RGB is true A has 3*n columns, R G B columns are consecutives
    */
   int mm = A->m();
