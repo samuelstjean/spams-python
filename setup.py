@@ -3,46 +3,47 @@ import platform
 
 from setuptools import setup, Extension, find_packages
 from distutils.sysconfig import get_python_inc
-from openmp_helpers import add_openmp_flags_if_available
+from extension_helpers import add_openmp_flags_if_available, pkg_config
 
 import numpy as np
-from numpy.distutils.system_info import blas_info
+# from numpy.distutils.system_info import blas_info
 
 import distro
 
 # for np >= 1.22
-try:
-    blasinfo = np.distutils.__config__.blas_ilp64_opt_info
-    lapackinfo = np.distutils.__config__.lapack_ilp64_opt_info
-except Exception:
-    blasinfo = np.__config__.blas_opt_info
-    lapackinfo = np.__config__.lapack_opt_info
+# try:
+#     blasinfo = np.distutils.__config__.blas_ilp64_opt_info
+#     lapackinfo = np.distutils.__config__.lapack_ilp64_opt_info
+# except Exception:
+#     blasinfo = np.__config__.blas_opt_info
+#     lapackinfo = np.__config__.lapack_opt_info
 
 def get_config():
 
+    blasinfo = pkg_config(['openblas64'], ['openblas'])
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', 'spams', x))
     incs.append(np.get_include())
     incs.append(get_python_inc())
-    incs.extend(blas_info().get_include_dirs())
+    incs.extend(blasinfo.get('include_dirs', []))
 
     cc_flags = ['-fPIC', '-m64']
 
     for _ in blasinfo.get('extra_compile_args', []):
         if _ not in cc_flags:
             cc_flags.append(_)
-    for _ in lapackinfo.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
+    # for _ in lapackinfo.get('extra_compile_args', []):
+    #     if _ not in cc_flags:
+    #         cc_flags.append(_)
 
     link_flags = []
     for _ in blasinfo.get('extra_link_args', []):
         if _ not in link_flags:
             link_flags.append(_)
-    for _ in lapackinfo.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
+    # for _ in lapackinfo.get('extra_link_args', []):
+    #     if _ not in link_flags:
+    #         link_flags.append(_)
 
     if platform.system() == 'Windows':
         libs = []
@@ -56,7 +57,7 @@ def get_config():
                 is_mkl = True
                 break
 
-    libdirs = blas_info().get_lib_dirs()
+    libdirs = blasinfo.get('library_dirs', [])
     if is_mkl:
         for _ in blasinfo.get('include_dirs', []):
             if _ not in incs:
@@ -122,7 +123,7 @@ This (unofficial) version includes pre-built wheels for python 3 on windows, mac
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
-      version='2.6.7',
+      version='2.6.8',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',
