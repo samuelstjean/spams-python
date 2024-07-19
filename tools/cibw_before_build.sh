@@ -24,10 +24,10 @@ pip install scipy-openblas64
 python <<EOF
 import os, scipy_openblas64, shutil
 srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), "lib")
-shutil.copytree(srcdir, "$outdir"))
+shutil.copytree(srcdir, "$outdir")
 srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), ".dylibs")
 if os.path.exists(srcdir):  # macosx delocate
-    shutil.copytree(srcdir, "$outdir"))
+    shutil.copytree(srcdir, "$outdir")
 EOF
 
 ls $outdir
