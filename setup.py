@@ -18,6 +18,9 @@ import distro
 #     blasinfo = np.__config__.blas_opt_info
 #     lapackinfo = np.__config__.lapack_opt_info
 
+ismac = platform.system() == 'Darwin'
+iswindows = platform.system() == 'Windows'
+
 def get_config():
 
     blasinfo = pkg_config(['openblas'], ['openblas64'])
@@ -45,7 +48,7 @@ def get_config():
     #     if _ not in link_flags:
     #         link_flags.append(_)
 
-    if platform.system() == 'Windows':
+    if iswindows:
         libs = []
         is_mkl = False
     else:
@@ -67,25 +70,27 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
+        if ismac:
+            libs.append('accelerate')
+        elif 'centos' in distro.id():
             libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
             libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
-    if platform.system() != 'Darwin':
-        if platform.system() == 'Windows':
+    if not ismac:
+        if iswindows:
             cc_flags.append('-openmp')
             # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
 
-    # if platform.system() == 'Darwin':
+    # if ismac:
     #     cc_flags.append('-I/usr/local/opt/openblas/include')
     #     link_flags.append('-L/usr/local/opt/openblas/lib')
 
-    if platform.system() == 'Windows':
+    if iswindows:
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
@@ -114,9 +119,8 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-if platform.system() == 'Darwin':
+if ismac:
     add_openmp_flags_if_available(spams_wrap)
-    libs.append('accelerate')
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
@@ -124,6 +128,7 @@ This (unofficial) version includes pre-built wheels for python 3 on windows, mac
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
+      python_requires='>=3.9.0',
       version='2.6.8',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
