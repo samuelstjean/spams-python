@@ -12,8 +12,8 @@ if [[ $PLATFORM == "macosx-x86_64" ]]; then
   basedir=$(python tools/openblas_support.py)
 
   # copy over the OpenBLAS library stuff first
-  sudo mkdir -p /usr/local/lib
-  sudo mkdir -p /usr/local/include
+  mkdir -p /usr/local/lib
+  mkdir -p /usr/local/include
   cp -r $basedir/lib/* /usr/local/lib
   cp $basedir/include/* /usr/local/include
 
