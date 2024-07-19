@@ -2,7 +2,7 @@
 set -xe
 
 export outdir=/usr/local/lib
-sudo mkdir -p /usr/local/lib
+# sudo mkdir -p /usr/local/lib
 chmod 777 /usr/local/lib
 chmod 777 /usr/local/lib
 
