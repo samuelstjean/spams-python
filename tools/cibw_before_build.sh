@@ -10,15 +10,17 @@ fi
 
 if [[ $RUNNER_OS == "Linux" ]]; then
     outdir=/usr/local/lib
+    sudo chmod 777 /usr/local/lib
 fi
 
 if [[ $RUNNER_OS == "macOS" ]]; then 
     outdir=/usr/local/lib
+    sudo chmod 777 /usr/local/lib
 fi
 
 pip install scipy-openblas64
 
-sudo python <<EOF
+python <<EOF
 import os, scipy_openblas64, shutil
 srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), "lib")
 shutil.copytree(srcdir, os.path.join("$outdir", "lib"))
