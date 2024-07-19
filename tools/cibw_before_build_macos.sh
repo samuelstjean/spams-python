@@ -7,6 +7,9 @@ echo $PLATFORM
 #########################################################################################
 # Install GFortran + OpenBLAS
 
+sudo mkdir -p /usr/local/lib
+sudo mkdir -p /usr/local/include
+
 if [[ $PLATFORM == "macosx-x86_64" ]]; then
   # Openblas
   basedir=$(python tools/openblas_support.py)
