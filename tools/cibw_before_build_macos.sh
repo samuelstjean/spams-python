@@ -12,10 +12,10 @@ if [[ $PLATFORM == "macosx-x86_64" ]]; then
   basedir=$(python tools/openblas_support.py)
 
   # copy over the OpenBLAS library stuff first
-  mkdir -p /usr/local/lib
-  mkdir -p /usr/local/include
-  cp -r $basedir/lib/* /usr/local/lib
-  cp $basedir/include/* /usr/local/include
+  sudo mkdir -p /usr/local/lib
+  sudo mkdir -p /usr/local/include
+  sudo cp -r $basedir/lib/* /usr/local/lib
+  sudo cp $basedir/include/* /usr/local/include
 
   #GFORTRAN=$(type -p gfortran-9)
   #sudo ln -s $GFORTRAN /usr/local/bin/gfortran
