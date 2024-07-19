@@ -1,8 +1,6 @@
 # From https://github.com/numpy/numpy/blob/main/tools/wheels/cibw_before_build.sh
 set -xe
 
-PROJECT_DIR="${1:-$PWD}"
-
 if [[ $RUNNER_OS == "Windows" ]]; then 
     outdir=C:\openblas
     pip install delvewheel
