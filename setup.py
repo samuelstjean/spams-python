@@ -3,12 +3,13 @@ import platform
 
 from setuptools import setup, Extension, find_packages
 from distutils.sysconfig import get_python_inc
-from extension_helpers import add_openmp_flags_if_available, pkg_config
+from extension_helpers import add_openmp_flags_if_available
+import scipy_openblas64
 
 import numpy as np
 # from numpy.distutils.system_info import blas_info
 
-import distro
+# import distro
 
 # for np >= 1.22
 # try:
@@ -23,59 +24,64 @@ iswindows = platform.system() == 'Windows'
 
 def get_config():
 
-    blasinfo = pkg_config(['openblas'], ['openblas64'])
+    # blasinfo = pkg_config(['openblas'], ['openblas64'])
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', 'spams', x))
     incs.append(np.get_include())
     incs.append(get_python_inc())
-    incs.extend(blasinfo.get('include_dirs', []))
+    incs.append(scipy_openblas64.get_include_dir())
+    # incs.extend(blasinfo.get('include_dirs', []))
 
     cc_flags = ['-fPIC', '-m64']
 
-    for _ in blasinfo.get('extra_compile_args', []):
-        if _ not in cc_flags:
-            cc_flags.append(_)
+    # for _ in blasinfo.get('extra_compile_args', []):
+    #     if _ not in cc_flags:
+    #         cc_flags.append(_)
     # for _ in lapackinfo.get('extra_compile_args', []):
     #     if _ not in cc_flags:
     #         cc_flags.append(_)
 
     link_flags = []
-    for _ in blasinfo.get('extra_link_args', []):
-        if _ not in link_flags:
-            link_flags.append(_)
+    # link_flags.append(scipy_openblas64.get_include_dir())
+
+    # for _ in blasinfo.get('extra_link_args', []):
+    #     if _ not in link_flags:
+    #         link_flags.append(_)
     # for _ in lapackinfo.get('extra_link_args', []):
     #     if _ not in link_flags:
     #         link_flags.append(_)
 
     if iswindows:
         libs = []
-        is_mkl = False
+        # is_mkl = False
     else:
         libs = ['stdc++']
 
-        is_mkl = False
-        for lib in blasinfo.get('libraries', []):
-            if 'mkl' in lib:
-                is_mkl = True
-                break
+    libs.append(scipy_openblas64.get_library())
+    libdirs = [scipy_openblas64.get_lib_dir()]
+        # is_mkl = False
+        # for lib in blasinfo.get('libraries', []):
+        #     if 'mkl' in lib:
+        #         is_mkl = True
+        #         break
 
-    libdirs = blasinfo.get('library_dirs', [])
-    if is_mkl:
-        for _ in blasinfo.get('include_dirs', []):
-            if _ not in incs:
-                incs.append(_)
-        for _ in blasinfo.get('library_dirs', []):
-            if _ not in libdirs:
-                libdirs.append(_)
-        libs.extend(['mkl_rt'])
-    else:
-        if ismac:
-            libs.append('Accelerate')
-        elif 'centos' in distro.id():
-            libs.extend(['openblaso'])  # for openmp support in openblas under redhat
-        else:
-            libs.extend(['openblas'])
+    # libdirs = blasinfo.get('library_dirs', [])
+    # if is_mkl:
+    #     for _ in blasinfo.get('include_dirs', []):
+    #         if _ not in incs:
+    #             incs.append(_)
+    #     for _ in blasinfo.get('library_dirs', []):
+    #         if _ not in libdirs:
+    #             libdirs.append(_)
+    #     libs.extend(['mkl_rt'])
+    # else:
+    #     if ismac:
+    #         libs.append('Accelerate')
+    #     elif 'centos' in distro.id():
+    #         libs.extend(['openblaso'])  # for openmp support in openblas under redhat
+    #     else:
+    #         libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
     if not ismac:
@@ -90,16 +96,16 @@ def get_config():
     #     cc_flags.append('-I/usr/local/opt/openblas/include')
     #     link_flags.append('-L/usr/local/opt/openblas/lib')
 
-    if iswindows:
+    # if iswindows:
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
-        libs.append('openblas')
-        libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
-        # libpath = os.path.join('C:/opt/openblas/openblas_dll')
-        libdirs.append(libpath)
-        incs.append('C:/Miniconda/envs/openblas/Library/include')
-        incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
+        # libs.append('openblas')
+        # libpath = os.path.join('C:/Miniconda/envs/openblas/Library/lib')
+        # # libpath = os.path.join('C:/opt/openblas/openblas_dll')
+        # libdirs.append(libpath)
+        # incs.append('C:/Miniconda/envs/openblas/Library/include')
+        # incs.append('C:/Miniconda/envs/openblas/Library/include/openblas')
 
     return incs, libs, libdirs, cc_flags, link_flags
 

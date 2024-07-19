@@ -1,6 +1,7 @@
 [build-system]
 requires = ["numpy>=2.0",
             "extension-helpers",
+            "scipy-openblas64",
             "setuptools",
-            'distro',
+            # 'distro',
             "wheel"]
