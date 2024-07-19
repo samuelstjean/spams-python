@@ -71,7 +71,7 @@ def get_config():
         libs.extend(['mkl_rt'])
     else:
         if ismac:
-            libs.append('accelerate')
+            libs.append('Accelerate')
         elif 'centos' in distro.id():
             libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
