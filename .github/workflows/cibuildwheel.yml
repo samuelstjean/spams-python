@@ -37,7 +37,6 @@ jobs:
           python-version: '3.10'
 
       - name: Build wheels
-        shell: bash
         uses: pypa/cibuildwheel@v2.19.2
         env:
           CIBW_BUILD: ${{matrix.pyver}}-*
