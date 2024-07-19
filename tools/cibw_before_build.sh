@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # From https://github.com/numpy/numpy/blob/main/tools/wheels/cibw_before_build.sh
 set -xe
 

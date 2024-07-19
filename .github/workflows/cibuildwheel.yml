@@ -47,7 +47,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\\openblas
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
-          CIBW_BEFORE_BUILD: bash "export RUNNER_OS=${{runner.os}} && echo $RUNNER_OS && bash {package}/tools/cibw_before_build.sh"
+          CIBW_BEFORE_BUILD: bash "export RUNNER_OS=${{runner.os}} && echo $RUNNER_OS && tools/cibw_before_build.sh"
           # CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && bash tools/cibw_before_build.sh
           # CIBW_BEFORE_BUILD_MACOS: bash tools/cibw_before_build.sh
           # CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel -y
