@@ -1,23 +1,10 @@
-#!/bin/bash
-
 # From https://github.com/numpy/numpy/blob/main/tools/wheels/cibw_before_build.sh
 set -xe
 
-if [[ $RUNNER_OS == "Windows" ]]; then 
-    export outdir=C:\openblas
-    pip install delvewheel
-fi 
-
-if [[ $RUNNER_OS == "Linux" ]]; then
-    export outdir=/usr/local/lib
-    chmod 777 /usr/local/lib
-fi
-
-if [[ $RUNNER_OS == "macOS" ]]; then 
-    export outdir=/usr/local/lib
-    sudo mkdir -p /usr/local/lib
-    chmod 777 /usr/local/lib
-fi
+export outdir=/usr/local/lib
+sudo mkdir -p /usr/local/lib
+chmod 777 /usr/local/lib
+chmod 777 /usr/local/lib
 
 pip install scipy-openblas64
 

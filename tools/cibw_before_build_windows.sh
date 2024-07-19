@@ -1,15 +1,21 @@
-# From https://github.com/scipy/scipy/blob/main/tools/wheels/cibw_before_build_win.sh
+# From https://github.com/numpy/numpy/blob/main/tools/wheels/cibw_before_build.sh
 set -xe
 
-# Install Openblas
-mkdir -p /c/opt/64/lib/pkgconfig
-mkdir -p /c/opt/openblas/openblas_dll
+set outdir=C:\openblas
+pip install delvewheel
+pip install scipy-openblas64
 
-# delvewheel is the equivalent of delocate/auditwheel for windows.
-python -m pip install delvewheel
+ls $outdir
+echo $outdir
 
-target=$(python -c "import tools.openblas_support as obs; plat=obs.get_plat(); ilp64=obs.get_ilp64(); target=f'openblas_{plat}.zip'; obs.download_openblas(target, plat, ilp64);print(target)")
+python <<EOF
+import os, scipy_openblas64, shutil
+srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), "lib")
+shutil.copytree(srcdir, "$outdir", dirs_exist_ok=True)
+srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), ".dylibs")
+if os.path.exists(srcdir):  # macosx delocate
+    shutil.copytree(srcdir, "$outdir", dirs_exist_ok=True)
+EOF
 
-# 64-bit openBLAS
-unzip $target -d /c/opt/
-cp /c/opt/64/bin/*.dll /c/opt/openblas/openblas_dll
+ls $outdir
+echo $outdir
