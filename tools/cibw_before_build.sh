@@ -27,5 +27,5 @@ if os.path.exists(srcdir):  # macosx delocate
     shutil.copytree(srcdir, os.path.join("$outdir", ".dylibs"))
 EOF
 
-ls scipy-openblas64
+ls $outdir
 echo $outdir
