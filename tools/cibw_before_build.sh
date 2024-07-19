@@ -4,17 +4,17 @@
 set -xe
 
 if [[ $RUNNER_OS == "Windows" ]]; then 
-    outdir=C:\openblas
+    export outdir=C:\openblas
     pip install delvewheel
 fi 
 
 if [[ $RUNNER_OS == "Linux" ]]; then
-    outdir=/usr/local/lib
+    export outdir=/usr/local/lib
     chmod 777 /usr/local/lib
 fi
 
 if [[ $RUNNER_OS == "macOS" ]]; then 
-    outdir=/usr/local/lib
+    export outdir=/usr/local/lib
     sudo mkdir -p /usr/local/lib
     chmod 777 /usr/local/lib
 fi
