@@ -1,5 +1,5 @@
 [build-system]
-requires = ["oldest-supported-numpy",
+requires = ["numpy>=2.0.*",
             "extension-helpers",
             "setuptools",
             'distro',
