@@ -15,6 +15,7 @@ fi
 
 if [[ $RUNNER_OS == "macOS" ]]; then 
     outdir=/usr/local/lib
+    sudo mkdir -p /usr/local/lib
     sudo chmod 777 /usr/local/lib
 fi
 
