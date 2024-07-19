@@ -123,6 +123,7 @@ This (unofficial) version includes pre-built wheels for python 3 on windows, mac
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
+      python_requires='>=3.9.0',
       version='2.6.8',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
@@ -131,6 +132,6 @@ setup(name='spams-bin',
       url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
       packages=find_packages(),
-      install_requires=['numpy>=1.12',
-                        'scipy>=0.19'],
+      install_requires=['numpy>=1.21',
+                        'scipy>=1.11'],
       extras_require={"test": ['Pillow>=6.0']})
