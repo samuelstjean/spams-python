@@ -21,6 +21,9 @@ fi
 
 pip install scipy-openblas64
 
+ls $outdir
+echo $outdir
+
 python <<EOF
 import os, scipy_openblas64, shutil
 srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), "lib")
