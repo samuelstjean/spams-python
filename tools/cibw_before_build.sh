@@ -18,7 +18,7 @@ fi
 
 pip install scipy-openblas64
 
-python <<EOF
+sudo python <<EOF
 import os, scipy_openblas64, shutil
 srcdir = os.path.join(os.path.dirname(scipy_openblas64.__file__), "lib")
 shutil.copytree(srcdir, os.path.join("$outdir", "lib"))
