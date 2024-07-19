@@ -4,16 +4,16 @@ set -xe
 PROJECT_DIR="${1:-$PWD}"
 
 if [[ $RUNNER_OS == "Windows" ]]; then 
-    outdir = C:\openblas
+    outdir=C:\openblas
     pip install delvewheel
 fi 
 
 if [[ $RUNNER_OS == "Linux" ]]; then
-    outdir = /usr/local/lib
+    outdir=/usr/local/lib
 fi
 
-if [[ $RUNNER_OS == "MACOS" ]]; then 
-    outdir = /usr/local/lib
+if [[ $RUNNER_OS == "macOS" ]]; then 
+    outdir=/usr/local/lib
 fi
 
 pip install scipy-openblas64
