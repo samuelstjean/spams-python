@@ -18,10 +18,12 @@ import distro
 #     blasinfo = np.__config__.blas_opt_info
 #     lapackinfo = np.__config__.lapack_opt_info
 
+ismac = platform.system() == 'Darwin'
+iswindows = platform.system() == 'Windows'
+
 def get_config():
 
-    blasinfo = pkg_config(['openblas'], ['accelerate', 'openblas64'])
-    print('blasinfo', blasinfo)
+    blasinfo = pkg_config(['openblas'], ['openblas64'])
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', 'spams', x))
@@ -46,7 +48,7 @@ def get_config():
     #     if _ not in link_flags:
     #         link_flags.append(_)
 
-    if platform.system() == 'Windows':
+    if iswindows:
         libs = []
         is_mkl = False
     else:
@@ -74,19 +76,25 @@ def get_config():
             libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
-    if platform.system() != 'Darwin':
-        if platform.system() == 'Windows':
+    if not ismac:
+        if iswindows:
             cc_flags.append('-openmp')
             # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
 
-    # if platform.system() == 'Darwin':
-    #     cc_flags.append('-I/usr/local/opt/openblas/include')
-    #     link_flags.append('-L/usr/local/opt/openblas/lib')
+    if ismac:
+        # homebrew openblas path
+        cc_flags.append('-I/usr/local/opt/openblas/include')
+        link_flags.append('-L/usr/local/opt/openblas/lib')
 
-    if platform.system() == 'Windows':
+        # # use accelerate
+        # link_flags.append('-framework accelerate')
+        # cc_flags.append('-I/usr/local/opt/openblas/include')
+
+
+    if iswindows:
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
@@ -115,7 +123,7 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-if platform.system() == 'Darwin':
+if ismac:
     add_openmp_flags_if_available(spams_wrap)
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
