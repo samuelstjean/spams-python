@@ -50,12 +50,22 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: |
-                                    brew install openblas --with-openmp &&
+                                    brew install openblas &&
                                     export LDFLAGS="-L/usr/local/opt/openblas/lib" &&
                                     export CPPFLAGS="-I/usr/local/opt/openblas/include"# bash tools/cibw_before_build_macos.sh
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
+
+      - name: Build wheel via wheel, then install it
+        run: |
+          python -m build  # This will pull in numpy 2.0 in an isolated env
+          python -m pip install dist/*.whl
+
+      - name: Test against oldest supported numpy version
+        run: |
+          python -m pip install numpy==1.21
+          python ./test/test_spams.py
 
       - uses: actions/upload-artifact@v3
         with:
