@@ -30,7 +30,7 @@ jobs:
           auto-activate-base: false
           channels: conda-forge
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         name: Install Python
         with:
           python-version: '3.10'
@@ -47,7 +47,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: MACOSX_DEPLOYMENT_TARGET=13.0 DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
-          CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
+          CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas 'libopenblas=*=*openmp*'
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: >
                                     brew install openblas libomp &&
@@ -57,10 +57,23 @@ jobs:
                                     # bash tools/cibw_before_build_macos.sh
 
           CIBW_TEST_EXTRAS: "test"
-          CIBW_TEST_COMMAND: > # test and reinstall on oldest numpy
-                              python {package}/test/test_spams.py &&
-                              python -m pip install numpy==1.21 &&
-                              python {package}/test/test_spams.py
+          CIBW_TEST_COMMAND: python {package}/test/test_spams.py
+
+      - name: Build wheel via wheel, then install it
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+        run: |
+          python -m build  # This will pull in numpy 2.0 in an isolated env
+          python -m pip install dist/*.whl
+
+      - name: Test against oldest supported numpy version
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+        run: |
+          python -m pip install numpy==1.21
+          python ./test/test_spams.py
 
       - uses: actions/upload-artifact@v3
         with:
