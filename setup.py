@@ -91,7 +91,7 @@ def get_config():
 
         # homebrew openmp
         cc_flags.append('-I/opt/homebrew/opt/libomp/include')
-        link_flags.append('-/opt/homebrew/opt/libomp/lib')
+        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
