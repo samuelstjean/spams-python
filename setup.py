@@ -70,7 +70,7 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
+        if 'centos' in distro.id() or 'almalinux' in distro.id():
             libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
             libs.extend(['openblas'])
