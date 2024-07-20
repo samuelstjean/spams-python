@@ -58,9 +58,9 @@ jobs:
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: > # test and reinstall on oldest numpy
-                              python {package}/test/test_spams &&
+                              python {package}/test/test_spams.py &&
                               python -m pip install numpy==1.21 &&
-                              python {package}/test/test_spams
+                              python {package}/test/test_spams.py
 
       - uses: actions/upload-artifact@v3
         with:
