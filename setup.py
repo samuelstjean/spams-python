@@ -89,10 +89,13 @@ def get_config():
         cc_flags.append('-I/usr/local/opt/openblas/include')
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
+        # homebrew openmp
+        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
+        link_flags.append('-/opt/homebrew/opt/libomp/lib')
+
         # # use accelerate
         # link_flags.append('-framework accelerate')
         # cc_flags.append('-I/usr/local/opt/openblas/include')
-
 
     if iswindows:
         # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -123,8 +126,8 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-if ismac:
-    add_openmp_flags_if_available(spams_wrap)
+# if ismac:
+#     add_openmp_flags_if_available(spams_wrap)
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
