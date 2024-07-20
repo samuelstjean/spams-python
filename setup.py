@@ -70,9 +70,6 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        print(distro)
-        print(distro.id())
-
         if 'centos' in distro.id() or 'alma' in distro.id():
             libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
@@ -92,7 +89,7 @@ def get_config():
         cc_flags.append('-I/usr/local/opt/openblas/include')
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
-        # homebrew openmp
+        # homebrew openmp path
         cc_flags.append('-I/opt/homebrew/opt/libomp/include')
         link_flags.append('-L/opt/homebrew/opt/libomp/lib')
 
