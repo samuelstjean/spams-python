@@ -50,7 +50,7 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas
           CIBW_BEFORE_BUILD_LINUX: yum install openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: >
-                                    brew install openblas &&
+                                    brew install openblas libomp &&
                                     export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
                                     # export LDFLAGS="-L/usr/local/opt/openblas/lib" &&
                                     # export CPPFLAGS="-I/usr/local/opt/openblas/include"

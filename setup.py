@@ -20,7 +20,7 @@ import distro
 
 def get_config():
 
-    blasinfo = pkg_config(['openblas64'], ['openblas'])
+    blasinfo = pkg_config(['openblas'], ['openblas64'])
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', 'spams', x))
