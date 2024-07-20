@@ -52,7 +52,8 @@ jobs:
           CIBW_BEFORE_BUILD_MACOS: >
                                     brew install openblas &&
                                     export LDFLAGS="-L/usr/local/opt/openblas/lib" &&
-                                    export CPPFLAGS="-I/usr/local/opt/openblas/include"# bash tools/cibw_before_build_macos.sh
+                                    export CPPFLAGS="-I/usr/local/opt/openblas/include"
+                                    # bash tools/cibw_before_build_macos.sh
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
