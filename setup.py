@@ -85,13 +85,17 @@ def get_config():
             link_flags.append('-fopenmp')
 
     if ismac:
-        # homebrew openblas path
+        # homebrew openblas path x64
         cc_flags.append('-I/usr/local/opt/openblas/include')
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
         # homebrew openmp path
         cc_flags.append('-I/opt/homebrew/opt/libomp/include')
         link_flags.append('-L/opt/homebrew/opt/libomp/lib')
+
+        # homebrew openblas path arm64
+        cc_flags.append('-I/opt/homebrew/opt/openblas/include')
+        link_flags.append('-L/opt/homebrew/opt/openblas/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
