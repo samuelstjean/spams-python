@@ -60,10 +60,10 @@ jobs:
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
 
       - name: Test against oldest supported numpy version
-        if: ${{matrix.pyver}} == '3.10'
+        if: ${{matrix.pyver}} == 'cp310'
         run: |
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
-            python -m pip install numpy==1.21
+            python -m pip install numpy==1.21.3
             python ./test/test_spams.py
 
       - uses: actions/upload-artifact@v3

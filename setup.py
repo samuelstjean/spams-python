@@ -144,6 +144,6 @@ setup(name='spams-bin',
       url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
       packages=find_packages(),
-      install_requires=['numpy>=1.21',
-                        'scipy>=1.11'],
+      install_requires=['numpy>=1.21.3',
+                        'scipy>=1.5'],
       extras_require={"test": ['Pillow>=6.0']})
