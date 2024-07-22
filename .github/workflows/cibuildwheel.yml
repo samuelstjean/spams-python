@@ -44,7 +44,7 @@ jobs:
           CIBW_ARCHS: auto64
           CIBW_ARCHS_MACOS: x86_64 arm64
 
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {package}/wheelhouse {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: MACOSX_DEPLOYMENT_TARGET=13.0 DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
@@ -62,6 +62,7 @@ jobs:
       - name: Test against oldest supported numpy version
         if: ${{ matrix.pyver == 'cp310' }}
         run: |
+            ls ./wheelhouse
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
             python -m pip install numpy==1.21.3
             python ./test/test_spams.py
