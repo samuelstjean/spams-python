@@ -62,6 +62,7 @@ jobs:
       - name: Test against oldest supported numpy version
         if: ${{matrix.pyver}} == 'cp310'
         run: |
+            echo ${{matrix.pyver}}
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
             python -m pip install numpy==1.21.3
             python ./test/test_spams.py
