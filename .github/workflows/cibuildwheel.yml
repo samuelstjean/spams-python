@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         pyver: ['cp39', 'cp310', 'cp311', 'cp312']
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +42,6 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_SKIP: "pp* *-musllinux_*"
           CIBW_ARCHS: auto64
-          CIBW_ARCHS_MACOS: x86_64
 
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: MACOSX_DEPLOYMENT_TARGET=13.0 DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
@@ -70,7 +69,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: pywheels-${{ matrix.os }}-${{ matrix.pyver }}
+          name: cibw-${{ matrix.os }}-${{ matrix.pyver }}
           path: ./wheelhouse/*.whl
 
 
@@ -92,7 +91,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: pysource
+          name: cibw-sdist
           path: dist/*.tar.gz
 
   upload_pypi:
@@ -107,7 +106,7 @@ jobs:
         with:
           name: artifact
           path: dist
-          pattern: py*
+          pattern: cibw-*
           merge-multiple: true
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
