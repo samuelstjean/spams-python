@@ -65,7 +65,7 @@ jobs:
         run: |
             ls ./wheelhouse
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
-            python -m pip install numpy==1.21.3 scipy==1.5
+            python -m pip install numpy==1.21.3 scipy==1.8
             python ./test/test_spams.py
 
       - uses: actions/upload-artifact@v4
