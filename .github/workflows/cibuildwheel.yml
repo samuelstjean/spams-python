@@ -105,9 +105,24 @@ jobs:
           name: cibw-sdist
           path: dist/*.tar.gz
 
+  merge:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: artifacts
+          pattern: cibw-*
+
   upload_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+
     # upload to PyPI on every tag starting with 'v'
     # if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     # alternatively, to publish when a GitHub Release is created, use the following rule:
@@ -115,14 +130,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: artifact
           path: dist
           pattern: cibw-*
           merge-multiple: true
+
       - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          print-hash: true
-          user: __token__
-          password: ${{ secrets.pypi_password }}
-          # password: ${{ secrets.testpypi_password }}
-          # repository_url: https://test.pypi.org/legacy/
