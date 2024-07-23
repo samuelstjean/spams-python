@@ -38,11 +38,11 @@ jobs:
       - name: Mac os deployment target
         if: runner.os == 'macOS'
         run: |
-          if [[ ${{ matrix.os }} == 'macos-12']]; then
+          if [[ ${{ matrix.os }} == "macos-12" ]]; then
               echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> "$GITHUB_ENV"
           fi
 
-          if [[${{ matrix.os}} == 'macos-14']]; then
+          if [[ ${{ matrix.os}} == "macos-14" ]]; then
               echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> "$GITHUB_ENV"
           fi
 
