@@ -74,8 +74,7 @@ jobs:
         if: ${{ matrix.pyver == 'cp310' }}
         shell: bash
         run: |
-            ls ./wheelhouse
-            python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
+            python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl[test]
             python -m pip install numpy==1.21.3 scipy==1.8
             python ./test/test_spams.py
 
