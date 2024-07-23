@@ -18,9 +18,12 @@ import distro
 #     blasinfo = np.__config__.blas_opt_info
 #     lapackinfo = np.__config__.lapack_opt_info
 
+ismac = platform.system() == 'Darwin'
+iswindows = platform.system() == 'Windows'
+
 def get_config():
 
-    blasinfo = pkg_config(['openblas64'], ['openblas'])
+    blasinfo = pkg_config(['openblas'], ['openblas64'])
     incs = ['spams_wrap']
     for x in ['linalg', 'prox', 'decomp', 'dictLearn']:
         incs.append(os.path.join('spams_wrap', 'spams', x))
@@ -45,7 +48,7 @@ def get_config():
     #     if _ not in link_flags:
     #         link_flags.append(_)
 
-    if platform.system() == 'Windows':
+    if iswindows:
         libs = []
         is_mkl = False
     else:
@@ -67,25 +70,38 @@ def get_config():
                 libdirs.append(_)
         libs.extend(['mkl_rt'])
     else:
-        if 'centos' in distro.id():
+        if 'centos' in distro.id() or 'alma' in distro.id():
             libs.extend(['openblaso'])  # for openmp support in openblas under redhat
         else:
             libs.extend(['openblas'])
 
     # Check for openmp flag, mac is done later
-    if platform.system() != 'Darwin':
-        if platform.system() == 'Windows':
+    if not ismac:
+        if iswindows:
             cc_flags.append('-openmp')
             # link_flags.append('-openmp')
         else:
             cc_flags.append('-fopenmp')
             link_flags.append('-fopenmp')
 
-    # if platform.system() == 'Darwin':
-    #     cc_flags.append('-I/usr/local/opt/openblas/include')
-    #     link_flags.append('-L/usr/local/opt/openblas/lib')
+    if ismac:
+        # homebrew openblas path x64
+        cc_flags.append('-I/usr/local/opt/openblas/include')
+        link_flags.append('-L/usr/local/opt/openblas/lib')
 
-    if platform.system() == 'Windows':
+        # homebrew openmp path
+        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
+        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
+
+        # homebrew openblas path arm64
+        cc_flags.append('-I/opt/homebrew/opt/openblas/include')
+        link_flags.append('-L/opt/homebrew/opt/openblas/lib')
+
+        # # use accelerate
+        # link_flags.append('-framework accelerate')
+        # cc_flags.append('-I/usr/local/opt/openblas/include')
+
+    if iswindows:
         # dir_path = os.path.dirname(os.path.realpath(__file__))
         # Look for local intel mkl
         # libpath = os.path.join(dir_path, 'lib', 'native', 'win-x64')
@@ -114,8 +130,8 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-if platform.system() == 'Darwin':
-    add_openmp_flags_if_available(spams_wrap)
+# if ismac:
+#     add_openmp_flags_if_available(spams_wrap)
 
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
@@ -123,7 +139,8 @@ This (unofficial) version includes pre-built wheels for python 3 on windows, mac
 The source code for this fork is also available at https://github.com/samuelstjean/spams-python/"""
 
 setup(name='spams-bin',
-      version='2.6.8',
+      python_requires='>=3.9.0',
+      version='2.6.9',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',
@@ -131,6 +148,6 @@ setup(name='spams-bin',
       url='http://spams-devel.gforge.inria.fr/',
       ext_modules=[spams_wrap],
       packages=find_packages(),
-      install_requires=['numpy>=1.12',
-                        'scipy>=0.19'],
+      install_requires=['numpy>=1.21.3',
+                        'scipy>=1.5'],
       extras_require={"test": ['Pillow>=6.0']})
