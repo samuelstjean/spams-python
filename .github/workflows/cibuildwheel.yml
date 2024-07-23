@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-12, macos-14]
         pyver: ['cp39', 'cp310', 'cp311', 'cp312']
     steps:
       - uses: actions/checkout@v4
@@ -35,8 +35,20 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Mac os deployment target
+        if: runner.os == 'macOS'
+        run: |
+          if ${{ matrix.os }} == 'macos-12'; then
+              echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> "$GITHUB_ENV"
+          fi
+
+          if ${{ matrix.os}} == 'macos-14'; then
+              echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> "$GITHUB_ENV"
+          fi
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
+
         env:
           CIBW_BUILD: ${{matrix.pyver}}-*
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
@@ -44,7 +56,7 @@ jobs:
           CIBW_ARCHS: auto64
 
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
-          CIBW_REPAIR_WHEEL_COMMAND_MACOS: MACOSX_DEPLOYMENT_TARGET=13.0 DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
