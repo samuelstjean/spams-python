@@ -33,7 +33,7 @@ def _objective(X,D,param,imgname = None):
     R = np.mean(0.5 * (xd * xd).sum(axis=0) + param['lambda1'] * np.abs(alpha).sum(axis=0))
     print("objective function: %f" %R)
     #* display ?
-    if imgname != None:
+    if imgname is not None:
         img = spams.displayPatches(D)
         print("IMG %s" %str(img.shape))
         x = np.uint8(img[:,:,0] * 255.)

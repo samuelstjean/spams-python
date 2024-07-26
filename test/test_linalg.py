@@ -104,7 +104,7 @@ def test_normalize():
     A = np.asfortranarray(np.random.random(size=(100, 1000)), dtype=myfloat)
     res2 = Xtest1("spams", "spams.normalize(A)", locals())
     return None
-    
+
 tests = [
     'sort' , test_sort,
     'calcAAt' , test_calcAAt,
