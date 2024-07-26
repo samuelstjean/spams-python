@@ -41,7 +41,7 @@ jobs:
           if [[ ${{ matrix.os }} == "macos-12" ]]; then
             {
               echo "MACOSX_DEPLOYMENT_TARGET=12.0"
-              echo "CC=/usr/local/opt/llvm/bin/clang
+              echo "CC=/usr/local/opt/llvm/bin/clang"
             } >> "$GITHUB_ENV"
           fi
 
