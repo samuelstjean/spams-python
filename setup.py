@@ -90,12 +90,18 @@ def get_config():
         cc_flags.append('-I/usr/local/opt/libomp/include')
         link_flags.append('-L/usr/local/opt/libomp/lib')
 
+        cc_flags.append('-I/usr/local/opt/llvm/include')
+        link_flags.append('-L/usr/local/opt/llvm/lib')
+
         # homebrew openblas path arm64
         cc_flags.append('-I/opt/homebrew/opt/openblas/include')
         link_flags.append('-L/opt/homebrew/opt/openblas/lib')
 
         cc_flags.append('-I/opt/homebrew/opt/libomp/include')
         link_flags.append('-L/opt/homebrew/opt/libomp/lib')
+
+        cc_flags.append('-I/opt/homebrew/opt/llvm/include')
+        link_flags.append('-L/opt/homebrew/opt/llvm/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
