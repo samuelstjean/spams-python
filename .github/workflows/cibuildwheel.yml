@@ -48,7 +48,7 @@ jobs:
           if [[ ${{ matrix.os}} == "macos-14" ]]; then
             {
               echo "MACOSX_DEPLOYMENT_TARGET=14.0"
-              echo "CC=/opt/homebrew/opt/llvm/bin/clang
+              echo "CC=/opt/homebrew/opt/llvm/bin/clang"
             } >> "$GITHUB_ENV"
           fi
 
