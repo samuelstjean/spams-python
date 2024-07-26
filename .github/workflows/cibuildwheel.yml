@@ -39,11 +39,15 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           if [[ ${{ matrix.os }} == "macos-12" ]]; then
-              echo "MACOSX_DEPLOYMENT_TARGET=12.0" >> "$GITHUB_ENV"
+            {
+              echo "MACOSX_DEPLOYMENT_TARGET=12.0"
+            } >> "$GITHUB_ENV"
           fi
 
           if [[ ${{ matrix.os}} == "macos-14" ]]; then
-              echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> "$GITHUB_ENV"
+            {
+              echo "MACOSX_DEPLOYMENT_TARGET=14.0"
+            } >> "$GITHUB_ENV"
           fi
 
       - name: Build wheels
@@ -64,9 +68,6 @@ jobs:
           CIBW_BEFORE_BUILD_MACOS: >
                                     brew install openblas libomp &&
                                     export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
-                                    # export LDFLAGS="-L/usr/local/opt/openblas/lib" &&
-                                    # export CPPFLAGS="-I/usr/local/opt/openblas/include"
-                                    # bash tools/cibw_before_build_macos.sh
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py

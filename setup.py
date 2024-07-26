@@ -1,22 +1,12 @@
 import os
 import platform
+import distro
 
 from setuptools import setup, Extension, find_packages
 from distutils.sysconfig import get_python_inc
 from extension_helpers import add_openmp_flags_if_available, pkg_config
 
 import numpy as np
-# from numpy.distutils.system_info import blas_info
-
-import distro
-
-# for np >= 1.22
-# try:
-#     blasinfo = np.distutils.__config__.blas_ilp64_opt_info
-#     lapackinfo = np.distutils.__config__.lapack_ilp64_opt_info
-# except Exception:
-#     blasinfo = np.__config__.blas_opt_info
-#     lapackinfo = np.__config__.lapack_opt_info
 
 ismac = platform.system() == 'Darwin'
 iswindows = platform.system() == 'Windows'
@@ -75,27 +65,30 @@ def get_config():
         else:
             libs.extend(['openblas'])
 
-    # Check for openmp flag, mac is done later
-    if not ismac:
-        if iswindows:
-            cc_flags.append('-openmp')
-            # link_flags.append('-openmp')
-        else:
-            cc_flags.append('-fopenmp')
-            link_flags.append('-fopenmp')
+    # Check for openmp flag
+    if iswindows:
+        cc_flags.append('/openmp')
+    elif ismac:
+        cc_flags.extend(['-Xpreprocessor', '-fopenmp'])
+        link_flags.append('-lomp')
+    else:
+        cc_flags.append('-fopenmp')
+        link_flags.append('-fopenmp')
 
     if ismac:
-        # homebrew openblas path x64
+        # homebrew path x64
         cc_flags.append('-I/usr/local/opt/openblas/include')
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
-        # homebrew openmp path
-        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
-        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
+        cc_flags.append('-I/usr/local/opt/libomp/include')
+        link_flags.append('-L/usr/local/opt/libomp/lib')
 
         # homebrew openblas path arm64
         cc_flags.append('-I/opt/homebrew/opt/openblas/include')
         link_flags.append('-L/opt/homebrew/opt/openblas/lib')
+
+        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
+        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
@@ -130,9 +123,6 @@ spams_wrap = Extension(
     depends=['spams_wrap/spams.h'],
 )
 
-# if ismac:
-#     add_openmp_flags_if_available(spams_wrap)
-
 long_description = """Python interface for SPArse Modeling Software (SPAMS),
 an optimization toolbox for solving various sparse estimation problems.
 This (unofficial) version includes pre-built wheels for python 3 on windows, mac (with openmp support) and linux.
@@ -140,7 +130,7 @@ The source code for this fork is also available at https://github.com/samuelstje
 
 setup(name='spams-bin',
       python_requires='>=3.9.0',
-      version='2.6.9',
+      version='2.6.10',
       description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)',
       long_description=long_description,
       author='Julien Mairal',

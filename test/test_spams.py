@@ -25,7 +25,7 @@ def run_test(testname,prog):
     if simul:
         return
     err = prog()
-    if err != None:
+    if err is not None:
         print("  ERR = %f" %err)
 
 def main(argv):
