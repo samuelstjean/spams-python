@@ -79,8 +79,8 @@ def get_config():
     if iswindows:
         cc_flags.append('/openmp')
     else:
-        cc_flags.extend(['-fopenmp', '-Xclang'])
-        link_flags.extend(['-fopenmp', '-Xclang'])
+        cc_flags.extend(['-Xpreprocessor', '-fopenmp'])
+        link_flags.extend(['-Xpreprocessor', '-fopenmp'])
 
     if ismac:
         # homebrew path x64
