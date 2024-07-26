@@ -41,14 +41,16 @@ jobs:
           if [[ ${{ matrix.os }} == "macos-12" ]]; then
             {
               echo "MACOSX_DEPLOYMENT_TARGET=12.0"
-              echo "CC=/usr/local/opt/llvm/bin/clang"
+              echo "LDFLAGS="-L/usr/local/opt/libomp/lib"
+              echo "CPPFLAGS="-I/usr/local/opt/libomp/include"
             } >> "$GITHUB_ENV"
           fi
 
           if [[ ${{ matrix.os}} == "macos-14" ]]; then
             {
               echo "MACOSX_DEPLOYMENT_TARGET=14.0"
-              echo "CC=/opt/homebrew/opt/llvm/bin/clang"
+              echo "LDFLAGS="-L/opt/homebrew/opt/libomp/lib"
+              echo "CPPFLAGS="-I/opt/homebrew/opt/libomp/include"
             } >> "$GITHUB_ENV"
           fi
 
