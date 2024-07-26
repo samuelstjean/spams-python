@@ -2,4 +2,3 @@ recursive-include spams_wrap *.h
 recursive-include spams_wrap *.cpp
 include test/boat.png
 include test/lena.png
-include openmp_helpers.py
