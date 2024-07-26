@@ -75,27 +75,27 @@ def get_config():
         else:
             libs.extend(['openblas'])
 
-    # Check for openmp flag, mac is done later
-    if not ismac:
-        if iswindows:
-            cc_flags.append('-openmp')
-            # link_flags.append('-openmp')
-        else:
-            cc_flags.append('-fopenmp')
-            link_flags.append('-fopenmp')
+    # Check for openmp flag
+    if iswindows:
+        cc_flags.append('/openmp')
+    else:
+        cc_flags.append('-fopenmp')
+        link_flags.append('-fopenmp')
 
     if ismac:
-        # homebrew openblas path x64
+        # homebrew path x64
         cc_flags.append('-I/usr/local/opt/openblas/include')
         link_flags.append('-L/usr/local/opt/openblas/lib')
 
-        # homebrew openmp path
-        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
-        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
+        cc_flags.append('-I/usr/local/opt/libomp/include')
+        link_flags.append('-L/usr/local/opt/libomp/lib')
 
         # homebrew openblas path arm64
         cc_flags.append('-I/opt/homebrew/opt/openblas/include')
         link_flags.append('-L/opt/homebrew/opt/openblas/lib')
+
+        cc_flags.append('-I/opt/homebrew/opt/libomp/include')
+        link_flags.append('-L/opt/homebrew/opt/libomp/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
