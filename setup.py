@@ -78,9 +78,12 @@ def get_config():
     # Check for openmp flag
     if iswindows:
         cc_flags.append('/openmp')
-    else:
+    elif ismac:
         cc_flags.extend(['-Xpreprocessor', '-fopenmp'])
-        link_flags.extend(['-Xpreprocessor', '-fopenmp'])
+        link_flags.append('-lomp')
+    else:
+        cc_flags.append('-fopenmp')
+        link_flags.append('-fopenmp')
 
     if ismac:
         # homebrew path x64
@@ -90,8 +93,8 @@ def get_config():
         cc_flags.append('-I/usr/local/opt/libomp/include')
         link_flags.append('-L/usr/local/opt/libomp/lib')
 
-        cc_flags.append('-I/usr/local/opt/llvm/include')
-        link_flags.append('-L/usr/local/opt/llvm/lib')
+        # cc_flags.append('-I/usr/local/opt/llvm/include')
+        # link_flags.append('-L/usr/local/opt/llvm/lib')
 
         # homebrew openblas path arm64
         cc_flags.append('-I/opt/homebrew/opt/openblas/include')
@@ -100,8 +103,8 @@ def get_config():
         cc_flags.append('-I/opt/homebrew/opt/libomp/include')
         link_flags.append('-L/opt/homebrew/opt/libomp/lib')
 
-        cc_flags.append('-I/opt/homebrew/opt/llvm/include')
-        link_flags.append('-L/opt/homebrew/opt/llvm/lib')
+        # cc_flags.append('-I/opt/homebrew/opt/llvm/include')
+        # link_flags.append('-L/opt/homebrew/opt/llvm/lib')
 
         # # use accelerate
         # link_flags.append('-framework accelerate')
