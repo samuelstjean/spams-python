@@ -70,7 +70,7 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: >
-                                    brew install openblas libomp &&
+                                    brew reinstall openblas libomp &&
                                     export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
 
           CIBW_TEST_EXTRAS: "test"
