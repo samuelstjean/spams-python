@@ -11,7 +11,8 @@ ssprand = ssp.rand
 def test_sort():
     n = 2000000
     X = np.asfortranarray(np.random.normal(size=(n,)), dtype=myfloat)
-    return Xtest("np.sort(X)", "spams.sort(X,True)", locals())
+    locs = locals()
+    return Xtest("np.sort(X)", "spams.sort(X,True)", locs)
 
 
 def test_calcAAt():
@@ -22,7 +23,8 @@ def test_calcAAt():
     n = 200000
     d = 0.05
     A = ssprand(m, n, density=d, format="csc", dtype=myfloat)
-    return Xtest("A * A.T", "spams.calcAAt(A)", locals())
+    locs = locals()
+    return Xtest("(A * A.T).todense()", "spams.calcAAt(A)", locs)
 
 
 def test_calcXAt():
@@ -33,32 +35,37 @@ def test_calcXAt():
     X = np.asfortranarray(np.random.normal(size=(64, n)), dtype=myfloat)
 
     # * dot is very very slow betewwen a full and a sparse matrix
-    return Xtest("np.dot(X,A.T.todense())", "spams.calcXAt(X,A)", locals())
+    locs = locals()
+    return Xtest("np.dot(X,A.T.todense())", "spams.calcXAt(X,A)", locs)
 
 
 def test_calcXY():
     X = np.asfortranarray(np.random.normal(size=(64, 200)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(200, 20000)), dtype=myfloat)
-    return Xtest("np.dot(X,Y)", "spams.calcXY(X,Y)", locals())
+    locs = locals()
+    return Xtest("np.dot(X,Y)", "spams.calcXY(X,Y)", locs)
 
 
 def test_calcXYt():
     X = np.asfortranarray(np.random.normal(size=(64, 200)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(20000, 200)), dtype=myfloat)
-    return Xtest("np.dot(X,Y.T)", "spams.calcXYt(X,Y)", locals())
+    locs = locals()
+    return Xtest("np.dot(X,Y.T)", "spams.calcXYt(X,Y)", locs)
 
 
 def test_calcXtY():
     X = np.asfortranarray(np.random.normal(size=(200, 64)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(200, 20000)), dtype=myfloat)
-    return Xtest("np.dot(X.T,Y)", "spams.calcXtY(X,Y)", locals())
+    locs = locals()
+    return Xtest("np.dot(X.T,Y)", "spams.calcXtY(X,Y)", locs)
 
 
 def test_bayer():
     n = 2000000
     X = np.asfortranarray(np.random.normal(size=(n,)), dtype=myfloat)
 
-    Z = Xtest1("spams", "spams.bayer(X,0)", locals())
+    locs = locals()
+    Z = Xtest1("spams", "spams.bayer(X,0)", locs)
     return None
 
 
@@ -97,12 +104,14 @@ def test_conjGrad():
 def test_invSym():
     A = np.asfortranarray(np.random.random(size=(1000, 1000)))
     A = np.asfortranarray(np.dot(A.T, A), dtype=myfloat)
-    return Xtest("np.linalg.inv(A)", "spams.invSym(A)", locals())
+    locs = locals()
+    return Xtest("np.linalg.inv(A)", "spams.invSym(A)", locs)
 
 
 def test_normalize():
     A = np.asfortranarray(np.random.random(size=(100, 1000)), dtype=myfloat)
-    res2 = Xtest1("spams", "spams.normalize(A)", locals())
+    locs = locals()
+    res2 = Xtest1("spams", "spams.normalize(A)", locs)
     return None
 
 tests = [
