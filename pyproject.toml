@@ -1,6 +1,18 @@
 [build-system]
 requires = ["numpy>=2.0",
-            "extension-helpers",
-            "setuptools",
-            'distro',
+            "meson-python>=0.15",
             "wheel"]
+build-backend = "mesonpy"
+
+[project]
+name='spams-bin'
+requires-python='>=3.9.0'
+version='2.6.11'
+dependencies=['numpy>=1.21.3',
+              'scipy>=1.5']
+license = {text = "GPLv2"}
+readme = "README.md"
+description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)'
+
+[project.optional-dependencies]
+test = ['Pillow>=6.0']
