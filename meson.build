@@ -52,7 +52,7 @@ py.extension_module('spams_wrap',
                      [
                       'spams_wrap/spams_wrap.cpp',
                      ],
-                     include_directories: spams_include,
+                    #  include_directories: spams_include,
                      dependencies : [
                      py_dep,
                      np_dep,
