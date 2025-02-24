@@ -8,6 +8,7 @@ project('_spams_wrap',
                           ])
 
 numpy_nodepr_api = '-DNPY_NO_DEPRECATED_API=NPY_1_23_API_VERSION'
+
 extra_args = ['-fPIC',
               '-DNDEBUG',
               '-m64']
@@ -29,11 +30,13 @@ test_sources = [
 ]
 
 spams_include = [
+                'spams_wrap',
                 'spams_wrap/spams/decomp',
                 'spams_wrap/spams/dictLearn',
                 'spams_wrap/spams/linalg',
                 'spams_wrap/spams/prox'
                 ]
+
 py = import('python').find_installation(pure: false)
 py_dep = py.dependency()
 
@@ -47,21 +50,22 @@ np_dep = declare_dependency(include_directories: incdir_numpy,
 omp = dependency('openmp')
 blas = dependency('blas')
 lapack = dependency('lapack')
+# spams = dependency('./spams_wrap/spams.h')
 
 py.extension_module('spams_wrap',
                      [
                       'spams_wrap/spams_wrap.cpp',
                      ],
-                    #  include_directories: spams_include,
+                     include_directories: spams_include,
                      dependencies : [
                      py_dep,
                      np_dep,
                      omp,
                      blas,
                      lapack,
-                     'spams_wrap/spams.h'
+                    #  spams,
                      ],
-                    #  c_args: extra_args,
+                     c_args: extra_args,
                      install : true,
                      subdir: 'spams_wrap')
 
