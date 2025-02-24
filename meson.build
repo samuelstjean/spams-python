@@ -8,6 +8,9 @@ project('_spams_wrap',
                           ])
 
 numpy_nodepr_api = '-DNPY_NO_DEPRECATED_API=NPY_1_23_API_VERSION'
+extra_args = ['-fPIC',
+              '-DNDEBUG',
+              '-m64']
 
 python_sources = [
     'spams/__init__.py',
@@ -68,8 +71,7 @@ lapack = dependency('lapack')
 
 py.extension_module('spams_wrap',
                      [
-                      'spams_wrap/spams.h',
-                      # 'spams_wrap/spams_wrap.cpp',
+                      'spams_wrap/spams_wrap.cpp',
                      ],
                      include_directories: spams_include,
                      dependencies : [
@@ -77,8 +79,10 @@ py.extension_module('spams_wrap',
                      np_dep,
                      omp,
                      blas,
-                     lapack
+                     lapack,
+                     'spams_wrap/spams.h'
                      ],
+                     extra_args: extra_args,
                      install : true,
                      subdir: 'spams_wrap')
 
