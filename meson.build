@@ -25,6 +25,12 @@ test_sources = [
   'test/lena.png',
 ]
 
+spams_include = [
+                'spams_wrap/spams/decomp',
+                'spams_wrap/spams/dictLearn',
+                'spams_wrap/spams/linalg',
+                'spams_wrap/spams/prox'
+                ]
 py = import('python').find_installation(pure: false)
 py_dep = py.dependency()
 
@@ -39,33 +45,33 @@ omp = dependency('openmp')
 blas = dependency('blas')
 lapack = dependency('lapack')
 
+# headers =
+                    #  ['''spams_wrap/spams/decomp/decomp.h''',
+                    #  '''spams_wrap/spams/decomp/lsqsplx.h''',
+                    #  '''spams_wrap/spams/decomp/projsplx.h''',
+                    #  '''spams_wrap/spams/dictLearn/arch.h''',
+                    #  '''spams_wrap/spams/dictLearn/dicts.h''',
+                    #  '''spams_wrap/spams/linalg/cblas_alt_template.h''',
+                    #  '''spams_wrap/spams/linalg/cblas_defvar.h''',
+                    #  '''spams_wrap/spams/linalg/cblas_template.h''',
+                    #  '''spams_wrap/spams/linalg/linalg.h''',
+                    #  '''spams_wrap/spams/linalg/list.h''',
+                    #  '''spams_wrap/spams/linalg/mexutils.h''',
+                    #  '''spams_wrap/spams/linalg/misc.h''',
+                    #  '''spams_wrap/spams/linalg/utils.h''',
+                    #  '''spams_wrap/spams/prox/fista.h''',
+                    #  '''spams_wrap/spams/prox/groups-graph.h''',
+                    #  '''spams_wrap/spams/prox/mexgrouputils.h''',
+                    #  '''spams_wrap/spams/prox/project.h''',
+                    #  '''spams_wrap/spams/prox/surrogate.h''',
+                    #  '''spams_wrap/spams/prox/svm.h''']
+
 py.extension_module('spams_wrap',
                      [
-                     '''spams_wrap/spams.h''',
-                     '''spams_wrap/spams_wrap.cpp''',
-                     '''spams_wrap/spams/decomp/decomp.h''',
-                     '''spams_wrap/spams/decomp/lsqsplx.h''',
-                     '''spams_wrap/spams/decomp/projsplx.h''',
-                     '''spams_wrap/spams/dictLearn/arch.h''',
-                     '''spams_wrap/spams/dictLearn/dicts.h''',
-                     '''spams_wrap/spams/linalg/cblas_alt_template.h''',
-                     '''spams_wrap/spams/linalg/cblas_defvar.h''',
-                     '''spams_wrap/spams/linalg/cblas_template.h''',
-                     '''spams_wrap/spams/linalg/linalg.h''',
-                     '''spams_wrap/spams/linalg/list.h''',
-                     '''spams_wrap/spams/linalg/mexutils.h''',
-                     '''spams_wrap/spams/linalg/misc.h''',
-                     '''spams_wrap/spams/linalg/utils.h''',
-                     '''spams_wrap/spams/prox/fista.h''',
-                     '''spams_wrap/spams/prox/groups-graph.h''',
-                     '''spams_wrap/spams/prox/mexgrouputils.h''',
-                     '''spams_wrap/spams/prox/project.h''',
-                     '''spams_wrap/spams/prox/surrogate.h''',
-                     '''spams_wrap/spams/prox/svm.h''',
+                      'spams_wrap/spams.h',
+                      'spams_wrap/spams_wrap.cpp',
                      ],
-                     include_directories: [
-                     incdir_numpy,
-                     ],
+                     include_directories: spams_include,
                      dependencies : [
                      py_dep,
                      np_dep,
