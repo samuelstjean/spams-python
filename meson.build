@@ -69,7 +69,7 @@ lapack = dependency('lapack')
 py.extension_module('spams_wrap',
                      [
                       'spams_wrap/spams.h',
-                      'spams_wrap/spams_wrap.cpp',
+                      # 'spams_wrap/spams_wrap.cpp',
                      ],
                      include_directories: spams_include,
                      dependencies : [
