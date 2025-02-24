@@ -48,27 +48,6 @@ omp = dependency('openmp')
 blas = dependency('blas')
 lapack = dependency('lapack')
 
-# headers =
-                    #  ['''spams_wrap/spams/decomp/decomp.h''',
-                    #  '''spams_wrap/spams/decomp/lsqsplx.h''',
-                    #  '''spams_wrap/spams/decomp/projsplx.h''',
-                    #  '''spams_wrap/spams/dictLearn/arch.h''',
-                    #  '''spams_wrap/spams/dictLearn/dicts.h''',
-                    #  '''spams_wrap/spams/linalg/cblas_alt_template.h''',
-                    #  '''spams_wrap/spams/linalg/cblas_defvar.h''',
-                    #  '''spams_wrap/spams/linalg/cblas_template.h''',
-                    #  '''spams_wrap/spams/linalg/linalg.h''',
-                    #  '''spams_wrap/spams/linalg/list.h''',
-                    #  '''spams_wrap/spams/linalg/mexutils.h''',
-                    #  '''spams_wrap/spams/linalg/misc.h''',
-                    #  '''spams_wrap/spams/linalg/utils.h''',
-                    #  '''spams_wrap/spams/prox/fista.h''',
-                    #  '''spams_wrap/spams/prox/groups-graph.h''',
-                    #  '''spams_wrap/spams/prox/mexgrouputils.h''',
-                    #  '''spams_wrap/spams/prox/project.h''',
-                    #  '''spams_wrap/spams/prox/surrogate.h''',
-                    #  '''spams_wrap/spams/prox/svm.h''']
-
 py.extension_module('spams_wrap',
                      [
                       'spams_wrap/spams_wrap.cpp',
@@ -82,7 +61,7 @@ py.extension_module('spams_wrap',
                      lapack,
                      'spams_wrap/spams.h'
                      ],
-                     c_args: extra_args,
+                    #  c_args: extra_args,
                      install : true,
                      subdir: 'spams_wrap')
 
