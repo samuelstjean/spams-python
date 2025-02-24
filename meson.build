@@ -82,7 +82,7 @@ py.extension_module('spams_wrap',
                      lapack,
                      'spams_wrap/spams.h'
                      ],
-                     extra_args: extra_args,
+                     c_args: extra_args,
                      install : true,
                      subdir: 'spams_wrap')
 
