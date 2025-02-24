@@ -46,8 +46,17 @@ incdir_numpy = run_command(py,
 np_dep = declare_dependency(include_directories: incdir_numpy)
 
 openmp = dependency('openmp')
-blas = dependency('blas')
-lapack = dependency('lapack')
+blas = dependency('blas', required: false)
+lapack = dependency('lapack', required: false)
+
+# centos has no pkg-config file apparently, so look manually if it was not found previously
+if not blas.found()
+  blas = c_compiler.find_library('blas', required: true)
+endif
+
+if not lapack.found()
+  lapack = c_compiler.find_library('lapack', required: true)
+endif
 
 py.extension_module('spams_wrap',
                      [
