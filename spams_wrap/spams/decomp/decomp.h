@@ -2044,9 +2044,11 @@ void coreLARS2W(Vector<T>& DtR, const AbstractMatrix<T>& G,
          /// L2ERROR
          const T delta = coeff2*coeff2-coeff1*coeff3;
          step_max2 = delta < 0 ? INFINITY : (coeff2-sqrt(delta))/coeff1;
+         step_max2 = MIN(current_correlation,step_max2);
       } else {
          /// L1COEFFS
          step_max2 = coeff1 < 0 ? INFINITY : (constraint-thrs)/coeff1;
+         step_max2 = MIN(current_correlation,step_max2);
       }
       step = MIN(MIN(step,step_max2),step_max);
 
@@ -2101,11 +2103,11 @@ void coreLARS2W(Vector<T>& DtR, const AbstractMatrix<T>& G,
          newAtom=true;
       }
       // Choose next action
-      if (iter > 4*L || abs(step) < 1e-10 ||
-            step == step_max2 || (normX < 1e-10) ||
+      if (iter > 4*L || abs(step) < 1e-15 ||
+            step == step_max2 || (normX < 1e-15) ||
             (i == (L-1)) ||
-            (mode == L2ERROR && normX - constraint < 1e-10) ||
-            (mode == L1COEFFS && (constraint-thrs < 1e-10))) {
+            (mode == L2ERROR && normX - constraint < 1e-15) ||
+            (mode == L1COEFFS && (constraint-thrs < 1e-15))) {
          break;
       }
    }
