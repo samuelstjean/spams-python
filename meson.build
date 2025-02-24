@@ -7,8 +7,6 @@ project('_spams_wrap',
                             'buildtype=release'
                           ])
 
-numpy_nodepr_api = '-DNPY_NO_DEPRECATED_API=NPY_1_23_API_VERSION'
-
 extra_args = ['-fPIC',
               '-DNDEBUG',
               '-m64']
@@ -45,12 +43,11 @@ incdir_numpy = run_command(py,
   check : true
 ).stdout().strip()
 
-np_dep = declare_dependency(include_directories: incdir_numpy,
-                            compile_args: numpy_nodepr_api)
-omp = dependency('openmp')
+np_dep = declare_dependency(include_directories: incdir_numpy)
+
+openmp = dependency('openmp')
 blas = dependency('blas')
 lapack = dependency('lapack')
-# spams = dependency('./spams_wrap/spams.h')
 
 py.extension_module('spams_wrap',
                      [
@@ -60,10 +57,9 @@ py.extension_module('spams_wrap',
                      dependencies : [
                      py_dep,
                      np_dep,
-                     omp,
+                     openmp,
                      blas,
                      lapack,
-                    #  spams,
                      ],
                      c_args: extra_args,
                      install : true,
