@@ -52,11 +52,11 @@ lapack = dependency('lapack', required: false)
 
 # centos has no pkg-config file apparently, so look manually if it was not found previously
 if not blas.found()
-  blas = cpp_compiler.find_library('blas', required: true)
+  blas = cpp_compiler.find_library('openblas', required: true)
 endif
 
 if not lapack.found()
-  lapack = cpp_compiler.find_library('lapack', required: true)
+  lapack = cpp_compiler.find_library('openblas', required: true)
 endif
 
 py.extension_module('spams_wrap',

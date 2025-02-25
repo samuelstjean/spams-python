@@ -100,7 +100,7 @@ jobs:
       - name: Build sdist
         run: |
           python -m pip install build
-          dnf install openblas-devel -y
+          sudo apt install libopenblas-dev
           python -m build --sdist
 
       - uses: actions/upload-artifact@v4
