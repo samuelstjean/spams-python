@@ -73,12 +73,12 @@ py.extension_module('spams_wrap',
                      ],
                      c_args: extra_args,
                      install : true,
-                     subdir: 'spams_wrap')
+                     subdir: 'spams')
 
 py.install_sources(
   python_sources,
   pure: false,             # Will be installed next to binaries
-  subdir: 'spams_wrap'  # Folder relative to site-packages to install to
+  subdir: 'spams'  # Folder relative to site-packages to install to
 )
 
 py.install_sources(
