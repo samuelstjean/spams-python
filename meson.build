@@ -63,7 +63,7 @@ if not lapack.found()
   lapack = cpp_compiler.find_library('openblas', required: true)
 endif
 
-py.extension_module('spams_wrap',
+py.extension_module('_spams_wrap',
                      [
                       'spams_wrap/spams_wrap.cpp',
                      ],
