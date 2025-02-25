@@ -15,6 +15,10 @@ extra_args = ['-fPIC',
 python_sources = [
     'spams/__init__.py',
     'spams/spams.py',
+]
+
+python_wrap_sources = [
+    'spams_wrap/__init__.py',
     'spams_wrap/spams_wrap.py',
 ]
 
@@ -73,7 +77,7 @@ py.extension_module('spams_wrap',
                      ],
                      c_args: extra_args,
                      install : true,
-                     subdir: 'spams')
+                     subdir: 'spams_wrap')
 
 py.install_sources(
   python_sources,
@@ -82,7 +86,13 @@ py.install_sources(
 )
 
 py.install_sources(
+  python_wrap_sources,
+  pure: false,             # Will be installed next to binaries
+  subdir: 'spams_wrap'  # Folder relative to site-packages to install to
+)
+
+py.install_sources(
   test_sources,
   pure: false,             # Will be installed next to binaries
-  preserve_path: true
+  subdir: 'test'  # Folder relative to site-packages to install to
 )
