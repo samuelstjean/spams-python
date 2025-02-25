@@ -64,7 +64,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
-          CIBW_BEFORE_BUILD_LINUX: apt update && apt install -y libopenblas-openmp-dev
+          CIBW_BEFORE_BUILD_LINUX: sudo apt update && sudo apt install -y libopenblas-openmp-dev
           CIBW_BEFORE_BUILD_MACOS: >
                                     brew install openblas libomp &&
                                     export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
@@ -100,7 +100,7 @@ jobs:
       - name: Build sdist
         run: |
           python -m pip install build
-          apt install libopenblas-dev
+          sudo apt install libopenblas-dev
           python -m build --sdist
 
       - uses: actions/upload-artifact@v4
