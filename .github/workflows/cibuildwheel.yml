@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-14]
         pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313']
     steps:
       - uses: actions/checkout@v4
@@ -65,9 +65,9 @@ jobs:
 
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
-          CIBW_BEFORE_BUILD_MACOS: >
-                                    brew install openblas libomp &&
-                                    export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
+          # CIBW_BEFORE_BUILD_MACOS: >
+          #                           brew install openblas libomp &&
+          #                           export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
 
           CIBW_TEST_EXTRAS: "test"
           CIBW_TEST_COMMAND: python {package}/test/test_spams.py
