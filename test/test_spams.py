@@ -32,7 +32,6 @@ def main(argv):
     tic = time.time()
     lst = []
     is_ok = True
-    loc = locals()
     for s in argv:
         if s[0] == '-':
             if s == '-32':
@@ -43,7 +42,7 @@ def main(argv):
         lst.append(s)
     for s in all_modules:
         try:
-            exec('import test_%s' %s, locals=loc)
+            exec('import test_%s' %s)
             modules.append(s)
         except:
             print("Removing %s" %s)
@@ -52,7 +51,7 @@ def main(argv):
         for m in modules:
             l.append("%s :" %m)
             # exec('lstm = test_%s.tests' %m)
-            lstm = loc[f'test_{m}'].tests
+            lstm = locals()['test_%s' %m].tests
             l.append('  %s' %(' '.join([ lstm[i] for i in range(0,len(lstm),2)])))
         usage(l)
     if(len(lst) == 0):
@@ -61,7 +60,7 @@ def main(argv):
         if testname in modules:
             print("**** %s ****" %testname)
             # exec('lstm = test_%s.tests' %testname)
-            lstm = loc[f'test_{testname}'].tests
+            lstm = locals()['test_%s' %testname].tests
             for i in range(0,len(lstm),2):
                 run_test(lstm[i],lstm[i+1])
             continue
@@ -69,7 +68,7 @@ def main(argv):
             found = False
             for m in modules:
                 # exec('lstm = test_%s.tests' %m)
-                lstm = loc[f'test_{m}'].tests
+                lstm = locals()['test_%s' %m].tests
                 for i in range(0,len(lstm),2):
                     if (lstm[i] == testname):
                         found = True
