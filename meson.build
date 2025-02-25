@@ -6,7 +6,6 @@ project('_spams_wrap',
                             'warning_level=1',
                             'buildtype=release'
                           ])
-cpp_compiler = meson.get_compiler('cpp')
 
 extra_args = ['-fPIC',
               '-DNDEBUG',
@@ -49,15 +48,6 @@ np_dep = declare_dependency(include_directories: incdir_numpy)
 openmp = dependency('openmp')
 blas = dependency('blas', required: false)
 lapack = dependency('lapack', required: false)
-
-# centos has no pkg-config file apparently, so look manually if it was not found previously
-if not blas.found()
-  blas = cpp_compiler.find_library('blas', required: true)
-endif
-
-if not lapack.found()
-  lapack = cpp_compiler.find_library('lapack', required: true)
-endif
 
 py.extension_module('spams_wrap',
                      [
