@@ -53,13 +53,19 @@ openmp = dependency('openmp')
 blas = dependency('blas', required: false)
 lapack = dependency('lapack', required: false)
 
-# centos has no pkg-config file apparently, so look manually if it was not found previously
+# centos has no pkg-config file apparently, so look for openblas if it was not found previously
 if not blas.found()
   blas = cpp_compiler.find_library('openblas', required: true)
+  if not blas.found()
+    blas = dependency('openblas', required: true)
+  endif
 endif
 
 if not lapack.found()
   lapack = cpp_compiler.find_library('openblas', required: true)
+  if not lapack.found()
+    lapack = dependency('openblas', required: true)
+  endif
 endif
 
 py.extension_module('_spams_wrap',
