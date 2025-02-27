@@ -27,7 +27,6 @@ test_sources = [
   'test/test_dictLearn.py',
   'test/test_linalg.py',
   'test/test_prox.py',
-  'test/test_utils.py',
   'test/boat.png',
   'test/lena.png',
 ]

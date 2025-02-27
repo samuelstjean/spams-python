@@ -10,11 +10,10 @@ except Exception as e:
 
 import spams
 import time
-from test_utils import *
 
 ssprand = ssp.rand
 imgpath = os.path.dirname(os.path.realpath(__file__))
-
+import pytest
 
 def _extract_lasso_param(f_param):
     lst = [ 'L','lambda1','lambda2','mode','pos','ols','numThreads','length_path','verbose','cholesky']
@@ -40,7 +39,8 @@ def _objective(X,D,param,imgname = None):
         image = Image.fromarray(x,mode = 'L')
         image.save("%s.png" %imgname)
 
-def test_trainDL():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_trainDL(myfloat):
     img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
@@ -131,7 +131,8 @@ def test_trainDL():
 
     return None
 
-def test_trainDL_Memory():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_trainDL_Memory(myfloat):
     img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
@@ -188,7 +189,8 @@ def test_trainDL_Memory():
 
     return None
 
-def test_structTrainDL():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_structTrainDL(myfloat):
     img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
@@ -341,7 +343,7 @@ def test_structTrainDL():
     param['regul'] = 'tree-l2'
     print("with Fista %s" %param['regul'])
     tic = time.time()
-    D = spams.structTrainDL(X,**param)
+    D = spams.structTrainDL(X.astype(np.float64),**param).astype(myfloat)
     tac = time.time()
     t = tac - tic
     print('time of computation for Dictionary Learning: %f' %t)
@@ -351,7 +353,7 @@ def test_structTrainDL():
     param['regul'] = 'tree-linf'
     print("with Fista %s" %param['regul'])
     tic = time.time()
-    D = spams.structTrainDL(X,**param)
+    D = spams.structTrainDL(X.astype(np.float64),**param).astype(myfloat)
     tac = time.time()
     t = tac - tic
     print('time of computation for Dictionary Learning: %f' %t)
@@ -359,7 +361,8 @@ def test_structTrainDL():
     _objective(X,D,param)
 
 
-def test_nmf():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_nmf(myfloat):
     img_file = os.path.join(imgpath, 'boat.png')
     try:
         img = Image.open(img_file)
@@ -393,7 +396,8 @@ def test_nmf():
 
 
 # Archetypal Analysis, run first steps with FISTA and run last steps with activeSet,
-def test_archetypalAnalysis():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_archetypalAnalysis(myfloat):
     img_file = os.path.join(imgpath, 'lena.png')
     try:
         img = Image.open(img_file)
@@ -456,14 +460,3 @@ def test_archetypalAnalysis():
     tac = time.time()
     t = tac - tic
     print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
-
-
-
-
-tests = [
-    'trainDL' , test_trainDL,
-    'trainDL_Memory' , test_trainDL_Memory,
-    'archetypalAnalysis', test_archetypalAnalysis,
-    'structTrainDL', test_structTrainDL,
-    'nmf' , test_nmf
-]

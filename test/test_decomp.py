@@ -1,13 +1,12 @@
-import sys
 import numpy as np
-import scipy
 import scipy.sparse as ssp
 
 import spams
 import time
-from test_utils import *
+import pytest
 
-def test_sparseProject():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_sparseProject(myfloat):
     np.random.seed(0)
     X = np.asfortranarray(np.random.normal(size = (20000,100)),dtype=myfloat)
     #* matlab : X=X./repmat(sqrt(sum(X.^2)),[size(X,1) 1]);
@@ -60,7 +59,8 @@ def test_sparseProject():
     print('Checking constraint: %f, %f (Projection is approximate : stops at a kink)' %(min(constraints),max(constraints)))
     return None
 
-def test_cd():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_cd(myfloat):
     np.random.seed(0)
     X = np.asfortranarray(np.random.normal(size = (64,100)))
     X = np.asfortranarray(X / np.tile(np.sqrt((X*X).sum(axis=0)),(X.shape[0],1)),dtype=myfloat)
@@ -93,7 +93,8 @@ def test_cd():
 
     return None
 
-def test_l1L2BCD():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_l1L2BCD(myfloat):
     np.random.seed(0)
     X = np.asfortranarray(np.random.normal(size = (64,100)),dtype=myfloat)
     D = np.asfortranarray(np.random.normal(size = (64,200)))
@@ -115,7 +116,8 @@ def test_l1L2BCD():
 
     return None
 
-def test_lasso():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_lasso(myfloat):
     np.random.seed(0)
     print("test lasso")
 ##############################################
@@ -149,7 +151,8 @@ def test_lasso():
     (alpha,path) = spams.lasso(X,D = D,return_reg_path = True,**param)
     return None
 
-def test_lassoMask():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_lassoMask(myfloat):
     np.random.seed(0)
     print("test lassoMask")
 ##############################################
@@ -175,7 +178,8 @@ def test_lassoMask():
 
     return None
 
-def test_lassoWeighted():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_lassoWeighted(myfloat):
     np.random.seed(0)
     print("test lasso weighted")
 ##############################################
@@ -197,7 +201,8 @@ def test_lassoWeighted():
 
     return None
 
-def test_omp():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_omp(myfloat):
     np.random.seed(0)
     print('test omp')
     X = np.asfortranarray(np.random.normal(size=(64,100000)),dtype= myfloat)
@@ -221,7 +226,8 @@ def test_omp():
     (alpha,path) = spams.omp(X,D,L=L,eps= eps,return_reg_path = True,numThreads = numThreads)
     return None
 
-def test_ompMask():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_ompMask(myfloat):
     np.random.seed(0)
     print('test ompMask')
 
@@ -244,7 +250,8 @@ def test_ompMask():
 
     return None
 
-def test_somp():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_somp(myfloat):
     np.random.seed(0)
     X = np.asfortranarray(np.random.normal(size = (64,10000)),dtype=myfloat)
     D = np.asfortranarray(np.random.normal(size = (64,200)))
@@ -256,15 +263,3 @@ def test_somp():
     t = tac - tic + 1e-5
     print("%f signals processed per second" %(X.shape[1] / t))
     return None
-
-tests = [
-    'sparseProject' , test_sparseProject,
-    'cd' , test_cd,
-    'l1L2BCD' , test_l1L2BCD,
-    'lasso' , test_lasso,
-    'lassoMask' , test_lassoMask,
-    'lassoWeighted' , test_lassoWeighted,
-    'omp' , test_omp,
-    'ompMask' , test_ompMask,
-    'somp' , test_somp,
-    ]

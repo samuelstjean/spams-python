@@ -1,20 +1,23 @@
 import numpy as np
 import scipy.sparse as ssp
+import scipy.linalg
 import spams
 import time
 
-from test_utils import *
-
 ssprand = ssp.rand
 
+import pytest
+from numpy.testing import assert_allclose
 
-def test_sort():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_sort(myfloat):
     n = 2000000
     X = np.asfortranarray(np.random.normal(size=(n,)), dtype=myfloat)
-    return Xtest("np.sort(X)", "spams.sort(X,True)", locals())
+    return assert_allclose(np.sort(X), spams.sort(X,True))
 
 
-def test_calcAAt():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_calcAAt(myfloat):
     """
     test A * A'
     """
@@ -22,47 +25,51 @@ def test_calcAAt():
     n = 200000
     d = 0.05
     A = ssprand(m, n, density=d, format="csc", dtype=myfloat)
-    return Xtest("A * A.T", "spams.calcAAt(A)", locals())
+    return assert_allclose((A @ A.T).todense(), spams.calcAAt(A))
 
 
-def test_calcXAt():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_calcXAt(myfloat):
     m = 200
     n = 200000
     d = 0.05
     A = ssprand(m, n, density=d, format="csc", dtype=myfloat)
     X = np.asfortranarray(np.random.normal(size=(64, n)), dtype=myfloat)
-
-    # * dot is very very slow betewwen a full and a sparse matrix
-    return Xtest("np.dot(X,A.T.todense())", "spams.calcXAt(X,A)", locals())
+    return assert_allclose((X @ A.T) , spams.calcXAt(X,A))
 
 
-def test_calcXY():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_calcXY(myfloat):
     X = np.asfortranarray(np.random.normal(size=(64, 200)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(200, 20000)), dtype=myfloat)
-    return Xtest("np.dot(X,Y)", "spams.calcXY(X,Y)", locals())
+    return assert_allclose(np.dot(X,Y), spams.calcXY(X,Y))
 
 
-def test_calcXYt():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_calcXYt(myfloat):
     X = np.asfortranarray(np.random.normal(size=(64, 200)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(20000, 200)), dtype=myfloat)
-    return Xtest("np.dot(X,Y.T)", "spams.calcXYt(X,Y)", locals())
+    return assert_allclose(np.dot(X,Y.T), spams.calcXYt(X,Y))
 
 
-def test_calcXtY():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_calcXtY(myfloat):
     X = np.asfortranarray(np.random.normal(size=(200, 64)), dtype=myfloat)
     Y = np.asfortranarray(np.random.normal(size=(200, 20000)), dtype=myfloat)
-    return Xtest("np.dot(X.T,Y)", "spams.calcXtY(X,Y)", locals())
+    return assert_allclose(np.dot(X.T,Y), spams.calcXtY(X,Y))
 
 
-def test_bayer():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_bayer(myfloat):
     n = 2000000
     X = np.asfortranarray(np.random.normal(size=(n,)), dtype=myfloat)
 
-    Z = Xtest1("spams", "spams.bayer(X,0)", locals())
+    Z = spams.bayer(X,0)
     return None
 
 
-def test_conjGrad():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_conjGrad(myfloat):
     A = np.asfortranarray(np.random.normal(size=(5000, 500)))
     # *    np.random.seed(0)
     # *    A = np.asfortranarray(np.random.normal(size = (10,5)))
@@ -91,29 +98,18 @@ def test_conjGrad():
     print("Mean error on b : %f" % (x2.sum() / b.shape[0]))
 
     err = np.abs(y1 - y2)
-    return err.max()
+    print("Max error", err.max())
 
 
-def test_invSym():
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_invSym(myfloat):
     A = np.asfortranarray(np.random.random(size=(1000, 1000)))
     A = np.asfortranarray(np.dot(A.T, A), dtype=myfloat)
-    return Xtest("np.linalg.inv(A)", "spams.invSym(A)", locals())
+    assert_allclose(spams.invSym(A), scipy.linalg.pinvh(A), atol=1e-5)
 
 
-def test_normalize():
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_normalize(myfloat):
     A = np.asfortranarray(np.random.random(size=(100, 1000)), dtype=myfloat)
-    res2 = Xtest1("spams", "spams.normalize(A)", locals())
+    res2 = spams.normalize(A)
     return None
-
-tests = [
-    'sort' , test_sort,
-    'calcAAt' , test_calcAAt,
-    'calcXAt' , test_calcXAt,
-    'calcXY' , test_calcXY,
-    'calcXYt' , test_calcXYt,
-    'calcXtY' , test_calcXtY,
-    'bayer' , test_bayer,
-    'conjGrad' , test_conjGrad,
-    'invSym' , test_invSym,
-    'normalize' , test_normalize,
-    ]
