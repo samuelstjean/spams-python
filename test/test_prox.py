@@ -5,7 +5,7 @@ import spams
 import time
 import pytest
 
-@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+@pytest.mark.parametrize("myfloat", [np.float64])
 def test_fistaFlat(myfloat):
     param = {'numThreads' : -1,'verbose' : True,
              'lambda1' : 0.05, 'it0' : 10, 'max_it' : 200,

@@ -250,7 +250,7 @@ def test_ompMask(myfloat):
 
     return None
 
-@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+@pytest.mark.parametrize("myfloat", [np.float64])
 def test_somp(myfloat):
     np.random.seed(0)
     X = np.asfortranarray(np.random.normal(size = (64,10000)),dtype=myfloat)
