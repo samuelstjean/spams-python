@@ -140,7 +140,7 @@
 
 #if defined(__GNUC__) && defined(_WIN32) && !defined(SWIG_PYTHON_NO_HYPOT_WORKAROUND)
 /* Workaround for '::hypot' has not been declared', see https://bugs.python.org/issue11566 */
-# include <math.h>
+# include <cmath>
 #endif
 
 #if !defined(PY_SSIZE_T_CLEAN) && !defined(SWIG_NO_PY_SSIZE_T_CLEAN)
@@ -4005,7 +4005,7 @@ SWIG_AsVal_double (PyObject *obj, double *val)
 #include <float.h>
 
 
-#include <math.h>
+#include <cmath>
 
 
 SWIGINTERNINLINE int
