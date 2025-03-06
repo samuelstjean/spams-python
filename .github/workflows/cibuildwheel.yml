@@ -29,12 +29,13 @@ jobs:
           activate-environment: openblas
           auto-activate-base: false
           channels: conda-forge
+          conda-remove-defaults: true
 
-      - name: Download openblas
-        if: runner.os == 'Windows'
-        run: |
-          curl https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.29/OpenBLAS-0.3.29_x64.zip -L -o openblas.zip
-          7z x openblas.zip -oC:\openblas
+      # - name: Download openblas
+      #   if: runner.os == 'Windows'
+      #   run: |
+      #     curl https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.29/OpenBLAS-0.3.29_x64.zip -L -o openblas.zip
+      #     7z x openblas.zip -oC:\openblas
 
       - uses: actions/setup-python@v5
         name: Install Python
@@ -56,6 +57,14 @@ jobs:
             } >> "$GITHUB_ENV"
           fi
 
+      - name: Set MinGW-w64 on Windows
+          if: runner.os == 'Windows'
+          run: |
+          echo "Adjusting PATH for MinGW on Windows"
+          export PATH="/c/mingw64/bin:$PATH"
+          echo "Adjusted PATH: $PATH"
+          /c/mingw64/bin/g++ --version
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
 
@@ -66,14 +75,20 @@ jobs:
           CIBW_SKIP: "pp* *-musllinux_*"
           CIBW_ARCHS: auto64
 
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\openblas\bin
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
 
+                                    # cp C:\\openblas\\bin\\libopenblas.dll C:\\openblas\\lib &&
+                                    # cp -r C:\\openblas\\include C:\\openblas\\lib\\
           CIBW_BEFORE_BUILD_WINDOWS: >
-                                      pip install delvewheel &&
-                                      conda install pkgconfig &&
-                                      set PKG_CONFIG_PATH=C:\openblas\lib
+                                    pip install delvewheel &&
+                                    conda install libblas=*=*openblas blas=*=*openblas libopenblas=*=*openmp* pkgconfig
+          CIBW_ENVIRONMENT_WINDOWS: >
+                                    PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\\lib\\pkgconfig;$PKG_CONFIG_PATH"
+                                    LIB="C:\Miniconda\envs\openblas\Library\\lib;$LIB"
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
+                                    # CC=clang
+                                    # CXX=clang++
           CIBW_BEFORE_BUILD_MACOS: brew install libomp
           CIBW_BEFORE_TEST: pip install pytest
           CIBW_TEST_EXTRAS: test

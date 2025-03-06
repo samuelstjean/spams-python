@@ -288,86 +288,84 @@ template <typename T> void syev( char& jobz, char& uplo, INTT n,
  * Implementations
  * *****************/
 
-#include <cython_blas_lapack.h>
-
-// extern "C" {
-//    double dnrm2_(INTT *n,double *x,INTT *incX);
-//    float snrm2_(INTT *n,float *x,INTT *incX);
-//    void dcopy_(INTT *n,double *x,INTT *incX, double *y,INTT *incY);
-//    void scopy_(INTT *n,float *x,INTT *incX, float *y,INTT *incY);
-//    void daxpy_(INTT *n,double* a, double *x,INTT *incX, double *y,INTT *incY);
-//    void saxpy_(INTT *n,float* a, float *x,INTT *incX, float *y,INTT *incY);
-//    void daxpby_(INTT *n,double* a, double *x,INTT *incX,double* b,  double *y,INTT *incY);
-//    void saxpby_(INTT *n,float* a, float *x,INTT *incX, float* b, float *y,INTT *incY);
-//    void dscal_(INTT *n,double* a, double *x,INTT *incX);
-//    void sscal_(INTT *n,float* a, float *x,INTT *incX);
-//    double dasum_(INTT *n,double *x,INTT *incX);
-//    float sasum_(INTT *n,float *x,INTT *incX);
-//    double ddot_(INTT *n,double *x,INTT *incX, double *y,INTT *incY);
-//    float sdot_(INTT *n,float *x,INTT *incX, float *y,INTT *incY);
-//    void dgemv_(char   *trans, INTT *m, INTT *n, double *alpha, double *a,
-//          INTT *lda, double *x, INTT *incx, double *beta, double *y,INTT *incy);
-//    void sgemv_(char   *trans, INTT *m, INTT *n, float *alpha, float *a,
-//          INTT *lda, float *x, INTT *incx, float *beta, float *y,INTT *incy);
-//    void dger_(INTT *m, INTT *n, double *alpha, double *x, INTT *incx,
-//          double *y, INTT *incy, double *a, INTT *lda);
-//    void sger_(INTT *m, INTT *n, float *alpha, float *x, INTT *incx,
-//          float *y, INTT *incy, float *a, INTT *lda);
-//    void dtrmv_(char *uplo, char *trans, char   *diag, INTT *n, double *a,
-//          INTT *lda, double *x, INTT *incx);
-//    void strmv_(char *uplo, char *trans, char   *diag, INTT *n, float *a,
-//          INTT *lda, float *x, INTT *incx);
-//    void dsyr_(char *uplo, INTT *n, double *alpha, double *x, INTT *incx,
-//          double *a, INTT *lda);
-//    void ssyr_(char *uplo, INTT *n, float *alpha, float *x, INTT *incx,
-//          float *a, INTT *lda);
-//    void dsymv_(char   *uplo, INTT *n, double *alpha, double *a, INTT *lda,
-//          double *x, INTT *incx, double *beta, double *y, INTT *incy);
-//    void ssymv_(char   *uplo, INTT *n, float *alpha, float *a, INTT *lda,
-//          float *x, INTT *incx, float *beta, float *y, INTT *incy);
-//    void dgemm_(char *transa, char *transb, INTT *m, INTT *n, INTT *k,
-//          double *alpha, double *a, INTT *lda, double *b, INTT *ldb, double *beta,
-//          double *c, INTT *ldc);
-//    void sgemm_(char *transa, char *transb, INTT *m, INTT *n, INTT *k,
-//          float *alpha, float *a, INTT *lda, float *b, INTT *ldb, float *beta,
-//          float *c, INTT *ldc);
-//    void dsyrk_(char *uplo, char *trans, INTT *n, INTT *k, double *alpha,
-//          double *a, INTT *lda, double *beta, double *c, INTT *ldc);
-//    void ssyrk_(char *uplo, char *trans, INTT *n, INTT *k, float *alpha,
-//          float *a, INTT *lda, float *beta, float *c, INTT *ldc);
-//    void dtrmm_(char *side,char *uplo,char *transa, char *diag, INTT *m,
-//          INTT *n, double *alpha, double *a, INTT *lda, double *b,
-//          INTT *ldb);
-//    void strmm_(char *side,char *uplo,char *transa, char *diag, INTT *m,
-//          INTT *n, float *alpha, float *a, INTT *lda, float *b,
-//          INTT *ldb);
-//    INTT idamax_(INTT *n, double *dx, INTT *incx);
-//    INTT isamax_(INTT *n, float *dx, INTT *incx);
-//    void dtrtri_(char* uplo, char* diag, INTT* n, double * a, INTT* lda,
-//          INTT* info);
-//    void strtri_(char* uplo, char* diag, INTT* n, float * a, INTT* lda,
-//          INTT* info);
-//    void dsytrf_(char* uplo, INTT* n, double* a, INTT* lda, INTT* ipiv,
-//          double* work, INTT* lwork, INTT* info);
-//    void ssytrf_(char* uplo, INTT* n, float* a, INTT* lda, INTT* ipiv,
-//          float* work, INTT* lwork, INTT* info);
-//    void dsytri_(char* uplo, INTT* n, double* a, INTT* lda, INTT* ipiv,
-//          double* work, INTT* info);
-//    void ssytri_(char* uplo, INTT* n, float* a, INTT* lda, INTT* ipiv,
-//          float* work, INTT* info);
-//    void dlasrt_(char* id,  INTT* n, double *d, INTT* info);
-//    void slasrt_(char* id,  INTT* n, float*d, INTT* info);
-//    void dgesvd_(char*jobu, char *jobvt, INTT *m, INTT *n, double *a,
-//          INTT *lda, double *s, double *u, INTT *ldu, double *vt,
-//          INTT *ldvt, double *work, INTT *lwork, INTT *info);
-//    void sgesvd_(char*jobu, char *jobvt, INTT *m, INTT *n, float *a,
-//          INTT *lda, float *s, float *u, INTT *ldu, float *vt,
-//          INTT *ldvt, float *work, INTT *lwork, INTT *info);
-//    void dsyev_(char *jobz, char *uplo, INTT *n, double *a, INTT *lda,
-//          double *w, double *work, INTT *lwork, INTT *info);
-//    void ssyev_(char *jobz, char *uplo, INTT *n, float *a, INTT *lda,
-//          float *w, float *work, INTT *lwork, INTT *info);
-// }
+extern "C" {
+   double dnrm2_(INTT *n,double *x,INTT *incX);
+   float snrm2_(INTT *n,float *x,INTT *incX);
+   void dcopy_(INTT *n,double *x,INTT *incX, double *y,INTT *incY);
+   void scopy_(INTT *n,float *x,INTT *incX, float *y,INTT *incY);
+   void daxpy_(INTT *n,double* a, double *x,INTT *incX, double *y,INTT *incY);
+   void saxpy_(INTT *n,float* a, float *x,INTT *incX, float *y,INTT *incY);
+   void daxpby_(INTT *n,double* a, double *x,INTT *incX,double* b,  double *y,INTT *incY);
+   void saxpby_(INTT *n,float* a, float *x,INTT *incX, float* b, float *y,INTT *incY);
+   void dscal_(INTT *n,double* a, double *x,INTT *incX);
+   void sscal_(INTT *n,float* a, float *x,INTT *incX);
+   double dasum_(INTT *n,double *x,INTT *incX);
+   float sasum_(INTT *n,float *x,INTT *incX);
+   double ddot_(INTT *n,double *x,INTT *incX, double *y,INTT *incY);
+   float sdot_(INTT *n,float *x,INTT *incX, float *y,INTT *incY);
+   void dgemv_(char   *trans, INTT *m, INTT *n, double *alpha, double *a,
+         INTT *lda, double *x, INTT *incx, double *beta, double *y,INTT *incy);
+   void sgemv_(char   *trans, INTT *m, INTT *n, float *alpha, float *a,
+         INTT *lda, float *x, INTT *incx, float *beta, float *y,INTT *incy);
+   void dger_(INTT *m, INTT *n, double *alpha, double *x, INTT *incx,
+         double *y, INTT *incy, double *a, INTT *lda);
+   void sger_(INTT *m, INTT *n, float *alpha, float *x, INTT *incx,
+         float *y, INTT *incy, float *a, INTT *lda);
+   void dtrmv_(char *uplo, char *trans, char   *diag, INTT *n, double *a,
+         INTT *lda, double *x, INTT *incx);
+   void strmv_(char *uplo, char *trans, char   *diag, INTT *n, float *a,
+         INTT *lda, float *x, INTT *incx);
+   void dsyr_(char *uplo, INTT *n, double *alpha, double *x, INTT *incx,
+         double *a, INTT *lda);
+   void ssyr_(char *uplo, INTT *n, float *alpha, float *x, INTT *incx,
+         float *a, INTT *lda);
+   void dsymv_(char   *uplo, INTT *n, double *alpha, double *a, INTT *lda,
+         double *x, INTT *incx, double *beta, double *y, INTT *incy);
+   void ssymv_(char   *uplo, INTT *n, float *alpha, float *a, INTT *lda,
+         float *x, INTT *incx, float *beta, float *y, INTT *incy);
+   void dgemm_(char *transa, char *transb, INTT *m, INTT *n, INTT *k,
+         double *alpha, double *a, INTT *lda, double *b, INTT *ldb, double *beta,
+         double *c, INTT *ldc);
+   void sgemm_(char *transa, char *transb, INTT *m, INTT *n, INTT *k,
+         float *alpha, float *a, INTT *lda, float *b, INTT *ldb, float *beta,
+         float *c, INTT *ldc);
+   void dsyrk_(char *uplo, char *trans, INTT *n, INTT *k, double *alpha,
+         double *a, INTT *lda, double *beta, double *c, INTT *ldc);
+   void ssyrk_(char *uplo, char *trans, INTT *n, INTT *k, float *alpha,
+         float *a, INTT *lda, float *beta, float *c, INTT *ldc);
+   void dtrmm_(char *side,char *uplo,char *transa, char *diag, INTT *m,
+         INTT *n, double *alpha, double *a, INTT *lda, double *b,
+         INTT *ldb);
+   void strmm_(char *side,char *uplo,char *transa, char *diag, INTT *m,
+         INTT *n, float *alpha, float *a, INTT *lda, float *b,
+         INTT *ldb);
+   INTT idamax_(INTT *n, double *dx, INTT *incx);
+   INTT isamax_(INTT *n, float *dx, INTT *incx);
+   void dtrtri_(char* uplo, char* diag, INTT* n, double * a, INTT* lda,
+         INTT* info);
+   void strtri_(char* uplo, char* diag, INTT* n, float * a, INTT* lda,
+         INTT* info);
+   void dsytrf_(char* uplo, INTT* n, double* a, INTT* lda, INTT* ipiv,
+         double* work, INTT* lwork, INTT* info);
+   void ssytrf_(char* uplo, INTT* n, float* a, INTT* lda, INTT* ipiv,
+         float* work, INTT* lwork, INTT* info);
+   void dsytri_(char* uplo, INTT* n, double* a, INTT* lda, INTT* ipiv,
+         double* work, INTT* info);
+   void ssytri_(char* uplo, INTT* n, float* a, INTT* lda, INTT* ipiv,
+         float* work, INTT* info);
+   void dlasrt_(char* id,  INTT* n, double *d, INTT* info);
+   void slasrt_(char* id,  INTT* n, float*d, INTT* info);
+   void dgesvd_(char*jobu, char *jobvt, INTT *m, INTT *n, double *a,
+         INTT *lda, double *s, double *u, INTT *ldu, double *vt,
+         INTT *ldvt, double *work, INTT *lwork, INTT *info);
+   void sgesvd_(char*jobu, char *jobvt, INTT *m, INTT *n, float *a,
+         INTT *lda, float *s, float *u, INTT *ldu, float *vt,
+         INTT *ldvt, float *work, INTT *lwork, INTT *info);
+   void dsyev_(char *jobz, char *uplo, INTT *n, double *a, INTT *lda,
+         double *w, double *work, INTT *lwork, INTT *info);
+   void ssyev_(char *jobz, char *uplo, INTT *n, float *a, INTT *lda,
+         float *w, float *work, INTT *lwork, INTT *info);
+}
 
 // Implementations of the INTTerfaces, BLAS Level 1
 /// Implementation of the INTTerface for cblas_dnrm2
