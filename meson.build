@@ -57,22 +57,16 @@ openmp = dependency('openmp')
 blas = dependency('blas', required: false)
 lapack = dependency('lapack', required: false)
 
-if host_machine.system() == 'windows'
-  openblas_include = 'C:/openblas/include'  # Adjust the path as necessary
-else
-  openblas_include = []
-endif
-
 # centos has no pkg-config file apparently, so look for openblas if it was not found previously
 if not blas.found()
-  blas = cpp_compiler.find_library('openblas', required: false, dirs: openblas_include)
+  blas = cpp_compiler.find_library('openblas', required: false)
   if not blas.found()
     blas = dependency('openblas', required: true)
   endif
 endif
 
 if not lapack.found()
-  lapack = cpp_compiler.find_library('openblas', required: false, dirs: openblas_include)
+  lapack = cpp_compiler.find_library('openblas', required: false)
   if not lapack.found()
     lapack = dependency('openblas', required: true)
   endif
@@ -81,20 +75,6 @@ endif
 if not (blas.found() or lapack.found())
   error('Neither BLAS nor LAPACK found. Please install OpenBLAS or another BLAS/LAPACK library.')
 endif
-
-# if host_machine.system() == 'windows'
-#   # Custom OpenBLAS path
-#   openblas_include = 'C:/openblas/include'  # Adjust the path as necessary
-#   openblas_lib = 'C:/openblas/lib/libopenblas.a'  # Adjust the path as necessary
-
-#   # Declare the OpenBLAS dependency
-#   openblas_dep = declare_dependency(
-#     include_directories: include_directories(openblas_include),
-#     link_with: [files(openblas_lib)],
-#   )
-# else
-#   openblas_dep = []
-# endif
 
 py.extension_module('_spams_wrap',
                      [
@@ -109,7 +89,6 @@ py.extension_module('_spams_wrap',
                      openmp,
                      blas,
                      lapack,
-                    #  openblas_dep
                      ],
                      c_args: extra_args,
                      install : true,
