@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-12, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313']
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +29,7 @@ jobs:
           activate-environment: openblas
           auto-activate-base: false
           channels: conda-forge
+          conda-remove-defaults: true
 
       - uses: actions/setup-python@v5
         name: Install Python
@@ -38,9 +39,9 @@ jobs:
       - name: Mac os deployment target
         if: runner.os == 'macOS'
         run: |
-          if [[ ${{ matrix.os }} == "macos-12" ]]; then
+          if [[ ${{ matrix.os }} == "macos-13" ]]; then
             {
-              echo "MACOSX_DEPLOYMENT_TARGET=12.0"
+              echo "MACOSX_DEPLOYMENT_TARGET=13.0"
             } >> "$GITHUB_ENV"
           fi
 
@@ -62,29 +63,28 @@ jobs:
 
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}
-
-          CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel && conda install openblas libopenblas[openmp]
+          CIBW_BEFORE_BUILD_WINDOWS: >
+                                    pip install delvewheel &&
+                                    conda install libblas=*=*openblas blas=*=*openblas pkgconfig
+          CIBW_ENVIRONMENT_WINDOWS: PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\\lib\\pkgconfig;$PKG_CONFIG_PATH"
           CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
-          CIBW_BEFORE_BUILD_MACOS: >
-                                    brew install openblas libomp &&
-                                    export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
-
-          CIBW_TEST_EXTRAS: "test"
-          CIBW_TEST_COMMAND: python {package}/test/test_spams.py
+          CIBW_BEFORE_BUILD_MACOS: brew install libomp
+          CIBW_BEFORE_TEST: pip install pytest
+          CIBW_TEST_EXTRAS: test
+          CIBW_TEST_COMMAND: pytest {package} --verbose
 
       - name: Test against oldest supported numpy version
         if: ${{ matrix.pyver == 'cp310' }}
         shell: bash
         run: |
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
-            python -m pip install numpy==1.21.3 scipy==1.8 pillow==9.0
-            python ./test/test_spams.py
+            python -m pip install numpy==1.21.3 scipy==1.8 pillow==9.0 pytest
+            pytest .
 
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-${{ matrix.os }}-${{ matrix.pyver }}
           path: ./wheelhouse/*.whl
-
 
   build_sdist:
     name: Build source distribution
@@ -100,6 +100,7 @@ jobs:
       - name: Build sdist
         run: |
           python -m pip install build
+          sudo apt install libopenblas-dev
           python -m build --sdist
 
       - uses: actions/upload-artifact@v4

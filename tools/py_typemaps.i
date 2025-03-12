@@ -46,7 +46,7 @@ extern "C" {
     DATA_TYPE *idata = result->rawX();
     memcpy(data,idata,n * sizeof(DATA_TYPE));
     delete result;
-    $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
+    $result = SWIG_AppendOutput($result,(PyObject*)array);
 
 }
 %typemap(freearg)
@@ -77,7 +77,7 @@ extern "C" {
 	    DATA_TYPE *data = data_temp$argnum->rawX();
 	    PyArrayObject * array = (PyArrayObject * )PyArray_SimpleNewFromData(1, dims, DATA_TYPECODE,(void*)data);
 	   if (!array) SWIG_fail;
-           $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
+           $result = SWIG_AppendOutput($result,(PyObject*)array);
 	  }
 }
 
@@ -124,7 +124,7 @@ extern "C" {
     delete result;
     if (! require_fortran(array)) {
        SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran out matrix"); SWIG_fail;}
-    $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
+    $result = SWIG_AppendOutput($result,(PyObject*)array);
 
 }
 %typemap(freearg)
@@ -158,7 +158,7 @@ extern "C" {
 	   if (! require_fortran(array)) {
        	      SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"Cannot make a fortran argout matrix"); SWIG_fail;}
 
-           $result = SWIG_Python_AppendOutput($result,(PyObject*)array);
+           $result = SWIG_AppendOutput($result,(PyObject*)array);
         }
 }
 
@@ -312,7 +312,7 @@ extern "C" {
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
     PyTuple_SetItem(tuple,3,shape);
     delete result;
-    $result = SWIG_Python_AppendOutput($result,tuple);
+    $result = SWIG_AppendOutput($result,tuple);
 }
 %typemap(freearg)
   (SpMatrix<DATA_TYPE> *INPLACE_SPMATRIX)
@@ -364,7 +364,7 @@ extern "C" {
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
     PyTuple_SetItem(tuple,3,shape);
-    $result = SWIG_Python_AppendOutput($result,tuple);
+    $result = SWIG_AppendOutput($result,tuple);
   }
 }
 %enddef /* %spmatrix_typemaps */
@@ -512,7 +512,7 @@ extern "C" {
     PyList_Append(node_list,tuple);
   }
   del_gstruct(result);
-  $result = SWIG_Python_AppendOutput($result,node_list);
+  $result = SWIG_AppendOutput($result,node_list);
 }
 
 %typemap(freearg)

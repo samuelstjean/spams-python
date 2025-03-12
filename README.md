@@ -1,6 +1,8 @@
 spams-python
 ============
 
+The source code for this fork is also available at https://github.com/samuelstjean/spams-python/
+
 A swig-regenerated rehost of the python version of SPArse Modeling Software (SPAMS) 2.6, available at http://spams-devel.gforge.inria.fr/downloads.html
 
 Disclaimer : I am not the author of the package, I just host a patched version which builds on recent gcc and python 3 for (mostly my) convenience. Most of the patches were taken from https://aur.archlinux.org/packages/python-spams-svn/
