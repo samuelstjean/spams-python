@@ -471,7 +471,6 @@ def test_lasso_weigthed_pos(myfloat):
     m, n, p = 50, 100, 200
 
     alpha = rng.standard_normal([n, p])
-    alpha[alpha < 0] = 0
     D = rng.standard_normal([m, n])
     D = np.abs(D) * 10
     X = D @ alpha
