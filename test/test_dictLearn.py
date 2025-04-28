@@ -15,6 +15,8 @@ ssprand = ssp.rand
 imgpath = os.path.dirname(os.path.realpath(__file__))
 import pytest
 
+from scipy.optimize import nnls
+
 def _extract_lasso_param(f_param):
     lst = [ 'L','lambda1','lambda2','mode','pos','ols','numThreads','length_path','verbose','cholesky']
     l_param = {'return_reg_path' : False}
@@ -460,3 +462,32 @@ def test_archetypalAnalysis(myfloat):
     tac = time.time()
     t = tac - tic
     print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
+
+@pytest.mark.parametrize("myfloat", [np.float64])
+def test_lasso_weigthed_pos(myfloat):
+
+    myfloat = np.float64
+    rng = np.random.default_rng(123456)
+    m, n, p = 50, 100, 200
+
+    alpha = rng.standard_normal([n, p])
+    alpha[alpha < 0] = 0
+    D = rng.standard_normal([m, n])
+    D = np.abs(D) * 10
+    X = D @ alpha
+
+    X = np.asfortranarray(X).astype(myfloat)
+    D = np.asfortranarray(D).astype(myfloat)
+    W = np.ones(alpha.shape, dtype=myfloat, order='F')
+
+    alpha1 = spams.lasso(X, D, lambda1=0.0, pos=True).toarray()
+    alpha2 = spams.lassoWeighted(X, D, W=W, lambda1=0.0, pos=True).toarray()
+    alpha3 = [nnls(D, X[:, i])[0] for i in range(X.shape[1])]
+    alpha3 = np.asarray(alpha3).T
+
+    assert np.all(alpha1 >= 0)
+    assert np.all(alpha2 >= 0)
+    assert np.all(alpha3 >= 0)
+
+    np.testing.assert_allclose(alpha1, alpha2)
+    np.testing.assert_allclose(alpha2, alpha3)
