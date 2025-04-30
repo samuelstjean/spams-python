@@ -49,7 +49,7 @@ def test_trainDL(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])))
         rgb = True
@@ -141,7 +141,7 @@ def test_trainDL_Memory(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])))
         rgb = True
@@ -199,7 +199,7 @@ def test_structTrainDL(myfloat):
     except Exception as e:
         print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -371,7 +371,7 @@ def test_nmf(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -406,7 +406,7 @@ def test_archetypalAnalysis(myfloat):
     except Exception as e:
         print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -463,7 +463,7 @@ def test_archetypalAnalysis(myfloat):
     t = tac - tic
     print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
 
-@pytest.mark.parametrize("myfloat", [np.float64])
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
 def test_lasso_weigthed_pos(myfloat):
 
     myfloat = np.float64
