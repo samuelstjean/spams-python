@@ -464,7 +464,7 @@ def test_archetypalAnalysis(myfloat):
     print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
 
 @pytest.mark.parametrize("myfloat", [np.float32, np.float64])
-def test_lasso_weigthed_pos(myfloat):
+def test_lasso_weighted_pos(myfloat):
 
     myfloat = np.float64
     rng = np.random.default_rng(123456)
