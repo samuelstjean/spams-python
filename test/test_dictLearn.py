@@ -465,8 +465,6 @@ def test_archetypalAnalysis(myfloat):
 
 @pytest.mark.parametrize("myfloat", [np.float32, np.float64])
 def test_lasso_weighted_pos(myfloat):
-
-    myfloat = np.float64
     rng = np.random.default_rng(123456)
     m, n, p = 50, 100, 200
 
