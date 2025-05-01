@@ -480,7 +480,7 @@ def test_lasso_weighted_pos(myfloat):
     alpha1 = spams.lasso(X, D, lambda1=0.0, pos=True).toarray()
     alpha2 = spams.lassoWeighted(X, D, W=W, lambda1=0.0, pos=True).toarray()
     alpha3 = [nnls(D, X[:, i])[0] for i in range(X.shape[1])]
-    alpha3 = np.asarray(alpha3).T
+    alpha3 = np.asarray(alpha3, dtype=myfloat).T
 
     assert np.all(alpha1 >= 0)
     assert np.all(alpha2 >= 0)
