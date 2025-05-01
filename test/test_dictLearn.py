@@ -15,6 +15,8 @@ ssprand = ssp.rand
 imgpath = os.path.dirname(os.path.realpath(__file__))
 import pytest
 
+from scipy.optimize import nnls
+
 def _extract_lasso_param(f_param):
     lst = [ 'L','lambda1','lambda2','mode','pos','ols','numThreads','length_path','verbose','cholesky']
     l_param = {'return_reg_path' : False}
@@ -47,7 +49,7 @@ def test_trainDL(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])))
         rgb = True
@@ -139,7 +141,7 @@ def test_trainDL_Memory(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])))
         rgb = True
@@ -197,7 +199,7 @@ def test_structTrainDL(myfloat):
     except Exception as e:
         print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -369,7 +371,7 @@ def test_nmf(myfloat):
     except:
         print("Cannot load image %s : skipping test" %img_file)
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -404,7 +406,7 @@ def test_archetypalAnalysis(myfloat):
     except Exception as e:
         print("Cannot load image %s (%s) : skipping test" %(img_file,e))
         return None
-    I = np.array(img) / 255.
+    I = np.array(img) / 255
     if I.ndim == 3:
         A = np.asfortranarray(I.reshape((I.shape[0],I.shape[1] * I.shape[2])),dtype = myfloat)
         rgb = True
@@ -460,3 +462,33 @@ def test_archetypalAnalysis(myfloat):
     tac = time.time()
     t = tac - tic
     print('time of computation for Robust Archetypal Dictionary Learning: %f' %t)
+
+@pytest.mark.parametrize("myfloat", [np.float32, np.float64])
+def test_lasso_weighted_pos(myfloat):
+    rng = np.random.default_rng(123456)
+    m, n, p = 50, 100, 200
+
+    alpha = rng.standard_normal([n, p])
+    D = rng.standard_normal([m, n])
+    D = np.abs(D) * 10
+    X = D @ alpha
+
+    X = np.asfortranarray(X).astype(myfloat)
+    D = np.asfortranarray(D).astype(myfloat)
+    W = np.ones(alpha.shape, dtype=myfloat, order='F')
+
+    alpha1 = spams.lasso(X, D, lambda1=0.0, pos=True).toarray()
+    alpha2 = spams.lassoWeighted(X, D, W=W, lambda1=0.0, pos=True).toarray()
+    alpha3 = [nnls(D, X[:, i])[0] for i in range(X.shape[1])]
+    alpha3 = np.asarray(alpha3).T
+
+    assert np.all(alpha1 >= 0)
+    assert np.all(alpha2 >= 0)
+    assert np.all(alpha3 >= 0)
+
+    np.testing.assert_allclose(alpha1, alpha2)
+
+    # only tested on double precision because nnls casts internally to double
+    # while spams runs at the given precision
+    if myfloat is np.float64:
+        np.testing.assert_allclose(alpha2, alpha3)
