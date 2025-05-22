@@ -185,9 +185,9 @@ def omp(X,D,L=None,eps= None,lambda1 = None,return_reg_path = False, numThreads 
         if str(type(lambda1)) != "<type 'numpy.ndarray'>":
             lambda1 = np.array([lambda1],dtype=X.dtype)
     if return_reg_path:
-        ((indptr,indices,data,shape),path) = spams_wrap.omp(X,D,return_reg_path,given_L,L,given_eps,eps,given_lambda1,lambda1,numThreads)
+        ((indptr,indices,data,shape),path) = spams_wrap.ompursuit(X,D,return_reg_path,given_L,L,given_eps,eps,given_lambda1,lambda1,numThreads)
     else:
-        (indptr,indices,data,shape) = spams_wrap.omp(X,D,return_reg_path,given_L,L,given_eps,eps,given_lambda1,lambda1,numThreads)
+        (indptr,indices,data,shape) = spams_wrap.ompursuit(X,D,return_reg_path,given_L,L,given_eps,eps,given_lambda1,lambda1,numThreads)
     alpha = ssp.csc_matrix((data,indices,indptr),shape)
     if return_reg_path:
         return (alpha,path)
