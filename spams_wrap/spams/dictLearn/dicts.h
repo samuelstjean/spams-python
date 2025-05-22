@@ -1,5 +1,5 @@
 
-/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal 
+/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal
  *
  * This file is part of SPAMS.
  *
@@ -70,7 +70,7 @@ void regul_error(char *buffer, int bufsize,const char *message) {
     // calculate size
     for(unsigned int i = 0;i < NBREGUL;i++)
       size += strlen(regul_table[i].name) + 1;
-  } 
+  }
   if (size >= bufsize) {
     n1 = bufsize - 1;
     strncpy(buffer,"Invalid regularization\n",n1);
@@ -90,7 +90,7 @@ void regul_error(char *buffer, int bufsize,const char *message) {
 
 template <typename T> struct ParamDictLearn {
    public:
-      ParamDictLearn() : 
+      ParamDictLearn() :
          mode(PENALTY),
 	   regul(FISTA::RIDGE),
 	   tol(1.e-4),
@@ -131,7 +131,7 @@ template <typename T> struct ParamDictLearn {
          updateD(true),
          updateW(true),
          updateTheta(true),
-         logName(NULL), 
+         logName(NULL),
          iter_updateD(1) { };
       ~ParamDictLearn() { delete[](logName); };
       int iter;
@@ -141,7 +141,7 @@ template <typename T> struct ParamDictLearn {
       T tol;
       bool ista;
       bool fixed_step;
-      bool posAlpha; 
+      bool posAlpha;
       constraint_type_D modeD;
       bool posD;
       mode_compute modeParam;
@@ -192,17 +192,17 @@ template <typename T> class Trainer {
             const int NUM_THREADS=-1);
       /// Constructor with existing structure
       Trainer(const Matrix<T>& A, const Matrix<T>& B, const Matrix<T>& D,
-            const int itercount, const int batchsize, 
+            const int itercount, const int batchsize,
             const int NUM_THREADS);
 
       /// train or retrain using the matrix X
       /* train with graph or tree */
       void train(const Data<T>& X, const ParamDictLearn<T>& param);
       void train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
-		 const GraphStruct<T>* graph_st = NULL, 
+		 const GraphStruct<T>* graph_st = NULL,
 		 const TreeStruct<T>* tree_st = NULL);
       void trainOffline(const Data<T>& X, const ParamDictLearn<T>& param);
-      
+
       /// Accessors
       void getA(Matrix<T>& A) const { A.copy(_A);};
       void getB(Matrix<T>& B) const { B.copy(_B);};
@@ -211,14 +211,14 @@ template <typename T> class Trainer {
 
    private:
       /// Forbid lazy copies
-      explicit Trainer<T>(const Trainer<T>& trainer);
+      explicit Trainer(const Trainer<T>& trainer);
       /// Forbid lazy copies
       Trainer<T>& operator=(const Trainer<T>& trainer);
 
       /// clean the dictionary
       void cleanDict(const Data<T>& X, Matrix<T>& G,
             const bool posD = false,
-            const constraint_type_D modeD = L2, const T gamma1 = 0, 
+            const constraint_type_D modeD = L2, const T gamma1 = 0,
             const T gamma2 = 0,
             const T maxCorrel =
             0.999999);
@@ -238,7 +238,7 @@ template <typename T> class Trainer {
 
 /// Empty constructor
 template <typename T> Trainer<T>::Trainer() : _k(0), _initialDict(false),
-   _itercount(0), _batchsize(256) { 
+   _itercount(0), _batchsize(256) {
       _NUM_THREADS=1;
 #ifdef _OPENMP
       _NUM_THREADS =  MIN(MAX_THREADS,omp_get_num_procs());
@@ -248,9 +248,9 @@ template <typename T> Trainer<T>::Trainer() : _k(0), _initialDict(false),
 
 /// Constructor with data
 template <typename T> Trainer<T>::Trainer(const int k, const
-      int batchsize, const int NUM_THREADS) : _k(k), 
-   _initialDict(false), _itercount(0),_batchsize(batchsize), 
-   _NUM_THREADS(NUM_THREADS) { 
+      int batchsize, const int NUM_THREADS) : _k(k),
+   _initialDict(false), _itercount(0),_batchsize(batchsize),
+   _NUM_THREADS(NUM_THREADS) {
       if (_NUM_THREADS == -1) {
          _NUM_THREADS=1;
 #ifdef _OPENMP
@@ -260,7 +260,7 @@ template <typename T> Trainer<T>::Trainer(const int k, const
    };
 
 /// Constructor with initial dictionary
-template <typename T> Trainer<T>::Trainer(const Matrix<T>& D, 
+template <typename T> Trainer<T>::Trainer(const Matrix<T>& D,
       const int batchsize, const int NUM_THREADS) : _k(D.n()),
      _initialDict(true),_itercount(0),_batchsize(batchsize),
    _NUM_THREADS(NUM_THREADS) {
@@ -277,7 +277,7 @@ template <typename T> Trainer<T>::Trainer(const Matrix<T>& D,
 
 /// Constructor with existing structure
 template <typename T> Trainer<T>::Trainer(const Matrix<T>& A, const Matrix<T>&
-      B, const Matrix<T>& D, const int itercount, const int batchsize, 
+      B, const Matrix<T>& D, const int itercount, const int batchsize,
       const int NUM_THREADS) : _k(D.n()),_initialDict(true),_itercount(itercount),
    _batchsize(batchsize),
     _NUM_THREADS(NUM_THREADS) {
@@ -293,7 +293,7 @@ template <typename T> Trainer<T>::Trainer(const Matrix<T>& A, const Matrix<T>&
    };
 
 template <typename T>
-void Trainer<T>::cleanDict(const Data<T>& X, Matrix<T>& G, 
+void Trainer<T>::cleanDict(const Data<T>& X, Matrix<T>& G,
       const bool posD,
       const constraint_type_D modeD, const T gamma1,
       const T gamma2,
@@ -364,9 +364,9 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
             cout << "Online Dictionary Learning with exponential decay t0: " << t0 << " rho: " << rho << endl;
          }
       }
-      if (param.posD) 
+      if (param.posD)
          cout << "Positivity constraints on D activated" << endl;
-      if (param.posAlpha) 
+      if (param.posAlpha)
          cout << "Positivity constraints on alpha activated" << endl;
       if (param.modeD != L2) cout << "Sparse dictionaries, mode: " << param.modeD << ", gamma1: " << param.gamma1 << ", gamma2: " << param.gamma2 << endl;
       cout << "mode Alpha " << param.mode << endl;
@@ -385,7 +385,7 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
    const int M = X.n();
    const int K = _k;
    const int n = X.m();
-   const int L = param.mode == SPARSITY ? static_cast<int>(param.lambda) : 
+   const int L = param.mode == SPARSITY ? static_cast<int>(param.lambda) :
       param.mode == PENALTY && param.lambda == 0 && param.lambda2 > 0 && !param.posAlpha ? K : MIN(n,K);
    const int batchsize= param.batch ? M : MIN(_batchsize,M);
 
@@ -397,7 +397,7 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
       flush(cout);
    }
 
-   if (_D.m() != n || _D.n() != K) 
+   if (_D.m() != n || _D.n() != K)
       _initialDict=false;
 
    srandom(0);
@@ -509,7 +509,7 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
          flush(cout);
       }
       time.stop();
-      if (param.iter < 0 && 
+      if (param.iter < 0 &&
             time.getElapsed() > T(-param.iter)) break;
       if (param.log) {
          int seconds=static_cast<int>(floor(log(time.getElapsed())*5));
@@ -522,10 +522,10 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
          }
       }
       time.start();
-      
+
       Matrix<T> G;
       _D.XtX(G);
-      if (param.clean) 
+      if (param.clean)
          this->cleanDict(X,G,param.posD,
                param.modeD,param.gamma1,param.gamma2);
       G.addDiag(MAX(param.lambda2,1e-10));
@@ -591,7 +591,7 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
             }
          }
          int count2=0;
-         for (int k = 0; k<L; ++k) 
+         for (int k = 0; k<L; ++k)
             if (ind[k] == -1) {
                break;
             } else {
@@ -696,8 +696,8 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
          Beven.scal(scal);
          Aodd.scal(scal);
          Bodd.scal(scal);
-         if ((_itercount > 0 && i*batchsize < M) 
-               || (_itercount == 0 && t0 != 0 && 
+         if ((_itercount > 0 && i*batchsize < M)
+               || (_itercount == 0 && t0 != 0 &&
                   i*batchsize < 10000)) {
             Aorig.scal(scal);
             Borig.scal(scal);
@@ -738,7 +738,7 @@ void Trainer<T>::train(const Data<T>& X, const ParamDictLearn<T>& param) {
                      newd.normalize2();
                      di.copy(newd);
                   }
-               } else if (param.clean && 
+               } else if (param.clean &&
                      ((_itercount+i)*batchsize) > 10000) {
                   _D.refCol(k,di);
                   di.setZeros();
@@ -786,9 +786,9 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
             cout << "Online Dictionary Learning with exponential decay t0: " << t0 << " rho: " << rho << endl;
          }
       }
-      if (param.posD) 
+      if (param.posD)
          cout << "Positivity constraints on D activated" << endl;
-      if (param.posAlpha) 
+      if (param.posAlpha)
          cout << "Positivity constraints on alpha activated" << endl;
       if (param.modeD != L2) cout << "Sparse dictionaries, mode: " << param.modeD << ", gamma1: " << param.gamma1 << ", gamma2: " << param.gamma2 << endl;
       cout << "mode Alpha " << param.mode << endl;
@@ -807,7 +807,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
    const int M = X.n();
    const int K = _k;
    const int n = X.m();
-   const int L = param.mode == SPARSITY ? static_cast<int>(param.lambda) : 
+   const int L = param.mode == SPARSITY ? static_cast<int>(param.lambda) :
       param.mode == PENALTY && param.lambda == 0 && param.lambda2 > 0 && !param.posAlpha ? K : MIN(n,K);
    const int batchsize= param.batch ? M : MIN(_batchsize,M);
 
@@ -819,7 +819,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
       flush(cout);
    }
 
-   if (_D.m() != n || _D.n() != K) 
+   if (_D.m() != n || _D.n() != K)
       _initialDict=false;
 
    srandom(0);
@@ -958,7 +958,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
          flush(cout);
       }
       time.stop();
-      if (param.iter < 0 && 
+      if (param.iter < 0 &&
             time.getElapsed() > T(-param.iter)) break;
       if (param.log) {
          int seconds=static_cast<int>(floor(log(time.getElapsed())*5));
@@ -971,10 +971,10 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
          }
       }
       time.start();
-      
+
       // !!      Matrix<T> G;
       _D.XtX(G);
-      if (param.clean) 
+      if (param.clean)
          this->cleanDict(X,G,param.posD,
                param.modeD,param.gamma1,param.gamma2);
       G.addDiag(MAX(param.lambda2,1e-10));
@@ -1038,7 +1038,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
 	   losses[numT]->init(Xj);
 	   regularizers[numT]->reset();
 	   //	   alpha.refCol(j,alphai);
-	   FISTA::FISTA_Generic(*(losses[numT]),*(regularizers[numT]),alpha0i,alphai,optim_infoi,param_fista); 
+	   FISTA::FISTA_Generic(*(losses[numT]),*(regularizers[numT]),alpha0i,alphai,optim_infoi,param_fista);
 	   alphai.toSparse(spcoeffj);
 	 } else {
             if (param.mode == SPARSITY) {
@@ -1051,7 +1051,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
          }
 	 if(param.mode != FISTAMODE) {
 	   INTM count2=0;
-	   for (int k = 0; k<L; ++k) 
+	   for (int k = 0; k<L; ++k)
 	     if (ind[k] == -1) {
 	       break;
 	     } else {
@@ -1157,8 +1157,8 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
          Beven.scal(scal);
          Aodd.scal(scal);
          Bodd.scal(scal);
-         if ((_itercount > 0 && i*batchsize < M) 
-               || (_itercount == 0 && t0 != 0 && 
+         if ((_itercount > 0 && i*batchsize < M)
+               || (_itercount == 0 && t0 != 0 &&
                   i*batchsize < 10000)) {
             Aorig.scal(scal);
             Borig.scal(scal);
@@ -1199,7 +1199,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
                      newd.normalize2();
                      di.copy(newd);
                   }
-               } else if (param.clean && 
+               } else if (param.clean &&
                      ((_itercount+i)*batchsize) > 10000) {
                   _D.refCol(k,di);
                   di.setZeros();
@@ -1234,7 +1234,7 @@ void Trainer<T>::train_fista(const Data<T>& X, const ParamDictLearn<T>& param,
 
 
 template <typename T>
-void writeLog(const Matrix<T>& D, const T time, int iter, 
+void writeLog(const Matrix<T>& D, const T time, int iter,
       char* name) {
    std::ofstream f;
    f.precision(12);
@@ -1253,7 +1253,7 @@ void writeLog(const Matrix<T>& D, const T time, int iter,
 
 
 template <typename T>
-void Trainer<T>::trainOffline(const Data<T>& X, 
+void Trainer<T>::trainOffline(const Data<T>& X,
       const ParamDictLearn<T>& param) {
 
    int sparseD = param.modeD == L1L2 ? 2 : 6;
@@ -1335,7 +1335,7 @@ void Trainer<T>::trainOffline(const Data<T>& X,
    for (int i = 0; i<JJ; ++i) {
       if (J < 0 && time.getElapsed() > T(-J)) break;
       _D.XtX(G);
-      if (param.clean) 
+      if (param.clean)
          this->cleanDict(X,G,param.posD,
                param.modeD,param.gamma1,param.gamma2);
       int j;
@@ -1433,7 +1433,7 @@ void Trainer<T>::trainOffline(const Data<T>& X,
       }
    }
    _D.XtX(G);
-   if (param.clean) 
+   if (param.clean)
       this->cleanDict(X,G,param.posD,param.modeD,
             param.gamma1,param.gamma2);
    time.printElapsed();
@@ -1447,4 +1447,3 @@ void Trainer<T>::trainOffline(const Data<T>& X,
 
 
 #endif
-
