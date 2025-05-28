@@ -1,4 +1,4 @@
-/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal 
+/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal
  *
  * This file is part of SPAMS.
  *
@@ -17,7 +17,7 @@
  */
 
 /* \file
- *                toolbox Linalg 
+ *                toolbox Linalg
  *
  *                by Julien Mairal
  *                julien.mairal@inria.fr
@@ -66,12 +66,12 @@ typedef std::list< INTM > group;
 typedef std::list< group > list_groups;
 typedef std::vector< group > vector_groups;
 
-template <typename T> 
+template <typename T>
 static inline bool isZero(const T lambda) {
    return static_cast<double>(abs<T>(lambda)) < 1e-99;
 }
 
-template <typename T> 
+template <typename T>
 static inline bool isEqual(const T lambda1, const T lambda2) {
    return static_cast<double>(abs<T>(lambda1-lambda2)) < 1e-99;
 }
@@ -145,23 +145,23 @@ template <typename T> class AbstractMatrixB {
             const T alpha = 1.0, const T beta = 0.0) const = 0;
 
       /// perform b = alpha*A*x + beta*b, when x is sparse
-      virtual void mult(const SpVector<T>& x, Vector<T>& b, 
+      virtual void mult(const SpVector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const = 0;
 
-      virtual void mult(const Vector<T>& x, Vector<T>& b, 
+      virtual void mult(const Vector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const = 0;
 
       /// perform C = a*A*B + b*C, possibly transposing A or B.
-      virtual void mult(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const = 0;
 
-      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const = 0;
 
       /// perform C = a*B*A + b*C, possibly transposing A or B.
-      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const = 0;
 
@@ -177,8 +177,8 @@ template <typename T> class AbstractMatrixB {
 
       void ridgeCG(const Vector<T>& b, Vector<T>& x, const T lambda, const T tol, const int itermax) const;
       void ridgeCG(const Vector<T>& b, const Vector<T>& delta, Vector<T>& x, const T lambda, const T tol, const int itermax) const;
-      void ridgeCG(const Matrix<T>& b, Matrix<T>& x, const T lambda, const T tol, const int itermax, const int numThreads = -1) const; 
-      void ridgeCG(const Matrix<T>& b, const Matrix<T>& delta, Matrix<T>& x, const T lambda, const T tol, const int itermax, const int numThreads = -1) const; 
+      void ridgeCG(const Matrix<T>& b, Matrix<T>& x, const T lambda, const T tol, const int itermax, const int numThreads = -1) const;
+      void ridgeCG(const Matrix<T>& b, const Matrix<T>& delta, Matrix<T>& x, const T lambda, const T tol, const int itermax, const int numThreads = -1) const;
 
       virtual ~AbstractMatrixB() { };
 };
@@ -247,7 +247,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    /// Reference the column i to i+n into the Matrix mat
    inline void refSubMat(INTM i, INTM n, Matrix<T>& mat) const;
    /// extract a sub-matrix of a symmetric matrix
-   inline void subMatrixSym(const Vector<INTM>& indices, 
+   inline void subMatrixSym(const Vector<INTM>& indices,
          Matrix<T>& subMatrix) const;
    /// reference a modifiable reference to the data, DANGEROUS
    inline T* rawX() const { return _X; };
@@ -282,7 +282,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    inline void set(const T a);
    /// Clear the matrix
    inline void clear();
-   /// Put white Gaussian noise in the matrix 
+   /// Put white Gaussian noise in the matrix
    inline void setAleat();
    /// set the matrix to the identity;
    inline void eye();
@@ -349,12 +349,12 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    /// using two iterations of the power method
    inline void eigLargestSymApprox(const Vector<T>& u0,
          Vector<T>& u) const;
-   /// find the eigenvector corresponding to the eivenvalue with the 
+   /// find the eigenvector corresponding to the eivenvalue with the
    /// largest magnitude when the current matrix is symmetric,
-   /// using the power method. It 
-   /// returns the eigenvalue. u0 is an initial guess for the 
+   /// using the power method. It
+   /// returns the eigenvalue. u0 is an initial guess for the
    /// eigenvector.
-   inline T eigLargestMagnSym(const Vector<T>& u0, 
+   inline T eigLargestMagnSym(const Vector<T>& u0,
          Vector<T>& u) const;
    /// returns the value of the eigenvalue with the largest magnitude
    /// using the power iteration.
@@ -370,17 +370,17 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    /// perform b = A'x, when x is sparse
    inline void multTrans(const SpVector<T>& x, Vector<T>& b, const T alpha =1.0, const T beta = 0.0) const;
    /// perform b = alpha*A*x+beta*b
-   inline void mult(const Vector<T>& x, Vector<T>& b, 
+   inline void mult(const Vector<T>& x, Vector<T>& b,
          const T alpha = 1.0, const T beta = 0.0) const;
    /// perform b = alpha*A*x + beta*b, when x is sparse
-   inline void mult(const SpVector<T>& x, Vector<T>& b, 
+   inline void mult(const SpVector<T>& x, Vector<T>& b,
          const T alpha = 1.0, const T beta = 0.0) const;
    /// perform C = a*A*B + b*C, possibly transposing A or B.
-   inline void mult(const Matrix<T>& B, Matrix<T>& C, 
+   inline void mult(const Matrix<T>& B, Matrix<T>& C,
          const bool transA = false, const bool transB = false,
          const T a = 1.0, const T b = 0.0) const;
    /// perform C = a*B*A + b*C, possibly transposing A or B.
-   inline void multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+   inline void multSwitch(const Matrix<T>& B, Matrix<T>& C,
          const bool transA = false, const bool transB = false,
          const T a = 1.0, const T b = 0.0) const;
    /// perform C = A*B, when B is sparse
@@ -399,7 +399,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    /// XXt = A*A'
    inline void XXt(Matrix<T>& XXt) const;
    /// XXt = A*A' where A is an upper triangular matrix
-   inline void upperTriXXt(Matrix<T>& XXt, 
+   inline void upperTriXXt(Matrix<T>& XXt,
          const INTM L) const;
    /// extract the diagonal
    inline void diag(Vector<T>& d) const;
@@ -508,7 +508,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    inline void NadarayaWatson(const Vector<INTM>& ind, const T sigma);
    /// performs soft-thresholding of the vector
    inline void blockThrshold(const T nu, const INTM sizeGroup);
-   /// performs sparse projections of the columns 
+   /// performs sparse projections of the columns
    inline void sparseProject(Matrix<T>& out, const T thrs,   const int mode = 1, const T lambda1 = 0,
          const T lambda2 = 0, const T lambda3 = 0, const bool pos = false, const int numThreads=-1);
    inline void transformFilter();
@@ -518,7 +518,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
    inline void toSparse(SpMatrix<T>& matrix) const;
    /// make a sparse copy of the current matrix
    inline void toSparseTrans(SpMatrix<T>& matrixTrans);
-   /// make a reference of the matrix to a vector vec 
+   /// make a reference of the matrix to a vector vec
    inline void toVect(Vector<T>& vec) const;
    /// Accessor
    inline INTM V() const { return 1;};
@@ -532,7 +532,7 @@ template<typename T> class Matrix : public Data<T>, public AbstractMatrix<T>, pu
 
    protected:
    /// Forbid lazy copies
-   explicit Matrix<T>(const Matrix<T>& matrix);
+   explicit Matrix(const Matrix<T>& matrix);
    /// Forbid lazy copies
    Matrix<T>& operator=(const Matrix<T>& matrix);
 
@@ -560,7 +560,7 @@ template<typename T> class Vector {
    /// Constructor with existing data
    Vector(T* X, INTM n);
    /// Copy constructor
-   explicit Vector<T>(const Vector<T>& vec);
+   explicit Vector(const Vector<T>& vec);
 
    /// Destructor
    virtual ~Vector();
@@ -611,7 +611,7 @@ template<typename T> class Vector {
    inline void refSubVec(INTM i, INTM n, Vector<T>& mat) const { mat.setData(_X+i,n); };
 
    /// put a random permutation of size n (for integral vectors)
-   inline void randperm(int n);  
+   inline void randperm(int n);
    /// put random values in the vector (White Gaussian Noise)
    inline void setAleat();
    /// clear the vector
@@ -661,15 +661,15 @@ template<typename T> class Vector {
    inline void div(const Vector<T>& x, const Vector<T>& y);
    /// A <- x .^ 2
    inline void sqr(const Vector<T>& x);
-   /// A <- 1 ./ sqrt(x) 
+   /// A <- 1 ./ sqrt(x)
    inline void sqr();
-   /// A <- 1 ./ sqrt(A) 
+   /// A <- 1 ./ sqrt(A)
    inline void Sqrt(const Vector<T>& x);
-   /// A <- 1 ./ sqrt(x) 
+   /// A <- 1 ./ sqrt(x)
    inline void Sqrt();
-   /// A <- 1 ./ sqrt(x) 
+   /// A <- 1 ./ sqrt(x)
    inline void Invsqrt(const Vector<T>& x);
-   /// A <- 1 ./ sqrt(A) 
+   /// A <- 1 ./ sqrt(A)
    inline void Invsqrt();
    /// A <- 1./x
    inline void inv(const Vector<T>& x);
@@ -751,7 +751,7 @@ template<typename T> class Vector {
 
 
    /// Conversion
-   /// make a sparse copy 
+   /// make a sparse copy
    inline void toSparse(SpVector<T>& vec) const;
    /// extract the rows of a matrix corresponding to a binary mask
    inline void copyMask(Vector<T>& out, Vector<bool>& mask) const;
@@ -759,7 +759,7 @@ template<typename T> class Vector {
 
 
    private:
-   /// = operator, 
+   /// = operator,
    Vector<T>& operator=(const Vector<T>& vec);
 
    /// if the data has been externally allocated
@@ -848,10 +848,10 @@ template<typename T> class SpMatrix : public Data<T>, public AbstractMatrixB<T> 
    /// XAt <- X*A'
    inline void XAt(const Matrix<T>& X, Matrix<T>& XAt) const;
    /// XAt <- X(:,indices)*A(:,indices)'
-   inline void XAt(const Matrix<T>& X, Matrix<T>& XAt, 
+   inline void XAt(const Matrix<T>& X, Matrix<T>& XAt,
          const Vector<INTM>& indices) const;
    /// XAt <- sum_i w_i X(:,i)*A(:,i)'
-   inline void wXAt( const Vector<T>& w, const Matrix<T>& X, 
+   inline void wXAt( const Vector<T>& w, const Matrix<T>& X,
          Matrix<T>& XAt, const int numthreads=-1) const;
    inline void XtX(Matrix<T>& XtX) const;
 
@@ -861,17 +861,17 @@ template<typename T> class SpMatrix : public Data<T>, public AbstractMatrixB<T> 
    inline void multTrans(const SpVector<T>& x, Vector<T>& y,
          const T alpha = 1.0, const T beta = 0.0) const;
    /// perform b = alpha*A*x + beta*b, when x is sparse
-   inline void mult(const SpVector<T>& x, Vector<T>& b, 
+   inline void mult(const SpVector<T>& x, Vector<T>& b,
          const T alpha = 1.0, const T beta = 0.0) const;
    /// perform b = alpha*A*x + beta*b, when x is sparse
-   inline void mult(const Vector<T>& x, Vector<T>& b, 
+   inline void mult(const Vector<T>& x, Vector<T>& b,
          const T alpha = 1.0, const T beta = 0.0) const;
    /// perform C = a*A*B + b*C, possibly transposing A or B.
-   inline void mult(const Matrix<T>& B, Matrix<T>& C, 
+   inline void mult(const Matrix<T>& B, Matrix<T>& C,
          const bool transA = false, const bool transB = false,
          const T a = 1.0, const T b = 0.0) const;
    /// perform C = a*B*A + b*C, possibly transposing A or B.
-   inline void multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+   inline void multSwitch(const Matrix<T>& B, Matrix<T>& C,
          const bool transA = false, const bool transB = false,
          const T a = 1.0, const T b = 0.0) const;
    /// perform C = a*B*A + b*C, possibly transposing A or B.
@@ -919,7 +919,7 @@ template<typename T> class SpMatrix : public Data<T>, public AbstractMatrixB<T> 
    bool _externAlloc;
    /// data
    T* _v;
-   /// row indices 
+   /// row indices
    INTM* _r;
    /// indices of the beginning of columns
    INTM* _pB;
@@ -975,9 +975,9 @@ template <typename T> class SpVector {
    inline T* rawX() const { return _v; };
    inline INTM* rawR() const { return _r; };
 
-   /// 
+   ///
    inline INTM L() const { return _L; };
-   /// 
+   ///
    inline void setL(const INTM L) { _L=L; };
    /// a <- a.^2
    inline void sqr();
@@ -1006,7 +1006,7 @@ template <typename T> class SpVector {
    explicit SpVector(const SpVector<T>& vector);
    SpVector<T>& operator=(const SpVector<T>& vector);
 
-   /// external allocation 
+   /// external allocation
    bool _externAlloc;
    /// data
    T* _v;
@@ -1036,7 +1036,7 @@ template<typename T> class ProdMatrix : public AbstractMatrix<T> {
 
       /// set_matrices
       inline void setMatrices(const Matrix<T>& D, const bool high_memory=true);
-      inline void setMatrices(const Matrix<T>& D, 
+      inline void setMatrices(const Matrix<T>& D,
             const Matrix<T>& X, const bool high_memory=true);
       /// compute DtX(:,i)
       inline void copyCol(const INTM i, Vector<T>& DtXi) const;
@@ -1070,7 +1070,7 @@ template<typename T> class ProdMatrix : public AbstractMatrix<T> {
 
 
 /* ************************************
- * Implementation of the class Matrix 
+ * Implementation of the class Matrix
  * ************************************/
 
 /// Constructor with existing data X of an m x n matrix
@@ -1153,7 +1153,7 @@ template <typename T> inline void Matrix<T>::getData(Vector<T>& x, const INTM i)
    this->copyCol(i,x);
 };
 
-template <typename T> inline void Matrix<T>::getGroup(Matrix<T>& data, 
+template <typename T> inline void Matrix<T>::getGroup(Matrix<T>& data,
       const vector_groups& groups, const INTM i) const {
    const group& gr = groups[i];
    const INTM N = gr.size();
@@ -1172,7 +1172,7 @@ template <typename T> inline void Matrix<T>::refCol(INTM i, Vector<T>& x) const 
    x.clear();
    x._X=_X+i*_m;
    x._n=_m;
-   x._externAlloc=true; 
+   x._externAlloc=true;
 };
 
 /// Reference the column i to i+n INTMo the Matrix mat
@@ -1282,7 +1282,7 @@ template <typename T> inline void Matrix<T>::clear() {
    _externAlloc=true;
 };
 
-/// Put white Gaussian noise in the matrix 
+/// Put white Gaussian noise in the matrix
 template <typename T> inline void Matrix<T>::setAleat() {
    for (INTM i = 0; i<_n*_m; ++i) _X[i]=normalDistrib<T>();
 };
@@ -1307,7 +1307,7 @@ template <typename T> inline void Matrix<T>::normalize() {
          this->refCol(i,d);
          d.setAleat();
          d.normalize();
-      } 
+      }
    }
 };
 
@@ -1318,7 +1318,7 @@ template <typename T> inline void Matrix<T>::normalize2() {
       if (norm > 1.0) {
          T invNorm=1.0/norm;
          cblas_scal<T>(_m,invNorm,_X+_m*i,1);
-      } 
+      }
    }
 };
 
@@ -1336,12 +1336,12 @@ template <typename T> inline void Matrix<T>::center() {
 template <typename T> inline void Matrix<T>::center_rows() {
    Vector<T> mean_rows(_m);
    mean_rows.setZeros();
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          mean_rows[j] += _X[i*_m+j];
    mean_rows.scal(T(1.0)/_n);
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          _X[i*_m+j] -= mean_rows[j];
 };
 
@@ -1546,7 +1546,7 @@ template <typename T> inline void Matrix<T>::addToCols(
       const Vector<T>& cent) {
    Vector<T> col;
    for (INTM i = 0; i<_n; ++i) {
-      this->refCol(i,col);      
+      this->refCol(i,col);
       col.add(cent[i]);
    }
 };
@@ -1555,7 +1555,7 @@ template <typename T> inline void Matrix<T>::addVecToCols(
       const Vector<T>& vec, const T a) {
    Vector<T> col;
    for (INTM i = 0; i<_n; ++i) {
-      this->refCol(i,col);      
+      this->refCol(i,col);
       col.add(vec,a);
    }
 };
@@ -1593,7 +1593,7 @@ template <typename T> inline void Matrix<T>::singularValues(Vector<T>& u) const 
       syev<T>(no,lower,_n,XtX.rawX(),_n,u.rawX());
       u.thrsPos();
       u.Sqrt();
-   } else if (_n > 10*_m) { 
+   } else if (_n > 10*_m) {
       Matrix<T> XXt;
       this->XXt(XXt);
       syev<T>(no,lower,_m,XXt.rawX(),_m,u.rawX());
@@ -1623,7 +1623,7 @@ template <typename T> inline void Matrix<T>::svd(Matrix<T>& U, Vector<T>& S, Mat
       Vt.transpose(V);
       Vector<T> inveigs;
       inveigs.copy(S);
-      for (INTM i = 0; i<num_eig; ++i) 
+      for (INTM i = 0; i<num_eig; ++i)
          if (S[i] > 1e-10) {
             inveigs[i]=T(1.0)/S[i];
          } else {
@@ -1638,7 +1638,7 @@ template <typename T> inline void Matrix<T>::svd(Matrix<T>& U, Vector<T>& S, Mat
       U.mult(*this,V,true,false);
       Vector<T> inveigs;
       inveigs.copy(S);
-      for (INTM i = 0; i<num_eig; ++i) 
+      for (INTM i = 0; i<num_eig; ++i)
          if (S[i] > 1e-10) {
             inveigs[i]=T(1.0)/S[i];
          } else {
@@ -1693,10 +1693,10 @@ template <typename T> inline void Matrix<T>::eigLargestSymApprox(
    }
 };
 
-/// find the eigenvector corresponding to the eivenvalue with the 
+/// find the eigenvector corresponding to the eivenvalue with the
 /// largest magnitude when the current matrix is symmetric,
-/// using the power method. It 
-/// returns the eigenvalue. u0 is an initial guess for the 
+/// using the power method. It
+/// returns the eigenvalue. u0 is an initial guess for the
 /// eigenvector.
 template <typename T> inline T Matrix<T>::eigLargestMagnSym(
       const Vector<T>& u0, Vector<T>& u) const {
@@ -1748,7 +1748,7 @@ template <typename T> inline void Matrix<T>::invSym() {
 };
 
 /// perform b = alpha*A'x + beta*b
-template <typename T> inline void Matrix<T>::multTrans(const Vector<T>& x, 
+template <typename T> inline void Matrix<T>::multTrans(const Vector<T>& x,
       Vector<T>& b, const T a, const T c) const {
    b.resize(_n);
    //   assert(x._n == _m && b._n == _n);
@@ -1756,7 +1756,7 @@ template <typename T> inline void Matrix<T>::multTrans(const Vector<T>& x,
 };
 
 /// perform b = A'x, when x is sparse
-template <typename T> inline void Matrix<T>::multTrans(const SpVector<T>& x, 
+template <typename T> inline void Matrix<T>::multTrans(const SpVector<T>& x,
       Vector<T>& b, const T alpha, const T beta) const {
    b.resize(_n);
    Vector<T> col;
@@ -1788,7 +1788,7 @@ template <typename T> inline void Matrix<T>::multTrans(
 };
 
 /// perform b = alpha*A*x+beta*b
-template <typename T> inline void Matrix<T>::mult(const Vector<T>& x, 
+template <typename T> inline void Matrix<T>::mult(const Vector<T>& x,
       Vector<T>& b, const T a, const T c) const {
    //  assert(x._n == _n && b._n == _m);
    b.resize(_m);
@@ -1796,7 +1796,7 @@ template <typename T> inline void Matrix<T>::mult(const Vector<T>& x,
 };
 
 /// perform b = alpha*A*x + beta*b, when x is sparse
-template <typename T> inline void Matrix<T>::mult(const SpVector<T>& x, 
+template <typename T> inline void Matrix<T>::mult(const SpVector<T>& x,
       Vector<T>& b, const T a, const T a2) const {
    if (!a2) {
       b.setZeros();
@@ -1815,7 +1815,7 @@ template <typename T> inline void Matrix<T>::mult(const SpVector<T>& x,
 };
 
 /// perform C = a*A*B + b*C, possibly transposing A or B.
-template <typename T> inline void Matrix<T>::mult(const Matrix<T>& B, 
+template <typename T> inline void Matrix<T>::mult(const Matrix<T>& B,
       Matrix<T>& C, const bool transA, const bool transB,
       const T a, const T b) const {
    CBLAS_TRANSPOSE trA,trB;
@@ -1831,11 +1831,11 @@ template <typename T> inline void Matrix<T>::mult(const Matrix<T>& B,
    }
    if (transB) {
       trB = CblasTrans;
-      n = B._m; 
+      n = B._m;
       //  assert(B._n == k);
    } else {
       trB = CblasNoTrans;
-      n = B._n; 
+      n = B._n;
       // assert(B._m == k);
    }
    C.resize(m,n);
@@ -1845,7 +1845,7 @@ template <typename T> inline void Matrix<T>::mult(const Matrix<T>& B,
 
 /// perform C = a*B*A + b*C, possibly transposing A or B.
 template <typename T>
-inline void Matrix<T>::multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+inline void Matrix<T>::multSwitch(const Matrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB,
       const T a, const T b) const {
    B.mult(*this,C,transB,transA,a,b);
@@ -2098,7 +2098,7 @@ template <typename T> inline T Matrix<T>::asum() const {
 template <typename T> inline T Matrix<T>::trace() const {
    T sum=T();
    INTM m = MIN(_n,_m);
-   for (INTM i = 0; i<m; ++i) 
+   for (INTM i = 0; i<m; ++i)
       sum += _X[i*_m+i];
    return sum;
 };
@@ -2126,7 +2126,7 @@ template <typename T> inline T Matrix<T>::norm_inf_2_col() const {
    for (INTM i = 0; i<_n; ++i) {
       refCol(i,col);
       T norm_col = col.nrm2();
-      if (norm_col > max) 
+      if (norm_col > max)
          max = norm_col;
    }
    return max;
@@ -2148,10 +2148,10 @@ template <typename T> inline void Matrix<T>::norm_2_rows(
       Vector<T>& norms) const {
    norms.resize(_m);
    norms.setZeros();
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          norms[j] += _X[i*_m+j]*_X[i*_m+j];
-   for (INTM j = 0; j<_m; ++j) 
+   for (INTM j = 0; j<_m; ++j)
       norms[j]=sqrt(norms[j]);
 };
 
@@ -2160,8 +2160,8 @@ template <typename T> inline void Matrix<T>::norm_2sq_rows(
       Vector<T>& norms) const {
    norms.resize(_m);
    norms.setZeros();
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          norms[j] += _X[i*_m+j]*_X[i*_m+j];
 };
 
@@ -2192,8 +2192,8 @@ template <typename T> inline void Matrix<T>::norm_inf_cols(Vector<T>& norms) con
 template <typename T> inline void Matrix<T>::norm_inf_rows(Vector<T>& norms) const {
    norms.resize(_m);
    norms.setZeros();
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          norms[j] = MAX(abs<T>(_X[i*_m+j]),norms[j]);
 };
 
@@ -2201,8 +2201,8 @@ template <typename T> inline void Matrix<T>::norm_inf_rows(Vector<T>& norms) con
 template <typename T> inline void Matrix<T>::norm_l1_rows(Vector<T>& norms) const {
    norms.resize(_m);
    norms.setZeros();
-   for (INTM i = 0; i<_n; ++i) 
-      for (INTM j = 0; j<_m; ++j) 
+   for (INTM i = 0; i<_n; ++i)
+      for (INTM j = 0; j<_m; ++j)
          norms[j] += abs<T>(_X[i*_m+j]);
 };
 
@@ -2219,7 +2219,7 @@ template <typename T> inline void Matrix<T>::norm_2sq_cols(
    }
 };
 
-template <typename T> 
+template <typename T>
 inline void Matrix<T>::sum_cols(Vector<T>& sum) const {
    sum.resize(_m);
    sum.setZeros();
@@ -2349,7 +2349,7 @@ template <typename T> inline void Matrix<T>::blockThrshold(const T nu,
    }
 }
 
-template <typename T> inline void Matrix<T>::sparseProject(Matrix<T>& Y, 
+template <typename T> inline void Matrix<T>::sparseProject(Matrix<T>& Y,
       const T thrs,   const int mode, const T lambda1,
       const T lambda2, const T lambda3, const bool pos,
       const int numThreads) {
@@ -2361,7 +2361,7 @@ template <typename T> inline void Matrix<T>::sparseProject(Matrix<T>& Y,
    }
 
    int i;
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
    for (i = 0; i< _n; ++i) {
 #ifdef _OPENMP
       int numT=omp_get_thread_num();
@@ -2417,7 +2417,7 @@ template <typename T> inline void Matrix<T>::rank1Update(
 };
 
 template <typename T>
-inline void Matrix<T>::rank1Update_mult(const Vector<T>& vec1, 
+inline void Matrix<T>::rank1Update_mult(const Vector<T>& vec1,
       const Vector<T>& vec1b,
       const SpVector<T>& vec2,
       const T alpha) {
@@ -2486,7 +2486,7 @@ template <typename T> inline void Matrix<T>::rank1Update(
 };
 
 
-/// compute x, such that b = Ax, 
+/// compute x, such that b = Ax,
 template <typename T> inline void Matrix<T>::conjugateGradient(
       const Vector<T>& b, Vector<T>& x, const T tol, const int itermax) const {
    Vector<T> R,P,AP;
@@ -2516,7 +2516,7 @@ template <typename T> inline void Matrix<T>::drop(char* fileName) const {
    f.open(fileName, ofstream::trunc);
    std::cout << "Matrix written in " << fileName << std::endl;
    for (INTM i = 0; i<_n; ++i) {
-      for (INTM j = 0; j<_m; ++j) 
+      for (INTM j = 0; j<_m; ++j)
          f << _X[i*_m+j] << " ";
       f << std::endl;
    }
@@ -2580,7 +2580,7 @@ template <typename T> inline void Matrix<T>::toSparse(SpMatrix<T>& out) const {
       pB=new INTM[_n+1];
    }
    INTM* pE=pB+1;
-   for (INTM i = 0; i<_n*_m; ++i) 
+   for (INTM i = 0; i<_n*_m; ++i)
       if (_X[i] != 0) ++count;
    INTM* r;
    T* v;
@@ -2621,7 +2621,7 @@ template <typename T> inline void Matrix<T>::toSparseTrans(
       pB=new INTM[_m+1];
    }
    INTM* pE=pB+1;
-   for (INTM i = 0; i<_n*_m; ++i) 
+   for (INTM i = 0; i<_n*_m; ++i)
       if (_X[i] != 0) ++count;
    INTM* r;
    T* v;
@@ -2651,7 +2651,7 @@ template <typename T> inline void Matrix<T>::toSparseTrans(
    out._externAlloc=false;
 };
 
-/// make a reference of the matrix to a vector vec 
+/// make a reference of the matrix to a vector vec
 template <typename T> inline void Matrix<T>::toVect(
       Vector<T>& vec) const {
    vec.clear();
@@ -2663,7 +2663,7 @@ template <typename T> inline void Matrix<T>::toVect(
 /// merge two dictionaries
 template <typename T> inline void Matrix<T>::merge(const Matrix<T>& B,
       Matrix<T>& C) const {
-   const INTM K =_n; 
+   const INTM K =_n;
    Matrix<T> G;
    this->mult(B,G,true,false);
    std::list<INTM> list;
@@ -2829,7 +2829,7 @@ inline void Vector<T>::logspace(const INTM n, const T a, const T b) {
 template <typename T>
 inline INTM Vector<T>::nnz() const {
    INTM sum=0;
-   for (INTM i = 0; i<_n; ++i) 
+   for (INTM i = 0; i<_n; ++i)
       if (_X[i] != T()) ++sum;
    return sum;
 };
@@ -2969,26 +2969,26 @@ template <typename T> inline void Vector<T>::hardThrshold(const T nu) {
 
 /// performs thresholding of the vector
 template <typename T> inline void Vector<T>::thrsmax(const T nu) {
-   for (INTM i = 0; i<_n; ++i) 
+   for (INTM i = 0; i<_n; ++i)
       _X[i]=MAX(_X[i],nu);
 }
 
 /// performs thresholding of the vector
 template <typename T> inline void Vector<T>::thrsmin(const T nu) {
-   for (INTM i = 0; i<_n; ++i) 
+   for (INTM i = 0; i<_n; ++i)
       _X[i]=MIN(_X[i],nu);
 }
 
 /// performs thresholding of the vector
 template <typename T> inline void Vector<T>::thrsabsmin(const T nu) {
-   for (INTM i = 0; i<_n; ++i) 
+   for (INTM i = 0; i<_n; ++i)
       _X[i]=MAX(MIN(_X[i],nu),-nu);
 }
 
 /// performs thresholding of the vector
 template <typename T> inline void Vector<T>::thrshold(const T nu) {
-   for (INTM i = 0; i<_n; ++i) 
-      if (abs<T>(_X[i]) < nu) 
+   for (INTM i = 0; i<_n; ++i)
+      if (abs<T>(_X[i]) < nu)
          _X[i]=0;
 }
 /// performs soft-thresholding of the vector
@@ -3368,7 +3368,7 @@ template <typename T> inline T Vector<T>::asum() const {
 
 template <typename T> inline T Vector<T>::lzero() const {
    INTM count=0;
-   for (INTM i = 0; i<_n; ++i) 
+   for (INTM i = 0; i<_n; ++i)
       if (_X[i] != 0) ++count;
    return count;
 };
@@ -3384,7 +3384,7 @@ template <typename T> inline T Vector<T>::afused() const {
 /// returns the sum of the vector
 template <typename T> inline T Vector<T>::sum() const {
    T sum=T();
-   for (INTM i = 0; i<_n; ++i) sum +=_X[i]; 
+   for (INTM i = 0; i<_n; ++i) sum +=_X[i];
    return sum;
 };
 
@@ -3393,7 +3393,7 @@ template <typename T> inline void Vector<T>::sign(Vector<T>& signs) const {
    T* prSign=signs.rawX();
    for (INTM i = 0; i<_n; ++i) {
       if (_X[i] == 0) {
-         prSign[i]=0.0; 
+         prSign[i]=0.0;
       } else {
          prSign[i] = _X[i] > 0 ? 1.0 : -1.0;
       }
@@ -3569,7 +3569,7 @@ inline void Vector<T>::sparseProject(Vector<T>& out, const T thrs, const int mod
    } else if (mode == 4) {
       /// min_u 0.5||b-u||_2^2  + lambda1||u||_1 / ||u||_2^2 <= thrs
       out.copy(*this);
-      if (pos) 
+      if (pos)
          out.thrsPos();
       out.softThrshold(lambda1);
       T nrm=out.nrm2sq();
@@ -3582,7 +3582,7 @@ inline void Vector<T>::sparseProject(Vector<T>& out, const T thrs, const int mod
       //      if (nrm > thrs)
       //         out.scal(sqr_alt<T>(thrs/nrm));
       //  } else if (mode == 6) {
-      /// min_u 0.5||b-u||_2^2  + lambda1||u||_1 +lambda2 Fused(u) +0.5lambda_3 ||u||_2^2 
+      /// min_u 0.5||b-u||_2^2  + lambda1||u||_1 +lambda2 Fused(u) +0.5lambda_3 ||u||_2^2
       this->fusedProjectHomotopy(out,lambda1,lambda2,lambda3,true);
 } else if (mode==6) {
    /// min_u ||b-u||_2^2  /  lambda1||u||_1 +lambda2 Fused(u) + 0.5lambda3||u||_2^2 <= thrs
@@ -3591,7 +3591,7 @@ inline void Vector<T>::sparseProject(Vector<T>& out, const T thrs, const int mod
    /// min_u ||b-u||_2^2 / (1-lambda1)*||u||_2^2 + lambda1||u||_1 <= thrs
    if (lambda1 < 1e-10) {
       out.copy(*this);
-      if (pos) 
+      if (pos)
          out.thrsPos();
       out.normalize2();
       out.scal(sqrt(thrs));
@@ -3619,7 +3619,7 @@ inline void Vector<T>::l1l2projectb(Vector<T>& out, const T thrs, const T gamma,
    } else if (mode == 3) {
       /// min_u 0.5||b-u||_2^2  + gamma||u||_1 / ||u||_2^2 <= thrs
       out.copy(*this);
-      if (pos) 
+      if (pos)
          out.thrsPos();
       out.softThrshold(gamma);
       T nrm=out.nrm2();
@@ -3632,7 +3632,7 @@ inline void Vector<T>::l1l2projectb(Vector<T>& out, const T thrs, const T gamma,
 /// min_u ||b-u||_2^2 / ||u||_1 + (gamma/2) ||u||_2^2 <= thrs
 template <typename T>
    inline void Vector<T>::l1l2project(Vector<T>& out, const T thrs, const T gamma, const bool pos) const {
-      if (gamma == 0) 
+      if (gamma == 0)
          return this->l1project(out,thrs,pos);
       out.copy(*this);
       if (pos) {
@@ -3713,7 +3713,7 @@ static inline T fusedHomotopyAux(const bool& sign1,
 };
 
 template <typename T>
-inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha, 
+inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
       const T lambda1,const T lambda2,const T lambda3,
       const bool penalty) {
    T* pr_DtR=_X;
@@ -3747,7 +3747,7 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
    alpha.set(pr_gamma[0]);
    /// update DtR
    this->sub(alpha);
-   for (INTM j = K-2; j>=0; --j) 
+   for (INTM j = K-2; j>=0; --j)
       pr_DtR[j] += pr_DtR[j+1];
 
    pr_DtR[0]=0;
@@ -3761,7 +3761,7 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
    /// Solve the Lasso using simplified LARS
    for (INTM i = 1; i<K; ++i) {
       /// exit if constraINTMs are satisfied
-      /// min_u ||b-u||_2^2  +  lambda1||u||_1 +lambda2 Fused(u) + 0.5lambda3||u||_2^2 
+      /// min_u ||b-u||_2^2  +  lambda1||u||_1 +lambda2 Fused(u) + 0.5lambda3||u||_2^2
       if (penalty && currentLambda <= lambda2) break;
       if (!penalty) {
          /// min_u ||b-u||_2^2  /  lambda1||u||_1 +lambda2 Fused(u) + 0.5lambda3||u||_2^2 <= 1.0
@@ -3775,7 +3775,7 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
       /// Update pr_ind and pr_c
       if (newAtom) {
          INTM j;
-         for (j = 1; j<i; ++j) 
+         for (j = 1; j<i; ++j)
             if (pr_ind[j] > currentInd) break;
          for (INTM k = i; k>j; --k) {
             pr_ind[k]=pr_ind[k-1];
@@ -3801,9 +3801,9 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
          }
          pr_u[i] = pr_signs[i-1] ? -pr_c[i-1] : pr_c[i-1];
          pr_u[i] += pr_signs[i] ? pr_c[i-1]+pr_c[i] : -pr_c[i-1]-pr_c[i];
-      } 
+      }
 
-      // Compute Du 
+      // Compute Du
       pr_Du[0]=pr_u[0];
       for (INTM k = 1; k<pr_ind[1]; ++k)
          pr_Du[k]=pr_Du[0];
@@ -3813,16 +3813,16 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
             pr_Du[k]=pr_Du[pr_ind[j]];
       }
 
-      /// Compute DDu 
+      /// Compute DDu
       DDu.copy(Du);
-      for (INTM j = K-2; j>=0; --j) 
+      for (INTM j = K-2; j>=0; --j)
          pr_DDu[j] += pr_DDu[j+1];
 
       /// Check constraINTMs
       T max_step1 = INFINITY;
       if (penalty) {
          max_step1 = currentLambda-lambda2;
-      } 
+      }
 
       /// Check changes of sign
       T max_step2 = INFINITY;
@@ -3849,7 +3849,7 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
       currentInd = scores.fmin();
       max_step3 = pr_scores[currentInd];
       T step = MIN(max_step1,MIN(max_step3,max_step2));
-      if (step == 0 || step == INFINITY) break; 
+      if (step == 0 || step == INFINITY) break;
 
       /// Update gamma, alpha, DtR, currentLambda
       for (INTM j = 0; j<=i; ++j) {
@@ -3860,10 +3860,10 @@ inline void Vector<T>::fusedProjectHomotopy(Vector<T>& alpha,
       currentLambda -= step;
       if (step == max_step2) {
          /// Update signs,pr_ind, pr_c
-         for (INTM k = step_out; k<=i; ++k) 
+         for (INTM k = step_out; k<=i; ++k)
             pr_ind[k]=pr_ind[k+1];
          pr_ind[i]=K;
-         for (INTM k = step_out; k<=i; ++k) 
+         for (INTM k = step_out; k<=i; ++k)
             pr_signs[k]=pr_signs[k+1];
          pr_c[step_out-1]=T(1.0)/(pr_ind[step_out]-pr_ind[step_out-1]);
          pr_c[step_out]=T(1.0)/(pr_ind[step_out+1]-pr_ind[step_out]);
@@ -3892,7 +3892,7 @@ inline void Vector<T>::fusedProject(Vector<T>& alpha, const T lambda1, const T l
 
    T total_alpha =alpha.sum();
    /// Modification of beta
-   for (INTM i = K-2; i>=0; --i) 
+   for (INTM i = K-2; i>=0; --i)
       pr_beta[i]+=pr_beta[i+1];
 
    for (INTM i = 0; i<itermax; ++i) {
@@ -4062,7 +4062,7 @@ inline void Vector<T>::applyBayerPattern(const int offset) {
 };
 
 
-/// make a sparse copy 
+/// make a sparse copy
 template <typename T> inline void Vector<T>::toSparse(
       SpVector<T>& vec) const {
    INTM L=0;
@@ -4111,7 +4111,7 @@ inline void Matrix<T>::copyMask(Matrix<T>& out, Vector<bool>& mask) const {
 
 
 /* ****************************
- * Implementation of SpMatrix 
+ * Implementation of SpMatrix
  * ****************************/
 
 
@@ -4154,7 +4154,7 @@ template <typename T> SpMatrix<T>::~SpMatrix() {
 };
 
 /// reference the column i INTMo vec
-template <typename T> inline void SpMatrix<T>::refCol(INTM i, 
+template <typename T> inline void SpMatrix<T>::refCol(INTM i,
       SpVector<T>& vec) const {
    if (vec._nzmax > 0) vec.clear();
    vec._v=_v+_pB[i];
@@ -4192,7 +4192,7 @@ template<typename T>
 void SpMatrix<T>::getData(Vector<T>& data, const INTM index) const {
    data.resize(_m);
    data.setZeros();
-   for (INTM i = _pB[index]; i< _pB[index+1]; ++i) 
+   for (INTM i = _pB[index]; i< _pB[index+1]; ++i)
       data[_r[i]]=_v[i];
 };
 
@@ -4272,7 +4272,7 @@ template <typename T> inline void SpMatrix<T>::clear() {
 };
 
 /// resize the matrix
-template <typename T> inline void SpMatrix<T>::resize(const INTM m, 
+template <typename T> inline void SpMatrix<T>::resize(const INTM m,
       const INTM n, const INTM nzmax) {
    if (n == _n && m == _m && nzmax == _nzmax) return;
    this->clear();
@@ -4317,7 +4317,7 @@ inline void SpMatrix<T>::multTrans(const Vector<T>& x, Vector<T>& y,
 
 /// perform b = alpha*A*x + beta*b, when x is sparse
 template <typename T>
-inline void SpMatrix<T>::multTrans(const SpVector<T>& x, Vector<T>& y, 
+inline void SpMatrix<T>::multTrans(const SpVector<T>& x, Vector<T>& y,
       const T alpha, const T beta) const {
    y.resize(_n);
    if (beta) {
@@ -4356,7 +4356,7 @@ inline void SpMatrix<T>::mult(const Vector<T>& x, Vector<T>& y,
 
 /// perform b = alpha*A*x + beta*b, when x is sparse
 template <typename T>
-inline void SpMatrix<T>::mult(const SpVector<T>& x, Vector<T>& y, 
+inline void SpMatrix<T>::mult(const SpVector<T>& x, Vector<T>& y,
       const T alpha, const T beta) const {
    y.resize(_m);
    if (beta) {
@@ -4376,7 +4376,7 @@ inline void SpMatrix<T>::mult(const SpVector<T>& x, Vector<T>& y,
 
 /// perform C = a*A*B + b*C, possibly transposing A or B.
 template <typename T>
-inline void SpMatrix<T>::mult(const Matrix<T>& B, Matrix<T>& C, 
+inline void SpMatrix<T>::mult(const Matrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB,
       const T a, const T b) const {
    if (transA) {
@@ -4444,7 +4444,7 @@ inline void SpMatrix<T>::mult(const Matrix<T>& B, Matrix<T>& C,
 
 /// perform C = a*A*B + b*C, possibly transposing A or B.
 template <typename T>
-inline void SpMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C, 
+inline void SpMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB,
       const T a, const T b) const {
    if (transA) {
@@ -4512,7 +4512,7 @@ inline void SpMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C,
 
 /// perform C = a*B*A + b*C, possibly transposing A or B.
 template <typename T>
-inline void SpMatrix<T>::multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+inline void SpMatrix<T>::multSwitch(const Matrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB,
       const T a, const T b) const {
    B.mult(*this,C,transB,transA,a,b);
@@ -4544,37 +4544,37 @@ inline void SpMatrix<T>::copyRow(const INTM ind, Vector<T>& x) const {
    }
 };
 
-template <typename T> 
+template <typename T>
 inline void SpMatrix<T>::addVecToCols(
       const Vector<T>& vec, const T a) {
    const T* pr_vec = vec.rawX();
    if (isEqual(a,T(1.0))) {
-      for (INTM i = 0; i<_n; ++i) 
-         for (INTM j = _pB[i]; j<_pE[i]; ++j) 
+      for (INTM i = 0; i<_n; ++i)
+         for (INTM j = _pB[i]; j<_pE[i]; ++j)
             _v[j] += pr_vec[_r[j]];
    } else {
-      for (INTM i = 0; i<_n; ++i) 
-         for (INTM j = _pB[i]; j<_pE[i]; ++j) 
+      for (INTM i = 0; i<_n; ++i)
+         for (INTM j = _pB[i]; j<_pE[i]; ++j)
             _v[j] += a*pr_vec[_r[j]];
    }
 };
 
-template <typename T> 
+template <typename T>
 inline void SpMatrix<T>::addVecToColsWeighted(
       const Vector<T>& vec, const T* weights, const T a) {
    const T* pr_vec = vec.rawX();
    if (isEqual(a,T(1.0))) {
-      for (INTM i = 0; i<_n; ++i) 
-         for (INTM j = _pB[i]; j<_pE[i]; ++j) 
+      for (INTM i = 0; i<_n; ++i)
+         for (INTM j = _pB[i]; j<_pE[i]; ++j)
             _v[j] += pr_vec[_r[j]]*weights[j-_pB[i]];
    } else {
-      for (INTM i = 0; i<_n; ++i) 
-         for (INTM j = _pB[i]; j<_pE[i]; ++j) 
+      for (INTM i = 0; i<_n; ++i)
+         for (INTM j = _pB[i]; j<_pE[i]; ++j)
             _v[j] += a*pr_vec[_r[j]]*weights[j-_pB[i]];
    }
 };
 
-template <typename T> 
+template <typename T>
 inline void SpMatrix<T>::sum_cols(Vector<T>& sum) const {
    sum.resize(_m);
    sum.setZeros();
@@ -4613,7 +4613,7 @@ template <typename T> inline void SpMatrix<T>::AAt(Matrix<T>& aat) const {
    }
 
    cblas_copy<T>(K*K,aatT,1,aat._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(K*K,1.0,aatT+K*K*i,1,aat._X,1);
    aat.fillSymmetric();
    delete[](aatT);
@@ -4663,7 +4663,7 @@ template <typename T> inline void SpMatrix<T>::AAt(Matrix<T>& aat,
    }
 
    cblas_copy<T>(K*K,aatT,1,aat._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(K*K,1.0,aatT+K*K*i,1,aat._X,1);
    aat.fillSymmetric();
    delete[](aatT);
@@ -4698,7 +4698,7 @@ template <typename T> inline void SpMatrix<T>::wAAt(const Vector<T>& w,
    }
 
    cblas_copy<T>(K*K,aatT,1,aat._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(K*K,1.0,aatT+K*K*i,1,aat._X,1);
    aat.fillSymmetric();
    delete[](aatT);
@@ -4732,7 +4732,7 @@ template <typename T> inline void SpMatrix<T>::XAt(const Matrix<T>& X,
    }
 
    cblas_copy<T>(n*K,XatT,1,XAt._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(n*K,1.0,XatT+n*K*i,1,XAt._X,1);
    delete[](XatT);
 };
@@ -4766,7 +4766,7 @@ template <typename T> inline void SpMatrix<T>::XAt(const Matrix<T>& X,
    }
 
    cblas_copy<T>(n*K,XatT,1,XAt._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(n*K,1.0,XatT+n*K*i,1,XAt._X,1);
    delete[](XatT);
 };
@@ -4805,7 +4805,7 @@ template <typename T> inline void SpMatrix<T>::wXAt(const Vector<T>& w,
    }
 
    cblas_copy<T>(n*K,XatT,1,XAt._X,1);
-   for (i = 1; i<NUM_THREADS; ++i) 
+   for (i = 1; i<NUM_THREADS; ++i)
       cblas_axpy<T>(n*K,1.0,XatT+n*K*i,1,XAt._X,1);
    delete[](XatT);
 };
@@ -4837,7 +4837,7 @@ template <typename T> inline void SpMatrix<T>::toFullTrans(
 
 
 /// use the data from v, r for _v, _r
-template <typename T> inline void SpMatrix<T>::convert(const Matrix<T>&vM, 
+template <typename T> inline void SpMatrix<T>::convert(const Matrix<T>&vM,
       const Matrix<INTM>& rM, const INTM K) {
    const INTM M = rM.n();
    const INTM L = rM.m();
@@ -4914,7 +4914,7 @@ inline void SpMatrix<T>::norm_1_cols(Vector<T>& norms) const {
 
 
 /* ***************************
- * Implementation of SpVector 
+ * Implementation of SpVector
  * ***************************/
 
 
@@ -4973,13 +4973,13 @@ template <typename T> inline void SpVector<T>::print(const string& name) const {
 /// create a reference on the vector r
 template <typename T> inline void SpVector<T>::refIndices(
       Vector<INTM>& indices) const {
-   indices.setPointer(_r,_L);   
+   indices.setPointer(_r,_L);
 };
 
 /// creates a reference on the vector val
 template <typename T> inline void SpVector<T>::refVal(
       Vector<T>& val) const {
-   val.setPointer(_v,_L);   
+   val.setPointer(_v,_L);
 };
 
 /// a <- a.^2
@@ -5071,7 +5071,7 @@ template <typename T> void inline SpVector<T>::toSpMatrix(
          out_r[i]=_r[i]-col*m;
       }
    }
-   for (current_col++ ; current_col < n+1; ++current_col) 
+   for (current_col++ ; current_col < n+1; ++current_col)
       out_pB[current_col]=_L;
 };
 
@@ -5088,9 +5088,9 @@ template <typename T> void inline SpVector<T>::toFull(Vector<T>& out)
  * ****************************/
 
 template <typename T> ProdMatrix<T>::ProdMatrix()  {
-   _DtX= NULL; 
-   _X=NULL; 
-   _D=NULL; 
+   _DtX= NULL;
+   _X=NULL;
+   _D=NULL;
    _high_memory=true;
    _n=0;
    _m=0;
@@ -5114,7 +5114,7 @@ template <typename T> ProdMatrix<T>::ProdMatrix(const Matrix<T>& D, const Matrix
 template <typename T> inline void ProdMatrix<T>::setMatrices(const Matrix<T>& D, const Matrix<T>& X,
       const bool high_memory)  {
    _high_memory=high_memory;
-   _m = D.n(); 
+   _m = D.n();
    _n = X.n();
    if (high_memory) {
       D.mult(X,*_DtX,true,false);
@@ -5129,7 +5129,7 @@ template <typename T> inline void ProdMatrix<T>::setMatrices(const Matrix<T>& D,
 template <typename T> inline void ProdMatrix<T>::setMatrices(
       const Matrix<T>& D, const bool high_memory) {
    _high_memory=high_memory;
-   _m = D.n(); 
+   _m = D.n();
    _n = D.n();
    if (high_memory) {
       D.XtX(*_DtX);
@@ -5137,7 +5137,7 @@ template <typename T> inline void ProdMatrix<T>::setMatrices(
       _X=&D;
       _D=&D;
       _DtX=NULL;
-   } 
+   }
    _addDiag=0;
 };
 
@@ -5150,7 +5150,7 @@ template <typename T> inline void ProdMatrix<T>::copyCol(const INTM i, Vector<T>
       _X->refCol(i,Xi);
       _D->multTrans(Xi,DtXi);
       if (_addDiag && _m == _n) DtXi[i] += _addDiag;
-   } 
+   }
 };
 
 /// compute DtX(:,i)
@@ -5163,7 +5163,7 @@ template <typename T> inline void ProdMatrix<T>::extract_rawCol(const INTM i,T* 
       _X->refCol(i,Xi);
       _D->multTrans(Xi,vDtXi);
       if (_addDiag && _m == _n) DtXi[i] += _addDiag;
-   } 
+   }
 };
 
 template <typename T> inline void ProdMatrix<T>::add_rawCol(const INTM i,T* DtXi,
@@ -5176,7 +5176,7 @@ template <typename T> inline void ProdMatrix<T>::add_rawCol(const INTM i,T* DtXi
       _X->refCol(i,Xi);
       _D->multTrans(Xi,vDtXi,a,T(1.0));
       if (_addDiag && _m == _n) DtXi[i] += a*_addDiag;
-   } 
+   }
 };
 
 template <typename T> void inline ProdMatrix<T>::addDiag(const T diag) {
@@ -5254,7 +5254,7 @@ template <typename T> class SubMatrix : public AbstractMatrix<T> {
       AbstractMatrix<T>* _matrix;
 };
 
-template <typename T> 
+template <typename T>
 SubMatrix<T>::SubMatrix(AbstractMatrix<T>& G, Vector<INTM>& indI, Vector<INTM>& indJ) {
    _matrix = &G;
    _indicesI.copy(indI);
@@ -5287,7 +5287,7 @@ template <typename T> void inline SubMatrix<T>::extract_rawCol(const INTM i, T* 
    }
 };
 
-template <typename T> inline void SubMatrix<T>::copyCol(const INTM i, 
+template <typename T> inline void SubMatrix<T>::copyCol(const INTM i,
       Vector<T>& DtXi) const {
    this->extract_rawCol(i,DtXi.rawX());
 };
@@ -5309,7 +5309,7 @@ template <typename T> void inline SubMatrix<T>::diag(Vector<T>& diag) const {
    }
 };
 
-template <typename T> inline T SubMatrix<T>::operator()(const INTM index1, 
+template <typename T> inline T SubMatrix<T>::operator()(const INTM index1,
       const INTM index2) const {
    return (*_matrix)(_indicesI[index1],_indicesJ[index2]);
 }
@@ -5330,23 +5330,23 @@ template <typename T> class ShiftMatrix : public AbstractMatrixB<T> {
             const T alpha = 1.0, const T beta = 0.0) const;
 
       /// perform b = alpha*A*x + beta*b, when x is sparse
-      virtual void mult(const SpVector<T>& x, Vector<T>& b, 
+      virtual void mult(const SpVector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const;
 
-      virtual void mult(const Vector<T>& x, Vector<T>& b, 
+      virtual void mult(const Vector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const;
 
       /// perform C = a*A*B + b*C, possibly transposing A or B.
-      virtual void mult(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
-      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
       /// perform C = a*B*A + b*C, possibly transposing A or B.
-      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
@@ -5363,7 +5363,7 @@ template <typename T> class ShiftMatrix : public AbstractMatrixB<T> {
       virtual ~ShiftMatrix() {  };
 
    private:
-      void center() { 
+      void center() {
          Vector<T> ones(_m);
          ones.set(T(1.0)/_m);
          this->multTrans(ones,_means);
@@ -5457,7 +5457,7 @@ template <typename T> void ShiftMatrix<T>::mult(const Matrix<T>&
    cerr << "Shift Matrix is used in inadequate setting" << endl;
 }
 
-template <typename T> void ShiftMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C, 
+template <typename T> void ShiftMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB, const T a, const T b) const {
    cerr << "Shift Matrix is used in inadequate setting" << endl;
 }
@@ -5502,7 +5502,7 @@ template <typename T> void ShiftMatrix<T>::print(const string& name) const {
 /// Matrix with shifts
 template <typename T> class DoubleRowMatrix : public AbstractMatrixB<T> {
    public:
-      DoubleRowMatrix(const AbstractMatrixB<T>& inputmatrix) : _inputmatrix(&inputmatrix) { 
+      DoubleRowMatrix(const AbstractMatrixB<T>& inputmatrix) : _inputmatrix(&inputmatrix) {
          _n=inputmatrix.n();
          _m=2*inputmatrix.m();
       };
@@ -5514,23 +5514,23 @@ template <typename T> class DoubleRowMatrix : public AbstractMatrixB<T> {
             const T alpha = 1.0, const T beta = 0.0) const;
 
       /// perform b = alpha*A*x + beta*b, when x is sparse
-      virtual void mult(const SpVector<T>& x, Vector<T>& b, 
+      virtual void mult(const SpVector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const;
 
-      virtual void mult(const Vector<T>& x, Vector<T>& b, 
+      virtual void mult(const Vector<T>& x, Vector<T>& b,
             const T alpha = 1.0, const T beta = 0.0) const;
 
       /// perform C = a*A*B + b*C, possibly transposing A or B.
-      virtual void mult(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
-      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C, 
+      virtual void mult(const SpMatrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
       /// perform C = a*B*A + b*C, possibly transposing A or B.
-      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C, 
+      virtual void multSwitch(const Matrix<T>& B, Matrix<T>& C,
             const bool transA = false, const bool transB = false,
             const T a = 1.0, const T b = 0.0) const;
 
@@ -5557,7 +5557,7 @@ template <typename T> void DoubleRowMatrix<T>::multTrans(const
       Vector<T>& x, Vector<T>& b, const T alpha, const T beta) const {
    const INTM mm = _inputmatrix->m();
    Vector<T> tmp(mm);
-   for (INTM i = 0; i<mm; ++i) 
+   for (INTM i = 0; i<mm; ++i)
       tmp[i]=x[2*i]+x[2*i+1];
    _inputmatrix->multTrans(tmp,b,alpha,beta);
 };
@@ -5607,7 +5607,7 @@ template <typename T> void DoubleRowMatrix<T>::mult(const Matrix<T>&
    cerr << "Double Matrix is used in inadequate setting" << endl;
 }
 
-template <typename T> void DoubleRowMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C, 
+template <typename T> void DoubleRowMatrix<T>::mult(const SpMatrix<T>& B, Matrix<T>& C,
       const bool transA, const bool transB, const T a, const T b) const {
    FLAG(4)
    cerr << "Double Matrix is used in inadequate setting" << endl;
@@ -5778,7 +5778,7 @@ template <typename T> void AbstractMatrixB<T>::ridgeCG(const Matrix<T>& mb,
    init_omp(numThreads);
    const int num_probs=mb.n();
    int i = 0;
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
    for (i =0; i<num_probs; ++i) {
       Vector<T> b;
       mb.refCol(i,b);
@@ -5794,7 +5794,7 @@ template <typename T> void AbstractMatrixB<T>::ridgeCG(const Matrix<T>& mb, cons
    init_omp(numThreads);
    const int num_probs=mb.n();
    int i = 0;
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
    for (i =0; i<num_probs; ++i) {
       Vector<T> b;
       mb.refCol(i,b);

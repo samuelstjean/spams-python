@@ -51,7 +51,7 @@ static char nonUnit='n';
 ///   * optimized for a large number of signals (precompute the Gramm matrix
 
 template <typename T>
-void omp(const Matrix<T>& X, const Matrix<T>& D, SpMatrix<T>& spalpha,
+void ompursuit(const Matrix<T>& X, const Matrix<T>& D, SpMatrix<T>& spalpha,
       const int *L, const T* eps, const T* lambda, const bool vecL = false,
       const bool vecEps = false, const bool Lambda=false, const int numThreads=-1,
       Matrix<T>* path = NULL);
@@ -320,7 +320,7 @@ void coreSOMP(const Matrix<T>& X, const Matrix<T>& D, const Matrix<T>& G,
 ///   * optimized for a big number of signals (precompute the Gramm matrix
 
 template <typename T>
-void omp(const Matrix<T>& X, const Matrix<T>& D, SpMatrix<T>& spalpha,
+void ompursuit(const Matrix<T>& X, const Matrix<T>& D, SpMatrix<T>& spalpha,
       const int* pL, const T* peps, const T* pLambda,
       const bool vecL, const bool vecEps,
       const bool vecLambda, const int numThreads, Matrix<T>* path) {

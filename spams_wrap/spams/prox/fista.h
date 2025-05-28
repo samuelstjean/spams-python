@@ -1,5 +1,5 @@
 
-/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal 
+/* Software SPAMS v2.1 - Copyright 2009-2011 Julien Mairal
  *
  * This file is part of SPAMS.
  *
@@ -135,18 +135,18 @@ namespace FISTA {
    };
 
    bool regul_for_matrices(const regul_t& regul) {
-      return regul==L1L2 || regul==L1LINF || regul==L1L2_L1 || regul==L1LINF_L1 
+      return regul==L1L2 || regul==L1LINF || regul==L1L2_L1 || regul==L1LINF_L1
          || regul==TREEMULT || regul==GRAPHMULT || regul==L1LINFCR ||
          regul==TRACE_NORM || regul==RANK;
    }
 
-   template <typename T> struct ParamFISTA { 
-      ParamFISTA() { num_threads=1; max_it=100; L0=T(0.1); gamma=T(1.5); tol=T(1e-10); 
+   template <typename T> struct ParamFISTA {
+      ParamFISTA() { num_threads=1; max_it=100; L0=T(0.1); gamma=T(1.5); tol=T(1e-10);
          it0=10; max_iter_backtracking=1000; loss=SQUARE; compute_gram=false; admm=false; lin_admm=false;
-         intercept=false; regul=RIDGE; resetflow=false; delta=0; lambda2=0; lambda3=0; verbose=false; 
+         intercept=false; regul=RIDGE; resetflow=false; delta=0; lambda2=0; lambda3=0; verbose=false;
          pos=false; clever=true; a=T(1.0); b=T(0.0); c=T(1.0);
          log=false; logName=NULL; ista=false; subgrad=false;
-         length_names=30; 
+         length_names=30;
          name_regul=new char[length_names];
          name_loss=new char[length_names];
          is_inner_weights=false;
@@ -162,10 +162,10 @@ namespace FISTA {
          ngroups=0;
          linesearch_mode=0;
       }
-      ~ParamFISTA() { 
+      ~ParamFISTA() {
          if (!copied) {
-            delete[](name_regul); 
-            delete[](name_loss); 
+            delete[](name_regul);
+            delete[](name_loss);
          }
       };
       int num_threads;
@@ -213,7 +213,7 @@ namespace FISTA {
       int linesearch_mode;
    };
 
-   template <typename T> struct ParamReg { 
+   template <typename T> struct ParamReg {
       ParamReg() { size_group=1; lambda2d1 = 0; lambda=0; lambda3d1 = 0; pos=false; intercept=false; num_cols=1; graph_st=NULL; tree_st=NULL;
       graph_path_st=NULL; resetflow=false; clever=false; linf=true; transpose=false; ngroups=0;
       groups=NULL; };
@@ -237,12 +237,12 @@ namespace FISTA {
 
    template <typename T>
       bool param_for_admm(const ParamFISTA<T>& param) {
-         return (param.admm) && (param.loss==SQUARE || param.loss == HINGE) 
+         return (param.admm) && (param.loss==SQUARE || param.loss == HINGE)
             && (param.regul==GRAPH_L2 || param.regul==GRAPH || param.regul == NONE);
       };
 
 
-   template <typename T,  typename F = Matrix<T>, typename D = Vector<T> , 
+   template <typename T,  typename F = Matrix<T>, typename D = Vector<T> ,
             typename E = Vector<T> >
                class SplittingFunction {
                   public:
@@ -263,7 +263,7 @@ namespace FISTA {
                      virtual void add_mult_design_matrix(const E& prim, E& out, const T fact) const { };
 
                   private:
-                     explicit SplittingFunction<T,F,D,E>(const SplittingFunction<T,F,D,E>& loss);
+                     explicit SplittingFunction(const SplittingFunction<T,F,D,E>& loss);
                      SplittingFunction<T,F,D,E>& operator=(const SplittingFunction<T,F,D,E>& loss);
                };
 
@@ -288,18 +288,18 @@ namespace FISTA {
                   const bool intercept = false) const = 0;
 
          private:
-            explicit Loss<T,D,E>(const Loss<T,D,E>& dict);
+            explicit Loss(const Loss<T,D,E>& dict);
             Loss<T,D,E>& operator=(const Loss<T,D,E>& dict);
       };
 
-   template <typename T> 
+   template <typename T>
       class SqLossMissing : public Loss<T> {
          public:
             SqLossMissing(const AbstractMatrixB<T>& D) : _D(&D) { };
             virtual ~SqLossMissing() { };
 
-            inline void init(const Vector<T>& x) { 
-               _x.copy(x); 
+            inline void init(const Vector<T>& x) {
+               _x.copy(x);
                _missingvalues.clear();
                for (int i = 0; i<_x.n(); ++i) {
                   if (isnan(_x[i])) {
@@ -335,8 +335,8 @@ namespace FISTA {
             virtual T fenchel(const Vector<T>& input) const {
                return 0.5*input.nrm2sq()+input.dot(_x);
             };
-            virtual void var_fenchel(const Vector<T>& x, 
-                  Vector<T>& grad1, Vector<T>& grad2, 
+            virtual void var_fenchel(const Vector<T>& x,
+                  Vector<T>& grad1, Vector<T>& grad2,
                   const bool intercept) const {
                grad1.copy(_x);
                SpVector<T> spalpha(x.n());
@@ -351,25 +351,25 @@ namespace FISTA {
             };
 
          private:
-            explicit SqLossMissing<T>(const SqLossMissing<T>& dict);
+            explicit SqLossMissing(const SqLossMissing<T>& dict);
             SqLossMissing<T>& operator=(const SqLossMissing<T>& dict);
             const AbstractMatrixB<T>* _D;
             Vector<T> _x;
             List<int> _missingvalues;
       };
 
-   template <typename T> 
+   template <typename T>
       class SqLoss : public Loss<T>, public SplittingFunction<T> {
          public:
             SqLoss(const AbstractMatrixB<T>& D) : _D(&D) { _compute_gram = false; };
             SqLoss(const AbstractMatrixB<T>& D, const Matrix<T>& G) : _D(&D), _G(&G) { _compute_gram = true; };
             virtual ~SqLoss() { };
 
-            inline void init(const Vector<T>& x) { 
-               _x.copy(x); 
+            inline void init(const Vector<T>& x) {
+               _x.copy(x);
                if (_compute_gram) {
                   _D->multTrans(x,_DtX);
-               } 
+               }
             };
 
             inline T eval(const Vector<T>& alpha) const {
@@ -414,8 +414,8 @@ namespace FISTA {
             virtual T fenchel(const Vector<T>& input) const {
                return 0.5*input.nrm2sq()+input.dot(_x);
             };
-            virtual void var_fenchel(const Vector<T>& x, 
-                  Vector<T>& grad1, Vector<T>& grad2, 
+            virtual void var_fenchel(const Vector<T>& x,
+                  Vector<T>& grad1, Vector<T>& grad2,
                   const bool intercept) const {
                grad1.copy(_x);
                SpVector<T> spalpha(x.n());
@@ -460,7 +460,7 @@ namespace FISTA {
                prim_var.resize(_D->m());
                prim_var.setZeros();
             }
-            virtual void prox_prim_var(Vector<T>& out,const Vector<T>& dual_var, 
+            virtual void prox_prim_var(Vector<T>& out,const Vector<T>& dual_var,
                   const Vector<T>& prim_var, const T c) const {
                const T gamma=T(1.0)/c;
                out.copy(dual_var);
@@ -469,8 +469,8 @@ namespace FISTA {
                out.add(_x,gamma);
                out.scal(T(1.0)/(T(1.0)+gamma));
             };
-            inline void compute_new_prim(Vector<T>& prim, const Vector<T>& prim_var, 
-                  const Vector<T>& dual_var, const T gamma, const T delta) const { 
+            inline void compute_new_prim(Vector<T>& prim, const Vector<T>& prim_var,
+                  const Vector<T>& dual_var, const T gamma, const T delta) const {
                Vector<T> tmp;
                _D->mult(prim,tmp);
                tmp.scal(-gamma);
@@ -478,13 +478,13 @@ namespace FISTA {
                tmp.add(dual_var,gamma);
                _D->multTrans(tmp,prim,T(1.0),delta);
             };
-            inline void add_mult_design_matrix(const Vector<T>& prim, 
-                  Vector<T>& out, const T fact) const { 
+            inline void add_mult_design_matrix(const Vector<T>& prim,
+                  Vector<T>& out, const T fact) const {
                _D->mult(prim,out,fact,T(1.0));
             };
 
          private:
-            explicit SqLoss<T>(const SqLoss<T>& dict);
+            explicit SqLoss(const SqLoss<T>& dict);
             SqLoss<T>& operator=(const SqLoss<T>& dict);
             const AbstractMatrixB<T>* _D;
             Vector<T> _x;
@@ -493,13 +493,13 @@ namespace FISTA {
             Vector<T> _DtX;
       };
 
-   template <typename T> 
+   template <typename T>
       class HingeLoss : public SplittingFunction<T > {
          public:
             HingeLoss(const AbstractMatrixB<T>& X) : _X(&X) {  };
             virtual ~HingeLoss() { };
 
-            inline void init(const Vector<T>& y) { 
+            inline void init(const Vector<T>& y) {
                _y.copy(y);
             };
             inline T eval(const Vector<T>& w) const {
@@ -533,7 +533,7 @@ namespace FISTA {
                prim_var.resize(_X->m());
                prim_var.setZeros();
             }
-/*            inline void prox_prim_var(Vector<T>& out,const Vector<T>& dual_var, 
+/*            inline void prox_prim_var(Vector<T>& out,const Vector<T>& dual_var,
                   const Vector<T>& prim_var, const T lambda, const T c) const {
                const T gamma=T(1.0)/c;
                out.copy(dual_var);
@@ -549,8 +549,8 @@ namespace FISTA {
                   }
                }
             }*/
-            inline void compute_new_prim(Vector<T>& prim, const Vector<T>& prim_var, 
-                  const Vector<T>& dual_var, const T gamma, const T delta) const { 
+            inline void compute_new_prim(Vector<T>& prim, const Vector<T>& prim_var,
+                  const Vector<T>& dual_var, const T gamma, const T delta) const {
                Vector<T> tmp;
                _X->mult(prim,tmp);
                tmp.scal(-gamma);
@@ -559,7 +559,7 @@ namespace FISTA {
                _X->multTrans(tmp,prim,T(1.0),delta);
             };
             inline void add_mult_design_matrix(const Vector<T>& prim, Vector<T>& out,
-                  const T fact) const { 
+                  const T fact) const {
                _X->mult(prim,out,fact,T(1.0));
             };
             inline void prox_split(Matrix<T>& splitted_w, const T lambda) const {
@@ -581,25 +581,25 @@ namespace FISTA {
             };
 
          private:
-            explicit HingeLoss<T>(const HingeLoss<T>& dict);
+            explicit HingeLoss(const HingeLoss<T>& dict);
             HingeLoss<T>& operator=(const HingeLoss<T>& dict);
 
             const AbstractMatrixB<T>* _X;
             Vector<T> _y;
       };
 
-   template <typename T, bool weighted = false> 
+   template <typename T, bool weighted = false>
       class LogLoss : public Loss<T> {
          public:
             LogLoss(const AbstractMatrixB<T>& X) : _X(&X) {  };
             virtual ~LogLoss() { };
 
-            inline void init(const Vector<T>& y) { 
+            inline void init(const Vector<T>& y) {
                _y.copy(y);
                if (weighted) {
                   int countpos=0;
                   for (int i = 0; i<y.n(); ++i)
-                     if (y[i]>0) countpos++; 
+                     if (y[i]>0) countpos++;
                   _weightpos=T(1.0)/countpos;
                   _weightneg=T(1.0)/MAX(1e-3,(y.n()-countpos));
                }
@@ -677,7 +677,7 @@ namespace FISTA {
                _X->multTrans(grad1,grad2);
             };
          private:
-            explicit LogLoss<T,weighted>(const LogLoss<T,weighted>& dict);
+            explicit LogLoss(const LogLoss<T,weighted>& dict);
             LogLoss<T,weighted>& operator=(const LogLoss<T,weighted>& dict);
 
             const AbstractMatrixB<T>* _X;
@@ -686,14 +686,14 @@ namespace FISTA {
             T _weightneg;
       };
 
-   template <typename T> 
+   template <typename T>
       class MultiLogLoss : public Loss<T, Matrix<T> > {
          public:
             MultiLogLoss(const AbstractMatrixB<T>& X) : _X(&X) {  };
 
             virtual ~MultiLogLoss() { };
 
-            inline void init(const Vector<T>& y) { 
+            inline void init(const Vector<T>& y) {
                _y.resize(y.n());
                for (int i = 0; i<y.n(); ++i)
                   _y[i] = static_cast<int>(y[i]);
@@ -788,20 +788,20 @@ namespace FISTA {
                _X->mult(grad1,grad2,true,true);
             };
          private:
-            explicit MultiLogLoss<T>(const MultiLogLoss<T>& dict);
+            explicit MultiLogLoss(const MultiLogLoss<T>& dict);
             MultiLogLoss<T>& operator=(const MultiLogLoss<T>& dict);
 
             const AbstractMatrixB<T>* _X;
             Vector<int> _y;
       };
 
-   template <typename T> 
+   template <typename T>
       class PoissonLoss : public Loss<T> {
          public:
             PoissonLoss(const AbstractMatrixB<T>& X, const T delta) : _X(&X), _delta(delta) {  };
             virtual ~PoissonLoss() { };
 
-            inline void init(const Vector<T>& y) { 
+            inline void init(const Vector<T>& y) {
                _y.copy(y);
             };
             inline T eval(const Vector<T>& w) const {
@@ -845,7 +845,7 @@ namespace FISTA {
                }
                return sum;
             };
-            virtual void var_fenchel(const Vector<T>& w, Vector<T>& grad1, 
+            virtual void var_fenchel(const Vector<T>& w, Vector<T>& grad1,
             Vector<T>& grad2, const bool intercept) const {
                grad1.resize(_X->m());
                SpVector<T> spw(w.n());
@@ -859,7 +859,7 @@ namespace FISTA {
                _X->multTrans(grad1,grad2);
             };
          private:
-            explicit PoissonLoss<T>(const PoissonLoss<T>& dict);
+            explicit PoissonLoss(const PoissonLoss<T>& dict);
             PoissonLoss<T>& operator=(const PoissonLoss<T>& dict);
 
             const AbstractMatrixB<T>* _X;
@@ -867,7 +867,7 @@ namespace FISTA {
             T _delta;
       };
 
-   template <typename T> 
+   template <typename T>
       class LossCur: public Loss<T, Matrix<T>, Matrix<T> > {
          public:
             LossCur(const AbstractMatrixB<T>& X) : _X(&X) {  };
@@ -915,25 +915,25 @@ namespace FISTA {
                _X->mult(tmp,grad2,true,false);
             };
          private:
-            explicit LossCur<T>(const LossCur<T>& dict);
+            explicit LossCur(const LossCur<T>& dict);
             LossCur<T>& operator=(const LossCur<T>& dict);
 
             const AbstractMatrixB<T>* _X;
       };
 
-   template <typename T> 
+   template <typename T>
       class SqLossMat : public Loss<T, Matrix<T> , Matrix<T> > {
          public:
             SqLossMat(const AbstractMatrixB<T>& D) : _D(&D) { _compute_gram = false; };
-            SqLossMat(const AbstractMatrixB<T>& D, const Matrix<T>& G) : _D(&D), _G(&G) { 
+            SqLossMat(const AbstractMatrixB<T>& D, const Matrix<T>& G) : _D(&D), _G(&G) {
                _compute_gram = true; };
             virtual ~SqLossMat() { };
 
-            virtual inline void init(const Matrix<T>& x) { 
-               _x.copy(x); 
+            virtual inline void init(const Matrix<T>& x) {
+               _x.copy(x);
                if (_compute_gram) {
                   _D->mult(x,_DtX,true,false);
-               } 
+               }
             };
 
             inline T eval(const Matrix<T>& alpha) const {
@@ -991,7 +991,7 @@ namespace FISTA {
             };
 
          private:
-            explicit SqLossMat<T>(const SqLossMat<T>& dict);
+            explicit SqLossMat(const SqLossMat<T>& dict);
             SqLossMat<T>& operator=(const SqLossMat<T>& dict);
             const AbstractMatrixB<T>* _D;
             Matrix<T> _x;
@@ -1005,7 +1005,7 @@ namespace FISTA {
          public:
             LossMatSup() { };
 
-            virtual ~LossMatSup() { 
+            virtual ~LossMatSup() {
                for (int i = 0; i<_N; ++i) {
                   delete(_losses[i]);
                   _losses[i]=NULL;
@@ -1062,14 +1062,14 @@ namespace FISTA {
             };
             virtual bool is_fenchel() const {
                bool ok=true;
-               for (int i = 0; i<_N; ++i) 
+               for (int i = 0; i<_N; ++i)
                   ok = ok && _losses[i]->is_fenchel();
                return ok;
             };
             virtual void dummy() = 0;
 
          private:
-            explicit LossMatSup<T,L>(const LossMatSup<T,L>& dict);
+            explicit LossMatSup(const LossMatSup<T,L>& dict);
             LossMatSup<T,L>& operator=(const LossMatSup<T,L>& dict);
             int _m;
 
@@ -1088,7 +1088,7 @@ namespace FISTA {
                this->_N=N;
                this->_losses=new LogLoss<T,weighted>*[this->_N];
                Vector<T> col;
-               for (int i = 0; i<this->_N; ++i) 
+               for (int i = 0; i<this->_N; ++i)
                   this->_losses[i]=new LogLoss<T,weighted>(X);
             }
             virtual void dummy() { };
@@ -1102,7 +1102,7 @@ namespace FISTA {
                this->_N=N;
                this->_losses=new SqLossMissing<T>*[this->_N];
                Vector<T> col;
-               for (int i = 0; i<this->_N; ++i) 
+               for (int i = 0; i<this->_N; ++i)
                   this->_losses[i]=new SqLossMissing<T>(X);
             }
             virtual void dummy() { };
@@ -1127,7 +1127,7 @@ namespace FISTA {
       class Regularizer {
          public:
             Regularizer() { };
-            Regularizer(const ParamReg<T>& param) : _id(NA) { 
+            Regularizer(const ParamReg<T>& param) : _id(NA) {
                _intercept=param.intercept;
                _pos=param.pos;
             }
@@ -1152,7 +1152,7 @@ namespace FISTA {
             virtual bool is_concave() const { return false; };
 //            virtual bool is_none() const { return false; };
 //            virtual bool is_pos() const { return _pos; };
-            
+
 
          protected:
             bool _pos;
@@ -1160,11 +1160,11 @@ namespace FISTA {
             regul_t _id;
 
          private:
-            explicit Regularizer<T,D>(const Regularizer<T,D>& reg);
+            explicit Regularizer(const Regularizer<T,D>& reg);
             Regularizer<T,D>& operator=(const Regularizer<T,D>& reg);
       };
 
-   template <typename T> 
+   template <typename T>
       class Lasso : public Regularizer<T> {
          public:
             Lasso(const ParamReg<T>& param) : Regularizer<T>(param) { this->_id = L1; };
@@ -1176,7 +1176,7 @@ namespace FISTA {
                y.softThrshold(lambda);
                if (this->_intercept) y[y.n()-1] = x[y.n()-1];
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                return (this->_intercept ? x.asum() - abs(x[x.n()-1]) : x.asum());
             };
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const {
@@ -1186,10 +1186,10 @@ namespace FISTA {
                T mm = output.fmaxval();
                scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY;
             };
             virtual bool is_subgrad() const { return true; };
-            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const {  
+            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const {
                output.resize(input.n());
                if (!this->_pos) {
                   for (int i = 0; i<input.n(); ++i) {
@@ -1204,12 +1204,12 @@ namespace FISTA {
             }
       };
 
-   template <typename T> 
+   template <typename T>
       class LassoConstraint : public Regularizer<T> {
          public:
-            LassoConstraint(const ParamReg<T>& param) : Regularizer<T>(param) { 
+            LassoConstraint(const ParamReg<T>& param) : Regularizer<T>(param) {
                _thrs=param.lambda;
-               this->_id = L1CONSTRAINT; 
+               this->_id = L1CONSTRAINT;
             };
             virtual ~LassoConstraint() { };
 
@@ -1227,7 +1227,7 @@ namespace FISTA {
             T inline eval(const Vector<T>& x) const {
                return 0;
             };
-            void inline fenchel(const Vector<T>& input, T& val, T& scal) const { 
+            void inline fenchel(const Vector<T>& input, T& val, T& scal) const {
                scal=1.0;
                Vector<T> output;
                output.copy(input);
@@ -1239,7 +1239,7 @@ namespace FISTA {
             T _thrs;
       };
 
-   template <typename T> 
+   template <typename T>
       class Lzero : public Regularizer<T> {
          public:
             Lzero(const ParamReg<T>& param) : Regularizer<T>(param) { };
@@ -1252,13 +1252,13 @@ namespace FISTA {
                y.hardThrshold(sqrt(2*lambda));
                if (this->_intercept) y[y.n()-1] = x[y.n()-1];
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                return (this->_intercept ? x.lzero() - 1 : x.lzero());
             };
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const { };
       };
 
-   template <typename T> 
+   template <typename T>
       class LogDC : public Regularizer<T> {
          public:
             LogDC(const ParamReg<T>& param) : Regularizer<T>(param), _eps(param.lambda2d1) { };
@@ -1275,7 +1275,7 @@ namespace FISTA {
                for (int i = 0; i<x.n(); ++i) _weights[i] = T(1.0)/(abs<T>(x[i])+_eps);
             };
             bool inline is_concave() const { return true; };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                T tmp=0;
                for (int i = 0; i<x.n(); ++i) tmp+= log_alt<T>(abs<T>(x[i])+_eps);
                return tmp;
@@ -1287,7 +1287,7 @@ namespace FISTA {
       };
 
 
-   template <typename T> 
+   template <typename T>
       class None: public Regularizer<T>, public SplittingFunction<T, SpMatrix<T> > {
          public:
             None() { };
@@ -1302,9 +1302,9 @@ namespace FISTA {
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const {  };
             virtual bool is_fenchel() const { return false; };
             virtual bool is_subgrad() const { return true; };
-            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const { 
+            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const {
                output.setZeros();
-            } 
+            }
             virtual void reset() { };
             virtual T eval_split(const SpMatrix<T>& input) const { return 0; };
             virtual int num_components() const { return 0; };
@@ -1314,7 +1314,7 @@ namespace FISTA {
 //            virtual bool is_none() const { return true; };
       };
 
-   template <typename T> 
+   template <typename T>
       class Ridge: public Regularizer<T> {
          public:
             Ridge(const ParamReg<T>& param) : Regularizer<T>(param) { this->_id = RIDGE; };
@@ -1326,7 +1326,7 @@ namespace FISTA {
                y.scal(T(1.0/(1.0+lambda)));
                if (this->_intercept) y[y.n()-1] = x[y.n()-1];
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                return (this->_intercept ? 0.5*x.nrm2sq() - 0.5*x[x.n()-1]*x[x.n()-1] : 0.5*x.nrm2sq());
             };
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const {
@@ -1335,10 +1335,10 @@ namespace FISTA {
                if (this->_pos) tmp.thrsPos();
                val=this->eval(tmp);
                scal=T(1.0);
-               if (this->_intercept & (abs<T>(tmp[tmp.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(tmp[tmp.n()-1]) > EPSILON)) val=INFINITY;
             };
             virtual bool is_subgrad() const { return true; };
-            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const {  
+            virtual void sub_grad(const Vector<T>& input, Vector<T>& output) const {
                output.resize(input.n());
                if (!this->_pos) {
                   for (int i = 0; i<input.n(); ++i) {
@@ -1352,7 +1352,7 @@ namespace FISTA {
             }
       };
 
-   template <typename T> 
+   template <typename T>
       class normL2: public Regularizer<T> {
          public:
             normL2(const ParamReg<T>& param) : Regularizer<T>(param) { };
@@ -1370,9 +1370,9 @@ namespace FISTA {
                }
                if (this->_intercept) y[y.n()-1] = x[y.n()-1];
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                Vector<T> xref(x.rawX(),this->_intercept ? x.n()-1 : x.n());
-               return xref.nrm2(); 
+               return xref.nrm2();
             };
             /// TODO add subgradient
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const {
@@ -1382,11 +1382,11 @@ namespace FISTA {
                T mm = output.nrm2();
                scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY;
             };
       };
 
-   template <typename T> 
+   template <typename T>
       class normLINF: public Regularizer<T> {
          public:
             normLINF(const ParamReg<T>& param) : Regularizer<T>(param) { };
@@ -1402,9 +1402,9 @@ namespace FISTA {
                   y[j]=y[j]-row[j];
                if (this->_intercept) y[y.n()-1] = x[y.n()-1];
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                Vector<T> xref(x.rawX(),this->_intercept ? x.n()-1 : x.n());
-               return xref.fmaxval(); 
+               return xref.fmaxval();
             };
             /// TODO add subgradient
             void inline fenchel(const Vector<T>& input, T& val, T& scal) const {
@@ -1414,7 +1414,7 @@ namespace FISTA {
                T mm = output.asum();
                scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(output[output.n()-1]) > EPSILON)) val=INFINITY;
             };
       };
 
@@ -1448,13 +1448,13 @@ namespace FISTA {
                   }
                }
             };
-            T inline eval(const D& x) const { 
+            T inline eval(const D& x) const {
                return _regA->eval(x) + _lambda2d1*_regB->eval(x);
             };
             virtual bool is_fenchel() const { return false; };
             void inline fenchel(const D& input, T& val, T& scal) const { };
             virtual bool is_subgrad() const { return _regA->is_subgrad() && _regB->is_subgrad(); };
-            virtual void sub_grad(const D& input, D& output) const {  
+            virtual void sub_grad(const D& input, D& output) const {
                _regA->sub_grad(input,output);
                D tmp;
                _regB->sub_grad(input,tmp);
@@ -1471,7 +1471,7 @@ namespace FISTA {
          typedef ComposeProx< T, Vector<T>, Lasso<T>, Ridge<T>, true > type;
       };
 
-   template <typename T> 
+   template <typename T>
       class FusedLasso: public Regularizer<T> {
          public:
             FusedLasso(const ParamReg<T>& param) : Regularizer<T>(param) {
@@ -1486,7 +1486,7 @@ namespace FISTA {
                copyx.copy(x);
                copyx.fusedProjectHomotopy(y,_lambda2d1*lambda,lambda,_lambda3d1*lambda,true);
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                T sum = T();
                const int maxn = this->_intercept ? x.n()-1 : x.n();
                for (int i = 0; i<maxn-1; ++i)
@@ -1502,10 +1502,10 @@ namespace FISTA {
             T _lambda3d1;
       };
 
-   template <typename T> 
+   template <typename T>
       class GraphLasso : public Regularizer<T>, public SplittingFunction<T, SpMatrix<T> > {
          public:
-            GraphLasso(const ParamReg<T>& param) : Regularizer<T>(param) { 
+            GraphLasso(const ParamReg<T>& param) : Regularizer<T>(param) {
                const bool resetflow = param.resetflow;
                const bool linf = param.linf;
                const bool clever = param.clever;
@@ -1554,7 +1554,7 @@ namespace FISTA {
                _old_lambda=lambda;
             };
 
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                Graph<T>* gr = const_cast<Graph<T>* >(&_graph);
                gr->restore_capacities();
                return gr->norm(x.rawX(),_work.rawX(),_weights.rawX(),_linf);
@@ -1577,7 +1577,7 @@ namespace FISTA {
                   gr->restore_flow();
                scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(input[input.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(input[input.n()-1]) > EPSILON)) val=INFINITY;
             };
 
             virtual void init(const Vector<T>& y) { };
@@ -1588,7 +1588,7 @@ namespace FISTA {
                if (_linf) {
                   for (int i = 0; i<splitted_w.n(); ++i) {
                      splitted_w.refCol(i,col);
-                     tmp.setData(col.rawX(),col.nzmax());                     
+                     tmp.setData(col.rawX(),col.nzmax());
                      Vector<T> res;
                      res.copy(tmp);
                      vAbs<T>(res.n(),res.rawX(),res.rawX());
@@ -1598,7 +1598,7 @@ namespace FISTA {
                } else {
                   for (int i = 0; i<splitted_w.n(); ++i) {
                      splitted_w.refCol(i,col);
-                     tmp.setData(col.rawX(),col.nzmax());                     
+                     tmp.setData(col.rawX(),col.nzmax());
                      const T nrm = tmp.nrm2();
                      if (nrm > lambda*_weights[i]) {
                         tmp.scal(T(1.0)-lambda*_weights[i]/nrm);
@@ -1652,7 +1652,7 @@ namespace FISTA {
          typedef ComposeProx<T, Vector<T>, GraphLasso<T>, Ridge<T>, true> type;
       };
 
-   template <typename T> 
+   template <typename T>
       class TreeLasso : public Regularizer<T> {
          public:
             TreeLasso(const ParamReg<T>& param) : Regularizer<T>(param) {
@@ -1677,7 +1677,7 @@ namespace FISTA {
                }
                _tree.proj(yp,_linf,lambda);
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                return const_cast<Tree_Seq<T>* >(&_tree)->val_norm(x.rawX(),0,_linf);
             };
             void inline fenchel(const Vector<T>& y, T& val, T& scal) const {
@@ -1694,8 +1694,8 @@ namespace FISTA {
                   T mm = const_cast<Tree_Seq<T>* >(&_tree)->dual_norm_inf(yp2);
                   scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                   val=0;
-                  if (this->_intercept & (abs<T>(y[y.n()-1]) > EPSILON)) val=INFINITY; 
-               } 
+                  if (this->_intercept & (abs<T>(y[y.n()-1]) > EPSILON)) val=INFINITY;
+               }
             };
             virtual bool is_fenchel() const {
                return _linf;
@@ -1711,7 +1711,7 @@ namespace FISTA {
             bool _linf;
       };
 
-   template <typename T> 
+   template <typename T>
       class TreeLzero : public Regularizer<T> {
          public:
             TreeLzero(const ParamReg<T>& param) : Regularizer<T>(param) {
@@ -1734,7 +1734,7 @@ namespace FISTA {
                }
                _tree.proj_zero(yp,lambda);
             };
-            T inline eval(const Vector<T>& x) const { 
+            T inline eval(const Vector<T>& x) const {
                return const_cast<Tree_Seq<T>* >(&_tree)->val_zero(x.rawX(),0);
             };
             virtual bool is_fenchel() const { return false; };
@@ -1747,7 +1747,7 @@ namespace FISTA {
    template <typename T, typename ProxMat>
       class ProxMatToVec : public Regularizer<T> {
          public:
-            ProxMatToVec(const ParamReg<T>& param) : Regularizer<T>(param) { 
+            ProxMatToVec(const ParamReg<T>& param) : Regularizer<T>(param) {
                _size_group=param.size_group;
                ParamReg<T> param2=param;
                param2.intercept=false;
@@ -1792,12 +1792,12 @@ namespace FISTA {
                   for (int i = 0; i<param.ngroups; ++i) num_groups=MAX(num_groups,param.groups[i]);
                   _groups.resize(num_groups);
                   for (int i = 0; i<num_groups; ++i) _groups[i]=new list_int();
-                  for (int i = 0; i<param.ngroups; ++i) _groups[param.groups[i]-1]->push_back(i); 
-               } 
+                  for (int i = 0; i<param.ngroups; ++i) _groups[param.groups[i]-1]->push_back(i);
+               }
                _prox = new Reg(param2);
             }
-            virtual ~GroupProx() { 
-               delete(_prox); 
+            virtual ~GroupProx() {
+               delete(_prox);
                for (int i = 0; i<static_cast<int>(_groups.size()); ++i) delete(_groups[i]);
             };
 
@@ -1854,7 +1854,7 @@ namespace FISTA {
                return sum;
             }
             virtual bool is_fenchel() const { return _prox->is_fenchel(); };
-            void inline fenchel(const Vector<T>& x, T& val, T& scal) const { 
+            void inline fenchel(const Vector<T>& x, T& val, T& scal) const {
                const int maxn= this->_intercept ? x.n()-1 : x.n();
                T val2;
                T scal2;
@@ -1926,13 +1926,13 @@ namespace FISTA {
                for (int i = 0; i<m; ++i) {
                   if (norm[i] > lambda) {
                      T scal = (norm[i]-lambda)/norm[i];
-                     for (int j = 0; j<n; ++j) 
+                     for (int j = 0; j<n; ++j)
                         y[j*m+i] = x[j*m+i]*scal;
                   }
                }
                if (this->_pos) y.thrsPos();
                if (this->_intercept)
-                  for (int j = 0; j<n; ++j) 
+                  for (int j = 0; j<n; ++j)
                      y[j*m+m-1]=x[j*m+m-1];
             }
             T inline eval(const Matrix<T>& x) const {
@@ -1941,7 +1941,7 @@ namespace FISTA {
                return this->_intercept ? norm.asum() - norm[norm.n() -1] : norm.asum();
             }
             virtual bool is_subgrad() const { return true; };
-            virtual void sub_grad(const Matrix<T>& input, Matrix<T>& output) const { 
+            virtual void sub_grad(const Matrix<T>& input, Matrix<T>& output) const {
                Vector<T> norm;
                input.norm_2_rows(norm);
                for (int i = 0; i<norm.n(); ++i) {
@@ -1963,9 +1963,9 @@ namespace FISTA {
                   input.norm_2_rows(norm);
                }
                T mm = norm.fmaxval();
-               scal= mm > 1.0 ? T(1.0)/mm : 1.0; 
+               scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(norm[norm.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(norm[norm.n()-1]) > EPSILON)) val=INFINITY;
             };
       };
 
@@ -1991,7 +1991,7 @@ namespace FISTA {
                      y(i,j) = row[j]-row2[j];
                }
             }
-            T inline eval(const Matrix<T>& x) const { 
+            T inline eval(const Matrix<T>& x) const {
                Vector<T> norm;
                x.norm_inf_rows(norm);
                return this->_intercept ? norm.asum() - norm[norm.n() -1] : norm.asum();
@@ -2008,12 +2008,12 @@ namespace FISTA {
                }
                if (this->_intercept) norm[norm.n()-1]=0;
                T mm = norm.fmaxval();
-               scal= mm > 1.0 ? T(1.0)/mm : 1.0; 
+               scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                val=0;
-               if (this->_intercept & (abs<T>(norm[norm.n()-1]) > EPSILON)) val=INFINITY; 
+               if (this->_intercept & (abs<T>(norm[norm.n()-1]) > EPSILON)) val=INFINITY;
             };
             virtual bool is_subgrad() const { return true; };
-            virtual void sub_grad(const Matrix<T>& input, Matrix<T>& output) const { 
+            virtual void sub_grad(const Matrix<T>& input, Matrix<T>& output) const {
                output.resize(input.m(),input.n());
                output.setZeros();
                const T maxm= this->_intercept ? input.m()-1 : input.m();
@@ -2024,12 +2024,12 @@ namespace FISTA {
                   if (max > 1e-15) {
                      int num_max=0;
                      for (int j = 0; j<row.n(); ++j) {
-                        if (abs<T>(max-abs<T>(row[j])) < 1e-15) 
+                        if (abs<T>(max-abs<T>(row[j])) < 1e-15)
                            num_max++;
                      }
                      T add = T(1.0)/num_max;
                      for (int j = 0; j<row.n(); ++j) {
-                        if (abs<T>(max-abs<T>(row[j])) < 1e-15) 
+                        if (abs<T>(max-abs<T>(row[j])) < 1e-15)
                            row[j] = row[j] > 0 ? add : -add;
                      }
                      output.setRow(i,row);
@@ -2041,7 +2041,7 @@ namespace FISTA {
    template <typename T>
       class TraceNorm : public Regularizer<T,Matrix<T> > {
          public:
-            TraceNorm(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) { 
+            TraceNorm(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) {
                if (param.intercept) {
                   cerr << "Trace norm implementation is not compatible with intercept, intercept deactivated" << endl;
                }
@@ -2053,7 +2053,7 @@ namespace FISTA {
             virtual ~TraceNorm() { };
 
             void inline prox(const Matrix<T>& x, Matrix<T>& y, const T lambda) {
-               //Matrix<T> tmp;               
+               //Matrix<T> tmp;
                //tmp.copy(x);
                Matrix<T> U;
                Matrix<T> V;
@@ -2113,7 +2113,7 @@ namespace FISTA {
    template <typename T>
       class Rank : public Regularizer<T,Matrix<T> > {
          public:
-            Rank(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) { 
+            Rank(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) {
                if (param.intercept) {
                   cerr << "Rank implementation is not compatible with intercept, intercept deactivated" << endl;
                }
@@ -2125,7 +2125,7 @@ namespace FISTA {
             virtual ~Rank() { };
 
             void inline prox(const Matrix<T>& x, Matrix<T>& y, const T lambda) {
-               Matrix<T> tmp;               
+               Matrix<T> tmp;
                tmp.copy(x);
                y.resize(x.m(),x.n());
                y.setZeros();
@@ -2175,9 +2175,9 @@ namespace FISTA {
           int count_col=0;
           int count=0;
           pB[0]=0;
-          for (ListIterator<Path<long long>*> it_path=paths.begin(); 
+          for (ListIterator<Path<long long>*> it_path=paths.begin();
                 it_path != paths.end(); ++it_path) {
-             for (const_iterator_int it = it_path->nodes.begin(); 
+             for (const_iterator_int it = it_path->nodes.begin();
                    it != it_path->nodes.end(); ++it) {
                 r[count]= *it;
                 v[count++]= it_path->flow;
@@ -2186,8 +2186,8 @@ namespace FISTA {
           }
           for (int i = 0; i<paths_mat.n(); ++i) sort(r,v,pB[i],pE[i]-1);
        };
- 
-    template <typename T> 
+
+    template <typename T>
        class GraphPathL0 : public Regularizer<T> {
           public:
              GraphPathL0(const ParamReg<T>& param) : Regularizer<T>(param) {
@@ -2195,33 +2195,33 @@ namespace FISTA {
                 _graph.init_graph(graph);
              }
              virtual ~GraphPathL0() { };
- 
+
              void inline prox(const Vector<T>& x, Vector<T>& y, const T lambda) {
                 // DEBUG
                 y.copy(x);
                 if (this->_pos) y.thrsPos();
                 _graph.proximal_l0(y.rawX(),lambda);
              };
-             T inline eval(const Vector<T>& x) const { 
+             T inline eval(const Vector<T>& x) const {
                 return const_cast<GraphPath<T>* >(&_graph)->eval_l0(x.rawX());
              };
-             T inline eval_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const { 
+             T inline eval_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const {
                 List<Path<long long>*> paths;
                 T val=const_cast<GraphPath<T>* >(&_graph)->eval_l0(x.rawX(),&paths);
                 convert_paths_to_mat<T>(paths,paths_mat,_graph.n());
-                for (ListIterator<Path<>*> it_path=paths.begin(); 
+                for (ListIterator<Path<>*> it_path=paths.begin();
                       it_path != paths.end(); ++it_path) delete(*it_path);
                 return val;
              };
- 
+
              virtual bool is_fenchel() const { return false; };
              void inline fenchel(const Vector<T>& input, T& val, T& scal) const {  };
- 
+
           private:
              GraphPath<T> _graph;
        };
- 
-    template <typename T> 
+
+    template <typename T>
        class GraphPathConv : public Regularizer<T> {
           public:
              GraphPathConv(const ParamReg<T>& param) : Regularizer<T>(param) {
@@ -2229,27 +2229,27 @@ namespace FISTA {
                 _graph.init_graph(graph);
              }
              virtual ~GraphPathConv() {  };
- 
+
              void inline prox(const Vector<T>& x, Vector<T>& y, const T lambda) {
                 y.copy(x);
                 if (this->_pos) y.thrsPos();
                 _graph.proximal_conv(y.rawX(),lambda);
              };
-             T inline eval(const Vector<T>& x) const { 
+             T inline eval(const Vector<T>& x) const {
                 return const_cast<GraphPath<T>* >(&_graph)->eval_conv(x.rawX());
              };
-             T inline eval_dual_norm(const Vector<T>& x) const { 
+             T inline eval_dual_norm(const Vector<T>& x) const {
                 return const_cast<GraphPath<T>* >(&_graph)->eval_dual_norm(x.rawX(),NULL);
              };
-             T inline eval_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const { 
+             T inline eval_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const {
                 List<Path<long long>*> paths;
                 T val=const_cast<GraphPath<T>* >(&_graph)->eval_conv(x.rawX(),&paths);
                 convert_paths_to_mat<T>(paths,paths_mat,_graph.n());
-                for (ListIterator<Path<long long>*> it_path=paths.begin(); 
+                for (ListIterator<Path<long long>*> it_path=paths.begin();
                       it_path != paths.end(); ++it_path) delete(*it_path);
                 return val;
              };
-             T inline eval_dual_norm_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const { 
+             T inline eval_dual_norm_paths(const Vector<T>& x, SpMatrix<T>& paths_mat) const {
                 Path<long long> path;
                 T val=const_cast<GraphPath<T>* >(&_graph)->eval_dual_norm(x.rawX(),&path.nodes);
                 List<Path<long long>*> paths;
@@ -2273,7 +2273,7 @@ namespace FISTA {
                 }
                 scal= mm > 1.0 ? T(1.0)/mm : 1.0;
                 val=0;
-                if (this->_intercept & (abs<T>(input[input.n()-1]) > EPSILON)) val=INFINITY; 
+                if (this->_intercept & (abs<T>(input[input.n()-1]) > EPSILON)) val=INFINITY;
              };
           private:
              GraphPath<T> _graph;
@@ -2283,29 +2283,29 @@ namespace FISTA {
    template <typename T,typename Reg>
       class RegMat : public Regularizer<T,Matrix<T> > {
          public:
-            RegMat(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) { 
+            RegMat(const ParamReg<T>& param) : Regularizer<T,Matrix<T> >(param) {
                _transpose=param.transpose;
                const int N = param.num_cols;
                _regs=new Reg*[N];
                _N=N;
-               for (int i = 0; i<N; ++i) 
+               for (int i = 0; i<N; ++i)
                   _regs[i]=new Reg(param);
             };
-            virtual ~RegMat() { 
+            virtual ~RegMat() {
                for (int i = 0; i<_N; ++i) {
                   delete(_regs[i]);
                   _regs[i]=NULL;
                }
                delete[](_regs);
             };
-            void inline reset() { 
+            void inline reset() {
                for (int i = 0; i<_N; ++i) _regs[i]->reset();
             };
             void inline prox(const Matrix<T>& x, Matrix<T>& y, const T lambda) {
                y.copy(x);
                int i;
                if (_transpose) {
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
                   for (i = 0; i<_N; ++i) {
                      Vector<T> colx, coly;
                      x.copyRow(i,colx);
@@ -2313,7 +2313,7 @@ namespace FISTA {
                      y.setRow(i,coly);
                   }
                } else {
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
                   for (i = 0; i<_N; ++i) {
                      Vector<T> colx, coly;
                      x.refCol(i,colx);
@@ -2322,9 +2322,9 @@ namespace FISTA {
                   }
                }
             };
-            virtual bool is_subgrad() const { 
+            virtual bool is_subgrad() const {
                bool ok=true;
-               for (int i = 0; i<_N; ++i) 
+               for (int i = 0; i<_N; ++i)
                   ok=ok && _regs[i]->is_subgrad();
                return ok;
             };
@@ -2345,10 +2345,10 @@ namespace FISTA {
                   }
                }
             };
-            T inline eval(const Matrix<T>& x) const { 
+            T inline eval(const Matrix<T>& x) const {
                T sum = 0;
                int i;
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
                for (i = 0; i<_N; ++i) {
                   Vector<T> col;
                   if (_transpose) {
@@ -2380,7 +2380,7 @@ namespace FISTA {
             };
             virtual bool is_fenchel() const {
                bool ok=true;
-               for (int i = 0; i<_N; ++i) 
+               for (int i = 0; i<_N; ++i)
                   ok = ok && _regs[i]->is_fenchel();
                return ok;
             };
@@ -2418,7 +2418,7 @@ namespace FISTA {
                y.toVect(yv);
                _graphlasso->prox(xv,yv,lambda);
             }
-            T inline eval(const Matrix<T>& X) const { 
+            T inline eval(const Matrix<T>& X) const {
                Vector<T> xv;
                X.toVect(xv);
                return _graphlasso->eval(xv);
@@ -2440,7 +2440,7 @@ namespace FISTA {
    template <typename T>
       class MixedL1LINFCR : public SpecGraphMat<T> {
          public:
-            MixedL1LINFCR(const int m, const ParamReg<T>& param) : SpecGraphMat<T>(param) { 
+            MixedL1LINFCR(const int m, const ParamReg<T>& param) : SpecGraphMat<T>(param) {
                const int n = param.num_cols;
                const T l2dl1 = param.lambda2d1;
                GraphStruct<T> graph_st;
@@ -2491,7 +2491,7 @@ namespace FISTA {
    template <typename T>
       class TreeMult : public SpecGraphMat<T> {
          public:
-            TreeMult(const ParamReg<T>& param) : SpecGraphMat<T>(param) { 
+            TreeMult(const ParamReg<T>& param) : SpecGraphMat<T>(param) {
                const TreeStruct<T>& tree_st=*(param.tree_st);
                const int N = param.num_cols;
                const T l1dl2 = param.lambda2d1;
@@ -2575,7 +2575,7 @@ namespace FISTA {
    template <typename T>
       class GraphMult : public SpecGraphMat<T> {
          public:
-            GraphMult(const ParamReg<T>& param) : SpecGraphMat<T>(param) { 
+            GraphMult(const ParamReg<T>& param) : SpecGraphMat<T>(param) {
                const GraphStruct<T>& graph_st=*(param.graph_st);
                const int N = param.num_cols;
                const T l1dl2 = param.lambda2d1;
@@ -2600,7 +2600,7 @@ namespace FISTA {
                   for (int j = 0; j<Ng; ++j) {
                      gv_jc[i*Ng+j]=count;
                      for (mwSize k = graph_st.gv_jc[j]; k<graph_st.gv_jc[j+1]; ++k) {
-                        gv_ir[count++] =Nv*i+graph_st.gv_ir[k]; 
+                        gv_ir[count++] =Nv*i+graph_st.gv_ir[k];
                      }
                   }
                }
@@ -2651,7 +2651,7 @@ namespace FISTA {
       };
 
    template <typename T, typename D, typename E>
-      T duality_gap(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x, 
+      T duality_gap(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x,
             const T lambda, T& best_dual, const bool verbose = false) {
          if (!regularizer.is_fenchel() || !loss.is_fenchel()) {
             cerr << "Error: no duality gap available" << endl;
@@ -2660,7 +2660,7 @@ namespace FISTA {
          T primal= loss.eval(x)+lambda*regularizer.eval(x);
          bool intercept=regularizer.is_intercept();
          D grad1, grad2;
-         loss.var_fenchel(x,grad1,grad2,intercept); 
+         loss.var_fenchel(x,grad1,grad2,intercept);
          T dual;
          grad2.scal(-T(1.0)/lambda);
          T val=0;
@@ -2680,7 +2680,7 @@ namespace FISTA {
       }
 
    template <typename T, typename D, typename E>
-      T duality_gap(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x, 
+      T duality_gap(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x,
             const T lambda, const bool verbose = false) {
          T best_dual=-INFINITY;
          return duality_gap(loss,regularizer,x,lambda,best_dual,verbose);
@@ -2688,7 +2688,7 @@ namespace FISTA {
 
    template <typename T>
       void dualityGraph(const Matrix<T>& X, const Matrix<T>& D, const Matrix<T>& alpha0,
-            Vector<T>& res, const ParamFISTA<T>& param, 
+            Vector<T>& res, const ParamFISTA<T>& param,
             const GraphStruct<T>* graph_st) {
          Regularizer<T>* regularizer=new GraphLasso<T>(*graph_st,
                param.intercept,param.resetflow,param.pos,param.clever);
@@ -2725,7 +2725,7 @@ namespace FISTA {
 
 
    template <typename T, typename D, typename E>
-      void subGradientDescent_Generic(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x0, D& x, 
+      void subGradientDescent_Generic(Loss<T,D,E>& loss, Regularizer<T,D>& regularizer, const D& x0, D& x,
             Vector<T>& optim_info,
             const ParamFISTA<T>& param) {
          D grad;
@@ -2743,13 +2743,13 @@ namespace FISTA {
             /// print loss
             if (param.verbose && ((it % it0) == 0)) {
                time.stop();
-               T los=loss.eval(x) + lambda*regularizer.eval(x);    
+               T los=loss.eval(x) + lambda*regularizer.eval(x);
                optim_info[0]=los;
                T sec=time.getElapsed();
                cout << "Iter: " << it << ", loss: " << los << ", time: " << sec << " ";
-               if (param.log) 
+               if (param.log)
                   writeLog(it,sec,los,best_dual,param.logName);
-               if (param.verbose) 
+               if (param.verbose)
                   cout << endl;
                flush(cout);
                time.start();
@@ -2771,7 +2771,7 @@ namespace FISTA {
             }
          }
          if ((it % it0) != 0 || !param.verbose) {
-            T los=loss.eval(x) + lambda*regularizer.eval(x);    
+            T los=loss.eval(x) + lambda*regularizer.eval(x);
             optim_info[0]=los;
             if (duality) {
                rel_duality_gap=duality_gap(loss,regularizer,x,lambda,best_dual,param.verbose);
@@ -2817,7 +2817,7 @@ namespace FISTA {
                T sec=time.getElapsed();
                cout << "Iter: " << it << ", loss: " << los << ", time: " << sec << ", L: " << L;
                flush(cout);
-               if (param.log) 
+               if (param.log)
                   writeLog(it,sec,los,best_dual,param.logName);
                time.start();
             }
@@ -2843,7 +2843,7 @@ namespace FISTA {
                   break;
                }
                L *= param.gamma;
-               if (param.verbose && ((it % it0) == 0)) 
+               if (param.verbose && ((it % it0) == 0))
                   cout << " " << L;
                ++iter;
             }
@@ -2860,12 +2860,12 @@ namespace FISTA {
                      regularizer.prox(prox,tmp,lambda/L);
                      break;
                   }
-                  if (param.verbose && ((it % it0) == 0)) 
+                  if (param.verbose && ((it % it0) == 0))
                   cout << " " << L;
                   ++iter;
                }
             }
-            if (param.verbose && ((it % it0) == 0)) 
+            if (param.verbose && ((it % it0) == 0))
                cout << endl;
             if (param.linesearch_mode==2) {
                sbb.copy(grad);
@@ -2887,7 +2887,7 @@ namespace FISTA {
                if (sqrt(old.nrm2sq()/MAX(EPSILON,x.nrm2sq())) < param.tol) break;
             }
          }
-         T los=loss.eval(x) + lambda*regularizer.eval(x);    
+         T los=loss.eval(x) + lambda*regularizer.eval(x);
          optim_info[0]=los;
          T sec=time.getElapsed();
          if (param.verbose) {
@@ -2931,12 +2931,12 @@ namespace FISTA {
             /// print loss
             if (param.verbose && ((it % it0) == 0)) {
                time.stop();
-               T los=loss.eval(x) + lambda*regularizer.eval(x);    
+               T los=loss.eval(x) + lambda*regularizer.eval(x);
                optim_info[0]=los;
                T sec=time.getElapsed();
                cout << "Iter: " << it << ", loss: " << los << ", time: " << sec << ", L: " << L;
                flush(cout);
-               if (param.log) 
+               if (param.log)
                   writeLog(it,sec,los,best_dual,param.logName);
                time.start();
             }
@@ -2963,11 +2963,11 @@ namespace FISTA {
                regularizer.prox(prox,tmp,lambda/L);
                if ((param.linesearch_mode==2 && it > 1) || param.fixed_step || loss.test_backtracking(y,grad,tmp,L)) break;
                L *= param.gamma;
-               if (param.verbose && ((it % it0) == 0)) 
+               if (param.verbose && ((it % it0) == 0))
                   cout << " " << L;
                ++iter;
             }
-            if (param.verbose && ((it % it0) == 0)) 
+            if (param.verbose && ((it % it0) == 0))
                cout << endl;
 
             prox.copy(x);
@@ -3007,7 +3007,7 @@ namespace FISTA {
       };
 
    template <typename T>
-      T LagrangianADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg, 
+      T LagrangianADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg,
             const T lambda, const T gamma, const Vector<T>& w,  const Matrix<T>& splitted_loss, const SpMatrix<T>& splitted_reg,
             const Matrix<T>& multi_loss, const SpMatrix<T>& multi_reg, T& los, const T* weights = NULL) {
          const int n_reg=reg.num_components();
@@ -3044,7 +3044,7 @@ namespace FISTA {
          splitted_w_loss.sum_cols(mean);
          w.copy(mean);
          multipliers_w_loss.sum_cols(mean);
-         w.add(mean,-T(1.0)/gamma);   
+         w.add(mean,-T(1.0)/gamma);
          Vector<T> number_occurences(w.n());
          number_occurences.set(splitted_w_loss.n());
          const int n_reg=splitted_w_reg.n();
@@ -3054,10 +3054,10 @@ namespace FISTA {
             for (int i = 0; i<n_reg; ++i) {
                splitted_w_reg.refCol(i,col);
                mean.add(col);
-               for (int j = 0; j<col.L(); ++j) 
+               for (int j = 0; j<col.L(); ++j)
                   number_occurences[col.r(j)]++;
             }
-            w.add(mean);   
+            w.add(mean);
             mean.setZeros();
             for (int i = 0; i<n_reg; ++i) {
                multipliers_w_reg.refCol(i,col);
@@ -3080,7 +3080,7 @@ namespace FISTA {
          splitted_w_loss.sum_cols(mean);
          w.copy(mean);
          multipliers_w_loss.sum_cols(mean);
-         w.add(mean,-T(1.0)/gamma);   
+         w.add(mean,-T(1.0)/gamma);
          Vector<T> number_occurences(w.n());
          number_occurences.set(splitted_w_loss.n());
          const int n_reg=splitted_w_reg.n();
@@ -3094,11 +3094,11 @@ namespace FISTA {
                   number_occurences[col.r(j)]+=inner_weights[j]*inner_weights[j];
                }
             }
-            w.add(mean);   
+            w.add(mean);
             mean.setZeros();
             for (int i = 0; i<n_reg; ++i) {
                multipliers_w_reg.refCol(i,col);
-               for (int j = 0; j<col.L(); ++j) 
+               for (int j = 0; j<col.L(); ++j)
                   mean[col.r(j)]+=inner_weights[j]*col.v(j);
             }
             w.add(mean,-T(1.0)/gamma);
@@ -3107,10 +3107,10 @@ namespace FISTA {
       };
 
    template <typename T>
-      void ADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg, 
+      void ADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg,
             const Vector<T>& w0, Vector<T>& w, Vector<T>& optim_info,
             const ParamFISTA<T>& param) {
-         const T gamma = param.c; 
+         const T gamma = param.c;
          const int n_reg=reg.num_components();
          const int it0 = MAX(1,param.it0);
          const T lambda=param.lambda;
@@ -3151,7 +3151,7 @@ namespace FISTA {
                if (param.verbose) {
                   cout << "Iter: " << it << ", loss: " << los << ", time: " << sec << endl;
                   flush(cout);
-                  if (param.log) 
+                  if (param.log)
                      writeLog(it,sec,los,T(0),param.logName);
                }
                time.start();
@@ -3236,7 +3236,7 @@ namespace FISTA {
             for (int i = 0; i<n_reg; ++i) {
                splitted_w_reg.refCol(i,col);
                mean.add(col);
-               for (int j = 0; j<col.L(); ++j) 
+               for (int j = 0; j<col.L(); ++j)
                   number_occurences[col.r(j)]+=gamma;
             }
             mean.scal(gamma);
@@ -3251,10 +3251,10 @@ namespace FISTA {
 
 
    template <typename T>
-      void LinADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg, 
+      void LinADMM(const SplittingFunction<T, Matrix<T> >& loss, const SplittingFunction<T, SpMatrix<T> >& reg,
             const Vector<T>& w0, Vector<T>& w, Vector<T>& optim_info,
             const ParamFISTA<T>& param) {
-         const T gamma = param.c; 
+         const T gamma = param.c;
          const int n_reg=reg.num_components();
          const int it0 = MAX(1,param.it0);
          const T lambda=param.lambda;
@@ -3294,7 +3294,7 @@ namespace FISTA {
                if (param.verbose) {
                   cout << "Iter: " << it << ", loss: " << los << ", time: " << sec << endl;
                   flush(cout);
-                  if (param.log) 
+                  if (param.log)
                      writeLog(it,sec,los,T(0),param.logName);
                }
                time.start();
@@ -3465,7 +3465,7 @@ namespace FISTA {
                   } else {
                      cout << "ADMM algorithm" << endl;
                   }
-               } 
+               }
             } else {
                if (param.ista) {
                   cout << "ISTA algorithm" << endl;
@@ -3476,7 +3476,7 @@ namespace FISTA {
                }
                if ((param.regul == GRAPH || param.regul == TREEMULT ||
                         param.regul == GRAPHMULT || param.regul==L1LINFCR) &&
-                     param.clever) 
+                     param.clever)
                   cout << "Projections with arc capacities" << endl;
                if (param.intercept) cout << "with intercept" << endl;
                if (param.pos) cout << "Non-negativity constraints" << endl;
@@ -3497,9 +3497,9 @@ namespace FISTA {
             SplittingFunction<T, Matrix<T> >** losses, const ParamFISTA<T>& param) {
          const int M = X.n();
          optim_info.resize(4,M);
-         
+
          int i1;
-#pragma omp parallel for private(i1) 
+#pragma omp parallel for private(i1)
          for (i1 = 0; i1< M; ++i1) {
 #ifdef _OPENMP
             int numT=omp_get_thread_num();
@@ -3522,7 +3522,7 @@ namespace FISTA {
                } else {
                   ADMM(*(losses[numT]),*(regularizers[numT]),alpha0i,alphai,optim_infoi,param);
                }
-            } 
+            }
          }
       }
 
@@ -3545,7 +3545,7 @@ namespace FISTA {
          optim_info.resize(4,M);
 
          int i1;
-#pragma omp parallel for private(i1) 
+#pragma omp parallel for private(i1)
          for (i1 = 0; i1< M; ++i1) {
 #ifdef _OPENMP
             int numT=omp_get_thread_num();
@@ -3586,7 +3586,7 @@ namespace FISTA {
          optim_info.resize(4,M);
 
          int i2;
-#pragma omp parallel for private(i2) 
+#pragma omp parallel for private(i2)
          for (i2 = 0; i2< M; ++i2) {
 #ifdef _OPENMP
             int numT=omp_get_thread_num();
@@ -3618,7 +3618,7 @@ namespace FISTA {
    template <typename T>
       void solver(const Matrix<T>& X, const AbstractMatrixB<T>& D, const Matrix<T>& alpha0,
             Matrix<T>& alpha, const ParamFISTA<T>& param1, Matrix<T>& optim_info,
-            const GraphStruct<T>* graph_st = NULL, 
+            const GraphStruct<T>* graph_st = NULL,
             const TreeStruct<T>* tree_st = NULL,
             const GraphPathStruct<T>* graph_path_st=NULL) {
          print_info_solver(param1);
@@ -3665,9 +3665,9 @@ namespace FISTA {
                   regularizers[i]=setRegularizerVectors(param,graph_st,tree_st,graph_path_st);
                   switch (param.loss) {
                      case SQUARE: if (param.compute_gram) {
-                                     losses[i]=new SqLoss<T>(D,G); 
+                                     losses[i]=new SqLoss<T>(D,G);
                                   } else {
-                                     losses[i]=new SqLoss<T>(D); 
+                                     losses[i]=new SqLoss<T>(D);
                                   }
                                   break;
                      case POISSON: losses[i]=new PoissonLoss<T>(D,param.delta);  break;
@@ -3717,16 +3717,16 @@ namespace FISTA {
                Regularizer<T, Matrix<T> >* regularizer;
                switch (param.loss) {
                   case SQUARE: if (param.compute_gram) {
-                                  loss=new SqLossMat<T>(D,G); 
+                                  loss=new SqLossMat<T>(D,G);
                                } else {
-                                  loss=new SqLossMat<T>(D); 
+                                  loss=new SqLossMat<T>(D);
                                }
                                break;
                   case POISSON: loss=new LossMat<T, PoissonLoss<T> >(X.n(),D,param.delta);  break;
                   case SQUARE_MISSING: loss=new LossMat<T, SqLossMissing<T> >(X.n(),D);  break;
                   case LOG:  loss = new LossMat<T, LogLoss<T,false> >(X.n(),D); break;
                   case LOGWEIGHT:  loss = new LossMat<T, LogLoss<T,true> >(X.n(),D); break;
-                  case CUR:  loss = new LossCur<T>(D); break; 
+                  case CUR:  loss = new LossCur<T>(D); break;
                   default: cerr << "Not implemented"; exit(1);
                }
                regularizer=setRegularizerMatrices(param,alpha0.m(),alpha0.n(),graph_st,tree_st,graph_path_st);
@@ -3753,16 +3753,16 @@ namespace FISTA {
 
    template <typename T>
       void PROX(const Matrix<T>& alpha0,
-            Matrix<T>& alpha, const ParamFISTA<T>& param, 
+            Matrix<T>& alpha, const ParamFISTA<T>& param,
             Vector<T>& val_loss,
-            const GraphStruct<T>* graph_st = NULL, 
+            const GraphStruct<T>* graph_st = NULL,
             const TreeStruct<T>* tree_st = NULL,
             const GraphPathStruct<T>* graph_path_st = NULL) {
          if (param.verbose) {
             print_regul(param.regul);
             if ((param.regul == GRAPH || param.regul == TREEMULT ||
                      param.regul == GRAPHMULT || param.regul==L1LINFCR) &&
-                  param.clever) 
+                  param.clever)
                cout << "Projections with arc capacities" << endl;
             if (param.intercept) cout << "with intercept" << endl;
             flush(cout);
@@ -3777,13 +3777,13 @@ namespace FISTA {
 
          if (!regul_for_matrices(param.regul)) {
             Regularizer<T>** regularizers= new Regularizer<T>*[num_threads];
-            for (int i = 0; i<num_threads; ++i) 
+            for (int i = 0; i<num_threads; ++i)
                regularizers[i]=setRegularizerVectors(param,graph_st,tree_st,graph_path_st);
 
             int i;
             if (param.eval)
                val_loss.resize(M);
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
             for (i = 0; i< M; ++i) {
 #ifdef _OPENMP
                int numT=omp_get_thread_num();
@@ -3820,7 +3820,7 @@ namespace FISTA {
 
    template <typename T>
       void EvalGraphPath(const Matrix<T>& alpha0,
-            const ParamFISTA<T>& param, 
+            const ParamFISTA<T>& param,
             Vector<T>& val_loss,
             const GraphPathStruct<T>* graph_path_st,
             SpMatrix<T>* paths = NULL) {
@@ -3836,12 +3836,12 @@ namespace FISTA {
 
          if (!regul_for_matrices(param.regul)) {
             Regularizer<T>** regularizers= new Regularizer<T>*[num_threads];
-            for (int i = 0; i<num_threads; ++i) 
+            for (int i = 0; i<num_threads; ++i)
                regularizers[i]=setRegularizerVectors<T>(param,NULL,NULL,graph_path_st);
 
             int i;
             val_loss.resize(M);
-#pragma omp parallel for private(i) 
+#pragma omp parallel for private(i)
             for (i = 0; i< M; ++i) {
 #ifdef _OPENMP
                int numT=omp_get_thread_num();
