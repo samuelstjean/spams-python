@@ -39,13 +39,13 @@ template<typename T> void _sort(Vector<T> *v,bool mode){
 template<typename T> void _AAt(SpMatrix<T> *A,Matrix<T> *B) {
 
   if(A->m() != B->m() || B->m() != B->n())
-    throw("AAt: incompatible dimensions of result matrix");
+    throw std::runtime_error("AAt: incompatible dimensions of result matrix");
   A->AAt((Matrix<T>&)(*B));
 }
 
 template<typename T> void _XAt(SpMatrix<T> *A,Matrix<T> *X,Matrix<T> *XAt) {
   if(X->n() != A->n() || X->m() != XAt->m() || A->m() != XAt->n())
-    throw("XAt: incompatible dimensions of result matrix");
+    throw std::runtime_error("XAt: incompatible dimensions of result matrix");
   A->XAt((Matrix<T>&)(*X),(Matrix<T>&)(*XAt));
 }
 
@@ -67,7 +67,7 @@ template<typename T> inline void _mult(Matrix<T> *X,Matrix<T> *Y,Matrix<T> *XY,c
     ycols = Y->n();
   }
   if(xcols != yrows || xrows != XY->m() || ycols != XY->n()) {
-    throw("mult: incompatible matrices");
+    throw std::runtime_error("mult: incompatible matrices");
   }
   X->mult((Matrix<T>&)(*Y),(Matrix<T>&)(*XY),transX,transY,a,b);
 }
@@ -78,7 +78,7 @@ template<typename T> void _applyBayerPattern(Vector<T> *v,int offset){
 
 template<typename T> void _conjugateGradient(Matrix<T> *A,Vector<T> *b,Vector<T> *x,const T tol,const int itermax){
   if(A->n() != x->n() || A->m() != b->n())
-    throw("conjugateGradient: incompatible matrix and vectore sizes");
+    throw std::runtime_error("conjugateGradient: incompatible matrix and vectore sizes");
   A->conjugateGradient((Vector<T> &)(*b),(Vector<T> &)(*x),tol,itermax);
 }
 
@@ -99,7 +99,7 @@ template <typename T> inline void _sparseProject(Matrix<T> *U,Matrix<T> *V,
       const T lambda2, const T lambda3, const bool pos,
       const int numThreads) {
   if(U->m() != V->m() || U->n() != V->n())
-    throw("sparseProject: incompatible matrices");
+    throw std::runtime_error("sparseProject: incompatible matrices");
   U->sparseProject((Matrix<T>&)(*V),thrs,mode,lambda1,lambda2,lambda3,pos,numThreads);
 }
 
@@ -114,7 +114,7 @@ SpMatrix<T> *_lassoD(Matrix<T> *X, Matrix<T> *D,Matrix<T> **path,bool return_reg
   int nD = D->m();
   int K = D->n();
   if (n != nD)
-    throw("lasso : incompatible matrix dimensions");
+    throw std::runtime_error("lasso : incompatible matrix dimensions");
   if(L < 0) L = K;
   if(max_length_path < 0) max_length_path = 4 * L;
   if (L> n && !(mode == PENALTY && isZero(constraint) && !pos && lambda2 > 0)) {
@@ -153,12 +153,12 @@ SpMatrix<T> *_lassoQq(Matrix<T> *X, Matrix<T> *Q, Matrix<T> *q,Matrix<T> **path,
   int K1 = Q->m();
   int K2 = Q->n();
   if(K1 != K2)
-    throw("lasso : Q must be square");
+    throw std::runtime_error("lasso : Q must be square");
   int K = K1;
   int K3 = q->m();
   int M2 = q->n();
   if (K1 != K3 || M != M2)
-    throw("lasso : incompatible matrix dimensions");
+    throw std::runtime_error("lasso : incompatible matrix dimensions");
 
   if(L < 0) L = K1;
   if(max_length_path < 0) max_length_path = 4 * L;
@@ -194,7 +194,7 @@ SpMatrix<T> *_lassoMask(Matrix<T> *X, Matrix<T> *D,Matrix<bool> *B,
   int nD = D->m();
   int K = D->n();
   if (n != nD)
-    throw("lassoMask : incompatible matrix dimensions");
+    throw std::runtime_error("lassoMask : incompatible matrix dimensions");
   if(L < 0) L = K;
   if (L> n && !(mode == PENALTY && isZero(constraint) && !pos && lambda2 > 0)) {
     if (verbose)
@@ -221,7 +221,7 @@ SpMatrix<T> *_lassoWeighted(Matrix<T> *X, Matrix<T> *D,Matrix<T> *W,
   int nD = D->m();
   int K = D->n();
   if (n != nD)
-    throw("lassoWeighted : incompatible matrix dimensions");
+    throw std::runtime_error("lassoWeighted : incompatible matrix dimensions");
   if(L < 0) L = K;
   if (L> n ) {
     if (verbose)
@@ -236,7 +236,7 @@ SpMatrix<T> *_lassoWeighted(Matrix<T> *X, Matrix<T> *D,Matrix<T> *W,
   int KK = W->m();
   int MM = W->n();
   if (K != KK || M != MM)
-    throw("lassoWeighted : inconsistent dimensions of matrix W");
+    throw std::runtime_error("lassoWeighted : inconsistent dimensions of matrix W");
 
   lassoWeight((Matrix<T> &)(*X),(Matrix<T> &)(*D),(Matrix<T> &)(*W),(SpMatrix<T> &)(*alpha),L,constraint,mode,pos,numThreads);
   return alpha;
@@ -249,7 +249,7 @@ SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_pat
     int nD = D->m();
     int K = D->n();
     if (n != nD)
-      throw("omp : incompatible matrix dimensions");
+      throw std::runtime_error("omp : incompatible matrix dimensions");
     int sizeL = L->n();
     int sizeE = eps->n();
     int sizeLambda = Lambda->n();
@@ -260,7 +260,7 @@ SpMatrix<T> *_omp(Matrix<T> *X,Matrix<T> *D,Matrix<T> **path,bool return_reg_pat
     bool vecEps = false;
     bool vecLambda = false;
     if (! given_L && ! given_eps && ! given_Lambda)
-      throw("omp : You should either provide L, eps or lambda");
+      throw std::runtime_error("omp : You should either provide L, eps or lambda");
     int scalar_L = MIN(n,K);
     if(! given_L)
       pL = &scalar_L;
@@ -297,9 +297,9 @@ SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path
     int nM = B->m();
     int mM = B->n();
     if (n != nD )
-      throw("ompMask : incompatible matrix dimensions");
+      throw std::runtime_error("ompMask : incompatible matrix dimensions");
     if (nM != n || mM != M)
-      throw("ompMask : Mash has non acceptable dimensions");
+      throw std::runtime_error("ompMask : Mash has non acceptable dimensions");
     int sizeL = L->n();
     int sizeE = eps->n();
     int sizeLambda = Lambda->n();
@@ -310,7 +310,7 @@ SpMatrix<T> *_ompMask(Matrix<T> *X,Matrix<T> *D,Matrix<bool> *B,Matrix<T> **path
     bool vecEps = false;
     bool vecLambda = false;
     if (! given_L && ! given_eps && ! given_Lambda)
-      throw("omp : You should either provide L, eps or lambda");
+      throw std::runtime_error("omp : You should either provide L, eps or lambda");
     int scalar_L = MIN(n,K);
     if(! given_L)
       pL = &scalar_L;
@@ -343,11 +343,11 @@ SpMatrix<T> *_cd(Matrix<T> *X,Matrix<T> *D,SpMatrix<T>*alpha,T lambda1, constrai
   int nD = D->m();
   int K = D->n();
   if (n != nD)
-    throw("cd : incompatible X D matrices dimensions");
+    throw std::runtime_error("cd : incompatible X D matrices dimensions");
   int Ka = alpha->m();
   int Ma = alpha->n();
   if (Ma != M || Ka != K)
-    throw("cd : incompatible X D A0 matrices dimensions");
+    throw std::runtime_error("cd : incompatible X D A0 matrices dimensions");
   SpMatrix<T> *alpha0 = new SpMatrix<T>();
   alpha0->copy((SpMatrix<T> &)(*alpha));
   ist((Matrix<T> &)(*X),(Matrix<T> &)(*D),(SpMatrix<T> &)(*alpha0),lambda1,mode,itermax,tol,numThreads);
@@ -362,16 +362,16 @@ SpMatrix<T> *_somp(Matrix<T> *X,Matrix<T> *D,Vector<int> *groups,int LL, T eps, 
   int M = X->n();
   int nD = D->m();
   T *prX = X->rawX();
-  if (nD != n) throw("_somp : wrong size for argument 2");
+  if (nD != n) throw std::runtime_error("_somp : wrong size for argument 2");
   int K = D->n();
   Matrix<T>* Y = new Matrix<T>[Ng];
   if (list_groups[0] != 0)
-    throw("somp : First group index should be zero");
+    throw std::runtime_error("somp : First group index should be zero");
   for (int i = 0; i<Ng-1; ++i) {
     if (list_groups[i] >= M)
-      throw("Size of groups is not consistent");
+      throw std::runtime_error("Size of groups is not consistent");
     if (list_groups[i] >= list_groups[i+1])
-      throw("Group indices should be a strictly non-decreasing sequence");
+      throw std::runtime_error("Group indices should be a strictly non-decreasing sequence");
     Y[i].setData(prX+list_groups[i]*n,n,list_groups[i+1]-list_groups[i]);
   }
   Y[Ng-1].setData(prX+list_groups[Ng-1]*n,n,M-list_groups[Ng-1]);
@@ -419,22 +419,22 @@ void _l1L2BCD(Matrix<T> *X,Matrix<T> *D,Matrix<T>*alpha0,Vector<int> *groups,T l
   T *prX = X->rawX();
   T *pr_alpha = alpha0->rawX();
   if(nD != n)
-    throw("l1L2BCD : wrong size for argument 2");
+    throw std::runtime_error("l1L2BCD : wrong size for argument 2");
   int Ka = alpha0->m();
   int Ma = alpha0->n();
   if (Ma != M || Ka != K)
-    throw("l1L2BCD : wrong size for argument 3");
+    throw std::runtime_error("l1L2BCD : wrong size for argument 3");
   int Ng = groups->n();
   int *list_groups = groups->rawX();
   Matrix<T>* Y = new Matrix<T>[Ng];
   Matrix<T>* alpha = new Matrix<T>[Ng];
   if (list_groups[0] != 0)
-    throw("l1L2BCD : First group index should be zero");
+    throw std::runtime_error("l1L2BCD : First group index should be zero");
   for (int i = 0; i<Ng-1; ++i) {
     if (list_groups[i] >= M)
-      throw("l1L2BCD : size of groups is not consistent");
+      throw std::runtime_error("l1L2BCD : size of groups is not consistent");
     if (list_groups[i] >= list_groups[i+1])
-      throw("l1L2BCD : group indices should be a strictly non-decreasing sequence");
+      throw std::runtime_error("l1L2BCD : group indices should be a strictly non-decreasing sequence");
     Y[i].setData(prX+list_groups[i]*n,n,list_groups[i+1]-list_groups[i]);
     alpha[i].setData(pr_alpha+list_groups[i]*K,K,list_groups[i+1]-list_groups[i]);
   }
@@ -518,7 +518,7 @@ using namespace FISTA;
   param.max_iter_backtracking = max_iter_backtracking;
   param.loss = loss_from_string(name_loss);
   if (param.loss==INCORRECT_LOSS)
-    throw("fistaFlat: Unknown loss");
+    throw std::runtime_error("fistaFlat: Unknown loss");
   param.compute_gram = compute_gram;
   param.lin_admm = lin_admm;
   param.admm = admm;
@@ -527,7 +527,7 @@ using namespace FISTA;
   param.regul = regul_from_string(name_regul);
 
   if (param.regul==INCORRECT_REG) {
-      throw("fistaFlat: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+      throw std::runtime_error("fistaFlat: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   }
   strncpy(param.name_regul,name_regul,param.length_names);
   strncpy(param.name_loss,name_loss,param.length_names);
@@ -540,14 +540,14 @@ using namespace FISTA;
   } else {
     param.ngroups = groups->n();
     if (param.ngroups != pAlpha)
-      throw("fistaFlat : Wrong size of param.groups");
+      throw std::runtime_error("fistaFlat : Wrong size of param.groups");
     param.groups = groups->rawX();
   }
   param.log=log;
   if (param.log) {
     int n = strlen(logName);
     if(n == 0)
-      throw("fistaFlat : missing field logName");
+      throw std::runtime_error("fistaFlat : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
   }
@@ -558,7 +558,7 @@ using namespace FISTA;
 
   if(is_inner_weights) {
     if(inner_weights == NULL)
-      throw("fistaFlat : missing inner_heights ");
+      throw std::runtime_error("fistaFlat : missing inner_heights ");
     param.inner_weights = inner_weights->rawX();
   }
 
@@ -567,22 +567,22 @@ using namespace FISTA;
   param.transpose = transpose;
 
   if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
-      throw("fistaFlat : Argument sizes are not consistent");
+      throw std::runtime_error("fistaFlat : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
     X->toVect(Xv);
     int maxval = static_cast<int>(Xv.maxval());
     int minval = static_cast<int>(Xv.minval());
     if (minval != 0)
-      throw("fistaFlat : smallest class should be 0");
+      throw std::runtime_error("fistaFlat : smallest class should be 0");
     if (maxval*X->n() > nAlpha || mD != m) {
       cerr << "Number of classes: " << maxval << endl;
       //cerr << "Alpha: " << pAlpha << " x " << nAlpha << endl;
          //cerr << "X: " << X.m() << " x " << X.n() << endl;
-      throw("fistaFlat : Argument sizes are not consistent");
+      throw std::runtime_error("fistaFlat : Argument sizes are not consistent");
     }
   } else if (param.loss == CUR && (pAlpha != D->n() || nAlpha != D->m())) {
-      throw("fistaFlat : Argument sizes are not consistent");
+      throw std::runtime_error("fistaFlat : Argument sizes are not consistent");
    }
    if (param.num_threads == -1) {
       param.num_threads=1;
@@ -591,9 +591,9 @@ using namespace FISTA;
 #endif
    }
    if (param.regul==GRAPH || param.regul==GRAPHMULT)
-    throw("Error: fistaGraph should be used instead");
+    throw std::runtime_error("Error: fistaGraph should be used instead");
   if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
-      throw("Error: fistaFlat should be used instead");
+      throw std::runtime_error("Error: fistaFlat should be used instead");
 
   Matrix<T> *optim_info = new Matrix<T>();
   FISTA::solver((Matrix<T> &)(*X),(AbstractMatrixB<T> &)(*D),(Matrix<T> &)(*alpha0),(Matrix<T> &)(*alpha),param,(Matrix<T> &)(*optim_info));
@@ -669,7 +669,7 @@ using namespace FISTA;
   param.max_iter_backtracking = max_iter_backtracking;
   param.loss = loss_from_string(name_loss);
   if (param.loss==INCORRECT_LOSS)
-    throw("fistaTree: Unknown loss");
+    throw std::runtime_error("fistaTree: Unknown loss");
   param.compute_gram = compute_gram;
   param.lin_admm = lin_admm;
   param.admm = admm;
@@ -678,7 +678,7 @@ using namespace FISTA;
   param.regul = regul_from_string(name_regul);
 
   if (param.regul==INCORRECT_REG) {
-      throw("fistaTree: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+      throw std::runtime_error("fistaTree: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   }
   strncpy(param.name_regul,name_regul,param.length_names);
   strncpy(param.name_loss,name_loss,param.length_names);
@@ -690,7 +690,7 @@ using namespace FISTA;
   if(param.log) {
     int n = strlen(logName);
     if(n == 0)
-      throw("fistaTree : missing field logName");
+      throw std::runtime_error("fistaTree : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
   }
@@ -701,7 +701,7 @@ using namespace FISTA;
 
   if(is_inner_weights) {
     if(inner_weights == NULL)
-      throw("fistaTree : missing inner_heights ");
+      throw std::runtime_error("fistaTree : missing inner_heights ");
     param.inner_weights = inner_weights->rawX();
   }
 
@@ -711,22 +711,22 @@ using namespace FISTA;
   param.transpose = transpose;
 
   if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
-      throw("fistaTree : Argument sizes are not consistent");
+      throw std::runtime_error("fistaTree : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
     X->toVect(Xv);
     int maxval = static_cast<int>(Xv.maxval());
     int minval = static_cast<int>(Xv.minval());
     if (minval != 0)
-      throw("fistaTree : smallest class should be 0");
+      throw std::runtime_error("fistaTree : smallest class should be 0");
     if (maxval*X->n() > nAlpha || mD != m) {
       cerr << "Number of classes: " << maxval << endl;
       //cerr << "Alpha: " << pAlpha << " x " << nAlpha << endl;
          //cerr << "X: " << X.m() << " x " << X.n() << endl;
-      throw("fistaTree : Argument sizes are not consistent");
+      throw std::runtime_error("fistaTree : Argument sizes are not consistent");
     }
   } else if (param.loss == CUR && (pAlpha != D->n() || nAlpha != D->m())) {
-      throw("fistaTree : Argument sizes are not consistent");
+      throw std::runtime_error("fistaTree : Argument sizes are not consistent");
    }
    if (param.num_threads == -1) {
       param.num_threads=1;
@@ -736,25 +736,25 @@ using namespace FISTA;
    }
 
    if (param.regul==GRAPH || param.regul==GRAPHMULT)
-    throw("Error: fistaGraph should be used instead");
+    throw std::runtime_error("Error: fistaGraph should be used instead");
   if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20)
-      throw("fistaTree error: with multi-task-tree, lambda2 should be > 0");
+      throw std::runtime_error("fistaTree error: with multi-task-tree, lambda2 should be > 0");
   TreeStruct<T> tree;
   tree.Nv=0;
   int num_groups = own_variables->n();
   if (num_groups != N_own_variables->n()) {
-    throw("fistaTree error: in tree,  own_variables and N_own_variables must have same dimension");
+    throw std::runtime_error("fistaTree error: in tree,  own_variables and N_own_variables must have same dimension");
   }
   int *pr_N_own_variables = N_own_variables->rawX();
   int num_var = 0;
   for (int i = 0; i<num_groups; ++i)
     num_var+=pr_N_own_variables[i];
   if (pAlpha < num_var)
-    throw("fistaTree error: Input alpha is too small");
+    throw std::runtime_error("fistaTree error: Input alpha is too small");
   if(num_groups != eta_g->n())
-    throw("fistaTree error: in tree, nb of groups incompatible with eta_g size");
+    throw std::runtime_error("fistaTree error: in tree, nb of groups incompatible with eta_g size");
   if((num_groups != groups->n()) || (num_groups != groups->m()))
-    throw("fistaTree error: in tree, nb of groups incompatible with groups size");
+    throw std::runtime_error("fistaTree error: in tree, nb of groups incompatible with groups size");
   for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
    tree.Ng=num_groups;
    tree.weights= eta_g->rawX();
@@ -838,7 +838,7 @@ Matrix<T> *_fistaGraph(
   param.loss = loss_from_string(name_loss);
   param.linesearch_mode=linesearch_mode;
   if (param.loss==INCORRECT_LOSS)
-    throw("fistaGraph: Unknown loss");
+    throw std::runtime_error("fistaGraph: Unknown loss");
   param.compute_gram = compute_gram;
   param.lin_admm = lin_admm;
   param.admm = admm;
@@ -847,7 +847,7 @@ Matrix<T> *_fistaGraph(
   param.regul = regul_from_string(name_regul);
 
   if (param.regul==INCORRECT_REG) {
-      throw("fistaGraph: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+      throw std::runtime_error("fistaGraph: Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   }
   strncpy(param.name_regul,name_regul,param.length_names);
   strncpy(param.name_loss,name_loss,param.length_names);
@@ -859,7 +859,7 @@ Matrix<T> *_fistaGraph(
   if (param.log) {
     int n = strlen(logName);
     if(n == 0)
-      throw("fistaGraph : missing field logName");
+      throw std::runtime_error("fistaGraph : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
   }
@@ -869,7 +869,7 @@ Matrix<T> *_fistaGraph(
 
   if (is_inner_weights) {
     if (inner_weights == NULL)
-      throw("fistaGraph : missing inner_heights ");
+      throw std::runtime_error("fistaGraph : missing inner_heights ");
     param.inner_weights = inner_weights->rawX();
   }
 
@@ -879,22 +879,22 @@ Matrix<T> *_fistaGraph(
   param.transpose = transpose;
 
   if ((param.loss != CUR && param.loss != MULTILOG) && (pAlpha != p || nAlpha != n || mD != m)) {
-      throw("fistaGraph : Argument sizes are not consistent");
+      throw std::runtime_error("fistaGraph : Argument sizes are not consistent");
    } else if (param.loss == MULTILOG) {
     Vector<T> Xv;
     X->toVect(Xv);
     int maxval = static_cast<int>(Xv.maxval());
     int minval = static_cast<int>(Xv.minval());
     if (minval != 0)
-      throw("fistaGraph : smallest class should be 0");
+      throw std::runtime_error("fistaGraph : smallest class should be 0");
     if (maxval*X->n() > nAlpha || mD != m) {
       cerr << "Number of classes: " << maxval << endl;
       //cerr << "Alpha: " << pAlpha << " x " << nAlpha << endl;
          //cerr << "X: " << X.m() << " x " << X.n() << endl;
-      throw("fistaGraph : Argument sizes are not consistent");
+      throw std::runtime_error("fistaGraph : Argument sizes are not consistent");
     }
   } else if (param.loss == CUR && (pAlpha != D->n() || nAlpha != D->m())) {
-      throw("fistaGraph : Argument sizes are not consistent");
+      throw std::runtime_error("fistaGraph : Argument sizes are not consistent");
    }
    if (param.num_threads == -1) {
       param.num_threads=1;
@@ -904,12 +904,12 @@ Matrix<T> *_fistaGraph(
    }
 
    if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
-      throw("fistaGraph error: fistaTree should be used instead");
+      throw std::runtime_error("fistaGraph error: fistaTree should be used instead");
 
   if (param.regul==GRAPHMULT && abs<T>(param.lambda2 - 0) < 1e-20)
-      throw("fistaGraph error: with multi-task-graph, lambda2 should be > 0");
+      throw std::runtime_error("fistaGraph error: with multi-task-graph, lambda2 should be > 0");
   if(groups->m() != groups->n())
-    throw("fistaGraph error: size of field groups is not consistent");
+    throw std::runtime_error("fistaGraph error: size of field groups is not consistent");
   GraphStruct<T> graph;
   graph.Nv = groups_var->m();
   graph.Ng = groups_var->n();
@@ -920,9 +920,9 @@ Matrix<T> *_fistaGraph(
   graph.gv_jc = groups_var->pB();
   cout << "GRAPH Nv Ng " << graph.Nv << " " << graph.Ng << endl;
   if (graph.Nv != p || graph.Ng != groups->n())
-    throw("fistaGraph error: size of field groups_var is not consistent");
+    throw std::runtime_error("fistaGraph error: size of field groups_var is not consistent");
   if (eta_g->n() != groups_var->n())
-    throw("fistaGraph error: size of field eta_g is not consistent");
+    throw std::runtime_error("fistaGraph error: size of field eta_g is not consistent");
 
   Matrix<T> *optim_info = new Matrix<T>();
   FISTA::solver<T>((Matrix<T> &)(*X),(AbstractMatrixB<T> &)(*D),(Matrix<T> &)(*alpha0),(Matrix<T> &)(*alpha),param,(Matrix<T> &)(*optim_info),&graph);
@@ -952,10 +952,10 @@ using namespace FISTA;
   FISTA::ParamFISTA<T> param;
   param.regul = regul_from_string(name_regul);
   if (param.regul==INCORRECT_REG)
-    throw("proximalFlat : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+    throw std::runtime_error("proximalFlat : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
   if (param.regul==GRAPH || param.regul==GRAPHMULT)
-    throw("proximalFlat : proximalGraph should be used instead");
+    throw std::runtime_error("proximalFlat : proximalGraph should be used instead");
   param.num_threads = (num_threads < 0) ? -1 : num_threads;
   param.lambda = lambda1;
   param.lambda2 = lambda2;
@@ -979,7 +979,7 @@ using namespace FISTA;
     int pAlpha = alpha0->m();
     param.ngroups = groups->n();
     if (param.ngroups != pAlpha)
-      throw("fistaFlat : Wrong size of param.groups");
+      throw std::runtime_error("fistaFlat : Wrong size of param.groups");
     param.groups = groups->rawX();
   }
 
@@ -1031,30 +1031,30 @@ using namespace FISTA;
   int pAlpha = alpha0->m();
 
   if (param.regul==INCORRECT_REG)
-    throw("proximalTree : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+    throw std::runtime_error("proximalTree : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
   if (param.regul==GRAPH || param.regul==GRAPHMULT)
-    throw("proximalTree : proximalGraph should be used instead");
+    throw std::runtime_error("proximalTree : proximalGraph should be used instead");
   if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) {
-    throw("proximalTree error: with multi-task-tree, lambda2 should be > 0");
+    throw std::runtime_error("proximalTree error: with multi-task-tree, lambda2 should be > 0");
   }
 
   TreeStruct<T> tree;
   tree.Nv=0;
   int num_groups = own_variables->n();
   if (num_groups != N_own_variables->n()) {
-    throw("proximalTree error: in tree,  own_variables and N_own_variables must have same dimension");
+    throw std::runtime_error("proximalTree error: in tree,  own_variables and N_own_variables must have same dimension");
   }
   int *pr_N_own_variables = N_own_variables->rawX();
   int num_var = 0;
   for (int i = 0; i<num_groups; ++i)
     num_var+=pr_N_own_variables[i];
   if (pAlpha < num_var)
-    throw("proximalTree error: Input alpha is too small");
+    throw std::runtime_error("proximalTree error: Input alpha is too small");
   if(num_groups != eta_g->n())
-    throw("proximalTree error: in tree, nb of groups incompatible with eta_g size");
+    throw std::runtime_error("proximalTree error: in tree, nb of groups incompatible with eta_g size");
   if((num_groups != groups->n()) || (num_groups != groups->m()))
-    throw("proximalTree error: in tree, nb of groups incompatible with groups size");
+    throw std::runtime_error("proximalTree error: in tree, nb of groups incompatible with groups size");
   for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
    tree.Ng=num_groups;
    tree.weights= eta_g->rawX();
@@ -1089,12 +1089,12 @@ using namespace FISTA;
   FISTA::ParamFISTA<T> param;
   param.regul = regul_from_string(name_regul);
   if (param.regul==INCORRECT_REG)
-    throw("proximalGraph : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
+    throw std::runtime_error("proximalGraph : Unknown regularization.\n  For valid names see source code of regul_from_string in spams/src/spams/prox/fista.h\n");
   strncpy(param.name_regul,name_regul,param.length_names);
   if (param.regul==TREE_L0 || param.regul==TREEMULT || param.regul==TREE_L2 || param.regul==TREE_LINF)
-    throw("proximalGraph : proximalTree should be used instead");
+    throw std::runtime_error("proximalGraph : proximalTree should be used instead");
   if (param.regul==TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20) {
-      throw("proximalGraph error: with multi-task-graph, lambda2 should be > 0");
+      throw std::runtime_error("proximalGraph error: with multi-task-graph, lambda2 should be > 0");
   }
   param.num_threads = (num_threads < 0) ? -1 : num_threads;
   param.lambda = lambda1;
@@ -1116,7 +1116,7 @@ using namespace FISTA;
    }
   int pAlpha = alpha0->m();
   if(groups->m() != groups->n())
-    throw("proximalGraph error: size of field groups is not consistent");
+    throw std::runtime_error("proximalGraph error: size of field groups is not consistent");
   GraphStruct<T> graph;
   graph.Nv = groups_var->m();
   graph.Ng = groups_var->n();
@@ -1126,9 +1126,9 @@ using namespace FISTA;
   graph.gv_ir = groups_var->r();
   graph.gv_jc = groups_var->pB();
   if (graph.Nv != pAlpha || graph.Ng != groups->n())
-    throw("proximalGraph error: size of field groups_var is not consistent");
+    throw std::runtime_error("proximalGraph error: size of field groups_var is not consistent");
   if (eta_g->n() != groups_var->n())
-    throw("proximalGraph error: size of field eta_g is not consistent");
+    throw std::runtime_error("proximalGraph error: size of field eta_g is not consistent");
 
   Vector<T> *val_loss = new Vector<T>();
   FISTA::PROX<T>((Matrix<T> &)(*alpha0),(Matrix<T> &)(*alpha),param,(Vector<T> &)(*val_loss),&graph);
@@ -1185,13 +1185,13 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   Trainer<T>* trainer;
   if(D1->n() == 0) { // D1 is not given
     if (K < 0)
-      throw("trainDL : bad parameter K\n");
+      throw std::runtime_error("trainDL : bad parameter K\n");
     trainer = new Trainer<T>(K,batch_size,num_threads);
   } else {
     int nD = D1->m();
     K = D1->n();
     if (n != nD)
-      throw("trainDL : sizes of D are not consistent\n");
+      throw std::runtime_error("trainDL : sizes of D are not consistent\n");
     if ((m_A->n() == 0) || in_memory) {
       trainer = new Trainer<T>((Matrix<T> &)(*D1),batch_size,num_threads);
     } else {  // model given
@@ -1210,8 +1210,8 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
     if (param.regul==FISTA::INCORRECT_REG) {
       char message[1024];
       regul_error(message,1024,"structTrainDL: Unknown regularization.\nValid names are: ");
-      //      throw("structTrainDL: Unknown regularization.\n  For valid names see source code of regul_from_string in dictLearn/dicts.h\n");
-      throw(message);
+      //      throw std::runtime_error("structTrainDL: Unknown regularization.\n  For valid names see source code of regul_from_string in dictLearn/dicts.h\n");
+      throw std::runtime_error(message);
     }
   } else
     param.regul = FISTA::NONE;
@@ -1233,12 +1233,12 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   if(param.log) {
     int n = strlen(logName);
     if(n == 0)
-      throw("trainDL : missing field logName");
+      throw std::runtime_error("trainDL : missing field logName");
     param.logName = new char[n+1];
     strcpy(param.logName,logName);
   }
   if (param.regul==FISTA::TREEMULT && abs<T>(param.lambda2 - 0) < 1e-20)
-    throw("structTrainDL error: with multi-task-tree, lambda2 should be > 0");
+    throw std::runtime_error("structTrainDL error: with multi-task-tree, lambda2 should be > 0");
 
   /* graph */
   GraphStruct<T> *pgraph =NULL;
@@ -1247,24 +1247,24 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   if (param.regul==FISTA::GRAPH || param.regul==FISTA::GRAPH_RIDGE ||
       param.regul==FISTA::GRAPH_L2) {
     if(eta_g->n() <=  0)
-      throw("structTrainDL error: graph is required\n");
+      throw std::runtime_error("structTrainDL error: graph is required\n");
     if(groups->m() != groups->n())
-      throw("structTrainDL error: size of graph field groups is not consistent");
+      throw std::runtime_error("structTrainDL error: size of graph field groups is not consistent");
 
     pgraph = &graph;
     graph.Nv = groups_var->m();
     graph.Ng = groups_var->n();
     if(graph.Nv != K)
-      throw("structTrainDL error: number of variables in graph must be equal to K");
+      throw std::runtime_error("structTrainDL error: number of variables in graph must be equal to K");
     graph.weights = eta_g->rawX();
     graph.gg_ir = groups->r();
     graph.gg_jc = groups->pB();
     graph.gv_ir = groups_var->r();
     graph.gv_jc = groups_var->pB();
     if (graph.Ng != groups->n())
-      throw("structTrainDL error: size of graph field groups_var is not consistent");
+      throw std::runtime_error("structTrainDL error: size of graph field groups_var is not consistent");
     if (eta_g->n() != groups_var->n())
-      throw("structTrainDL error: size of field eta_g is not consistent");
+      throw std::runtime_error("structTrainDL error: size of field eta_g is not consistent");
 
   }
   /* tree */
@@ -1274,9 +1274,9 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
   int num_groups = own_variables->n();
   if (param.regul==FISTA::TREE_L0 || param.regul==FISTA::TREE_L2 || param.regul==FISTA::TREE_LINF) {
     if(num_groups<=  0)
-      throw("structTrainDL error: tree is required\n");
+      throw std::runtime_error("structTrainDL error: tree is required\n");
     if (num_groups != N_own_variables->n()) {
-      throw("structTrainDL error: in tree,  own_variables and N_own_variables must have same dimension");
+      throw std::runtime_error("structTrainDL error: in tree,  own_variables and N_own_variables must have same dimension");
     }
     ptree = &tree;
     int *pr_N_own_variables = N_own_variables->rawX();
@@ -1284,11 +1284,11 @@ Matrix<T> *_alltrainDL(Data<T> *X,bool in_memory, Matrix<T> **omA,Matrix<T> **om
     for (int i = 0; i<num_groups; ++i)
       num_var+=pr_N_own_variables[i];
     if (K != num_var)
-      throw("structTrainDL error: size of tree is inconsistent with K");
+      throw std::runtime_error("structTrainDL error: size of tree is inconsistent with K");
     if(num_groups != eta_g->n())
-      throw("structTrainDL error: in tree, nb of groups incompatible with eta_g size");
+      throw std::runtime_error("structTrainDL error: in tree, nb of groups incompatible with eta_g size");
     if((num_groups != groups->n()) || (num_groups != groups->m()))
-      throw("structTrainDL error: in tree, nb of groups incompatible with groups size");
+      throw std::runtime_error("structTrainDL error: in tree, nb of groups incompatible with groups size");
     for (int i = 0; i<num_groups; ++i) tree.Nv+=pr_N_own_variables[i];
     tree.Ng=num_groups;
     tree.weights= eta_g->rawX();
@@ -1375,7 +1375,7 @@ void _im2col_sliding(Matrix<T>  *A,Matrix<T>  *B,int m, int n,bool RGB) {
   int M = m * n;
   int N = (mm - m + 1) * (nn -n + 1);
   if (M != B->m() || N != B->n())
-    throw("im2col_sliding : incompatible dimensions for output matrix\n");
+    throw std::runtime_error("im2col_sliding : incompatible dimensions for output matrix\n");
   T *po = B->rawX();
   T *pi = A->rawX();
   for(int j = 0; j <= nn - n;j++) {

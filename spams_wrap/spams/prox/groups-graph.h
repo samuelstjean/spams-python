@@ -212,7 +212,7 @@ std::vector<StructNodeElem<T> *> *_groupStructOfString(const char *data){
     if(parse_line(buffer,lst) < 0) {
       char tmp[1024];
    //   snprintf(tmp,1024,"Bad inode line <%s>\n",buffer);
-      throw(tmp);
+      throw std::runtime_error(tmp);
     }
     int inode = atoi(lst[0].c_str());
     T weight = (lst[1].size() > 0) ? static_cast<T>(atof(lst[1].c_str())) : 1.;
@@ -228,7 +228,7 @@ std::vector<StructNodeElem<T> *> *_readGroupStruct(const char *file){
   std::ifstream infile;
   infile.open (file, ifstream::in);
   if(! infile.good())
-    throw("readGroupStruct: cannot open file");
+    throw std::runtime_error("readGroupStruct: cannot open file");
   infile.seekg (0, ios::end);
   int length = infile.tellg();
   infile.seekg (0, ios::beg);
@@ -258,7 +258,7 @@ std::vector<StructNodeElem<T> *> *_simpleGroupTree(int *degr, int n){
   std::vector<StructNodeElem<T> *> *gstruct = new std::vector<StructNodeElem<T> *>;
   int nb_levels = degrees.size();
   if(nb_levels <= 1)
-    throw("simpleGroupTree: number of levels must be > 1");
+    throw std::runtime_error("simpleGroupTree: number of levels must be > 1");
   // index of 1st node at each level
   int *level_starts = newzeros<int>(nb_levels);
   int nb(1), k(1);
@@ -484,7 +484,7 @@ Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatri
   int nb_vars;
   Vector<T> *peta_g;
   if (! checkGroupTree<T>(gstruct,false,&nb_vars))
-    throw("graphOfGroupStruct: bad input data");
+    throw std::runtime_error("graphOfGroupStruct: bad input data");
   int nb_groups = gstruct->size();
   bool *dgroups = newzeros<bool>(nb_groups * nb_groups);
   bool *dgroups_var = newzeros<bool>(nb_vars * nb_groups);
@@ -529,7 +529,7 @@ Vector<T> *_graphOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,SpMatri
       }
     }
   }
-  if(! is_ok) throw("graphOfGroupStruct: bad input data");
+  if(! is_ok) throw std::runtime_error("graphOfGroupStruct: bad input data");
   peta_g = new Vector<T>(nb_groups);
   memcpy(peta_g->rawX(),deta_g,nb_groups * sizeof(T));
   delete []deta_g;
@@ -569,7 +569,7 @@ int _treeOfGroupStruct(std::vector<StructNodeElem<T> *> *gstruct,int **pperm,int
   int nb_vars;
   *pnb_vars = 0;
   if (! checkGroupTree<T>(gstruct,true,&nb_vars))
-    throw("treeOfGroupStruct: bad input data");
+    throw std::runtime_error("treeOfGroupStruct: bad input data");
   int nb_groups = gstruct->size();
   bool *dgroups = newzeros<bool>(nb_groups * nb_groups);
   T *deta_g = new T[nb_groups];
