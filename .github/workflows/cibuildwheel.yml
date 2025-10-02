@@ -76,6 +76,8 @@ jobs:
         shell: bash
         run: |
             ld --version
+            python --version
+            python3.10 --version
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
             python -m pip install numpy==1.21.3 scipy==1.8 pillow==9.0 pytest
             pytest .
