@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
-        pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313']
+        pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.10'
+          python-version: '3.13'
 
       - name: Mac os deployment target
         if: runner.os == 'macOS'
@@ -52,13 +52,11 @@ jobs:
           fi
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        uses: pypa/cibuildwheel@v3.2.0
 
         env:
-          CIBW_BUILD_FRONTEND: "build"
           CIBW_BUILD: ${{matrix.pyver}}-*
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
-          CIBW_SKIP: "pp* *-musllinux_*"
+          CIBW_SKIP: "*-musllinux_*"
           CIBW_ARCHS: auto64
 
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
@@ -95,7 +93,7 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.10'
+          python-version: '3.13'
 
       - name: Build sdist
         run: |
