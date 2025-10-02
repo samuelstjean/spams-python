@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Mac os deployment target
         if: runner.os == 'macOS'
@@ -75,6 +75,7 @@ jobs:
         if: ${{ matrix.pyver == 'cp310' }}
         shell: bash
         run: |
+            ld --version
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
             python -m pip install numpy==1.21.3 scipy==1.8 pillow==9.0 pytest
             pytest .
@@ -93,7 +94,7 @@ jobs:
       - uses: actions/setup-python@v5
         name: Install Python
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Build sdist
         run: |
