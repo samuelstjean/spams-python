@@ -7,7 +7,7 @@ build-backend = "mesonpy"
 [project]
 name='spams-bin'
 requires-python='>=3.9.0'
-version='2.6.12'
+version='2.6.13'
 dependencies=['numpy>=1.21.3',
               'scipy>=1.5']
 license = {text = "GPLv2"}
