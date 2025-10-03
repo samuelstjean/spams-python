@@ -75,9 +75,6 @@ jobs:
         if: ${{ matrix.pyver == 'cp310' }}
         shell: bash
         run: |
-            ld --version
-            python --version
-            python3.10 --version
             python -m pip install ./wheelhouse/*${{matrix.pyver}}*.whl
             python -m pip install numpy==1.21.3 scipy==1.8 pillow==9.0 pytest
             pytest .
@@ -93,15 +90,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.13'
-
       - name: Build sdist
         run: |
-          python -m pip install build
           sudo apt install libopenblas-dev
+          python -m pip install build
           python -m build --sdist
 
       - uses: actions/upload-artifact@v4
