@@ -59,14 +59,14 @@ lapack = dependency('lapack', required: false)
 
 # centos has no pkg-config file apparently, so look for openblas if it was not found previously
 if not blas.found()
-  blas = cpp_compiler.find_library('openblas', required: false)
+  blas = cpp_compiler.find_library('openblaso', required: false)
   if not blas.found()
     blas = dependency('openblas', required: true)
   endif
 endif
 
 if not lapack.found()
-  lapack = cpp_compiler.find_library('openblas', required: false)
+  lapack = cpp_compiler.find_library('openblaso', required: false)
   if not lapack.found()
     lapack = dependency('openblas', required: true)
   endif
