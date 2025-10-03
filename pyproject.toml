@@ -2,7 +2,7 @@
 requires = ["numpy>=2.0",
             "meson-python>=0.15",
             "wheel"]
-build-backend = "mesonpy"
+build-backend = "mesonpy" 
 
 [project]
 name='spams-bin'
