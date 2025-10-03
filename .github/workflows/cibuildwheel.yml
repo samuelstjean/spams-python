@@ -60,7 +60,7 @@ jobs:
                                     pip install delvewheel &&
                                     conda install libblas=*=*openblas blas=*=*openblas pkgconfig
           CIBW_ENVIRONMENT_WINDOWS: PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\lib\pkgconfig;$PKG_CONFIG_PATH"
-          CIBW_BEFORE_BUILD_LINUX: dnf install flexiblas-openblas-openmp flexiblas-devel -y
+          CIBW_BEFORE_BUILD_LINUX: dnf install openblas-openmp openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install libomp
           CIBW_BEFORE_TEST: pip install pytest
           CIBW_TEST_EXTRAS: test
