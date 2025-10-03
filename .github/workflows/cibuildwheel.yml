@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
-        pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313']
+        pyver: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
     steps:
       - uses: actions/checkout@v4
 
@@ -30,11 +30,6 @@ jobs:
           auto-activate-base: false
           channels: conda-forge
           conda-remove-defaults: true
-
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.10'
 
       - name: Mac os deployment target
         if: runner.os == 'macOS'
@@ -52,13 +47,11 @@ jobs:
           fi
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        uses: pypa/cibuildwheel@v3.2.0
 
         env:
-          CIBW_BUILD_FRONTEND: "build"
           CIBW_BUILD: ${{matrix.pyver}}-*
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
-          CIBW_SKIP: "pp* *-musllinux_*"
+          CIBW_SKIP: "*-musllinux_*"
           CIBW_ARCHS: auto64
 
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
@@ -66,12 +59,17 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: >
                                     pip install delvewheel &&
                                     conda install libblas=*=*openblas blas=*=*openblas pkgconfig
-          CIBW_ENVIRONMENT_WINDOWS: PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\\lib\\pkgconfig;$PKG_CONFIG_PATH"
-          CIBW_BEFORE_BUILD_LINUX: dnf install openblas-devel -y
+          CIBW_ENVIRONMENT_WINDOWS: PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\lib\pkgconfig;$PKG_CONFIG_PATH"
+          CIBW_BEFORE_BUILD_LINUX: dnf install openblas-openmp openblas-devel -y
           CIBW_BEFORE_BUILD_MACOS: brew install libomp
           CIBW_BEFORE_TEST: pip install pytest
           CIBW_TEST_EXTRAS: test
           CIBW_TEST_COMMAND: pytest {package} --verbose
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: '3.10'
 
       - name: Test against oldest supported numpy version
         if: ${{ matrix.pyver == 'cp310' }}
@@ -92,15 +90,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.10'
-
       - name: Build sdist
         run: |
-          python -m pip install build
           sudo apt install libopenblas-dev
+          python -m pip install build
           python -m build --sdist
 
       - uses: actions/upload-artifact@v4
