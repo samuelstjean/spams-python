@@ -18,7 +18,6 @@ description='Python interface for SPAMS - binary wheels with openblas (mac, linu
 test = ['Pillow>=6.0']
 
 [tool.cibuildwheel]
-build = "${{matrix.pyver}}-*"
 skip = "*-musllinux_*"
 archs = "auto64"
 
