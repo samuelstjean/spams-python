@@ -221,8 +221,8 @@ extern "C" {
         }
 
         /* get array dimensions */
-        int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-        int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+        int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+        int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
 	int *pB = (int *)array_data(indptr);
@@ -305,8 +305,8 @@ extern "C" {
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -358,8 +358,8 @@ extern "C" {
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -470,16 +470,16 @@ extern "C" {
     if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
       SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg $argnum must be tuples of size 4");SWIG_fail;
     }
-    long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+    long inode = PyLong_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
     DATA_TYPE w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
     std::vector<int> *vars = new std::vector<int>;
     std::vector<int> *children = new std::vector<int>;
     PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
     PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
     for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
-      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      vars->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pyvars,j))));
     for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
-      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      children->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pychildren,j))));
     StructNodeElem<DATA_TYPE> *node = new StructNodeElem<DATA_TYPE>(inode,w,vars,children);
     $1->push_back(node);
   }
@@ -494,19 +494,19 @@ extern "C" {
     PyObject* tuple = PyTuple_New(4);
     StructNodeElem<DATA_TYPE> *node = *it;
     int inode = node->node_num;
-    PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+    PyTuple_SetItem(tuple,0, PyLong_FromLong((long)inode));
     PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
     int k = node->vars->size();
     PyObject *vars = PyList_New(0);
     std::vector<int> *pvars = node->vars;
     for(int i = 0;i < k;i++)
-      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(vars,PyLong_FromLong((long)(*pvars)[i]));
     PyTuple_SetItem(tuple,2, (PyObject* )vars);
     k = node->children->size();
     pvars = node->children;
     PyObject *children = PyList_New(0);
     for(int i = 0;i < k;i++)
-      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(children,PyLong_FromLong((long)(*pvars)[i]));
 
     PyTuple_SetItem(tuple,3,(PyObject* )children );
     PyList_Append(node_list,tuple);

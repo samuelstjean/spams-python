@@ -1,6 +1,6 @@
 project('_spams_wrap',
         'cpp',
-        version: '2.6.13',
+        version: '2.6.14',
         meson_version: '>= 1.2.3',
         default_options : [
                             'warning_level=1',
