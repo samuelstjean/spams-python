@@ -5696,8 +5696,8 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -5823,8 +5823,8 @@ SWIGINTERN PyObject *_wrap_AAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -5989,8 +5989,8 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -6141,8 +6141,8 @@ SWIGINTERN PyObject *_wrap_XAt__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -7334,8 +7334,8 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyOb
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -7551,8 +7551,8 @@ SWIGINTERN PyObject *_wrap_lassoD__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyOb
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -7847,8 +7847,8 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -8089,8 +8089,8 @@ SWIGINTERN PyObject *_wrap_lassoQq__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -8361,8 +8361,8 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -8549,8 +8549,8 @@ SWIGINTERN PyObject *_wrap_lassoMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -8789,8 +8789,8 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_0(PyObject *self, Py_ssize_t nobj
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -8969,8 +8969,8 @@ SWIGINTERN PyObject *_wrap_lassoWeighted__SWIG_1(PyObject *self, Py_ssize_t nobj
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -9208,8 +9208,8 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -9416,8 +9416,8 @@ SWIGINTERN PyObject *_wrap_omp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObjec
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -9703,8 +9703,8 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -9936,8 +9936,8 @@ SWIGINTERN PyObject *_wrap_ompMask__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -10175,8 +10175,8 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObje
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -10319,8 +10319,8 @@ SWIGINTERN PyObject *_wrap_somp__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObje
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -10526,8 +10526,8 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -10605,8 +10605,8 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -10759,8 +10759,8 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -10838,8 +10838,8 @@ SWIGINTERN PyObject *_wrap_cd__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -11466,8 +11466,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -11632,8 +11632,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -11710,8 +11710,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -12195,8 +12195,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -12361,8 +12361,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -12439,8 +12439,8 @@ SWIGINTERN PyObject *_wrap_alltrainDL__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -12982,8 +12982,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13025,8 +13025,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_0(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13201,8 +13201,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13244,8 +13244,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysis__SWIG_1(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13469,8 +13469,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13512,8 +13512,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_0(PyObject *self, Py_ssi
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13697,8 +13697,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13740,8 +13740,8 @@ SWIGINTERN PyObject *_wrap_archetypalAnalysisInit__SWIG_1(PyObject *self, Py_ssi
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -13916,8 +13916,8 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_0(PyObject *self, Py_ssize_t nobj
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -14039,8 +14039,8 @@ SWIGINTERN PyObject *_wrap_decompSimplex__SWIG_1(PyObject *self, Py_ssize_t nobj
     }
     PyObject* tuple = PyTuple_New(4);
     PyObject* shape = PyTuple_New(2);
-    PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-    PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+    PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+    PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
     PyTuple_SetItem(tuple,0, (PyObject* )indptr);
     PyTuple_SetItem(tuple,1,(PyObject* )indices);
     PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -14313,8 +14313,8 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -14833,8 +14833,8 @@ SWIGINTERN PyObject *_wrap_fistaFlat__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -15505,8 +15505,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -15639,8 +15639,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -16137,8 +16137,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -16271,8 +16271,8 @@ SWIGINTERN PyObject *_wrap_fistaTree__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -16920,8 +16920,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -17054,8 +17054,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -17132,8 +17132,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -17612,8 +17612,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
       }
 
       /* get array dimensions */
-      int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-      int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+      int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+      int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
       int *pB = (int *)array_data(indptr);
@@ -17746,8 +17746,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -17824,8 +17824,8 @@ SWIGINTERN PyObject *_wrap_fistaGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -18874,8 +18874,8 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_0(PyObject *self, Py_ssize_t nobjs
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -19185,8 +19185,8 @@ SWIGINTERN PyObject *_wrap_proximalTree__SWIG_1(PyObject *self, Py_ssize_t nobjs
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -19568,8 +19568,8 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -19646,8 +19646,8 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_0(PyObject *self, Py_ssize_t nobj
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -19939,8 +19939,8 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -20017,8 +20017,8 @@ SWIGINTERN PyObject *_wrap_proximalGraph__SWIG_1(PyObject *self, Py_ssize_t nobj
     }
 
     /* get array dimensions */
-    int32_t m =PyInt_AsLong(PyTuple_GetItem(shape, 0));
-    int32_t n =PyInt_AsLong(PyTuple_GetItem(shape, 1));
+    int32_t m = PyLong_AsLong(PyTuple_GetItem(shape, 0));
+    int32_t n = PyLong_AsLong(PyTuple_GetItem(shape, 1));
 
 
     int *pB = (int *)array_data(indptr);
@@ -20260,19 +20260,19 @@ SWIGINTERN PyObject *_wrap_simpleGroupTree(PyObject *self, PyObject *args) {
       PyObject* tuple = PyTuple_New(4);
       StructNodeElem<double> *node = *it;
       int inode = node->node_num;
-      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,0, PyLong_FromLong((long)inode));
       PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
       int k = node->vars->size();
       PyObject *vars = PyList_New(0);
       std::vector<int> *pvars = node->vars;
       for(int i = 0;i < k;i++)
-      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(vars,PyLong_FromLong((long)(*pvars)[i]));
       PyTuple_SetItem(tuple,2, (PyObject* )vars);
       k = node->children->size();
       pvars = node->children;
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
-      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(children,PyLong_FromLong((long)(*pvars)[i]));
 
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
@@ -20314,19 +20314,19 @@ SWIGINTERN PyObject *_wrap_readGroupStruct(PyObject *self, PyObject *args) {
       PyObject* tuple = PyTuple_New(4);
       StructNodeElem<double> *node = *it;
       int inode = node->node_num;
-      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,0, PyLong_FromLong((long)inode));
       PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
       int k = node->vars->size();
       PyObject *vars = PyList_New(0);
       std::vector<int> *pvars = node->vars;
       for(int i = 0;i < k;i++)
-      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(vars,PyLong_FromLong((long)(*pvars)[i]));
       PyTuple_SetItem(tuple,2, (PyObject* )vars);
       k = node->children->size();
       pvars = node->children;
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
-      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(children,PyLong_FromLong((long)(*pvars)[i]));
 
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
@@ -20370,19 +20370,19 @@ SWIGINTERN PyObject *_wrap_groupStructOfString(PyObject *self, PyObject *args) {
       PyObject* tuple = PyTuple_New(4);
       StructNodeElem<double> *node = *it;
       int inode = node->node_num;
-      PyTuple_SetItem(tuple,0, PyInt_FromLong((long)inode));
+      PyTuple_SetItem(tuple,0, PyLong_FromLong((long)inode));
       PyTuple_SetItem(tuple,1, PyFloat_FromDouble(node->weight));
       int k = node->vars->size();
       PyObject *vars = PyList_New(0);
       std::vector<int> *pvars = node->vars;
       for(int i = 0;i < k;i++)
-      PyList_Append(vars,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(vars,PyLong_FromLong((long)(*pvars)[i]));
       PyTuple_SetItem(tuple,2, (PyObject* )vars);
       k = node->children->size();
       pvars = node->children;
       PyObject *children = PyList_New(0);
       for(int i = 0;i < k;i++)
-      PyList_Append(children,PyInt_FromLong((long)(*pvars)[i]));
+      PyList_Append(children,PyLong_FromLong((long)(*pvars)[i]));
 
       PyTuple_SetItem(tuple,3,(PyObject* )children );
       PyList_Append(node_list,tuple);
@@ -20425,16 +20425,16 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
       if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
       }
-      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      long inode = PyLong_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
       double w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
       std::vector<int> *vars = new std::vector<int>;
       std::vector<int> *children = new std::vector<int>;
       PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
       PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
       for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
-      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      vars->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pyvars,j))));
       for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
-      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      children->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pychildren,j))));
       StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
       arg1->push_back(node);
     }
@@ -20492,8 +20492,8 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -20535,8 +20535,8 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -20583,16 +20583,16 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
       if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
       }
-      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      long inode = PyLong_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
       float w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
       std::vector<int> *vars = new std::vector<int>;
       std::vector<int> *children = new std::vector<int>;
       PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
       PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
       for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
-      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      vars->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pyvars,j))));
       for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
-      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      children->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pychildren,j))));
       StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
       arg1->push_back(node);
     }
@@ -20650,8 +20650,8 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -20693,8 +20693,8 @@ SWIGINTERN PyObject *_wrap_graphOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -20788,16 +20788,16 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
       if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
       }
-      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      long inode = PyLong_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
       double w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
       std::vector<int> *vars = new std::vector<int>;
       std::vector<int> *children = new std::vector<int>;
       PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
       PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
       for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
-      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      vars->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pyvars,j))));
       for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
-      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      children->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pychildren,j))));
       StructNodeElem<double> *node = new StructNodeElem<double>(inode,w,vars,children);
       arg1->push_back(node);
     }
@@ -20865,8 +20865,8 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_0(PyObject *self, Py_ssize_t 
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);
@@ -20953,16 +20953,16 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
       if(! PyTuple_Check(pynode) || (PyTuple_Size(pynode) != 4)) {
         SWIG_Python_SetErrorMsg(PyExc_RuntimeError,"List elements of arg 1 must be tuples of size 4");SWIG_fail;
       }
-      long inode = PyInt_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
+      long inode = PyLong_AsLong(PyTuple_GetItem(pynode,(Py_ssize_t)0));
       float w = PyFloat_AsDouble(PyTuple_GetItem(pynode,(Py_ssize_t)1));
       std::vector<int> *vars = new std::vector<int>;
       std::vector<int> *children = new std::vector<int>;
       PyObject* pyvars = PyTuple_GetItem(pynode,(Py_ssize_t)2);
       PyObject* pychildren = PyTuple_GetItem(pynode,(Py_ssize_t)3);
       for(Py_ssize_t j = 0;j < PyList_Size(pyvars);j++)
-      vars->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pyvars,j))));
+      vars->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pyvars,j))));
       for(Py_ssize_t j = 0;j < PyList_Size(pychildren);j++)
-      children->push_back(static_cast<int>(PyInt_AsLong(PyList_GetItem(pychildren,j))));
+      children->push_back(static_cast<int>(PyLong_AsLong(PyList_GetItem(pychildren,j))));
       StructNodeElem<float> *node = new StructNodeElem<float>(inode,w,vars,children);
       arg1->push_back(node);
     }
@@ -21023,8 +21023,8 @@ SWIGINTERN PyObject *_wrap_treeOfGroupStruct__SWIG_1(PyObject *self, Py_ssize_t 
       }
       PyObject* tuple = PyTuple_New(4);
       PyObject* shape = PyTuple_New(2);
-      PyTuple_SetItem(shape, 0,  PyInt_FromLong((long)m));
-      PyTuple_SetItem(shape, 1,  PyInt_FromLong((long)n));
+      PyTuple_SetItem(shape, 0,  PyLong_FromLong((long)m));
+      PyTuple_SetItem(shape, 1,  PyLong_FromLong((long)n));
       PyTuple_SetItem(tuple,0, (PyObject* )indptr);
       PyTuple_SetItem(tuple,1,(PyObject* )indices);
       PyTuple_SetItem(tuple,2,(PyObject* )vdata);

@@ -72,6 +72,7 @@ jobs:
 
       - name: Build sdist
         run: |
+          sudo apt install libopenblas-dev
           python -m pip install build
           python -m build --sdist
 
