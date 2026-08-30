@@ -31,8 +31,8 @@ before-build = "dnf install openblas-openmp openblas-devel -y"
 [tool.cibuildwheel.windows]
 before-build = "conda install libblas=*=*openblas blas=*=*openblas pkgconfig"
 config-settings = { "setup-args" = "--vsenv" }
-environment = "PKG_CONFIG_PATH='C:\Miniconda\envs\openblas\Library\lib\pkgconfig;$PKG_CONFIG_PATH'"
-repair-wheel = "delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin"
+environment = "PKG_CONFIG_PATH='C:\\Miniconda\\envs\\openblas\\Library\\lib\\pkgconfig;$PKG_CONFIG_PATH'"
+repair-wheel = "delvewheel repair -w {dest_dir} {wheel} --add-path C:\\Miniconda\\envs\\openblas\\Library\\lib\\bin"
 
 [tool.cibuildwheel.macos]
 before-build = "brew install libomp"
