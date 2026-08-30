@@ -7,12 +7,34 @@ build-backend = "mesonpy"
 [project]
 name='spams-bin'
 requires-python='>=3.9.0'
-version='2.6.13'
+version='2.6.14'
 dependencies=['numpy>=1.21.3',
               'scipy>=1.5']
-license = {text = "GPLv2"}
+license = "GPL-3.0-or-later"
 readme = "README.md"
 description='Python interface for SPAMS - binary wheels with openblas (mac, linux, windows)'
 
 [project.optional-dependencies]
 test = ['Pillow>=6.0']
+
+[tool.cibuildwheel]
+build = "${{matrix.pyver}}-*"
+skip = "*-musllinux_*"
+archs = "auto64"
+
+before-test = "pip install pytest"
+test-extras = "test"
+test-command = "pytest {package} --verbose"
+
+# [tool.cibuildwheel.linux]
+# CIBW_BEFORE_BUILD_LINUX: dnf install openblas-openmp openblas-devel -y
+
+[tool.cibuildwheel.windows]
+config-settings = { "setup-args" = "--vsenv" }
+# CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} {wheel} --add-path C:\Miniconda\envs\openblas\Library\lib\bin
+# CIBW_BEFORE_BUILD_WINDOWS: conda install libblas=*=*openblas blas=*=*openblas pkgconfig
+# CIBW_ENVIRONMENT_WINDOWS: PKG_CONFIG_PATH="C:\Miniconda\envs\openblas\Library\lib\pkgconfig;$PKG_CONFIG_PATH"
+
+[tool.cibuildwheel.macos]
+before-build = "brew install libomp"
+repair-wheel-command = "DYLD_LIBRARY_PATH=/usr/local/lib/ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
